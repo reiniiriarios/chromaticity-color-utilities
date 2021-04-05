@@ -108,14 +108,15 @@ class Convert {
     let range = max - min;
 
     let val = max / 1 * 100;
-    let sat = max ? range / max : 0 * 100;
+    let sat = max ? range / max * 100 : 0;
 
     let hue;
     if      (!range)       hue = 0;
     else if (red == max)   hue = (green - blue) / range;
-    else if (green == max) hue = (blue  - red)  / range;
-    else if (blue == max)  hue = (red - green)  / range;
+    else if (green == max) hue = 2 + (blue  - red)  / range;
+    else if (blue == max)  hue = 4 + (red - green)  / range;
     else                   hue = 0;
+
     hue *= 60;
     while (hue >= 360) hue -= 360;
     while (hue < 0) hue += 360;
@@ -161,8 +162,8 @@ class Convert {
     let hue;
     if      (!chroma)      hue = 0;
     else if (val == red)   hue = (green - blue) / chroma;
-    else if (val == green) hue = (blue  - red)  / chroma;
-    else if (val == blue)  hue = (red - green)  / chroma;
+    else if (val == green) hue = 2 + (blue  - red)  / chroma;
+    else if (val == blue)  hue = 4 + (red - green)  / chroma;
     else                   hue = 0;
     hue *= 60;
     while (hue >= 360) hue -= 360;
@@ -263,7 +264,7 @@ class Convert {
       saturation /= 100;
       value /= 100;
       let i = Math.floor(hue);
-      let f = hue * i;
+      let f = hue - i;
       let p = value * (1 - saturation);
       let q = value * (1 - saturation * f);
       let t = value * (1 - saturation * (1 - f));
@@ -279,7 +280,7 @@ class Convert {
           b = p;
           break;
         case 2:
-          r = 1;
+          r = p;
           g = value;
           b = t;
           break;
@@ -1887,6 +1888,20 @@ class Convert {
    * @return {string}             RRGGBB hex
    */
   static rgb2hex(red, green, blue, bitDepth = 255) {
+    let hexint = this.rgb2hexint(red, green, blue, bitDepth);
+    return hexint.toString(16).slice(1);
+  }
+
+  /**
+   * Convert RGB to integer of HEX code
+   * 
+   * @param   {int} red
+   * @param   {int} green
+   * @param   {int} blue
+   * @param   {int} [bitDepth=255] RGB max value per channel
+   * @returns {int}                0xRRGGBB
+   */
+  static rgb2hexint(red, green, blue, bitDepth = 255) {
     Util.valueRangeCheck(bitDepth, 1, false);
     Util.valueRangeCheck(red,   0, bitDepth);
     Util.valueRangeCheck(green, 0, bitDepth);
@@ -1898,9 +1913,9 @@ class Convert {
       blue  = blue  / bitDepth * 255;
     }
 
-    let hex = ((1 << 24) + (red << 16) + (green << 8) + blue).toString(16).slice(1);
+    let hexint = (1 << 24) + (red << 16) + (green << 8) + blue;
 
-    return hex;
+    return hexint;
   }
 
   /**

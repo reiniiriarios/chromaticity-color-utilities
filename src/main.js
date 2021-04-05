@@ -20,7 +20,11 @@ const path      = require('path');
 const Reference = require(path.join(__dirname, 'Reference.js'));
 const Util      = require(path.join(__dirname, 'Util.js'));
 const Convert   = require(path.join(__dirname, 'Convert.js'));
+const Modify    = require(path.join(__dirname, 'Modify.js'));
+const Harmony   = require(path.join(__dirname, 'Harmony.js'));
 
 module.exports.Reference = Reference;
 module.exports.Util      = Util;
 module.exports.Convert   = Convert;
+module.exports.Modify    = Modify;
+module.exports.Harmony   = Harmony;
