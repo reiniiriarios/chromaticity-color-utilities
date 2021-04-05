@@ -1,0 +1,33 @@
+{
+  "name": "chromaticity-color-utilities",
+  "version": "0.1.0-alpha",
+  "description": "Color utilities for Node.js",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+  },
+  "engines": {
+    "node": ">= 10.0.0"
+  },
+  "author": {
+    "name": "Emma Litwa-Vulcu",
+    "email": "80431903+reiniiriarios@users.noreply.github.com"
+  },
+  "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reiniiriarios/chromaticity-color-utilities.git"
+  },
+  "bugs": {
+    "url": "https://github.com/reiniiriarios/chromaticity-color-utilities/issues"
+  },
+  "homepage": "https://github.com/reiniiriarios/chromaticity-color-utilities",
+  "keywords": [
+    "color",
+    "chroma",
+    "color conversion",
+    "color utilities"
+  ]
+}
