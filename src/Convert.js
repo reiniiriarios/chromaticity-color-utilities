@@ -212,7 +212,7 @@ class Convert {
       sat = 0;
     }
     else {
-      if      (max == red)   hue = Math.fmod((green - blue) / chroma, 6);
+      if      (max == red)   hue = Util.fmod((green - blue) / chroma, 6);
       else if (max == green) hue = ((blue - red)  / chroma) + 2;
       else                   hue = ((red - green) / chroma) + 4;
       hue *= 60;
@@ -431,7 +431,7 @@ class Convert {
     else {
       let chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
       let huef = Math.floor(hue);
-      let x = chroma * (1 - Math.abs(Math.fmod(hue, 2) - 1));
+      let x = chroma * (1 - Math.abs(Util.fmod(hue, 2) - 1));
       let m = lightness - (chroma / 2);
 
       switch (huef) {
@@ -534,7 +534,7 @@ class Convert {
       b = m;
     }
     else {
-      let z = 1 - Math.abs(Math.fmod(hue, 2) - 1);
+      let z = 1 - Math.abs(Util.fmod(hue, 2) - 1);
       let chroma = (2 * intensity * saturation) / (1 + z);
       let x = chroma * z;
       let huef = floor(hue);
