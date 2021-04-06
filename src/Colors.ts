@@ -18,6 +18,7 @@ import Util from './Util'
 import Convert from './Convert'
 import Modify from './Modify'
 import { colorSpaces } from './Reference';
+import Harmony from './Harmony';
 
 export interface newColorArgs {
     round?: boolean
@@ -32,6 +33,10 @@ export interface modifyArgs {
     method?: string
     with?: colorType
     amount?: number
+}
+
+export interface schemeArgs {
+    angle?: number
 }
 
 export abstract class colorType {
@@ -104,6 +109,45 @@ export abstract class colorType {
                 throw new Error('Unrecognized modify action')
         }
     }
+
+    scheme(type:string, args?: schemeArgs) : colorType[] {
+        if (typeof args === 'undefined') args = {}
+        let og = this.constructor['name']
+        let hsv = this.to('hsv', { round: false })
+        let hsvScheme: colorType[]
+        type = type.toLowerCase()
+        switch (type) {
+            case 'complement':
+                hsvScheme = Harmony.complement(hsv)
+                break
+            case 'analogous':
+                hsvScheme = Harmony.analogous(hsv, args.angle)
+                break
+            case 'splitcomplement':
+            case 'split':
+                hsvScheme = Harmony.splitComplement(hsv, args.angle)
+                break
+            case 'triadic':
+            case 'triad':
+            case 'triangle':
+                hsvScheme = Harmony.triadic(hsv, args.angle)
+                break
+            case 'tetradic':
+            case 'tetrad':
+                hsvScheme = Harmony.tetradic(hsv, args.angle)
+                break
+            case 'square':
+                hsvScheme = Harmony.square(hsv)
+                break
+            default:
+                throw new Error('Unrecognized color scheme')
+        }
+        let ogScheme: colorType[] = []
+        hsvScheme.forEach(color => {
+            ogScheme.push(color.to(og))
+        })
+        return ogScheme
+    }
 }
 
 export class hex extends colorType {
@@ -116,6 +160,7 @@ export class hex extends colorType {
 
     to(type:string, args?: newColorArgs): colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.hex2rgb(this, args.bitDepth)
@@ -178,6 +223,7 @@ export class rgb extends colorType {
 
     to(type:string, args?: newColorArgs): colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return this
@@ -242,6 +288,7 @@ export class rec709rgb extends colorType {
 
     to(type:string, args?: newColorArgs) : colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.rec709rgb2rgb(this, args.round, args.bitDepth)
@@ -305,6 +352,7 @@ export class rec2020rgb extends colorType {
 
     to(type:string, args?: newColorArgs) : colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.rec2020rgb2rgb(this, args.round, args.bitDepth)
@@ -359,6 +407,7 @@ export class hsv extends colorType {
 
     to(type:string, args?: newColorArgs) : colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.hsv2rgb(this, args.round, args.bitDepth)
@@ -414,6 +463,7 @@ export class hsl extends colorType {
 
     to(type:string, args?: newColorArgs) : colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.hsl2rgb(this, args.round, args.bitDepth)
@@ -469,6 +519,7 @@ export class hsi extends colorType {
 
     to(type:string, args?: newColorArgs) : colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.hsi2rgb(this, args.round, args.bitDepth)
@@ -524,6 +575,7 @@ export class cmyk extends colorType {
 
     to(type:string, args?: newColorArgs) : colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.cmyk2rgb(this, args.round, args.bitDepth)
@@ -593,6 +645,7 @@ export class yiq extends colorType {
 
     to(type:string, args?: newColorArgs) : colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.yiq2rgb(this, args.round, args.bitDepth)
@@ -650,6 +703,7 @@ export class xyz extends colorType {
 
     to(type:string, args?: newColorArgs) : colorType {
         args = super.setArgs(args)
+        type = type.toLowerCase()
         switch (type) {
             case 'rgb':
                 return Convert.xyz2rgb(this, args.round, args.bitDepth)

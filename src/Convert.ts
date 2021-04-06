@@ -294,8 +294,11 @@ class Convert {
     let s = hsl.s / 100
     let l = hsl.l / 100
 
-    let val = (l + s * Math.min(l, 1 - l)) * 100;
-    let sat = val ? 2 * (1 - l / val) * 100 : 0;
+    let val = (l + s * Math.min(l, 1 - l));
+    let sat = val ? (2 * (1 - l / val)) : 0;
+
+    val *= 100
+    sat *= 100
 
     if (round) {
       val = Math.round(val);

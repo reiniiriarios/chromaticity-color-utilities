@@ -22,11 +22,14 @@ class Harmony {
    * Return 180deg complement of color
    * 
    * @param  {Colors.hsv} hsv
-   * @return {Colors.hsv}
+   * @return {Colors.hsv[]}
    */
-  static complement(hsv: Colors.hsv): Colors.hsv {
+  static complement(hsv: Colors.hsv): Colors.hsv[] {
     let hueComplement = Modify.hueShift(hsv.h, 180);
-    return new Colors.hsv(hueComplement, hsv.s, hsv.v)
+    return [
+      hsv,
+      new Colors.hsv(hueComplement, hsv.s, hsv.v)
+    ]
   }
 
   /**
@@ -52,10 +55,11 @@ class Harmony {
    * Alias of analogous() with 120deg angle
    * 
    * @param  {Colors.hsv}        hsv
+   * @param  {number}            [angle=120]
    * @return {Array<Colors.hsv>}
    */
-  static triadic(hsv: Colors.hsv): Array<Colors.hsv> {
-    return this.analogous(hsv, 120);
+  static triadic(hsv: Colors.hsv, angle: number = 120): Array<Colors.hsv> {
+    return this.analogous(hsv, angle);
   }
 
   /**
@@ -63,7 +67,7 @@ class Harmony {
    * Alias of analogous() but with different default angle
    * 
    * @param  {Colors.hsv}        hsv
-   * @param  {number}            [angle=120] degrees
+   * @param  {number}            [angle=150] degrees
    * @return {Array<Colors.hsv>}
    */
   static splitComplement(hsv: Colors.hsv, angle: number = 150): Array<Colors.hsv> {
