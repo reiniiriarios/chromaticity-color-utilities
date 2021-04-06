@@ -21,6 +21,7 @@ import { colorSpaces } from './Reference';
 export interface newColorArgs {
     round?: boolean
     bitDepth?: number
+    bitRate?: number
     normalize?: boolean
     colorSpace?: string
     referenceWhite?: string
@@ -30,6 +31,14 @@ export abstract class colorType {
     constructor() {}
 
     to(type:string, args?: newColorArgs) : void {}
+
+    setArgs(args?: newColorArgs) : newColorArgs {
+        if (typeof args == 'undefined') args = {}
+        else if (typeof args.bitDepth === 'undefined' && typeof args.bitRate !== 'undefined') {
+            args.bitDepth = args.bitRate
+        }
+        return args
+    }
     
     /**
      * Range check to make sure numeric value is within lower and upper limits
@@ -61,7 +70,7 @@ export class hex extends colorType {
     }
 
     to(type:string, args?: newColorArgs): colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.hex2rgb(this, args.bitDepth)
@@ -123,7 +132,7 @@ export class rgb extends colorType {
     }
 
     to(type:string, args?: newColorArgs): colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return this
@@ -187,7 +196,7 @@ export class rec709rgb extends colorType {
     }
 
     to(type:string, args?: newColorArgs) : colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.rec709rgb2rgb(this, args.round, args.bitDepth)
@@ -250,7 +259,7 @@ export class rec2020rgb extends colorType {
     }
 
     to(type:string, args?: newColorArgs) : colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.rec2020rgb2rgb(this, args.round, args.bitDepth)
@@ -304,7 +313,7 @@ export class hsv extends colorType {
     }
 
     to(type:string, args?: newColorArgs) : colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.hsv2rgb(this, args.round, args.bitDepth)
@@ -359,7 +368,7 @@ export class hsl extends colorType {
     }
 
     to(type:string, args?: newColorArgs) : colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.hsl2rgb(this, args.round, args.bitDepth)
@@ -414,7 +423,7 @@ export class hsi extends colorType {
     }
 
     to(type:string, args?: newColorArgs) : colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.hsi2rgb(this, args.round, args.bitDepth)
@@ -469,7 +478,7 @@ export class cmyk extends colorType {
     }
 
     to(type:string, args?: newColorArgs) : colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.cmyk2rgb(this, args.round, args.bitDepth)
@@ -538,7 +547,7 @@ export class yiq extends colorType {
     }
 
     to(type:string, args?: newColorArgs) : colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.yiq2rgb(this, args.round, args.bitDepth)
@@ -594,7 +603,7 @@ export class xyz extends colorType {
     }
 
     to(type:string, args?: newColorArgs) : colorType {
-        if (typeof args == 'undefined') args = {}
+        args = super.setArgs(args)
         switch (type) {
             case 'rgb':
                 return Convert.xyz2rgb(this, args.round, args.bitDepth)

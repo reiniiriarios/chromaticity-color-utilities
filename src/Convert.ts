@@ -52,13 +52,16 @@ class Convert {
     while (hue >= 360) hue -= 360;
     while (hue < 0) hue += 360;
 
+    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 100)
+
     if (round) {
       hue = Math.round(hue);
       sat = Math.round(sat);
       val = Math.round(val);
+      a = Math.round(a)
     }
 
-    return new Colors.hsv(hue, sat, val)
+    return new Colors.hsv(hue, sat, val, a)
   }
 
   /**
@@ -92,13 +95,16 @@ class Convert {
     while (hue >= 360) hue -= 360;
     while (hue < 0) hue += 360;
 
+    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 100)
+
     if (round) {
       hue = Math.round(hue);
       sat = Math.round(sat);
       lit = Math.round(lit);
+      a = Math.round(a);
     }
 
-    return new Colors.hsl(hue, sat, lit)
+    return new Colors.hsl(hue, sat, lit, a)
   }
 
   /**
@@ -139,13 +145,16 @@ class Convert {
     }
     int *= 100;
 
+    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 100)
+
     if (round) {
       hue = Math.round(hue);
       sat = Math.round(sat);
       int = Math.round(int);
+      a = Math.round(a)
     }
 
-    return new Colors.hsi(hue, sat, int)
+    return new Colors.hsi(hue, sat, int, a)
   }
 
   /**
@@ -158,14 +167,13 @@ class Convert {
    * @return {Colors.rgb}
    */
   static hsv2rgb(hsv: Colors.hsv, round: boolean = true, bitDepth: number = 8): Colors.rgb {
-    let r;
-    let g;
-    let b;
+    let r, g, b
+    let max = (2 ** bitDepth) - 1
     if (hsv.s == 0) {
-      let all = hsv.v / 100 * ((2 ** bitDepth) - 1);
-      r = all;
-      g = all;
-      b = all;
+      let all = hsv.v / 100 * max
+      r = all
+      g = all
+      b = all
     }
     else {
       let h = hsv.h / 60;
@@ -207,18 +215,21 @@ class Convert {
           g = p;
           b = q;
       }
-      r *= ((2 ** bitDepth) - 1);
-      g *= ((2 ** bitDepth) - 1);
-      b *= ((2 ** bitDepth) - 1);
+      r *= max
+      g *= max
+      b *= max
     }
+
+    let a = Util.scaleValueRange(hsv.a, 0, 100, 0, max, round)
 
     if (round) {
       r = Math.round(r);
       g = Math.round(g);
       b = Math.round(b);
+      a = Math.round(a);
     }
 
-    return new Colors.rgb(r, g, b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, a, bitDepth)
   }
 
   /**
@@ -252,7 +263,7 @@ class Convert {
       sat = Math.round(sat);
     }
 
-    return new Colors.hsl(hsv.h, sat, lit)
+    return new Colors.hsl(hsv.h, sat, lit, hsv.a)
   }
 
   /**
@@ -291,7 +302,7 @@ class Convert {
       sat = Math.round(sat);
     }
 
-    return new Colors.hsv(hsl.h, sat, val)
+    return new Colors.hsv(hsl.h, sat, val, hsl.a)
   }
 
   /**
@@ -359,17 +370,22 @@ class Convert {
       }
     }
 
-    r *= ((2 ** bitDepth) - 1);
-    g *= ((2 ** bitDepth) - 1);
-    b *= ((2 ** bitDepth) - 1);
+    let max = (2 ** bitDepth) - 1
+    r *= max;
+    g *= max;
+    b *= max;
+
+    
+    let a = Util.scaleValueRange(hsl.a, 0, 100, 0, max)
 
     if (round) {
       r = Math.round(r);
       g = Math.round(g);
       b = Math.round(b);
+      a = Math.round(a);
     }
 
-    return new Colors.rgb(r, g, b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, a, bitDepth)
   }
 
   /**
@@ -457,17 +473,21 @@ class Convert {
       b = Math.min(b, 1);
     }
 
-    r *= ((2 ** bitDepth) - 1);
-    g *= ((2 ** bitDepth) - 1);
-    b *= ((2 ** bitDepth) - 1);
+    let max = (2 ** bitDepth) - 1
+    r *= max
+    g *= max
+    b *= max
+
+    let a = Util.scaleValueRange(hsi.a, 0, 100, 0, max)
 
     if (round) {
       r = Math.round(r);
       g = Math.round(g);
       b = Math.round(b);
+      a = Math.round(a);
     }
 
-    return new Colors.rgb(r, g, b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, a, bitDepth)
   }
 
   /**
@@ -631,9 +651,10 @@ class Convert {
       q = Util.scaleValueRange(q, -128, 128, -0.5226, 0.5226, false);
     }
 
-    let r = (y +  0.956 * i +  0.621 * q) * ((2 ** bitDepth) - 1);
-    let g = (y + -0.272 * i + -0.647 * q) * ((2 ** bitDepth) - 1);
-    let b = (y + -1.106 * i +  1.703 * q) * ((2 ** bitDepth) - 1);
+    let max = (2 ** bitDepth) - 1
+    let r = (y +  0.956 * i +  0.621 * q) * max;
+    let g = (y + -0.272 * i + -0.647 * q) * max;
+    let b = (y + -1.106 * i +  1.703 * q) * max;
 
     if (round) {
       r = Math.round(r);
@@ -641,7 +662,7 @@ class Convert {
       b = Math.round(b);
     }
 
-    return new Colors.rgb(r, g, b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, max, bitDepth)
   }
 
   /////////// XYZ, xyY ///////////
@@ -767,9 +788,10 @@ class Convert {
       b = Math.pow(b, 1 / colorSpaces[xyz.colorSpace as keyof object]['gamma']);
     }
 
-    r = Math.min(Math.max(r,0),1) * ((2 ** bitDepth) - 1);
-    g = Math.min(Math.max(g,0),1) * ((2 ** bitDepth) - 1);
-    b = Math.min(Math.max(b,0),1) * ((2 ** bitDepth) - 1);
+    let max = (2 ** bitDepth) - 1
+    r = Math.min(Math.max(r,0),1) * max;
+    g = Math.min(Math.max(g,0),1) * max;
+    b = Math.min(Math.max(b,0),1) * max;
 
     if (round) {
       r = Math.round(r);
@@ -777,7 +799,7 @@ class Convert {
       b = Math.round(b);
     }
 
-    return new Colors.rgb(r, g, b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, max, bitDepth)
   }
 
   /**
@@ -963,8 +985,9 @@ class Convert {
     let r = Util.scaleValueRange(rgb.r, 0, rgb.max, rgbLower, rgbUpper, round);
     let g = Util.scaleValueRange(rgb.g, 0, rgb.max, rgbLower, rgbUpper, round);
     let b = Util.scaleValueRange(rgb.b, 0, rgb.max, rgbLower, rgbUpper, round);
+    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, rgbLower, rgbUpper, round);
 
-    return new Colors.rec709rgb(r, g, b, undefined, bitRate)
+    return new Colors.rec709rgb(r, g, b, a, bitRate)
   }
 
   /**
@@ -995,12 +1018,15 @@ class Convert {
     let r709 = Math.min(Math.max(rgb709.r, maxFrom, minFrom));
     let g709 = Math.min(Math.max(rgb709.g, maxFrom, minFrom));
     let b709 = Math.min(Math.max(rgb709.b, maxFrom, minFrom));
+    let a709 = Math.min(Math.max(rgb709.a, maxFrom, minFrom));
 
-    let r = Util.scaleValueRange(r709, minFrom, maxFrom, 0, ((2 ** bitDepth) - 1), round);
-    let g = Util.scaleValueRange(g709, minFrom, maxFrom, 0, ((2 ** bitDepth) - 1), round);
-    let b = Util.scaleValueRange(b709, minFrom, maxFrom, 0, ((2 ** bitDepth) - 1), round);
+    let max = ((2 ** bitDepth) - 1)
+    let r = Util.scaleValueRange(r709, minFrom, maxFrom, 0, max, round);
+    let g = Util.scaleValueRange(g709, minFrom, maxFrom, 0, max, round);
+    let b = Util.scaleValueRange(b709, minFrom, maxFrom, 0, max, round);
+    let a = Util.scaleValueRange(a709, minFrom, maxFrom, 0, max, round);
 
-    return new Colors.rgb(r, g, b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, a, bitDepth)
   }
 
   /**
@@ -1030,8 +1056,9 @@ class Convert {
     let r = Util.scaleValueRange(rgb.r, 0, rgb.max, rgbLower, rgbUpper, round);
     let g = Util.scaleValueRange(rgb.g, 0, rgb.max, rgbLower, rgbUpper, round);
     let b = Util.scaleValueRange(rgb.b, 0, rgb.max, rgbLower, rgbUpper, round);
+    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, rgbLower, rgbUpper, round);
 
-    return new Colors.rec2020rgb(r, g, b, bitRate)
+    return new Colors.rec2020rgb(r, g, b, a, bitRate)
   }
 
   /**
@@ -1059,15 +1086,18 @@ class Convert {
     }
 
     // Rather than require bounds, clamp values
-    let r2020 = Math.min(Math.max(rgb2020.r,   maxFrom, minFrom));
+    let r2020 = Math.min(Math.max(rgb2020.r, maxFrom, minFrom));
     let g2020 = Math.min(Math.max(rgb2020.g, maxFrom, minFrom));
-    let b2020 = Math.min(Math.max(rgb2020.b,  maxFrom, minFrom));
+    let b2020 = Math.min(Math.max(rgb2020.b, maxFrom, minFrom));
+    let a2020 = Math.min(Math.max(rgb2020.a, maxFrom, minFrom));
 
-    let r = Util.scaleValueRange(r2020, minFrom, maxFrom, 0, (2 ** bitDepth) - 1, round);
-    let g = Util.scaleValueRange(g2020, minFrom, maxFrom, 0, (2 ** bitDepth) - 1, round);
-    let b = Util.scaleValueRange(b2020, minFrom, maxFrom, 0, (2 ** bitDepth) - 1, round);
+    let max = (2 ** bitDepth) - 1
+    let r = Util.scaleValueRange(r2020, minFrom, maxFrom, 0, max, round);
+    let g = Util.scaleValueRange(g2020, minFrom, maxFrom, 0, max, round);
+    let b = Util.scaleValueRange(b2020, minFrom, maxFrom, 0, max, round);
+    let a = Util.scaleValueRange(a2020, minFrom, maxFrom, 0, max, round);
 
-    return new Colors.rgb(r, g, b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, a, bitDepth)
   }
   /**
    * Convert RGB to YCbCr
@@ -1129,9 +1159,10 @@ class Convert {
     let g = ypbpr.y + (-1 * (kb / kg) * (2 - 2 * kb)) * ypbpr.pb + (-1 * (kr / kg) * (2 - 2 * kr)) * ypbpr.pr;
     let b = ypbpr.y + (2 - 2 * kr) * ypbpr.pb;
 
-    r *= ((2 ** bitDepth) - 1);
-    g *= ((2 ** bitDepth) - 1);
-    b *= ((2 ** bitDepth) - 1);
+    let max = (2 ** bitDepth) - 1
+    r *= max;
+    g *= max;
+    b *= max;
 
     if (round) {
       r = Math.round(r);
@@ -1139,7 +1170,7 @@ class Convert {
       b = Math.round(b);
     }
 
-    return new Colors.rgb(r,g,b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, max, bitDepth)
   }
 
   /**
@@ -1310,8 +1341,7 @@ class Convert {
    * @return {Colors.ycbcr}
    */
   static rec709ycbcr2rec2020ycbcr(ycbcr: Colors.ycbcr, bitRateIn: number = 8, bitRateOut: number = 10, round: boolean = true): Colors.ycbcr {
-    let bitDepth = (2 ** bitRateOut) - 1;
-    let rgb = this.rec709ycbcr2rgb(ycbcr, bitRateIn, false, bitDepth);
+    let rgb = this.rec709ycbcr2rgb(ycbcr, bitRateIn, false, bitRateOut);
     let ycbcr2 = this.rgb2rec2020ycbcr(rgb, bitRateOut, round);
 
     return ycbcr2;
@@ -1327,8 +1357,7 @@ class Convert {
    * @return {Colors.ycbcr}
    */
   static rec2020ycbcr2rec709ycbcr(ycbcr: Colors.ycbcr, bitRateIn: number = 10, bitRateOut: number = 8, round: boolean = true): Colors.ycbcr {
-    let bitDepth = (2 ** bitRateOut) - 1;
-    let rgb = this.rec2020ycbcr2rgb(ycbcr, bitRateIn, false, bitDepth);
+    let rgb = this.rec2020ycbcr2rgb(ycbcr, bitRateIn, false, bitRateOut);
     let ycbcr2 = this.rgb2rec709ycbcr(rgb, bitRateOut, round);
 
     return ycbcr2;
@@ -1379,10 +1408,11 @@ class Convert {
     let g = ycbcr.y - 0.344136 * (ycbcr.cb - 128) - 0.714136 * (ycbcr.cr - 128);
     let b = ycbcr.y + 1.772 * (ycbcr.cb - 128);
 
+    let max = (2 ** bitDepth) - 1
     if (bitDepth != 255) {
-      r = r / 255 * ((2 ** bitDepth) - 1);
-      g = g / 255 * ((2 ** bitDepth) - 1);
-      b = b / 255 * ((2 ** bitDepth) - 1);
+      r = r / 255 * max
+      g = g / 255 * max
+      b = b / 255 * max
     }
 
     if (round) {
@@ -1391,7 +1421,7 @@ class Convert {
       b = Math.round(b);
     }
 
-    return new Colors.rgb(r, g, b, undefined, bitDepth)
+    return new Colors.rgb(r, g, b, max, bitDepth)
   }
   
   /////////// ONE WAY APPROXIMATIONS to RGB ///////////
