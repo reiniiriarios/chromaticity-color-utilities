@@ -39,14 +39,23 @@ class Modify {
    * @param  {Colors.rgb} rgb1
    * @param  {Colors.rgb} rgb2
    * @param  {number}     amount amount to blend, 0-1
+   * @param  {boolean}    [round=true]
    * @return {Colors.rgb}
    */
-  static rgbBlend(rgb1: Colors.rgb, rgb2: Colors.rgb, amount: number): Colors.rgb {
+  static rgbBlend(rgb1: Colors.rgb, rgb2: Colors.rgb, amount: number, round: boolean = true): Colors.rgb {
     let r3 = rgb1.r + ((rgb2.r - rgb1.r) * amount);
     let g3 = rgb1.g + ((rgb2.g - rgb1.g) * amount);
     let b3 = rgb1.b + ((rgb2.b - rgb1.b) * amount);
+    let a3 = rgb1.a + ((rgb2.a - rgb1.a) * amount);
 
-    return new Colors.rgb(r3, g3, b3)
+    if (round) {
+      r3 = Math.round(r3)
+      g3 = Math.round(g3)
+      b3 = Math.round(b3)
+      a3 = Math.round(a3)
+    }
+
+    return new Colors.rgb(r3, g3, b3, a3)
   }
 
   /**
@@ -55,9 +64,10 @@ class Modify {
    * @param  {Colors.hsv} hsv1
    * @param  {Colors.hsv} hsv2
    * @param  {number}     amount amount to blend (0-1)
+   * @param  {boolean}    [round=true]
    * @return {Colors.hsv}
    */
-  static hsvBlend(hsv1: Colors.hsv, hsv2: Colors.hsv, amount: number): Colors.hsv {
+  static hsvBlend(hsv1: Colors.hsv, hsv2: Colors.hsv, amount: number, round: boolean = true): Colors.hsv {
     let hueDiff;
     if (Math.abs(hsv2.h - hsv1.h) > 180) {
       hueDiff = 360 - Math.abs((hsv2.h - hsv1.h) * amount);
@@ -70,8 +80,16 @@ class Modify {
     let h3 = this.hueShift(hsv1.h, hueDiff);
     let s3 = hsv1.s + ((hsv2.s - hsv1.s) * amount);
     let v3 = hsv1.v + ((hsv2.v - hsv1.v) * amount);
+    let a3 = hsv1.a + ((hsv2.a - hsv1.a) * amount);
 
-    return new Colors.hsv(h3, s3, v3)
+    if (round) {
+      h3 = Math.round(h3)
+      s3 = Math.round(s3)
+      v3 = Math.round(v3)
+      a3 = Math.round(a3)
+    }
+
+    return new Colors.hsv(h3, s3, v3, a3)
   }
 }
 

@@ -43,36 +43,36 @@ class Color implements colorDef {
                 case 'rgb':
                 case 'rgba':
                     if (typeof args.bitDepth === 'undefined') args.bitDepth = 8
-                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
-                    return new Colors.rgb(value[0], value[1], value[2], value[4], args.bitDepth)
+                    if (typeof value[3] === 'undefined') value[3] = (2 ** args.bitDepth) - 1
+                    return new Colors.rgb(value[0], value[1], value[2], value[3], args.bitDepth)
                 case 'rec709':
                 case 'rgb709':
                 case 'rec709rgb':
                 case 'rgbrec709':
                     if (typeof args.bitDepth === 'undefined') args.bitDepth = 8
-                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
-                    return new Colors.rec709rgb(value[0], value[1], value[2], value[4], args.bitDepth)
+                    if (typeof value[3] === 'undefined') value[3] = (2 ** args.bitDepth) - 1
+                    return new Colors.rec709rgb(value[0], value[1], value[2], value[3], args.bitDepth)
                 case 'rec2020':
                 case 'rgb2020':
                 case 'rec2020rgb':
                 case 'rgbrec2020':
                     if (typeof args.bitDepth === 'undefined') args.bitDepth = 10
-                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
-                    return new Colors.rec2020rgb(value[0], value[1], value[2], value[4], args.bitDepth)
+                    if (typeof value[3] === 'undefined') value[3] = (2 ** args.bitDepth) - 1
+                    return new Colors.rec2020rgb(value[0], value[1], value[2], value[3], args.bitDepth)
                 case 'hsv':
                 case 'hsva':
-                    if (typeof value[4] === 'undefined') value[4] = 100
-                    return new Colors.hsv(value[0], value[1], value[2], value[4])
+                    if (typeof value[3] === 'undefined') value[3] = 100
+                    return new Colors.hsv(value[0], value[1], value[2], value[3])
                 case 'hsl':
                 case 'hsla':
-                    if (typeof value[4] === 'undefined') value[4] = 100
-                    return new Colors.hsl(value[0], value[1], value[2], value[4])
+                    if (typeof value[3] === 'undefined') value[3] = 100
+                    return new Colors.hsl(value[0], value[1], value[2], value[3])
                 case 'hsi':
                 case 'hsia':
-                    if (typeof value[4] === 'undefined') value[4] = 100
-                    return new Colors.hsi(value[0], value[1], value[2], value[4])
+                    if (typeof value[3] === 'undefined') value[3] = 100
+                    return new Colors.hsi(value[0], value[1], value[2], value[3])
                 case 'cmyk':
-                    return new Colors.cmyk(value[0], value[1], value[2], value[4])
+                    return new Colors.cmyk(value[0], value[1], value[2], value[3])
                 case 'yiq':
                     return new Colors.yiq(value[0], value[1], value[2], args.normalized)
                 case 'xyz':

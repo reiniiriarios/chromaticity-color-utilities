@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import Convert from './Convert'
 import Util from './Util'
+import Convert from './Convert'
+import Modify from './Modify'
 import { colorSpaces } from './Reference';
 
 export interface newColorArgs {
@@ -27,10 +28,18 @@ export interface newColorArgs {
     referenceWhite?: string
 }
 
+export interface modifyArgs {
+    method?: string
+    with?: colorType
+    amount?: number
+}
+
 export abstract class colorType {
     constructor() {}
 
-    to(type:string, args?: newColorArgs) : void {}
+    to(type:string, args?: newColorArgs) : colorType|any {
+        return this
+    }
 
     setArgs(args?: newColorArgs) : newColorArgs {
         if (typeof args == 'undefined') args = {}
@@ -47,8 +56,9 @@ export abstract class colorType {
      * @param  {number}         value
      * @param  {number|boolean} lowerLimit number or false
      * @param  {number|boolean} upperLimit number or false
+     * @param  {string}         msg        error message if fail
      */
-    valueRangeCheck(value: number, lowerLimit: number | boolean, upperLimit: number | boolean) : void {
+    valueRangeCheck(value: number, lowerLimit: number | boolean, upperLimit: number | boolean, msg?: string) : void {
         if (!isFinite(value)) {
             throw new Error('Invalid color value');
         }
@@ -56,7 +66,42 @@ export abstract class colorType {
             throw new Error('Invalid range (lower limit must exceed upper limit)');
         }
         if ((lowerLimit && value < lowerLimit) || (upperLimit && value > upperLimit)) {
-            throw new Error('Color value out of range');
+            throw new Error(typeof msg !== 'undefined' ? msg : 'Color value out of range');
+        }
+    }
+
+    modify(modification:string, args?: modifyArgs) : colorType {
+        if (typeof args == 'undefined') args = {}
+        switch (modification) {
+            case 'blend':
+                if (typeof args.with === 'undefined') {
+                    throw new Error('Missing second color to blend with')
+                }
+                if (typeof args.amount === 'undefined') {
+                    args.amount = 0.5
+                }
+                else {
+                    this.valueRangeCheck(args.amount, 0, 1, 'Blend amount must be between 0 and 1')
+                }
+                if (typeof args.method === 'undefined') {
+                    args.method = 'rgb'
+                }
+                let tmpColor1, tmpColor2
+                switch (args.method) {
+                    case 'rgb':
+                    case 'rgba':
+                    case 'hex':
+                        tmpColor1 = this.to('rgb', { round: false })
+                        tmpColor2 = args.with.to('rgb', { round: false })
+                        return Modify.rgbBlend(tmpColor1, tmpColor2, args.amount)
+                    case 'hsv':
+                    case 'hsva':
+                        tmpColor1 = this.to('hsv', { round: false })
+                        tmpColor2 = args.with.to('hsv', { round: false })
+                        return Modify.hsvBlend(tmpColor1, tmpColor2, args.amount)
+                }
+            default:
+                throw new Error('Unrecognized modify action')
         }
     }
 }
@@ -116,7 +161,7 @@ export class rgb extends colorType {
 
     constructor(r: number, g: number, b: number, a?: number, bitDepth: number = 8) {
         super()
-        this.valueRangeCheck(bitDepth, 1, false)
+        this.valueRangeCheck(bitDepth, 1, false, 'Bit depth must be a positive number greater than 1')
         let max = (2 ** bitDepth) - 1
         if (typeof a == 'undefined') a = max
         this.valueRangeCheck(r, 0, max)
@@ -467,10 +512,10 @@ export class cmyk extends colorType {
 
     constructor(c: number, m: number, y: number, k:number) {
         super()
-        this.valueRangeCheck(c, 0, 100)
-        this.valueRangeCheck(m, 0, 100)
-        this.valueRangeCheck(y, 0, 100)
-        this.valueRangeCheck(k, 0, 100)
+        this.valueRangeCheck(c, 0, 100, 'CMYK values must be between 0 and 100')
+        this.valueRangeCheck(m, 0, 100, 'CMYK values must be between 0 and 100')
+        this.valueRangeCheck(y, 0, 100, 'CMYK values must be between 0 and 100')
+        this.valueRangeCheck(k, 0, 100, 'CMYK values must be between 0 and 100')
         this.c = c
         this.m = m
         this.y = y
@@ -531,14 +576,14 @@ export class yiq extends colorType {
     constructor(y: number, i: number, q: number, normalized: boolean = true) {
         super()
         if (normalized) {
-            this.valueRangeCheck(y, 0, 255)
-            this.valueRangeCheck(i, -128, 128)
-            this.valueRangeCheck(q, -128, 128)
+            this.valueRangeCheck(y, 0, 255, 'Normalized Y value must be between 0 and 255')
+            this.valueRangeCheck(i, -128, 128, 'Normalized I value must be between -128 and 128')
+            this.valueRangeCheck(q, -128, 128, 'Normalized Q value must be between -128 and 128')
         }
         else {
-            this.valueRangeCheck(y, 0, 1)
-            this.valueRangeCheck(i, -0.5957, 0.5957)
-            this.valueRangeCheck(q, -0.5226, 0.5226)
+            this.valueRangeCheck(y, 0, 1, 'Non-normalized Y value must be between 0 and 1')
+            this.valueRangeCheck(i, -0.5957, 0.5957, 'Non-normalized I value must be between -0.5957 and 0.5957')
+            this.valueRangeCheck(q, -0.5226, 0.5226, 'Non-normalized Q value must be between -0.5226 and 0.5226')
         }
         this.y = y
         this.i = i
@@ -592,12 +637,13 @@ export class xyz extends colorType {
 
     constructor(x: number, y:number, z:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
         super()
-        this.valueRangeCheck(x, 0, 1)
-        this.valueRangeCheck(y, 0, 1)
-        this.valueRangeCheck(z, 0, 1)
+        this.valueRangeCheck(x, 0, 1, 'XYZ values must be between 0 and 1')
+        this.valueRangeCheck(y, 0, 1, 'XYZ values must be between 0 and 1')
+        this.valueRangeCheck(z, 0, 1, 'XYZ values must be between 0 and 1')
         this.x = x
         this.y = y
         this.z = z
+        // error handling of the following two properties handled in conversion
         this.colorSpace = colorSpace
         this.referenceWhite = referenceWhite
     }
