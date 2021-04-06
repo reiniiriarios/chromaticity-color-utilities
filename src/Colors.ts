@@ -204,8 +204,8 @@ export class rec709rgb extends colorType {
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.rec709rgb2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(Convert.rec709rgb2rgb(this, false), args.round, args.bitDepth)
             case 'hsv':
                 return Convert.rgb2hsv(Convert.rec709rgb2rgb(this, false), args.round)
             case 'hsl':

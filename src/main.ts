@@ -30,8 +30,11 @@ interface colorDef {
 
 class Color implements colorDef {
     from(type: string, value: number[]|string, args?: newColorArgs) : Colors.colorType {
-        if (typeof args == 'undefined') args = {}
-        if (typeof value == 'string') {
+        if (typeof args === 'undefined') args = {}
+        if (typeof args.bitDepth === 'undefined' && typeof args.bitRate !== 'undefined') {
+            args.bitDepth = args.bitRate
+        }
+        if (typeof value === 'string') {
             if (type == 'hex') return new Colors.hex(value)
             else throw new Error('Unable to parse color')
         }
@@ -46,16 +49,16 @@ class Color implements colorDef {
                 case 'rgb709':
                 case 'rec709rgb':
                 case 'rgbrec709':
-                    if (typeof args.bitRate === 'undefined') args.bitRate = 8
-                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitRate) - 1
-                    return new Colors.rec709rgb(value[0], value[1], value[2], value[4], args.bitRate)
+                    if (typeof args.bitDepth === 'undefined') args.bitDepth = 8
+                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
+                    return new Colors.rec709rgb(value[0], value[1], value[2], value[4], args.bitDepth)
                 case 'rec2020':
                 case 'rgb2020':
                 case 'rec2020rgb':
                 case 'rgbrec2020':
-                    if (typeof args.bitRate === 'undefined') args.bitRate = 10
-                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitRate) - 1
-                    return new Colors.rec2020rgb(value[0], value[1], value[2], value[4], args.bitRate)
+                    if (typeof args.bitDepth === 'undefined') args.bitDepth = 10
+                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
+                    return new Colors.rec2020rgb(value[0], value[1], value[2], value[4], args.bitDepth)
                 case 'hsv':
                 case 'hsva':
                     if (typeof value[4] === 'undefined') value[4] = 100
