@@ -601,7 +601,7 @@ class Convert {
     if (normalize) {
       y = Util.scaleValueRange(y, 0, 1, 0, 255, false);
       i = Util.scaleValueRange(i + 0.5957, 0, 1.1914, 0, 256, false) - 128;
-      q = Util.scaleValueRange(i + 0.5226, 0, 1.0452, 0, 256, false) - 128;
+      q = Util.scaleValueRange(q + 0.5226, 0, 1.0452, 0, 256, false) - 128;
 
       if (round) {
         y = Math.round(y);
@@ -1539,15 +1539,14 @@ class Convert {
   /**
    * Convert HEX to RGB
    *
-   * @param  {string} hex
-   * @param  {number} [bitDepth=8]
+   * @param  {Colors.hex} hex
+   * @param  {number}     [bitDepth=8]
    * @return {Colors.rgb}
    */
-  static hex2rgb(hex: string, bitDepth: number = 8): Colors.rgb {
-    hex = Util.expandHex(hex);
-    let r = parseInt(hex.substr(0,2), 16);
-    let g = parseInt(hex.substr(2,2), 16);
-    let b = parseInt(hex.substr(4,2), 16);
+  static hex2rgb(hex: Colors.hex, bitDepth: number = 8): Colors.rgb {
+    let r = parseInt(hex.hex.substr(0,2), 16);
+    let g = parseInt(hex.hex.substr(2,2), 16);
+    let b = parseInt(hex.hex.substr(4,2), 16);
 
     let max = ((2 ** bitDepth) - 1)
     if (max != 255) {
@@ -1587,6 +1586,9 @@ class Convert {
       g = g / ((2 ** bitDepth) - 1) * 255;
       b = b / ((2 ** bitDepth) - 1) * 255;
     }
+    r = Math.round(r)
+    g = Math.round(g)
+    b = Math.round(b)
 
     let hexint = (1 << 24) + (r << 16) + (g << 8) + b;
 

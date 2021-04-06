@@ -18,12 +18,20 @@ import Convert from './Convert'
 import Util from './Util'
 import { colorSpaces } from './Reference';
 
-abstract class colorType {
-    constructor() {
-    }
+export interface newColorArgs {
+    round?: boolean
+    bitDepth?: number
+    bitRate?: number
+    bitRateOut?: number
+    normalize?: boolean
+    colorSpace?: string
+    referenceWhite?: string
+}
 
-    to(type:string, args: object) {
-    }
+export abstract class colorType {
+    constructor() {}
+
+    to(type:string, args?: newColorArgs) : void {}
     
     /**
      * Range check to make sure numeric value is within lower and upper limits
@@ -33,7 +41,7 @@ abstract class colorType {
      * @param  {number|boolean} lowerLimit number or false
      * @param  {number|boolean} upperLimit number or false
      */
-    valueRangeCheck(value: number, lowerLimit: number | boolean, upperLimit: number | boolean) {
+    valueRangeCheck(value: number, lowerLimit: number | boolean, upperLimit: number | boolean) : void {
         if (!isFinite(value)) {
             throw new Error('Invalid color value');
         }
@@ -53,6 +61,42 @@ export class hex extends colorType {
         super()
         this.hex = Util.expandHex(hex)
     }
+
+    to(type:string, args?: newColorArgs): colorType {
+        if (typeof args == 'undefined') args = {}
+        switch (type) {
+            case 'rgb':
+                return Convert.hex2rgb(this, args.bitDepth)
+            case 'hex':
+                return this
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 8
+                return Convert.rgb2rec709rgb(Convert.hex2rgb(this), args.round, args.bitRate)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec2020rgb(Convert.hex2rgb(this), args.round, args.bitRate)
+            case 'hsv':
+                return Convert.rgb2hsv(Convert.hex2rgb(this), args.round)
+            case 'hsl':
+                return Convert.rgb2hsl(Convert.hex2rgb(this), args.round)
+            case 'hsi':
+                return Convert.rgb2hsi(Convert.hex2rgb(this), args.round)
+            case 'cmyk':
+                return Convert.rgb2cmyk(Convert.hex2rgb(this), args.round)
+            case 'yiq':
+                return Convert.rgb2yiq(Convert.hex2rgb(this), args.normalize, args.round)
+            case 'xyz':
+                return Convert.rgb2xyz(Convert.hex2rgb(this), args.colorSpace, args.referenceWhite)
+            default:
+                throw new Error('Unable to find conversion path')
+        }
+    }
 }
 
 export class rgb extends colorType {
@@ -66,29 +110,25 @@ export class rgb extends colorType {
     constructor(r: number, g: number, b: number, a?: number, bitDepth: number = 8) {
         super()
         this.valueRangeCheck(bitDepth, 1, false)
-        this.max = (2 ** bitDepth) - 1
-        if (typeof a == 'undefined') a = this.max
-        this.valueRangeCheck(r, 0, this.max)
-        this.valueRangeCheck(g, 0, this.max)
-        this.valueRangeCheck(b, 0, this.max)
-        this.valueRangeCheck(a, 0, this.max)
+        let max = (2 ** bitDepth) - 1
+        if (typeof a == 'undefined') a = max
+        this.valueRangeCheck(r, 0, max)
+        this.valueRangeCheck(g, 0, max)
+        this.valueRangeCheck(b, 0, max)
+        this.valueRangeCheck(a, 0, max)
         this.r = r
         this.g = g
         this.b = b
         this.a = a
         this.bitDepth = bitDepth
+        this.max = max
     }
 
-    to(type:string, args?: {
-        round?: boolean
-        bitRate?: number
-        bitRateOut?: number
-        normalize?: boolean
-        colorSpace?: string
-        referenceWhite?: string
-    }): colorType {
+    to(type:string, args?: newColorArgs): colorType {
         if (typeof args == 'undefined') args = {}
         switch (type) {
+            case 'rgb':
+                return this
             case 'hex':
                 return Convert.rgb2hex(this)
             case 'rec709':
@@ -134,51 +174,50 @@ export class rec709rgb extends colorType {
         if (bitDepth != 8 && bitDepth != 10) {
             throw new Error('Invalid bitrate for Rec709, must be 8 or 10')
         }
-        this.max = (2 ** bitDepth) - 1
-        if (typeof a == 'undefined') a = this.max
-        this.valueRangeCheck(r, 0, this.max)
-        this.valueRangeCheck(g, 0, this.max)
-        this.valueRangeCheck(b, 0, this.max)
-        this.valueRangeCheck(a, 0, this.max)
+        let max = (2 ** bitDepth) - 1
+        if (typeof a == 'undefined') a = max
+        this.valueRangeCheck(r, 0, max)
+        this.valueRangeCheck(g, 0, max)
+        this.valueRangeCheck(b, 0, max)
+        this.valueRangeCheck(a, 0, max)
         this.r = r
         this.g = g
         this.b = b
         this.a = a
         this.bitDepth = bitDepth
+        this.max = max
     }
 
-    to(type:string, args?: {
-        round?: boolean
-        bitRate?: number
-        bitRateOut?: number
-        normalize?: boolean
-        colorSpace?: string
-        referenceWhite?: string
-    }) : colorType {
+    to(type:string, args?: newColorArgs) : colorType {
         if (typeof args == 'undefined') args = {}
         switch (type) {
             case 'rgb':
-                return Convert.rec709rgb2rgb(this)
+                return Convert.rec709rgb2rgb(this, args.round, args.bitDepth)
             case 'hex':
                 return Convert.rgb2hex(Convert.rec709rgb2rgb(this))
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                return this
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
                 if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.rec709rgb2rgb(this), args.round, args.bitRate)
+                return Convert.rgb2rec2020rgb(Convert.rec709rgb2rgb(this, false), args.round, args.bitRate)
             case 'hsv':
-                return Convert.rgb2hsv(Convert.rec709rgb2rgb(this), args.round)
+                return Convert.rgb2hsv(Convert.rec709rgb2rgb(this, false), args.round)
             case 'hsl':
-                return Convert.rgb2hsl(Convert.rec709rgb2rgb(this), args.round)
+                return Convert.rgb2hsl(Convert.rec709rgb2rgb(this, false), args.round)
             case 'hsi':
-                return Convert.rgb2hsi(Convert.rec709rgb2rgb(this), args.round)
+                return Convert.rgb2hsi(Convert.rec709rgb2rgb(this, false), args.round)
             case 'cmyk':
-                return Convert.rgb2cmyk(Convert.rec709rgb2rgb(this), args.round)
+                return Convert.rgb2cmyk(Convert.rec709rgb2rgb(this, false), args.round)
             case 'yiq':
-                return Convert.rgb2yiq(Convert.rec709rgb2rgb(this), args.normalize, args.round)
+                return Convert.rgb2yiq(Convert.rec709rgb2rgb(this, false), args.normalize, args.round)
             case 'xyz':
-                return Convert.rgb2xyz(Convert.rec709rgb2rgb(this), args.colorSpace, args.referenceWhite)
+                return Convert.rgb2xyz(Convert.rec709rgb2rgb(this, false), args.colorSpace, args.referenceWhite)
             default:
                 throw new Error('Unable to find conversion path')
         }
@@ -198,31 +237,25 @@ export class rec2020rgb extends colorType {
         if (bitDepth != 10 && bitDepth != 12) {
             throw new Error('Invalid bitrate for Rec2020, must be 10 or 12')
         }
-        this.max = (2 ** bitDepth) - 1
-        if (typeof a == 'undefined') a = this.max
-        this.valueRangeCheck(r, 0, this.max)
-        this.valueRangeCheck(g, 0, this.max)
-        this.valueRangeCheck(b, 0, this.max)
-        this.valueRangeCheck(a, 0, this.max)
+        let max = (2 ** bitDepth) - 1
+        if (typeof a == 'undefined') a = max
+        this.valueRangeCheck(r, 0, max)
+        this.valueRangeCheck(g, 0, max)
+        this.valueRangeCheck(b, 0, max)
+        this.valueRangeCheck(a, 0, max)
         this.r = r
         this.g = g
         this.b = b
         this.a = a
         this.bitDepth = bitDepth
+        this.max = max
     }
 
-    to(type:string, args?: {
-        round?: boolean
-        bitRate?: number
-        bitRateOut?: number
-        normalize?: boolean
-        colorSpace?: string
-        referenceWhite?: string
-    }) : colorType {
+    to(type:string, args?: newColorArgs) : colorType {
         if (typeof args == 'undefined') args = {}
         switch (type) {
             case 'rgb':
-                return Convert.rec2020rgb2rgb(this)
+                return Convert.rec2020rgb2rgb(this, args.round, args.bitDepth)
             case 'hex':
                 return Convert.rgb2hex(Convert.rec2020rgb2rgb(this))
             case 'rec709':
@@ -230,19 +263,24 @@ export class rec2020rgb extends colorType {
             case 'rec709rgb':
             case 'rgbrec709':
                 if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec709rgb(Convert.rec2020rgb2rgb(this), args.round, args.bitRate)
+                return Convert.rgb2rec709rgb(Convert.rec2020rgb2rgb(this, false), args.round, args.bitRate)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                return this
             case 'hsv':
-                return Convert.rgb2hsv(Convert.rec2020rgb2rgb(this), args.round)
+                return Convert.rgb2hsv(Convert.rec2020rgb2rgb(this, false), args.round)
             case 'hsl':
-                return Convert.rgb2hsl(Convert.rec2020rgb2rgb(this), args.round)
+                return Convert.rgb2hsl(Convert.rec2020rgb2rgb(this, false), args.round)
             case 'hsi':
-                return Convert.rgb2hsi(Convert.rec2020rgb2rgb(this), args.round)
+                return Convert.rgb2hsi(Convert.rec2020rgb2rgb(this, false), args.round)
             case 'cmyk':
-                return Convert.rgb2cmyk(Convert.rec2020rgb2rgb(this), args.round)
+                return Convert.rgb2cmyk(Convert.rec2020rgb2rgb(this, false), args.round)
             case 'yiq':
-                return Convert.rgb2yiq(Convert.rec2020rgb2rgb(this), args.normalize, args.round)
+                return Convert.rgb2yiq(Convert.rec2020rgb2rgb(this, false), args.normalize, args.round)
             case 'xyz':
-                return Convert.rgb2xyz(Convert.rec2020rgb2rgb(this), args.colorSpace, args.referenceWhite)
+                return Convert.rgb2xyz(Convert.rec2020rgb2rgb(this, false), args.colorSpace, args.referenceWhite)
             default:
                 throw new Error('Unable to find conversion path')
         }
@@ -266,6 +304,42 @@ export class hsv extends colorType {
         this.v = v
         this.a = a
     }
+
+    to(type:string, args?: newColorArgs) : colorType {
+        if (typeof args == 'undefined') args = {}
+        switch (type) {
+            case 'rgb':
+                return Convert.hsv2rgb(this, args.round, args.bitDepth)
+            case 'hex':
+                return Convert.rgb2hex(Convert.hsv2rgb(this))
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec709rgb(Convert.hsv2rgb(this, false), args.round, args.bitRate)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec2020rgb(Convert.hsv2rgb(this, false), args.round, args.bitRate)
+            case 'hsv':
+                return this
+            case 'hsl':
+                return Convert.hsv2hsl(this, args.round)
+            case 'hsi':
+                return Convert.hsv2hsi(this, args.round)
+            case 'cmyk':
+                return Convert.rgb2cmyk(Convert.hsv2rgb(this, false), args.round)
+            case 'yiq':
+                return Convert.rgb2yiq(Convert.hsv2rgb(this, false), args.normalize, args.round)
+            case 'xyz':
+                return Convert.rgb2xyz(Convert.hsv2rgb(this, false), args.colorSpace, args.referenceWhite)
+            default:
+                throw new Error('Unable to find conversion path')
+        }
+    }
 }
 
 export class hsl extends colorType {
@@ -284,6 +358,42 @@ export class hsl extends colorType {
         this.s = s
         this.l = l
         this.a = a
+    }
+
+    to(type:string, args?: newColorArgs) : colorType {
+        if (typeof args == 'undefined') args = {}
+        switch (type) {
+            case 'rgb':
+                return Convert.hsl2rgb(this, args.round, args.bitDepth)
+            case 'hex':
+                return Convert.rgb2hex(Convert.hsl2rgb(this))
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec709rgb(Convert.hsl2rgb(this, false), args.round, args.bitRate)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec2020rgb(Convert.hsl2rgb(this, false), args.round, args.bitRate)
+            case 'hsv':
+                return Convert.hsl2hsv(this, args.round)
+            case 'hsl':
+                return this
+            case 'hsi':
+                return Convert.hsl2hsi(this, args.round)
+            case 'cmyk':
+                return Convert.rgb2cmyk(Convert.hsl2rgb(this, false), args.round)
+            case 'yiq':
+                return Convert.rgb2yiq(Convert.hsl2rgb(this, false), args.normalize, args.round)
+            case 'xyz':
+                return Convert.rgb2xyz(Convert.hsl2rgb(this, false), args.colorSpace, args.referenceWhite)
+            default:
+                throw new Error('Unable to find conversion path')
+        }
     }
 }
 
@@ -304,6 +414,42 @@ export class hsi extends colorType {
         this.i = i
         this.a = a
     }
+
+    to(type:string, args?: newColorArgs) : colorType {
+        if (typeof args == 'undefined') args = {}
+        switch (type) {
+            case 'rgb':
+                return Convert.hsi2rgb(this, args.round, args.bitDepth)
+            case 'hex':
+                return Convert.rgb2hex(Convert.hsi2rgb(this))
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec709rgb(Convert.hsi2rgb(this, false), args.round, args.bitRate)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec2020rgb(Convert.hsi2rgb(this, false), args.round, args.bitRate)
+            case 'hsv':
+                return Convert.hsi2hsv(this, args.round)
+            case 'hsl':
+                return Convert.hsi2hsl(this, args.round)
+            case 'hsi':
+                return this
+            case 'cmyk':
+                return Convert.rgb2cmyk(Convert.hsi2rgb(this, false), args.round)
+            case 'yiq':
+                return Convert.rgb2yiq(Convert.hsi2rgb(this, false), args.normalize, args.round)
+            case 'xyz':
+                return Convert.rgb2xyz(Convert.hsi2rgb(this, false), args.colorSpace, args.referenceWhite)
+            default:
+                throw new Error('Unable to find conversion path')
+        }
+    }
 }
 
 export class cmyk extends colorType {
@@ -322,6 +468,42 @@ export class cmyk extends colorType {
         this.m = m
         this.y = y
         this.k = k
+    }
+
+    to(type:string, args?: newColorArgs) : colorType {
+        if (typeof args == 'undefined') args = {}
+        switch (type) {
+            case 'rgb':
+                return Convert.cmyk2rgb(this, args.round, args.bitDepth)
+            case 'hex':
+                return Convert.rgb2hex(Convert.cmyk2rgb(this))
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec709rgb(Convert.cmyk2rgb(this, false), args.round, args.bitRate)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec2020rgb(Convert.cmyk2rgb(this, false), args.round, args.bitRate)
+            case 'hsv':
+                return Convert.rgb2hsv(Convert.cmyk2rgb(this, false), args.round)
+            case 'hsl':
+                return Convert.rgb2hsl(Convert.cmyk2rgb(this, false), args.round)
+            case 'hsi':
+                return Convert.rgb2hsi(Convert.cmyk2rgb(this, false), args.round)
+            case 'cmyk':
+                return this
+            case 'yiq':
+                return Convert.rgb2yiq(Convert.cmyk2rgb(this, false), args.normalize, args.round)
+            case 'xyz':
+                return Convert.rgb2xyz(Convert.cmyk2rgb(this, false), args.colorSpace, args.referenceWhite)
+            default:
+                throw new Error('Unable to find conversion path')
+        }
     }
 }
 
@@ -356,6 +538,42 @@ export class yiq extends colorType {
         this.q = q
         this.normalized = normalized
     }
+
+    to(type:string, args?: newColorArgs) : colorType {
+        if (typeof args == 'undefined') args = {}
+        switch (type) {
+            case 'rgb':
+                return Convert.yiq2rgb(this, args.round, args.bitDepth)
+            case 'hex':
+                return Convert.rgb2hex(Convert.yiq2rgb(this))
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec709rgb(Convert.yiq2rgb(this, false), args.round, args.bitRate)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec2020rgb(Convert.yiq2rgb(this, false), args.round, args.bitRate)
+            case 'hsv':
+                return Convert.rgb2hsv(Convert.yiq2rgb(this, false), args.round)
+            case 'hsl':
+                return Convert.rgb2hsl(Convert.yiq2rgb(this, false), args.round)
+            case 'hsi':
+                return Convert.rgb2hsi(Convert.yiq2rgb(this, false), args.round)
+            case 'cmyk':
+                return Convert.rgb2cmyk(Convert.yiq2rgb(this, false), args.round)
+            case 'yiq':
+                return this
+            case 'xyz':
+                return Convert.rgb2xyz(Convert.yiq2rgb(this, false), args.colorSpace, args.referenceWhite)
+            default:
+                throw new Error('Unable to find conversion path')
+        }
+    }
 }
 
 export class xyz extends colorType {
@@ -365,7 +583,7 @@ export class xyz extends colorType {
     colorSpace: string
     referenceWhite: string
 
-    constructor(x: number, y:number, z:number, colorSpace: string, referenceWhite: string) {
+    constructor(x: number, y:number, z:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
         super()
         this.valueRangeCheck(x, 0, 1)
         this.valueRangeCheck(y, 0, 1)
@@ -375,6 +593,42 @@ export class xyz extends colorType {
         this.z = z
         this.colorSpace = colorSpace
         this.referenceWhite = referenceWhite
+    }
+
+    to(type:string, args?: newColorArgs) : colorType {
+        if (typeof args == 'undefined') args = {}
+        switch (type) {
+            case 'rgb':
+                return Convert.xyz2rgb(this, args.round, args.bitDepth)
+            case 'hex':
+                return Convert.rgb2hex(Convert.xyz2rgb(this))
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec709rgb(Convert.xyz2rgb(this, false), args.round, args.bitRate)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                if (typeof args.bitRate == 'undefined') args.bitRate = 10
+                return Convert.rgb2rec2020rgb(Convert.xyz2rgb(this, false), args.round, args.bitRate)
+            case 'hsv':
+                return Convert.rgb2hsv(Convert.xyz2rgb(this, false), args.round)
+            case 'hsl':
+                return Convert.rgb2hsl(Convert.xyz2rgb(this, false), args.round)
+            case 'hsi':
+                return Convert.rgb2hsi(Convert.xyz2rgb(this, false), args.round)
+            case 'cmyk':
+                return Convert.rgb2cmyk(Convert.xyz2rgb(this, false), args.round)
+            case 'yiq':
+                return Convert.rgb2yiq(Convert.xyz2rgb(this, false), args.normalize, args.round)
+            case 'xyz':
+                return this
+            default:
+                throw new Error('Unable to find conversion path')
+        }
     }
 }
 

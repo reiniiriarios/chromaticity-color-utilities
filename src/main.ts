@@ -16,43 +16,67 @@
 
 import * as Colors from './Colors'
 
-class Color {
-    from(type: string, value: number[], args?: {
-        bitDepth?: number
-    }) {
+interface newColorArgs {
+    bitDepth?: number
+    bitRate?: number
+    normalized?: boolean
+    colorSpace?: string
+    referenceWhite?: string
+}
+
+interface colorDef {
+    from(type: string, value: number[]|string, args?: newColorArgs) : Colors.colorType
+}
+
+class Color implements colorDef {
+    from(type: string, value: number[]|string, args?: newColorArgs) : Colors.colorType {
         if (typeof args == 'undefined') args = {}
-        switch (type) {
-            case 'rgb':
-            case 'rgba':
-                if (typeof args.bitDepth === 'undefined') args.bitDepth = 8
-                if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
-                return new Colors.rgb(value[0], value[1], value[2], value[4], args.bitDepth)
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth === 'undefined') args.bitDepth = 8
-                if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
-                return new Colors.rec709rgb(value[0], value[1], value[2], value[4], args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth === 'undefined') args.bitDepth = 10
-                if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
-                return new Colors.rec2020rgb(value[0], value[1], value[2], value[4], args.bitDepth)
-            case 'hsv':
-            case 'hsva':
-                if (typeof value[4] === 'undefined') value[4] = 100
-                return new Colors.hsv(value[0], value[1], value[2], value[4])
-            case 'hsl':
-            case 'hsla':
-                if (typeof value[4] === 'undefined') value[4] = 100
-                return new Colors.hsl(value[0], value[1], value[2], value[4])
-            case 'hsi':
-            case 'hsia':
-                if (typeof value[4] === 'undefined') value[4] = 100
-                return new Colors.hsi(value[0], value[1], value[2], value[4])
+        if (typeof value == 'string') {
+            if (type == 'hex') return new Colors.hex(value)
+            else throw new Error('Unable to parse color')
+        }
+        else {
+            switch (type) {
+                case 'rgb':
+                case 'rgba':
+                    if (typeof args.bitDepth === 'undefined') args.bitDepth = 8
+                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitDepth) - 1
+                    return new Colors.rgb(value[0], value[1], value[2], value[4], args.bitDepth)
+                case 'rec709':
+                case 'rgb709':
+                case 'rec709rgb':
+                case 'rgbrec709':
+                    if (typeof args.bitRate === 'undefined') args.bitRate = 8
+                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitRate) - 1
+                    return new Colors.rec709rgb(value[0], value[1], value[2], value[4], args.bitRate)
+                case 'rec2020':
+                case 'rgb2020':
+                case 'rec2020rgb':
+                case 'rgbrec2020':
+                    if (typeof args.bitRate === 'undefined') args.bitRate = 10
+                    if (typeof value[4] === 'undefined') value[4] = (2 ** args.bitRate) - 1
+                    return new Colors.rec2020rgb(value[0], value[1], value[2], value[4], args.bitRate)
+                case 'hsv':
+                case 'hsva':
+                    if (typeof value[4] === 'undefined') value[4] = 100
+                    return new Colors.hsv(value[0], value[1], value[2], value[4])
+                case 'hsl':
+                case 'hsla':
+                    if (typeof value[4] === 'undefined') value[4] = 100
+                    return new Colors.hsl(value[0], value[1], value[2], value[4])
+                case 'hsi':
+                case 'hsia':
+                    if (typeof value[4] === 'undefined') value[4] = 100
+                    return new Colors.hsi(value[0], value[1], value[2], value[4])
+                case 'cmyk':
+                    return new Colors.cmyk(value[0], value[1], value[2], value[4])
+                case 'yiq':
+                    return new Colors.yiq(value[0], value[1], value[2], args.normalized)
+                case 'xyz':
+                    return new Colors.xyz(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                default:
+                    throw new Error('Unable to determine color type')
+            }
         }
     }
 }
