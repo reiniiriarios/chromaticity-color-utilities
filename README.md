@@ -9,7 +9,7 @@ NOT YET PUBLISHED
 
 work in progress, README will come when at a further date
 
-## Compiling
+## Compiling from Source
 
 `git clone https://github.com/reiniiriarios/chromaticity-color-utilities.git`
 
