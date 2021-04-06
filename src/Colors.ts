@@ -21,8 +21,6 @@ import { colorSpaces } from './Reference';
 export interface newColorArgs {
     round?: boolean
     bitDepth?: number
-    bitRate?: number
-    bitRateOut?: number
     normalize?: boolean
     colorSpace?: string
     referenceWhite?: string
@@ -73,14 +71,14 @@ export class hex extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 8
-                return Convert.rgb2rec709rgb(Convert.hex2rgb(this), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 8
+                return Convert.rgb2rec709rgb(Convert.hex2rgb(this), args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.hex2rgb(this), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(Convert.hex2rgb(this), args.round, args.bitDepth)
             case 'hsv':
                 return Convert.rgb2hsv(Convert.hex2rgb(this), args.round)
             case 'hsl':
@@ -135,14 +133,14 @@ export class rgb extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 8
-                return Convert.rgb2rec709rgb(this, args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 8
+                return Convert.rgb2rec709rgb(this, args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(this, args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(this, args.round, args.bitDepth)
             case 'hsv':
                 return Convert.rgb2hsv(this, args.round)
             case 'hsl':
@@ -262,8 +260,8 @@ export class rec2020rgb extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec709rgb(Convert.rec2020rgb2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec709rgb(Convert.rec2020rgb2rgb(this, false), args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
@@ -316,14 +314,14 @@ export class hsv extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec709rgb(Convert.hsv2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec709rgb(Convert.hsv2rgb(this, false), args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.hsv2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(Convert.hsv2rgb(this, false), args.round, args.bitDepth)
             case 'hsv':
                 return this
             case 'hsl':
@@ -371,14 +369,14 @@ export class hsl extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec709rgb(Convert.hsl2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec709rgb(Convert.hsl2rgb(this, false), args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.hsl2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(Convert.hsl2rgb(this, false), args.round, args.bitDepth)
             case 'hsv':
                 return Convert.hsl2hsv(this, args.round)
             case 'hsl':
@@ -426,14 +424,14 @@ export class hsi extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec709rgb(Convert.hsi2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec709rgb(Convert.hsi2rgb(this, false), args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.hsi2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(Convert.hsi2rgb(this, false), args.round, args.bitDepth)
             case 'hsv':
                 return Convert.hsi2hsv(this, args.round)
             case 'hsl':
@@ -481,14 +479,14 @@ export class cmyk extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec709rgb(Convert.cmyk2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec709rgb(Convert.cmyk2rgb(this, false), args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.cmyk2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(Convert.cmyk2rgb(this, false), args.round, args.bitDepth)
             case 'hsv':
                 return Convert.rgb2hsv(Convert.cmyk2rgb(this, false), args.round)
             case 'hsl':
@@ -550,14 +548,14 @@ export class yiq extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec709rgb(Convert.yiq2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec709rgb(Convert.yiq2rgb(this, false), args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.yiq2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(Convert.yiq2rgb(this, false), args.round, args.bitDepth)
             case 'hsv':
                 return Convert.rgb2hsv(Convert.yiq2rgb(this, false), args.round)
             case 'hsl':
@@ -606,14 +604,14 @@ export class xyz extends colorType {
             case 'rgb709':
             case 'rec709rgb':
             case 'rgbrec709':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec709rgb(Convert.xyz2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec709rgb(Convert.xyz2rgb(this, false), args.round, args.bitDepth)
             case 'rec2020':
             case 'rgb2020':
             case 'rec2020rgb':
             case 'rgbrec2020':
-                if (typeof args.bitRate == 'undefined') args.bitRate = 10
-                return Convert.rgb2rec2020rgb(Convert.xyz2rgb(this, false), args.round, args.bitRate)
+                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
+                return Convert.rgb2rec2020rgb(Convert.xyz2rgb(this, false), args.round, args.bitDepth)
             case 'hsv':
                 return Convert.rgb2hsv(Convert.xyz2rgb(this, false), args.round)
             case 'hsl':
