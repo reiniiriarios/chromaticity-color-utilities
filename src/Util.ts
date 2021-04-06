@@ -14,32 +14,28 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-"use strict";
-const path      = require('path');
-const Reference = require(path.join(__dirname, 'Reference.js'));
+import { stdIlluminants } from './Reference';
 
 class Util {
   /**
-   * Range check to make sure numeric value is within lower and upper limits
-   * Throws error on fail, returns nothing
+   * Scale a value to a different range of values
+   * e.g. Scale value from 16-235 to 64-940
    *
-   * @param  {int|float} value
-   * @param  {int|float} lowerLimit
-   * @param  {int|float} upperLimit
+   * @param  {number}       value
+   * @param  {number}       minFrom      input lower range
+   * @param  {number}       maxFrom      input upper range
+   * @param  {number}       minTo        output lower range
+   * @param  {number}       maxTo        output upper range
+   * @param  {boolean}      [round=true]
+   * @return {number}                    scaled value
    */
-  static valueRangeCheck(value, lowerLimit, upperLimit) {
-    if (!isFinite(value)) {
-      throw new Error('Invalid color value');
+  static scaleValueRange(value: number, minFrom: number, maxFrom: number, minTo: number, maxTo: number, round: boolean = true): number {
+    // = valueFrom * (rangeTo / RangeFrom) + (minTo - minFrom)
+    let valueTo = (value * ((maxTo - minTo) / (maxFrom - minFrom))) + (minTo - minFrom);
+    if (round) {
+      valueTo = Math.round(valueTo);
     }
-    if ((!isFinite(lowerLimit) && lowerLimit !== false) || (!isFinite(upperLimit) && upperLimit !== false)) {
-      throw new Error('Invalid range');
-    }
-    if (lowerLimit && upperLimit && lowerLimit >= upperLimit) {
-      throw new Error('Invalid range (lower limit must exceed upper limit)');
-    }
-    if ((lowerLimit && value < lowerLimit) || (upperLimit && value > upperLimit)) {
-      throw new Error('Color value out of range');
-    }
+    return valueTo;
   }
 
   /**
@@ -48,10 +44,7 @@ class Util {
    * @param  {string} hex RGB or RRGGBB
    * @return {string}     RRGGBB
    */
-  static expandHex(hex) {
-    if (typeof hex != 'string') {
-      throw new Error('Invalid hex value');
-    }
+  static expandHex(hex: string): string {
     if (hex.charAt(0) == '#') {
       hex = hex.substr(1);
     }
@@ -72,14 +65,14 @@ class Util {
    * Generates the inverse of a 3x3 matrix
    * Utilized for XYZ matrix generation
    *
-   * @param  {array} matrix 3x3 matrix
-   * @return {array}        matrix^-1
+   * @param  {number[][]} matrix 3x3 matrix
+   * @return {number[][]}        matrix^-1
    */
-  static matrix3x3inverse(matrix) {
+  static matrix3x3inverse(matrix: number[][]): number[][] {
     
     // Calculate matrices of minors and cofactors
-    let minors = [];
-    let cofactors = [];
+    let minors: number[][] = [];
+    let cofactors: number[][] = [];
     let flip_sign = false;
     matrix.forEach((row, rowN) => {
       row.forEach((val, colN) => {
@@ -105,7 +98,7 @@ class Util {
     });
 
     // Calculate adjugate matrix
-    let adjugate = [];
+    let adjugate: number[][] = [];
     adjugate[0][1] = cofactors[1][0];
     adjugate[1][0] = cofactors[0][1];
     adjugate[0][2] = cofactors[2][0];
@@ -117,7 +110,7 @@ class Util {
     let determinant = minors[0][0] * cofactors[0][0] + minors[0][1] * cofactors[0][1] + minors[0][2] * cofactors[0][2];
 
     // Calculate inverse matrix
-    let inverse = [];
+    let inverse: number[][] = [];
     adjugate.forEach((row, rowN) => {
       row.forEach((val, colN) => {
         inverse[rowN][colN] = val * (1 / determinant);
@@ -143,18 +136,18 @@ class Util {
    * d65 CIE standard illuminant D65; 6504 K
    * icc Profile Connection Space (PCS) illuminant used in ICC profiles
    *
-   * @param  {float} xr red   x chromaticity coordinate
-   * @param  {float} yr red   y chromaticity coordinate
-   * @param  {float} xg green x chromaticity coordinate
-   * @param  {float} yg green y chromaticity coordinate
-   * @param  {float} xb blue  x chromaticity coordinate
-   * @param  {float} yb blue  y chromaticity coordinate
-   * @param  {float} xw x reference white coordinate
-   * @param  {float} yw y reference white coordinate
-   * @param  {float} zw z reference white coordinate
-   * @return float[] 3x3 matrix for converting RGB to XYZ
+   * @param  {number}  xr red   x chromaticity coordinate
+   * @param  {number}  yr red   y chromaticity coordinate
+   * @param  {number}  xg green x chromaticity coordinate
+   * @param  {number}  yg green y chromaticity coordinate
+   * @param  {number}  xb blue  x chromaticity coordinate
+   * @param  {number}  yb blue  y chromaticity coordinate
+   * @param  {number}  xw x reference white coordinate
+   * @param  {number}  yw y reference white coordinate
+   * @param  {number}  zw z reference white coordinate
+   * @return {number[][]} 3x3 matrix for converting RGB to XYZ
    */
-   static rgb2xyzMatrix(xr, yr, xg, yg, xb, yb, xw, yx, zw) {
+   static rgb2xyzMatrix(xr: number, yr: number, xg: number, yg: number, xb: number, yb: number, xw: number, yw: number, zw: number): number[][] {
     //       [Sr*Xr Sg*Xg Sb*Xb]
     // [M] = [Sr*Yr Sg*Yg Sb*Yb]
     //       [Sr*Zr Sg*Zg Sb*Zb]
@@ -199,43 +192,41 @@ class Util {
    *
    * To utilize matrix, RGB values MUST be linear and in the nominal range [0, 1]
    *
-   * @param  {float}   xr red   x chromaticity coordinate
-   * @param  {float}   yr red   y chromaticity coordinate
-   * @param  {float}   xg green x chromaticity coordinate
-   * @param  {float}   yg green y chromaticity coordinate
-   * @param  {float}   xb blue  x chromaticity coordinate
-   * @param  {float}   yb blue  y chromaticity coordinate
-   * @param  {float}   xw x reference white coordinate
-   * @param  {float}   yw y reference white coordinate
-   * @param  {float}   zw z reference white coordinate
-   * @return {float[]}    3x3 matrix for converting XYZ to RGB
+   * @param  {number}   xr red   x chromaticity coordinate
+   * @param  {number}   yr red   y chromaticity coordinate
+   * @param  {number}   xg green x chromaticity coordinate
+   * @param  {number}   yg green y chromaticity coordinate
+   * @param  {number}   xb blue  x chromaticity coordinate
+   * @param  {number}   yb blue  y chromaticity coordinate
+   * @param  {number}   xw x reference white coordinate
+   * @param  {number}   yw y reference white coordinate
+   * @param  {number}   zw z reference white coordinate
+   * @return {number[][]}  3x3 matrix for converting XYZ to RGB
    */
-  static xyz2rgbMatrix(xr, yr, xg, yg, xb, yb, xw, yx, zw) {
+  static xyz2rgbMatrix(xr: number, yr: number, xg: number, yg: number, xb: number, yb: number, xw: number, yx: number, zw: number): number[][] {
     let rgb2xyzM = this.rgb2xyzMatrix(xr, yr, xg, yg, xb, yb, xw, yx, zw);
     let xyz2rgbM = this.matrix3x3inverse(rgb2xyzM);
     return xyz2rgbM;
   }
 
-  static validReferenceWhite(referenceWhite) {
+  /**
+   * Finds reference white or returns input number[][] as reference white
+   * 
+   * @param  {string|number[][]} referenceWhite
+   * @return {number[][]}
+   */
+  static validReferenceWhite(referenceWhite: string | number[]) : number[] {
+    let w: number[]
     if (typeof referenceWhite == 'string') {
       referenceWhite = referenceWhite.toLowerCase();
-      if (typeof Reference.stdIlluminants[referenceWhite] == 'undefined' ||
-          typeof Reference.stdIlluminants[referenceWhite]['vector'] == 'undefined') {
+      if (typeof stdIlluminants[referenceWhite as keyof object] == 'undefined' ||
+          typeof stdIlluminants[referenceWhite as keyof object]['vector'] == 'undefined') {
             throw new Error('Invalid reference white, vector not found');
       }
-      let w = Reference.stdIlluminants[referenceWhite]['vector'];
-    }
-    else if (referenceWhite.isArray) {
-      if (referenceWhite.length != 3 ||
-          typeof referenceWhite[0] != 'number' ||
-          typeof referenceWhite[1] != 'number' ||
-          typeof referenceWhite[2] != 'number') {
-            throw new Error('Invalid reference white matrix, must be 1x3 numerical matrix');
-      }
-      let w = referenceWhite;
+      w = stdIlluminants[referenceWhite as keyof object]['vector'];
     }
     else {
-      throw new Error('Invalid reference white');
+      w = referenceWhite;
     }
 
     return w;
@@ -243,36 +234,37 @@ class Util {
 
   /**
    * Floating point modulo function
-   * From: https://locutus.io/php/fmod/
+   * Original from: https://locutus.io/php/fmod/
    * 
-   * @param  {float} x
-   * @param  {float} y
-   * @return {float}
+   * @param  {number} x
+   * @param  {number} y
+   * @return {number}
    */
-  static fmod(x, y) {
-    let tmp
-    let tmp2
+  static fmod(x: number, y: number): number {
     let p = 0
     let pY = 0
     let l = 0.0
     let l2 = 0.0
+    let tmp: RegExpMatchArray | null
     tmp = x.toExponential().match(/^.\.?(.*)e(.+)$/)
+    if (tmp == null) throw new Error('value is null');
     p = parseInt(tmp[2], 10) - (tmp[1] + '').length
     tmp = y.toExponential().match(/^.\.?(.*)e(.+)$/)
+    if (tmp == null) throw new Error('value is null');
     pY = parseInt(tmp[2], 10) - (tmp[1] + '').length
     if (pY > p) {
       p = pY
     }
-    tmp2 = (x % y)
+    let tmp2: number = (x % y)
     if (p < -100 || p > 20) {
       // toFixed will give an out of bound error so we fix it like this:
       l = Math.round(Math.log(tmp2) / Math.log(10))
       l2 = Math.pow(10, l)
-      return (tmp2 / l2).toFixed(l - p) * l2
+      return parseFloat((tmp2 / l2).toFixed(l - p)) * l2
     } else {
       return parseFloat(tmp2.toFixed(-p))
     }
   }
 }
 
-module.exports = Util;
+export = Util
