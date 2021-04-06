@@ -40,12 +40,12 @@ let scheme1 = Color.from('rgb',[200, 180, 0]).scheme('splitComplement')
 //   rgb { r: 80, g: 0, b: 200, a: 255, bitDepth: 8, max: 255 }  
 // ]
 
-let scheme2 = Color.from('hsl',[180, 80, 40]).scheme('tetradic', 40)
+let scheme2 = Color.from('hsl',[180, 80, 48]).scheme('tetradic', 40)
 // [
-//   hsl { h: 180, s: 80, l: 40, a: 100 },
-//   hsl { h: 225, s: 80, l: 40, a: 100 },
-//   hsl { h: 45, s: 80, l: 40, a: 100 },
-//   hsl { h: 0, s: 80, l: 40, a: 100 }
+//   hsl { h: 180, s: 80, l: 48, a: 100 },
+//   hsl { h: 225, s: 80, l: 48, a: 100 },
+//   hsl { h: 45, s: 80, l: 48, a: 100 },
+//   hsl { h: 0, s: 80, l: 48, a: 100 }
 // ]
 ```
 
