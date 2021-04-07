@@ -30,8 +30,7 @@ class Util {
    * @return {number}                    scaled value
    */
   static scaleValueRange(value: number, minFrom: number, maxFrom: number, minTo: number, maxTo: number, round: boolean = true): number {
-    // = valueFrom * (rangeTo / RangeFrom) + (minTo - minFrom)
-    let valueTo = (value * ((maxTo - minTo) / (maxFrom - minFrom))) + (minTo - minFrom);
+    let valueTo = (Math.min(maxFrom, Math.max(minFrom, value)) - minFrom) * ((maxTo - minTo) / (maxFrom - minFrom)) + minTo;
     if (round) {
       valueTo = Math.round(valueTo);
     }
