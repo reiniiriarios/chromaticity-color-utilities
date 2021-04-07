@@ -222,6 +222,30 @@ export class hex extends colorType {
     }
 }
 
+export class rgbNormalized extends colorType {
+    r: number
+    g: number
+    b: number
+    a: number
+    gamma?: number
+
+    constructor(r: number, g: number, b: number, a: number = 1, gamma?: number) {
+        super()
+        this.valueRangeCheck(r, 0, 1)
+        this.valueRangeCheck(g, 0, 1)
+        this.valueRangeCheck(b, 0, 1)
+        this.valueRangeCheck(a, 0, 1)
+        this.r = r
+        this.g = g
+        this.b = b
+        this.a = a
+        if (typeof gamma !== 'undefined') {
+            this.valueRangeCheck(gamma, 0, false)
+            this.gamma = gamma
+        }
+    }
+}
+
 export class rgb extends colorType {
     r: number
     g: number
@@ -904,7 +928,7 @@ export class xyy extends colorType {
     colorSpace: string
     referenceWhite: string
 
-    constructor(x: number, y:number, yy:number, colorSpace: string, referenceWhite: string) {
+    constructor(x: number, y:number, yy:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
         super()
         this.x = x
         this.y = y
@@ -982,7 +1006,7 @@ export class lab extends colorType {
      * @param {string} colorSpace 
      * @param {string} referenceWhite 
      */
-    constructor(l: number, a:number, b:number, colorSpace: string, referenceWhite: string) {
+    constructor(l: number, a:number, b:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
         super()
         this.valueRangeCheck(l, 0, 100)
         this.l = l
@@ -1061,7 +1085,7 @@ export class luv extends colorType {
      * @param {string} colorSpace 
      * @param {string} referenceWhite
      */
-    constructor(l: number, u:number, v:number, colorSpace: string, referenceWhite: string) {
+    constructor(l: number, u:number, v:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
         super()
         this.valueRangeCheck(l, 0, 100)
         this.valueRangeCheck(u, -100, 100)

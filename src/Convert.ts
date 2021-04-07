@@ -19,6 +19,49 @@ import Util from './Util'
 import { cieE, cieK, colorSpaces } from './Reference'
 
 class Convert {
+  /////////// NORMALIZE & GAMMA ///////////
+
+  /**
+   * Normalize RGB values to 0-1
+   * 
+   * @param  {Colors.rgb} rgb
+   * @return {Colors.rgbNormalized}
+   */
+  static rgbNormalize(rgb: Colors.rgb) : Colors.rgbNormalized {
+    return new Colors.rgbNormalized(
+      rgb.r / rgb.max,
+      rgb.g / rgb.max,
+      rgb.b / rgb.max,
+      rgb.a / rgb.max
+    )
+  }
+
+  /**
+   * Apply gamma to normalized RGB value
+   * NOT to be used with sRGB, L*, or other color spaces that utilize companding transformation formulae
+   * 
+   * @param  {Colors.rgbNormalized} rgb
+   * @param  {number}               gamma
+   * @return {Colors.rgbNormalized}
+   */
+  static applyGamma(rgb: Colors.rgbNormalized, gamma: number|string) : Colors.rgbNormalized {
+    let gammaN
+    if (typeof gamma === 'number') {
+      gammaN = gamma
+    }
+    else if (typeof colorSpaces[gamma as keyof object]['gamma'] === 'number') {
+      gammaN = colorSpaces[gamma as keyof object]['gamma']
+    }
+    else {
+      throw new Error('Gamma not found for specificed color space')
+    }
+    let r = Math.pow(rgb.r, gammaN)
+    let g = Math.pow(rgb.g, gammaN)
+    let b = Math.pow(rgb.b, gammaN)
+
+    return new Colors.rgbNormalized(r, g, b, rgb.a, gammaN)
+  }
+
   /////////// HUE, SATURATION, VALUE/LIGHTNESS/BRIGHTNESS ///////////  
 
   /**

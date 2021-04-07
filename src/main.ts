@@ -77,6 +77,16 @@ class Color implements colorDef {
                     return new Colors.yiq(value[0], value[1], value[2], args.normalized)
                 case 'xyz':
                     return new Colors.xyz(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                case 'xyy':
+                    return new Colors.xyy(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                case 'lab':
+                    return new Colors.lab(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                case 'luv':
+                    return new Colors.luv(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                case 'ypbpr':
+                    return new Colors.ypbpr(value[0], value[1], value[2])
+                case 'ycbcr':
+                    return new Colors.ycbcr(value[0], value[1], value[2])
                 default:
                     throw new Error('Unable to determine color type')
             }
