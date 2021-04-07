@@ -144,7 +144,11 @@ let color1 = Color.from('cmyk',[0, 100, 0, 0])
 let color3 = color2.to('cmyk')
 ```
 
-### YIQ : NTSC Color, Y = luma, I = in-phase, Q = quadrature
+### YIQ : NTSC Color
+
+* Y = luma
+* I = in-phase
+* Q = quadrature
 
 When normalized:
 
