@@ -434,7 +434,312 @@ Color spaces and standard illuminant arguments are case-insensitive. Color space
 
 ## Mathematics
 
-todo
+For the following equations, consider all values normalized ∈ [0, 1] unless stated otherwise.
+
+### Normalizing RGB
+
+to achieve R,G,B ∈ [0, 1]
+
+```
+X' = X / ((2 ** bitRate) - 1)
+X = X' * ((2 ** bitRate) - 1)
+```
+
+### RGB to HSV
+
+```
+V = max(R,G,B)
+
+C = V - min(R,G,B)
+
+S = | 0      if V = 0
+    | C / V  otherwise
+
+    | 0            if C = 0
+H = | (G - B) / C  if V = R
+    | (B - R) / C  if V = G
+    | (R - G) / C  if V = B
+```
+
+### HSV to RGB
+
+```
+p = V * (1 - S)
+q = V * (1 - S * H)
+t = V * (1 - S * (1 - H))
+
+          | (V,V,V)  if S = 0
+          | (V,t,p)  if H < 1
+          | (q,V,p)  if 1 < H <= 2
+(R,G,B) = | (p,V,t)  if 2 < H <= 3
+          | (p,q,V)  if 3 < H <= 4
+          | (t,p,V)  if 4 < H <= 5
+          | (V,p,q)  otherwise
+```
+
+### RGB to HSL
+
+```
+V = max(R,G,B)
+
+C = V - min(R,G,B)
+
+L = V - C / 2
+
+S = | 0                        if L = 0 or L = 1
+    | (V - L) / min(L, 1 - L)  otherwise
+```
+
+### HSL to RGB
+
+```
+R,G,B = V  if S = 0
+
+otherwise
+
+C = (1 - |2L - 1|) * S
+
+x = C * (1 - |H mod 2 - 1|)
+
+             | (0,0,0)  if H undefined
+             | (C,x,0)  if 0 < H <= 1
+             | (x,C,0)  if 1 < H <= 2
+(R1,G1,B1) = | (0,C,x)  if 2 < H <= 3
+             | (0,x,C)  if 3 < H <= 4
+             | (x,0,C)  if 4 < H <= 5
+             | (C,0,x)  if 5 < H <= 6
+
+m = L - C / 2
+
+(R,G,B) = (R1 + m, G1 + m, B1 + m)
+```
+
+### RGB to HSI
+
+```
+V = max(R,G,B)
+
+C = V - min(R,G,B)
+
+    | 0                    if C = 0
+H = | ((G - B) / C) mod 6  if V = R
+    | ((B - R) / C) + 2    if V = G
+    | ((R - G) / C) + 4    if V = B
+
+I = | 0                      if C = 0
+    | (R + G + B) * (1 / 3)  otherwise
+```
+
+### HSI to RGB
+
+```
+z = 1 - |H mod 2 - 1|
+
+C = (3I * S) / (1 + z)
+
+x = C * z
+
+             | (0,0,0)  if H undefined
+             | (C,x,0)  if 0 < H <= 1
+             | (x,C,0)  if 1 < H <= 2
+(R1,G1,B1) = | (0,C,x)  if 2 < H <= 3
+             | (0,x,C)  if 3 < H <= 4
+             | (x,0,C)  if 4 < H <= 5
+             | (C,0,x)  if 5 < H <= 6
+
+m = I * (1 - S)
+
+(R,G,B) = (R1 + m, G1 + m, B1 + m)
+```
+
+### HSV to HSL
+
+```
+L = V * (1 - S / 2)
+
+S = | 0                        if L = 0 or L = 1
+    | (V - L) / min(L, 1 - L)  otherwise
+```
+
+### HSL to HSV
+
+```
+V = L * S * min(L, 1 - L)
+
+S = | 0                if V = 0
+    | 2 * (1 - L / V)  otherwise
+```
+
+### RGB to CMYK
+
+```
+K = 1 - max(R,G,B)
+
+C = | 0                      if K = 1
+    | (1 - R - K) / (1 - K)  otherwise
+    
+M = | 0                      if K = 1
+    | (1 - G - K) / (1 - K)  otherwise
+    
+Y = | 0                      if K = 1
+    | (1 - B - K) / (1 - K)  otherwise
+```
+
+### CMYK to RGB
+
+```
+R = (1 - C) * (1 - K)
+G = (1 - M) * (1 - K)
+B = (1 - Y) * (1 - K)
+```
+
+### RGB to YIQ
+
+```
+[Y]   [0.299    0.587    0.114 ]   [R]
+[I] = [0.5959  -0.2746  -0.3213] * [G]
+[Q]   [0.2115  -0.5227   0.3112]   [B]
+
+Y ∈ [0,1]
+I ∈ [-0.5957,0.5957]
+Q ∈ [-0.5226,0.5226]
+
+or, normalized
+
+Y ∈ [0,255]
+I ∈ [-128, 128]
+Q ∈ [-128, 128]
+```
+
+### YIQ to RGB
+
+```
+Y ∈ [0,1]
+I ∈ [-0.5957,0.5957]
+Q ∈ [-0.5226,0.5226]
+
+[R]   [1   0.956   0.621]   [Y]
+[G] = [1  -0.272  -0.647] * [I]
+[B]   [1  -1.106   1.703]   [Q]
+```
+
+### RGB to XYZ
+
+M = 3x3 RGB to XYZ transformation matrix based on color space and standard illuminant reference white
+
+#### sRGB
+
+```
+for X = (R,G,B)
+X' = | X / 12.92                    if X <= 0.04045
+     | ((X + 0.055) / 1.055) ^ 2.4  otherwise
+
+[X]       [R']
+[Y] = M * [G']
+[Z]       [B']
+```
+
+#### L*
+
+```
+κ = 903.3, CIE-K
+
+for X = (R,G,B)
+X' = | 100 * (R / κ)            if R <= 0.08
+     | ((R + 0.16) / 1.16) ^ 3  otherwise
+
+[X]       [R']
+[Y] = M * [G']
+[Z]       [B']
+```
+
+#### Other color spaces
+
+```
+γ based on target color space
+
+for X = (R,G,B)
+X' = X ^ γ
+
+[X]       [R']
+[Y] = M * [G']
+[Z]       [B']
+```
+
+### XYZ to RGB
+
+M = 3x3 XYZ to RGB transformation matrix based on color space and standard illuminant reference white
+
+#### sRGB
+
+```
+[R']       [X]
+[G'] = M * [Y]
+[B']       [Z]
+
+for X' = (R',G',B')
+X = | X' * 12.92                        if X' <= 0.0031308
+    | (X' * 1.055) ^ (1 / 2.4) - 0.055  otherwise
+```
+
+#### L*
+
+```
+[R']       [X]
+[G'] = M * [Y]
+[B']       [Z]
+
+ϵ = 0.008856, CIE-E 
+κ = 903.3, CIE-K
+
+for X' = (R',G',B')
+X = | X' * κ / 100              if X' <= ϵ
+    | 1.16 * X' ^ (1/3) - 0.16  otherwise
+```
+
+#### Other color spaces
+
+```
+γ based on target color space
+
+[R']       [X]
+[G'] = M * [Y]
+[B']       [Z]
+
+for X' = (R',G',B')
+X = X' ^ (1 / γ)
+```
+
+### XYZ to xyY
+
+```
+x = X / (X + Y + Z)
+
+y = Y / (X + Y + Z)
+
+Y = Y
+```
+
+### xyY to XYZ
+
+```
+X = (x * Y) / y
+
+Y = Y
+
+Z = ((1 - x - y) * Y) / y
+```
+
+### XYZ to L\*a\*b\*
+
+```
+W is a 1x3 reference white vector based on standard illuminant
+
+
+TODO
+```
+
+WIP..!
 
 ## Compiling from Source
 
