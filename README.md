@@ -67,8 +67,8 @@ Color.from('rgb',[r, g, b, a?],{
 })
 
 .to('rgb',{
-  bitDepth: number // optional, default = 8
-  round: boolean   // optional, default = true
+  bitDepth: number, // optional, default = 8
+  round: boolean    // optional, default = true
 })
 
 //e.g.
@@ -163,8 +163,8 @@ Color.from('yiq', [y, i, q], {
 })
 
 .to('yiq',{
-  normalize: boolean // optional, default = true
-  round: boolean     // optional, default = true (ignored/false if not normalized)
+  normalize: boolean, // optional, default = true
+  round: boolean      // optional, default = true (ignored/false if not normalized)
 })
 
 //e.g.
@@ -188,12 +188,12 @@ Available Color Spaces and Stardard Illuminants below.
 
 ```ts
 Color.from('xyz', [x, y, z], {
-  colorSpace: string     // optional, default = 'srgb'
+  colorSpace: string,    // optional, default = 'srgb'
   referenceWhite: string // optional, default = 'd65'
 })
 
 .to('xyz',{
-  colorSpace: string     // optional, default = 'srgb'
+  colorSpace: string,    // optional, default = 'srgb'
   referenceWhite: string // optional, default = 'd65'
 })
 
@@ -215,12 +215,12 @@ Available Color Spaces and Stardard Illuminants below.
 
 ```ts
 Color.from('xyy', [x, y, Y], {
-  colorSpace: string     // optional, default = 'srgb'
+  colorSpace: string,    // optional, default = 'srgb'
   referenceWhite: string // optional, default = 'd65'
 })
 
 .to('xyy',{
-  colorSpace: string     // optional, default = 'srgb'
+  colorSpace: string,    // optional, default = 'srgb'
   referenceWhite: string // optional, default = 'd65'
 })
 
@@ -250,12 +250,12 @@ Available Color Spaces and Stardard Illuminants below.
 
 ```ts
 Color.from('lab', [l, a, b], {
-  colorSpace: string     // optional, default = 'srgb'
+  colorSpace: string,    // optional, default = 'srgb'
   referenceWhite: string // optional, default = 'd65'
 })
 
 .to('lab',{
-  colorSpace: string     // optional, default = 'srgb'
+  colorSpace: string,    // optional, default = 'srgb'
   referenceWhite: string // optional, default = 'd65'
 })
 
@@ -285,12 +285,12 @@ Available Color Spaces and Stardard Illuminants below.
 
 ```ts
 Color.from('luv', [l, u, v], {
-  colorSpace: string     // optional, default = 'srgb'
+  colorSpace: string,    // optional, default = 'srgb'
   referenceWhite: string // optional, default = 'd65'
 })
 
 .to('luv',{
-  colorSpace: string     // optional, default = 'srgb'
+  colorSpace: string,    // optional, default = 'srgb'
   referenceWhite: string // optional, default = 'd65'
 })
 
@@ -329,8 +329,8 @@ YPbPr conversions require Kb and Kr constants with the exception of converting t
 Color.from('ypbpr', [y, pb, pr])
 
 .to('ypbpr',{
-  kb: number // REQUIRED
-  kr: number // REQUIRED
+  kb: number, // REQUIRED
+  kr: number  // REQUIRED
 })
 
 // YCbCr conversion
