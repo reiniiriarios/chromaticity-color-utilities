@@ -91,6 +91,22 @@ class Modify {
 
     return new Colors.hsv(h3, s3, v3, a3)
   }
+
+  static darken() : void {
+
+  }
+
+  static lighten() : void {
+
+  }
+
+  static desaturate() : void {
+
+  }
+
+  static saturate() : void {
+
+  }
 }
 
 export = Modify
