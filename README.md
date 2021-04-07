@@ -410,7 +410,7 @@ let color5 = color1.to('ypbpr',{
 
 ## Color Spaces and Standard Illuminants
 
-For conversion to and from XYZ, xyY, L\*a\*b\*, and L\*u\*v\*, the following color spaces and standard illuminants have XYZ transformation matrices available:
+For conversion to and from XYZ, xyY, L\*a\*b\*, and L\*u\*v\*, the following color spaces and standard illuminants have XYZ transformation matrices and reference white point vectors available:
 
 |Color Space|Standard Illuminants|
 |---|---|
