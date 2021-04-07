@@ -111,7 +111,8 @@ export const stdIlluminants = {
                 'y': 0.35952
             }
         },
-        'vector': [0.96422, 1, 1.82521],
+        // 0.82 or 1.82 ?? >_>
+        'vector': [0.96422, 1, 0.82521],
     },
     'd55': {
         'ref': 'Mid-morning / Mid-afternoon Daylight',

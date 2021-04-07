@@ -1088,8 +1088,8 @@ export class luv extends colorType {
     constructor(l: number, u:number, v:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
         super()
         this.valueRangeCheck(l, 0, 100)
-        this.valueRangeCheck(u, -100, 100)
-        this.valueRangeCheck(v, -100, 100)
+        // this.valueRangeCheck(u, -100, 100)
+        // this.valueRangeCheck(v, -100, 100)
         this.l = l
         this.u = u
         this.v = v

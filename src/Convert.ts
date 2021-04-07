@@ -120,19 +120,19 @@ class Convert {
     let g = rgb.g / rgb.max;
     let b = rgb.b / rgb.max;
 
-    let val = Math.max(r, g, b);
+    let max = Math.max(r, g, b);
     let min = Math.min(r, g, b);
-    let chroma = val - min;
+    let chroma = max - min;
 
-    let lit = val - min;
-    let sat = (lit == 0 || lit == 1 ? 0 : (val - lit) / Math.min(lit, 1 - lit)) * 100;
+    let lit = (max + min) / 2;
+    let sat = (lit == 0 || lit == 1 ? 0 : (max - lit) / Math.min(lit, 1 - lit)) * 100;
     lit *= 100;
 
     let hue;
     if      (!chroma)  hue = 0;
-    else if (val == r) hue = (g - b) / chroma;
-    else if (val == g) hue = (b - r) / chroma + 2;
-    else if (val == b) hue = (r - g) / chroma + 4;
+    else if (max == r) hue = (g - b) / chroma;
+    else if (max == g) hue = (b - r) / chroma + 2;
+    else if (max == b) hue = (r - g) / chroma + 4;
     else               hue = 0;
     hue *= 60;
     while (hue >= 360) hue -= 360;
@@ -730,12 +730,14 @@ class Convert {
     let b = rgb.b / rgb.max
 
     // make lowercase, include common nomenclature differences, ignore spaces, etc
-    colorSpace = colorSpace.replace(/[^a-z0-9]/,'').toLowerCase();
+    colorSpace = colorSpace.toLowerCase().replace(/[^a-z0-9]/,'');
     referenceWhite = referenceWhite.toLowerCase();
 
     let conform = {
+        'adobe':     'adobergb1998',
         'adobergb':  'adobergb1998',
         'ntsc':      'ntscrgb',
+        'palsecam':  'palsecamrgb',
         'pal':       'palsecamrgb',
         'palrgb':    'palsecamrgb',
         'secam':     'palsecamrgb',
@@ -743,7 +745,9 @@ class Convert {
         'prophoto':  'prophotorgb',
         'smpte':     'smptecrgb',
         'smptec':    'smptecrgb',
-        'widegamut': 'widegamutrgb'
+        'widegamut': 'widegamutrgb',
+        'ecirgbv2':  'ecirgb',
+        'ektaspace': 'ektaspaceps5'
     };
     if (typeof conform[colorSpace as keyof object] == 'string') {
       colorSpace = conform[colorSpace as keyof object];
@@ -1233,9 +1237,9 @@ class Convert {
    *  16 for black and the value of 235 for white when using an 8-bit representation. The standard has 8-bit digitized versions of CB and CR scaled to a different range of 16 to 240
    *
    * @param  {Colors.ypbpr} ypbpr
-   * @param  {number}       [yLower=16]   Lower bounds of Y
+   * @param  {number}       [yLower=16]  Lower bounds of Y
    * @param  {number}       [yUpper=235] Upper bounds of Y
-   * @param  {number}       [cLower=16]   Lower bounds of Cb and Cr
+   * @param  {number}       [cLower=16]  Lower bounds of Cb and Cr
    * @param  {number}       [cUpper=240] Upper bounds of Cb and Cr
    * @param  {boolean}      [round=true]
    * @return {Colors.ycbcr}
