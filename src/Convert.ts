@@ -1138,8 +1138,11 @@ class Convert {
     let y = kr * r + kg * g + kb * b;
 
     // Pb and Pr range from -0.5 to +0.5
-    let pb = (-0.5 * (kr / (1 - kb))) * r + (-0.5 * (kg / (1 - kb))) * g + 0.5 * b;
-    let pr = 0.5 * r + (-0.5 * (kg / (1 - kr))) * g + (-0.5 * (kb / (1 - kr))) * b;
+    // the following equations are equivalent
+    let pb = 0.5 * ((b - y) / (1 - kb))
+    let pr = 0.5 * ((r - y) / (1 - kr))
+    // let pb = (-0.5 * (kr / (1 - kb))) * r + (-0.5 * (kg / (1 - kb))) * g + 0.5 * b;
+    // let pr = 0.5 * r + (-0.5 * (kg / (1 - kr))) * g + (-0.5 * (kb / (1 - kr))) * b;
 
     return new Colors.ypbpr(y, pb, pr)
   }
@@ -1160,12 +1163,17 @@ class Convert {
 
     let r = ypbpr.y + (2 - 2 * kr) * ypbpr.pr;
     let g = ypbpr.y + (-1 * (kb / kg) * (2 - 2 * kb)) * ypbpr.pb + (-1 * (kr / kg) * (2 - 2 * kr)) * ypbpr.pr;
-    let b = ypbpr.y + (2 - 2 * kr) * ypbpr.pb;
+    let b = ypbpr.y + (2 - 2 * kb) * ypbpr.pb;
 
     let max = (2 ** bitDepth) - 1
     r *= max;
     g *= max;
     b *= max;
+
+    // values may be very nearly slightly less than exactly 0 or 255 (:
+    r = Math.min(Math.max(0,r),max)
+    g = Math.min(Math.max(0,g),max)
+    b = Math.min(Math.max(0,b),max)
 
     if (round) {
       r = Math.round(r);
@@ -1179,19 +1187,20 @@ class Convert {
   /**
    * Convert YPbPr to YCbCr
    * Y must be in range 0 to 1; Pb and Pr must be in range -0.5 to 0.5
+   *  16 for black and the value of 235 for white when using an 8-bit representation. The standard has 8-bit digitized versions of CB and CR scaled to a different range of 16 to 240
    *
    * @param  {Colors.ypbpr} ypbpr
-   * @param  {number}       yLower       Lower bounds of Y
-   * @param  {number}       yUpper       Upper bounds of Y
-   * @param  {number}       cLower       Lower bounds of Cb and Cr
-   * @param  {number}       cUpper       Upper bounds of Cb and Cr
+   * @param  {number}       [yLower=16]   Lower bounds of Y
+   * @param  {number}       [yUpper=235] Upper bounds of Y
+   * @param  {number}       [cLower=16]   Lower bounds of Cb and Cr
+   * @param  {number}       [cUpper=240] Upper bounds of Cb and Cr
    * @param  {boolean}      [round=true]
    * @return {Colors.ycbcr}
    */
-  static ypbpr2ycbcr(ypbpr: Colors.ypbpr, yLower: number, yUpper: number, cLower: number, cUpper: number, round: boolean = true): Colors.ycbcr {
+  static ypbpr2ycbcr(ypbpr: Colors.ypbpr, yLower: number = 16, yUpper: number = 135, cLower: number = 16, cUpper: number = 240, round: boolean = true): Colors.ycbcr {
     let y2 = Util.scaleValueRange(ypbpr.y, 0, 1, yLower, yUpper, round);
-    let cb = Util.scaleValueRange(ypbpr.pb, -0.5, 0.5, cLower, cUpper, round);
-    let cr = Util.scaleValueRange(ypbpr.pr, -0.5, 0.5, cLower, cUpper, round);
+    let cb = Util.scaleValueRange(ypbpr.pb + 0.5, 0, 1, cLower, cUpper, round);
+    let cr = Util.scaleValueRange(ypbpr.pr + 0.5, 0, 1, cLower, cUpper, round);
 
     return new Colors.ycbcr(y2, cb, cr)
   }
@@ -1201,169 +1210,18 @@ class Convert {
    * Y will be in range 0 to 1; Pb and Pr will be in range -0.5 to 0.5
    *
    * @param  {Colors.ycbcr} ycbcr
-   * @param  {number}       yLower Lower bounds of Y
-   * @param  {number}       yUpper Upper bounds of Y
-   * @param  {number}       cLower Lower bounds of Cb and Cr
-   * @param  {number}       cUpper Upper bounds of Cb and Cr
+   * @param  {number}       [yLower=16]   Lower bounds of Y
+   * @param  {number}       [yUpper=235] Upper bounds of Y
+   * @param  {number}       [cLower=16]   Lower bounds of Cb and Cr
+   * @param  {number}       [cUpper=240] Upper bounds of Cb and Cr
    * @return {Colors.ypbpr}
    */
-  static ycbcr2ypbpr(ycbcr: Colors.ycbcr, yLower: number, yUpper: number, cLower: number, cUpper: number): Colors.ypbpr {
+  static ycbcr2ypbpr(ycbcr: Colors.ycbcr, yLower: number = 16, yUpper: number = 235, cLower: number = 16, cUpper: number = 240): Colors.ypbpr {
     let y2 = Util.scaleValueRange(ycbcr.y, yLower, yUpper, 0, 1, false);
-    let pb = Util.scaleValueRange(ycbcr.cb, cLower, cUpper, -0.5, 0.5, false);
-    let pr = Util.scaleValueRange(ycbcr.cr, cLower, cUpper, -0.5, 0.5, false);
+    let pb = Util.scaleValueRange(ycbcr.cb, cLower, cUpper, 0, 1, false) - 0.5;
+    let pr = Util.scaleValueRange(ycbcr.cr, cLower, cUpper, 0, 1, false) - 0.5;
 
     return new Colors.ypbpr(y2, pb, pr)
-  }
-
-  /**
-   * Convert RGB to Rec709 YCbCr
-   * Will output either 8-bit or 10-bit depending on input color space
-   *
-   * @param  {Colors.rgb}   rgb
-   * @param  {number}       [bitRate=8]    8 or 10
-   * @param  {boolean}      [round=true]
-   * @return {Colors.ycbcr}
-   */
-  static rgb2rec709ycbcr(rgb: Colors.rgb, bitRate: number = 8, round: boolean = true): Colors.ycbcr {
-    let yLower, yUpper, cLower, cUpper
-    if (bitRate == 8) {
-      yLower = 16;
-      yUpper = 235;
-      cLower = 16;
-      cUpper = 240;
-    }
-    else if (bitRate == 10) {
-      yLower = 64;
-      yUpper = 940;
-      cLower = 64;
-      cUpper = 960;
-    }
-    else {
-        throw new Error('Invalid bit depth, Rec709 bit depth must be 8 or 10');
-    }
-
-    let ypbpr = this.rgb2ypbpr(rgb, 0.0722, 0.2126);
-
-    let ycbcr = this.ypbpr2ycbcr(ypbpr, yLower, yUpper, cLower, cUpper, round);
-
-    return ycbcr;
-  }
-
-  /**
-   * Convert Rec709 YCbCr to RGB
-   *
-   * @param  {Colors.ycbcr} ycbcr
-   * @param  {number}       [bitRate=8]    8 or 10
-   * @param  {boolean}      [round=true]
-   * @param  {number}       [bitDepth=8]
-   * @return {Colors.rgb}
-   */
-  static rec709ycbcr2rgb(ycbcr: Colors.ycbcr, bitRate: number = 8, round: boolean = true, bitDepth: number = 8): Colors.rgb {
-    let ypbpr
-    if (bitRate == 8) {
-      ypbpr = this.ycbcr2ypbpr(ycbcr, 16, 235, 16, 240);
-    }
-    else if (bitRate = 10) {
-      ypbpr = this.ycbcr2ypbpr(ycbcr, 64, 940, 64, 960);
-    }
-    else {
-      throw new Error('Invalid bit depth, Rec709 bit depth must be 8 or 10');
-    }
-
-    let rgb = this.ypbpr2rgb(ypbpr, 0.0722, 0.2126, round, bitDepth);
-
-    return rgb;
-  }
-
-  /**
-   * Convert RGB to Rec2020 YCbCr
-   *
-   * @param  {Colors.rgb} rgb
-   * @param  {number}     [bitRate=10]   10 or 12
-   * @param  {boolean}    [round=true]
-   * @return {Colors.ycbcr}
-   */
-  static rgb2rec2020ycbcr(rgb: Colors.rgb, bitRate: number = 10, round: boolean = true): Colors.ycbcr {
-    let yLower, yUpper, cLower, cUpper
-    if (bitRate == 10) {
-      yLower = 64;
-      yUpper = 940;
-      cLower = 64;
-      cUpper = 960;
-    }
-    else if (bitRate == 12) {
-      yLower = 256;
-      yUpper = 3760;
-      cLower = 256;
-      cUpper = 3840;
-    }
-    else {
-        throw new Error('Invalid bit depth, Rec2020 bit depth must be 10 or 12');
-    }
-
-    let ypbpr = this.rgb2ypbpr(rgb, 0.0593, 0.2627);
-
-    let ycbcr = this.ypbpr2ycbcr(ypbpr, yLower, yUpper, cLower, cUpper, round);
-
-    return ycbcr;
-  }
-
-  /**
-   * Convert Rec2020 YCbCr to RGB
-   *
-   * @param  {Colors.ycbcr} ycbcr
-   * @param  {number}       [bitDepth=10]  10 or 12
-   * @param  {boolean}      [round=true]
-   * @param  {number}       [bitDepth=8]
-   * @return {Colors.rgb}
-   */
-  static rec2020ycbcr2rgb(ycbcr: Colors.ycbcr, bitRate = 10, round: boolean = true, bitDepth: number = 8): Colors.rgb {
-    let ypbpr;
-    if (bitRate == 10) {
-      ypbpr = this.ycbcr2ypbpr(ycbcr, 64, 940, 64, 960);
-    }
-    else if (bitRate = 12) {
-      ypbpr = this.ycbcr2ypbpr(ycbcr, 256, 3760, 256, 3840);
-    }
-    else {
-      throw new Error('Invalid bit depth, Rec2020 bit depth must be 10 or 12');
-    }
-
-    let rgb = this.ypbpr2rgb(ypbpr, 0.0593, 0.2627, round, bitDepth);
-
-    return rgb;
-  }
-
-  /**
-   * Convert Rec709 YCbCr to Rec2020 YCbCr
-   *
-   * @param  {Colors.ycbcr} ycbcr
-   * @param  {number}       [bitRateIn=8]   8 or 10
-   * @param  {number}       [bitRateOut=10] 10 or 12
-   * @param  {boolean}      [round=true]
-   * @return {Colors.ycbcr}
-   */
-  static rec709ycbcr2rec2020ycbcr(ycbcr: Colors.ycbcr, bitRateIn: number = 8, bitRateOut: number = 10, round: boolean = true): Colors.ycbcr {
-    let rgb = this.rec709ycbcr2rgb(ycbcr, bitRateIn, false, bitRateOut);
-    let ycbcr2 = this.rgb2rec2020ycbcr(rgb, bitRateOut, round);
-
-    return ycbcr2;
-  }
-
-  /**
-   * Convert Rec2020 YCbCr to Rec709 YCbCr
-   *
-   * @param  {Colors.ycbcr} ycbcr
-   * @param  {number}       [bitRateIn=8]   8 or 10
-   * @param  {number}       [bitRateOut=10] 10 or 12
-   * @param  {boolean}      [round=true]
-   * @return {Colors.ycbcr}
-   */
-  static rec2020ycbcr2rec709ycbcr(ycbcr: Colors.ycbcr, bitRateIn: number = 10, bitRateOut: number = 8, round: boolean = true): Colors.ycbcr {
-    let rgb = this.rec2020ycbcr2rgb(ycbcr, bitRateIn, false, bitRateOut);
-    let ycbcr2 = this.rgb2rec709ycbcr(rgb, bitRateOut, round);
-
-    return ycbcr2;
   }
 
   /**
