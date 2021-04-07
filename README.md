@@ -352,15 +352,15 @@ let color1 = Color.from('ypbpr',[
   0.45415290830581667
 ])
 let color3 = color2.to('ypbpr',{
-  kb: 0.0722 // Rec709
-  kr: 0.2126 // Rec709
+  kb: 0.0722, // Rec709
+  kr: 0.2126  // Rec709
 })
 let color4 = color1.to('ycbcr')
 let color5 = color1.to('ycbcr',{
   yLower: 0,
   yUpper: 255,
   cLower: 0,
-  cUpper, 255
+  cUpper: 255
 })
 ```
 
@@ -381,8 +381,8 @@ YCbCr conversions require Kb and Kr constants with the exception of converting t
 Color.from('ycbcr', [y, cb, cr])
 
 .to('ycbcr',{
-  kb: number // REQUIRED
-  kr: number // REQUIRED
+  kb: number, // REQUIRED
+  kr: number  // REQUIRED
 })
 
 // YPbPr conversion
@@ -396,15 +396,15 @@ Color.from('ycbcr', [y, cb, cr])
 //e.g.
 let color1 = Color.from('ycbcr', [73, 226, 243])
 let color3 = color2.to('ycbcr',{
-  kb: 0.0722 // Rec709
-  kr: 0.2126 // Rec709
+  kb: 0.0722, // Rec709
+  kr: 0.2126  // Rec709
 })
 let color4 = color1.to('ypbpr')
 let color5 = color1.to('ypbpr',{
   yLower: 0,
   yUpper: 255,
   cLower: 0,
-  cUpper, 255
+  cUpper: 255
 })
 ```
 
