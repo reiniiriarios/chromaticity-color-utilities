@@ -1102,69 +1102,98 @@ X &=
 
 ### XYZ to xyY
 
-```
-x = X / (X + Y + Z)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-xyy.png)
 
-y = Y / (X + Y + Z)
-
-Y = Y
-```
+<!--
+\begin{align*}
+x &= \frac{X}{X + Y + Z} \\
+y &= \frac{Y}{X + Y + Z} \\
+Y &= Y
+\end{align*}
+-->
 
 ### xyY to XYZ
 
-```
-X = (x * Y) / y
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyy-xyz.png)
 
-Y = Y
-
-Z = ((1 - x - y) * Y) / y
-```
+<!--
+\begin{align*}
+X &= \frac{x \cdot Y}{y} \\
+Y &= Y \\
+Z &= \frac{(1 - x - y) \cdot Y}{y}
+\end{align*}
+-->
 
 ### XYZ to L\*a\*b\*
 
-```
-W is a 1x3 reference white vector based on standard illuminant
+W is a 1x3 reference white vector based on standard illuminant.
 
-ϵ = 0.008856, CIE-E 
-κ = 903.3, CIE-K
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cie-ek.png)
 
-X' = X / W[0]
-Y' = Y / W[1]
-Z' = Z / W[2]
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyy-lab-p.png)
 
-f(n) = | n' ^ 1/3             if n > ϵ
-       | (κ * n' + 16) / 116  otherwise
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-lab-fn.png)
 
-L* = 116 * f(Y) - 16
-a* = 500 * (f(X) - f(Y))
-b* = 200 * (f(Y) - f(Z))
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-lab-lab.png)
+
+<!--
+\begin{align*}
+X' &= \frac{X}{W_{R}} \\
+Y' &= \frac{Y}{W_{G}} \\
+Z' &= \frac{Z}{W_{B}}
+\end{align*}
+
+f(n) = \begin{cases}
+{n'}^\frac{1}{3} & \text{ if } n > \epsilon \\ 
+\frac{\kappa \cdot n' + 16}{116} & \text{ otherwise }
+\end{cases}
+
+\begin{align*}
+L^* &= 116 \cdot f(Y) - 16\\ 
+a^* &= 500 \cdot (f(X) - f(Y))\\ 
+b^* &= 200 \cdot (f(Y) - f(Z))
+\end{align*}
+-->
 
 ### L\*a\*b\* to XYZ
 
-```
-W is a 1x3 reference white vector based on standard illuminant
+W is a 1x3 reference white vector based on standard illuminant.
 
-ϵ = 0.008856, CIE-E 
-κ = 903.3, CIE-K
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cie-ek.png)
 
-L' = (L* + 16) / 116
-a' = a* / 500 + L'
-b' = L' - b* / 200
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/lab-xyz-labp.png)
 
-X' = | a' ^ 3               if a' ^ 3 > ϵ
-     | (116 * a' - 16) / κ  otherwise
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/lab-xyz-xyzp.png)
 
-Y' = | (L' ^ 3  if L* > κ * ϵ
-     | L* * κ   otherwise
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/lab-xyz-xyz.png)
 
-Z' = | b' ^ 3               if b' ^ 3 > ϵ
-     | (116 * b' - 16) / κ  otherwise
+<!--
+\begin{align*}
+X' &=
+\begin{cases}
+a'^3 & \text{ if } a'^3 > \epsilon \\ 
+\frac{116 \cdot a' - 16}{\kappa} & \text{ otherwise }
+\end{cases}
+\\ 
+Y' &=
+\begin{cases}
+L'^3 & \text{ if } L^* > \kappa \cdot \epsilon \\ 
+L^* \cdot \kappa & \text{ otherwise }
+\end{cases}
+\\ 
+Z' &= 
+\begin{cases}
+b'^3 & \text{ if } b'^3 > \epsilon \\ 
+\frac{116 \cdot b' - 16}{\kappa} & \text{ otherwise }
+\end{cases}
+\end{align*}
 
-X = X' * W[0]
-Y = Y' * W[1]
-Z = Z' * W[2]
-```
+\begin{align*}
+X &= X' \cdot W_{R} \\
+Y &= Y' \cdot W_{G} \\
+Z &= Z' \cdot W_{B}
+\end{align*}
+-->
 
 ### XYZ to L\*u\*v\*
 
