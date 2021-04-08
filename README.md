@@ -23,6 +23,8 @@
   * [Luv: CIELUV / L\*u\*v\*](#luv--cieluv--luv)
   * [YPbPr: Analog video component signals](#ypbpr--analog-video-component-signals)
   * [YCbCr: Digital video component signals](#ycbcr--digital-video-component-signals)
+  * [NM: Wavelengths of Light](#nm--wavelengths-of-light)
+  * [Kelvin: Color Temperature Approximation](#kelvin--color-temperature-approximation)
 * [Color Spaces and Standard Illuminants](#color-spaces-and-standard-illuminants)
 * [Modifying Colors](#modifying-colors)
   * [Blending Two Colors](#blending-two-colors)
@@ -161,7 +163,7 @@ Color.from('rgb',[r, g, b, a?],{
   round: boolean    // optional, default = true
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('rgb',[255, 0, 255])
 let color3 = color2.to('rgb')
 
@@ -170,7 +172,20 @@ let color4 = Color.from('rgb',[1023, 0, 1023], { bitDepth: 10 })
 
 ### HEX : Hexidecimal
 
-todo
+May use string or numberical value. Strings are case-insensitive. Short form or long form may be used. # ignored if present.
+
+```ts
+Color.from('hex',hex)
+
+.to('hex')
+
+// e.g.
+let color1 = Color.from('hex', 'ff00ff')
+let color1 = Color.from('hex', '#FF00FF')
+let color1 = Color.from('hex', 0xFF00FF)
+
+let color3 = color2.to('hex')
+```
 
 ### Rec. 709 RGB : HD video standard
 
@@ -191,7 +206,7 @@ Color.from('hsv',[h, s, v, a?])
   round: boolean // optional, default = true
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('hsv',[300, 100, 100])
 let color3 = color2.to('hsv')
 ```
@@ -207,7 +222,7 @@ Color.from('hsl',[h, s, l, a?])
   round: boolean // optional, default = true
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('hsl',[300, 100, 50])
 let color3 = color2.to('hsl')
 ```
@@ -223,7 +238,7 @@ Color.from('hsi',[h, s, v, a?])
   round: boolean // optional, default = true
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('hsi',[300, 100, 67])
 let color3 = color2.to('hsi')
 ```
@@ -241,7 +256,7 @@ Color.from('cmyk',[c, m, y, k])
   round: boolean // optional, default = true
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('cmyk',[0, 100, 0, 0])
 let color3 = color2.to('cmyk')
 ```
@@ -273,7 +288,7 @@ Color.from('yiq', [y, i, q], {
   round: boolean      // optional, default = true (ignored/false if not normalized)
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('yiq',[105, 59, 128])
 let color3 = color2.to('yiq')
 
@@ -303,7 +318,7 @@ Color.from('xyz', [x, y, z], {
   referenceWhite: string // optional, default = 'd65'
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('xyz',[0.5928939, 0.2848479, 0.969638])
 let color3 = color2.to('xyz')
 
@@ -330,7 +345,7 @@ Color.from('xyy', [x, y, Y], {
   referenceWhite: string // optional, default = 'd65'
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('xyy',[0.3209377411185291, 0.1541902211986945, 0.2848479])
 let color3 = color2.to('xyy')
 
@@ -365,7 +380,7 @@ Color.from('lab', [l, a, b], {
   referenceWhite: string // optional, default = 'd65'
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('lab',[
   60.32421212836874,
   98.23431188800397,
@@ -400,7 +415,7 @@ Color.from('luv', [l, u, v], {
   referenceWhite: string // optional, default = 'd65'
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('luv',[
   60.32421212836874,
   84.07139572483507,
@@ -447,7 +462,7 @@ Color.from('ypbpr', [y, pb, pr])
   cUpper: number  // optional, default = 240, upper bounds of Cb and Cr
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('ypbpr',[
   0.2848,
   0.3854278939426601,
@@ -495,7 +510,7 @@ Color.from('ycbcr', [y, cb, cr])
   cUpper: number  // optional, default = 240, upper bounds of Cb and Cr
 })
 
-//e.g.
+// e.g.
 let color1 = Color.from('ycbcr', [73, 226, 243])
 let color3 = color2.to('ycbcr',{
   kb: 0.0722, // Rec709
@@ -508,6 +523,30 @@ let color5 = color1.to('ypbpr',{
   cLower: 0,
   cUpper: 255
 })
+```
+
+### NM : Wavelengths of light
+
+This is a one-way approximation and is hugely perceptual. There is no `.to('nm')` method option.
+
+```ts
+Color.from('nm', wavelength)
+
+// e.g.
+let color1 = Color.from('nm',600).to('rgb')
+// rgb { r: 255, g: 190, b: 0, a: 255, bitDepth: 8, max: 255 }
+```
+
+### Kelvin : Color Temperature Approximation
+
+This is a one-way approximatin. There is no `.to('kelvin')` method option.
+
+```ts
+Color.from('kelvin', degrees)
+
+// e.g.
+let color1 = Color.from('kelvin',3500).to('rgb')
+// rgb { r: 255, g: 193, b: 141, a: 255, bitDepth: 8, max: 255 }
 ```
 
 ## Color Spaces and Standard Illuminants
@@ -546,7 +585,7 @@ let color3 = color1.modify('blend', {
   amount: number // optional, 0 - 1, defaults to 0.5
 })
 
-//e.g.
+// e.g.
 let color4 = Color.from('rgb',[255,0,0]).modify('blend', {
   with: Color.from('hex','00ff00')
 })

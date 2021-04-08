@@ -280,9 +280,27 @@ export abstract class colorType {
 export class hex extends colorType {
     hex: string
 
-    constructor(hex: string) {
+    constructor(hex: string|number) {
         super()
-        this.hex = Util.expandHex(hex)
+        
+        if (typeof hex === 'string') {
+            if (hex.charAt(0) == '#') {
+                hex = hex.substr(1);
+            }
+            if (!/[0-9A-Fa-f]/g.test(hex)) {
+                throw new Error('Invalid hex value')
+            }
+            if (hex.length == 3) {
+                hex = hex.split('').map(hex => { return hex + hex; }).join('')
+            }
+            else if (hex.length != 6) {
+                throw new Error('Invalid hex value')
+            }
+            this.hex = hex
+        }
+        else {
+            this.hex = hex.toString(16).slice(1)
+        }
     }
 
     protected torgb(args: newColorArgs) : rgb {

@@ -38,29 +38,6 @@ class Util {
   }
 
   /**
-   * Expands shorthand hex color values to full 6-digit values
-   *
-   * @param  {string} hex RGB or RRGGBB
-   * @return {string}     RRGGBB
-   */
-  static expandHex(hex: string): string {
-    if (hex.charAt(0) == '#') {
-      hex = hex.substr(1);
-    }
-    if (!/[0-9A-Fa-f]/g.test(hex)) {
-      throw new Error('Invalid hex value');
-    }
-    if (hex.length == 6) {
-      return hex;
-    }
-    if (hex.length != 3) {
-      throw new Error('Invalid hex value');
-    }
-    hex = hex.split('').map(hex => { return hex + hex; }).join('');
-    return hex;
-  }
-
-  /**
    * Generates the inverse of a 3x3 matrix
    * Utilized for XYZ matrix generation
    *
