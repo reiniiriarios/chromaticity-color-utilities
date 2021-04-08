@@ -1019,11 +1019,11 @@ Q
 
 ### RGB to XYZ
 
-M = 3x3 RGB to XYZ transformation matrix based on color space and standard illuminant reference white
+M = 3x3 RGB to XYZ transformation matrix based on color space and standard illuminant reference white. This transformation matrix is an inverse of the XYZ to RGB transformation matrix.
 
 #### sRGB
 
-![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-srgb-x.png)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-srgb-xp.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-xyz.png)
 
@@ -1056,47 +1056,49 @@ gamma (γ) based on target color space
 
 ### XYZ to RGB
 
-M = 3x3 XYZ to RGB transformation matrix based on color space and standard illuminant reference white
+M = 3x3 XYZ to RGB transformation matrix based on color space and standard illuminant reference white.
 
 #### sRGB
 
-```
-[R']       [X]
-[G'] = M * [Y]
-[B']       [Z]
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-rgb-rpgpbp.png)
 
-for X' = (R',G',B')
-X = | X' * 12.92                        if X' <= 0.0031308
-    | (X' * 1.055) ^ (1 / 2.4) - 0.055  otherwise
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-rgb-srgb.png)
 
 #### L*
 
-```
-[R']       [X]
-[G'] = M * [Y]
-[B']       [Z]
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-rgb-rpgpbp.png)
 
-ϵ = 0.008856, CIE-E 
-κ = 903.3, CIE-K
 
-for X' = (R',G',B')
-X = | X' * κ / 100              if X' <= ϵ
-    | 1.16 * X' ^ (1/3) - 0.16  otherwise
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cie-ek.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-rgb-ls.png)
+
+<!--
+\begin{align*}
+\text{for } X &= (R,G,B) \\
+X &=
+\begin{cases}
+X' \cdot \frac{\kappa}{100} & \text{ if } X' \leq \epsilon \\ 
+1.16 \cdot {X'}^\frac{1}{3} - 0.16 & \text{ otherwise }
+\end{cases}
+\end{align*}
+-->
 
 #### Other color spaces
 
-```
-γ based on target color space
+gamma (γ) based on target color space
 
-[R']       [X]
-[G'] = M * [Y]
-[B']       [Z]
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-rgb-rpgpbp.png)
 
-for X' = (R',G',B')
-X = X' ^ (1 / γ)
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-rgb-gamma.png)
+
+<!--
+\begin{align*}
+\text{for } X &= (R,G,B) \\
+X &=
+{X'}^\frac{1}{\gamma}
+\end{align*}
+-->
 
 ### XYZ to xyY
 
