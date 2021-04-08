@@ -799,7 +799,7 @@ export class nm extends colorType {
 
     constructor(wavelength: number) {
         super()
-        this.valueRangeCheck(wavelength, 200, 800)
+        this.valueRangeCheck(wavelength, 200, 800, 'Wavelength (in nm) must fall between 200 and 800')
         this.wavelength = wavelength
     }
 
@@ -813,7 +813,11 @@ export class kelvin extends colorType {
 
     constructor(k: number) {
         super()
-        this.valueRangeCheck(k, 1000, 40000)
+        this.valueRangeCheck(k, 1000, 40000, 'Temperature must fall between 1000 and 40000')
         this.k = k
+    }
+
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.kelvin2rgb(this, args.round, args.bitDepth)
     }
 }
