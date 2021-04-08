@@ -124,11 +124,13 @@ export abstract class colorType {
         type = type.toLowerCase()
         switch (type) {
             case 'complement':
+            case 'comp':
                 hsvScheme = Harmony.complement(hsv)
                 break
             case 'analogous':
                 hsvScheme = Harmony.analogous(hsv, args.angle)
                 break
+            case 'split complement':
             case 'splitcomplement':
             case 'split':
                 hsvScheme = Harmony.splitComplement(hsv, args.angle)
