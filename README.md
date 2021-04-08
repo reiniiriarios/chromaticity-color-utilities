@@ -669,9 +669,9 @@ todo
 Schemes can be generated from any color type. All methods return an array of colors, each the same as the input type. (If calling method on a color of type `hsl`, all values of the returned array will be of type `hsl`.)
 
 ```ts
-color.scheme(type: string)
+.scheme(type: string)
 // or
-color.scheme(type: string, {
+.scheme(type: string, {
   angle: number // optional, hue shift angle in degrees
 })
 ```
