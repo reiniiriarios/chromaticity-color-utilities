@@ -29,7 +29,7 @@ interface colorDef {
 }
 
 class Color implements colorDef {
-    from(type: string, value: number[]|string, args?: newColorArgs) : Colors.colorType {
+    from(type: string, value: number[]|number|string, args?: newColorArgs) : Colors.colorType {
         if (typeof args === 'undefined') args = {}
         if (typeof args.bitDepth === 'undefined' && typeof args.bitRate !== 'undefined') {
             args.bitDepth = args.bitRate
@@ -37,6 +37,23 @@ class Color implements colorDef {
         if (typeof value === 'string') {
             if (type == 'hex') return new Colors.hex(value)
             else throw new Error('Unable to parse color')
+        }
+        else if (typeof value === 'number') {
+            switch (type) {
+                case 'nm':
+                case 'light':
+                case 'nanometers':
+                case 'nano':
+                case 'wavelength':
+                    return new Colors.nm(value)
+                case 'kelvin':
+                case 'k':
+                case 'temperature':
+                case 'temp':
+                    return new Colors.kelvin(value)
+                default:
+                    throw new Error('Unable to determine color type')
+            }
         }
         else {
             switch (type) {

@@ -1430,30 +1430,30 @@ class Convert {
    * @return {Colors.rgb}
    */
   static kelvin2rgb(kelvin: Colors.kelvin, round: boolean = true, bitDepth: number = 8): Colors.rgb {
-    kelvin.k /= 100
+    let k = kelvin.k / 100
     let max = ((2 ** bitDepth) - 1)
     let scalar = max / 255
 
     let r;
     let g;
     let b;
-    if (kelvin.k <= 66) {
-      r = bitDepth;
-      g = 99.4708025861 * Math.log(kelvin.k) - 161.1195681661;
+    if (k <= 66) {
+      r = max;
+      g = 99.4708025861 * Math.log(k) - 161.1195681661;
     }
     else {
-      r = 329.698727466 * Math.pow(kelvin.k - 60, -0.1332047592);
-      g = 288.1221695283 * Math.pow(kelvin.k - 60, -0.0755148492);
+      r = 329.698727466 * Math.pow(k - 60, -0.1332047592);
+      g = 288.1221695283 * Math.pow(k - 60, -0.0755148492);
     }
 
-    if (kelvin.k >= 66) {
-      b = bitDepth;
+    if (k >= 66) {
+      b = max;
     }
-    else if (kelvin.k <= 19) {
+    else if (k <= 19) {
       b = 0;
     }
     else {
-      b = 138.5177312231 * Math.log(kelvin.k - 10) - 305.0447927307;
+      b = 138.5177312231 * Math.log(k - 10) - 305.0447927307;
     }
 
     r *= scalar;
