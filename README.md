@@ -1,7 +1,7 @@
 # chromaticity-color-utilities
  Color utilities for Node.js.
  
- Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, and Y'CbCr. (More to follow.)
+ Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, Y'CbCr, and more.
 
 ## Table of Contents
 
@@ -9,6 +9,9 @@
 * [Usage](#usage)
 * [Color Types and Conversions](#color-types-and-conversions)
   * [RGB: Red, Green, Blue](#rgb--red-green-blue)
+  * HEX: Hexidecimal
+  * Rec. 709 RGB : HD video standard
+  * Rec. 2020 RGB : UHD video standard
   * [HSV: Hue, Saturation, Value](#hsv--hue-saturation-value)
   * [HSL: Hue, Saturation, Lightness](#hsl--hue-saturation-lightness)
   * [HSI: Hue, Saturation, Intensity](#hsi--hue-saturation-intensity)
@@ -138,13 +141,15 @@ let scheme2 = Color.from('hsl',[180, 80, 48]).scheme('tetradic', { angle: 40 })
 
 For all of the following examples, the same color is used (magenta / 0xFF00FF) to create the color.
 
+Alpha is optional when available. If not defined, it will default to the maximum value for the given bit depth. When converting to a space that does not support alpha, it is ignored. If converting back, alpha will be set to full opacity.
+
 ### RGB : Red, Green, Blue
 
-All values are between 0 and `((2 ** bitDepth) - 1)`. With a default bit depth of 8, values are within 0-255. A color with a bit depth of 16 will have values ranging from 0-65535.
+All values are between 0 and `(2 ** bitDepth) - 1`. With a default bit depth of 8, values are within 0-255. A color with a bit depth of 16 will have values ranging from 0-65535.
 
 ** 8-bit color is sometimes referred to as 24-bit or 32-bit (8 bits per channel, with 32-bit including an alpha channel). This package uses the more correct implementation of 32-bit meaning 32 bits per channel, and so generally most use cases would fall between 8 and 16 bit color depth.
 
-** A special note: Adobe uses 15+1 bit depth for 16-bit color, where the last bit is simply added to the first 15 bits, hence the scale being 
+** A special note: Adobe uses 15+1 bit depth for 16-bit color, where the last bit is simply added to the first 15 bits.
 
 ```ts
 Color.from('rgb',[r, g, b, a?],{
@@ -162,6 +167,18 @@ let color3 = color2.to('rgb')
 
 let color4 = Color.from('rgb',[1023, 0, 1023], { bitDepth: 10 })
 ```
+
+### HEX : Hexidecimal
+
+todo
+
+### Rec. 709 RGB : HD video standard
+
+todo
+
+### Rec. 2020 RGB : UHD video standard
+
+todo
 
 ### HSV : Hue, Saturation, Value
 
