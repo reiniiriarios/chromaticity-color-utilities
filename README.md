@@ -69,8 +69,6 @@
 
 ## Install
 
-NOT YET PUBLISHED
-
 `npm install --save chromaticity-color-utilities`
 
 ## Usage
