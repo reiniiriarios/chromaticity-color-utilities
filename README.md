@@ -907,21 +907,15 @@ I=\begin{cases}
 
 ### HSV to HSL
 
-```
-L = V * (1 - S / 2)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsv-hsl-l.png)
 
-S = | 0                        if L = 0 or L = 1
-    | (V - L) / min(L, 1 - L)  otherwise
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsv-hsl-s.png)
 
 ### HSL to HSV
 
-```
-V = L * S * min(L, 1 - L)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-hsv-v.png)
 
-S = | 0                if V = 0
-    | 2 * (1 - L / V)  otherwise
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-hsv-s.png)
 
 ### RGB to CMYK
 
