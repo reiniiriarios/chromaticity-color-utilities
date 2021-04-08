@@ -1,6 +1,70 @@
 # chromaticity-color-utilities
  Color utilities for Node.js
 
+## Table of Contents
+
+* [Install](#install)
+* [Usage](#usage)
+* [Color Types and Conversions](#color-types-and-conversions)
+  * [RGB: Red, Green, Blue](#rgb--red-green-blue)
+  * [HSV: Hue, Saturation, Value](#hsv--hue-saturation-value)
+  * [HSL: Hue, Saturation, Lightness](#hsl--hue-saturation-lightness)
+  * [HSI: Hue, Saturation, Intensity](#hsi--hue-saturation-intensity)
+  * [CMYK: Cyan, Magenta, Yellow, Black](#cmyk--cyan-magenta-yellow-black)
+  * [YIQ: NTSC Color](#yiq--ntsc-color)
+  * [XYZ: CIE XYZ](#xyz--cie-xyz)
+  * [xyY: CIE xyY](#xyy-cie-xyy)
+  * [Lab: CIELAB / L\*a\*b\*](#lab--cielab--lab)
+  * [Luv: CIELUV / L\*u\*v\*](#luv--cieluv--luv)
+  * [YPbPr: Analog video component signals](#ypbpr--analog-video-component-signals)
+  * [YCbCr: Digital video component signals](#ycbcr--digital-video-component-signals)
+* [Color Spaces and Standard Illuminants](#color-spaces-and-standard-illuminants)
+* [Modifying Colors](#modifying-colors)
+  * [Blending Two Colors](#blending-two-colors)
+  * Darken
+  * Lighten
+  * Saturate
+  * Desaturate
+* [Color Scheme Generation](#color-scheme-generation)
+  * [Complementary Schemes](#complementary-schemes)
+  * [Analogous, Triadic, & Split Complement Schemes](#analogous-triadic--split-complement-schemes)
+  * [Tetradic & Square Schemes](#tetradic--square-schemes)
+  * Tint Scale
+  * Shade Scale
+  * Tint & Shade Scale
+* [Mathematics](#mathematics)
+  * [Normalizing RGB](#normalizing-rgb)
+  * [RGB to HSV](#rgb-to-hsv)
+  * [HSV to RGB](#hsv-to-rgb)
+  * [RGB to HSL](#rgb-to-hsl)
+  * [HSL to RGB](#hsl-to-rgb)
+  * [RGB to HSI](#rgb-to-hsi)
+  * [HSI to RGB](#hsi-to-rgb)
+  * [HSV to HSL](#hsv-to-hsl)
+  * [HSL to HSV](#hsl-to-hsv)
+  * [RGB to CMYK](#rgb-to-cmyk)
+  * [CMYK to RGB](#cmyk-to-rgb)
+  * [RGB to YIQ](#rgb-to-yiq)
+  * [YIQ to RGB](#yiq-to-rgb)
+  * [RGB to XYZ](#rgb-to-xyz)
+    * [sRGB](#srgb)
+    * [L*](#l)
+    * [Other color spaces](#other-color-spaces)
+  * [XYZ to RGB](#xyz-to-rgb)
+    * [sRGB](#srgb-1)
+    * [L*](#l-1)
+    * [Other color spaces](#other-color-spaces-1)
+  * [XYZ to xyY](#xyz-to-xyy)
+  * [xyY to XYZ](#xyy-to-xyz)
+  * [XYZ to L\*a\*b\*](#xyz-to-lab)
+  * [L\*a\*b\* to XYZ](#lab-to-xyz)
+  * [XYZ to L\*u\*v\*](#xyz-to-luv)
+  * [L\*u\*v\* to XYZ](#luv-to-xyz)
+  * [RGB to YPbPr](#rgb-to-ypbpr)
+  * [YPbPr to YCbCr](#ypbpr-to-ycbcr)
+  * [YCbCr to YPbPr](#ycbcr-to-ypbpr)
+* [Compiling from Source](#compiling-from-source)
+
 ## Install
 
 NOT YET PUBLISHED
@@ -451,7 +515,7 @@ For conversion to and from XYZ, xyY, L\*a\*b\*, and L\*u\*v\*, the following col
 |SMPTE-C RGB|D65, D50|
 |Wide Gamut RGB|D50|
 
-Color spaces and standard illuminant arguments are case-insensitive. Color space argument ignores any character not alphanumeric. Some common misspellings / words left out are also taken into account. (`'PAL / SECAM'` is equivalent to `'palsecamrgb'`.)
+Color spaces and standard illuminant arguments are case-insensitive. Color space argument ignores any character not alphanumeric. Some common misspellings / words left out are also taken into account. (`PAL / SECAM` is equivalent to `palsecamrgb`.)
 
 ## Modifying Colors
 
