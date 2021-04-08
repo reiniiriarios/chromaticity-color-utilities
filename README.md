@@ -795,117 +795,115 @@ The following are the formulae used in the conversion algorithms. For succinctne
 
 to achieve R,G,B ∈ [0, 1]
 
-```
-X' = X / ((2 ** bitRate) - 1)
-X = X' * ((2 ** bitRate) - 1)
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/normalizing-xp.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/normalizing-x.png)
 
 ### RGB to HSV
 
-```
-V = max(R,G,B)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
-C = V - min(R,G,B)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
-S = | 0      if V = 0
-    | C / V  otherwise
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-s.png)
 
-    | 0            if C = 0
-H = | (G - B) / C  if V = R
-    | (B - R) / C  if V = G
-    | (R - G) / C  if V = B
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-h.png)
 
 ### HSV to RGB
 
-```
-p = V * (1 - S)
-q = V * (1 - S * H)
-t = V * (1 - S * (1 - H))
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsv-rgb-p.png)
 
-          | (V,V,V)  if S = 0
-          | (V,t,p)  if H < 1
-          | (q,V,p)  if 1 < H <= 2
-(R,G,B) = | (p,V,t)  if 2 < H <= 3
-          | (p,q,V)  if 3 < H <= 4
-          | (t,p,V)  if 4 < H <= 5
-          | (V,p,q)  otherwise
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsv-rgb-q.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsv-rgb-t.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsv-rgb-rgb.png)
+
+<!--
+(R,G,B) =
+\begin{cases}
+(V,V,V) & \text{ if } S = 0 \\ 
+(V,t,p) & \text{ if } H < 1 \\
+(q,V,p) & \text{ if } 1 < H \leq 2 \\
+(p,V,t) & \text{ if } 2 < H \leq 3 \\
+(p,q,V) & \text{ if } 3 < H \leq 4 \\
+(t,p,V) & \text{ if } 4 < H \leq 5 \\
+(V,p,q) & \text{ otherwise } \\
+\end{cases}
+-->
 
 ### RGB to HSL
 
-```
-V = max(R,G,B)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
-C = V - min(R,G,B)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
-L = V - C / 2
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsl-l.png)
 
-S = | 0                        if L = 0 or L = 1
-    | (V - L) / min(L, 1 - L)  otherwise
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsl-s.png)
 
 ### HSL to RGB
 
-```
-R,G,B = V  if S = 0
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-c.png)
 
-otherwise
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-x.png)
 
-C = (1 - |2L - 1|) * S
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-r1g1b1.png)
 
-x = C * (1 - |H mod 2 - 1|)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-m.png)
 
-             | (0,0,0)  if H undefined
-             | (C,x,0)  if 0 < H <= 1
-             | (x,C,0)  if 1 < H <= 2
-(R1,G1,B1) = | (0,C,x)  if 2 < H <= 3
-             | (0,x,C)  if 3 < H <= 4
-             | (x,0,C)  if 4 < H <= 5
-             | (C,0,x)  if 5 < H <= 6
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-rgb.png)
 
-m = L - C / 2
-
-(R,G,B) = (R1 + m, G1 + m, B1 + m)
-```
+<!--
+(R_{1},G_{1},B_{1}) =
+\begin{cases}
+(0,0,0) & \text{ if } H \: \mathrm{undefined} \\ 
+(C,x,0) & \text{ if } 0 < H \leq 1 \\
+(x,C,0) & \text{ if } 1 < H \leq 2 \\
+(0,C,x) & \text{ if } 2 < H \leq 3 \\
+(0,x,C) & \text{ if } 3 < H \leq 4 \\
+(x,0,C) & \text{ if } 4 < H \leq 5 \\
+(C,0,x) & \text{ if } 5 < H \leq 6 \\
+\end{cases}
+-->
 
 ### RGB to HSI
 
-```
-V = max(R,G,B)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
-C = V - min(R,G,B)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
-    | 0                    if C = 0
-H = | ((G - B) / C) mod 6  if V = R
-    | ((B - R) / C) + 2    if V = G
-    | ((R - G) / C) + 4    if V = B
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsi-h.png)
 
-I = | 0                      if C = 0
-    | (R + G + B) * (1 / 3)  otherwise
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsi-i.png)
+
+<!--
+H=\begin{cases}
+0 & \text{ if } C=0 \\ 
+\frac{G - B}{C} \: \mathrm{ mod } \: 6 & \text{ if } V=R \\ 
+\frac{B - R}{C} + 2 & \text{ if } V=G \\ 
+\frac{R - G}{C} + 4 & \text{ if } V=B \\ 
+\end{cases}
+
+I=\begin{cases}
+0 & \text{ if } C=0 \\ 
+(R + G + B) \cdot \frac{1}{3} & \text{ otherwise }
+\end{cases}
+-->
 
 ### HSI to RGB
 
-```
-z = 1 - |H mod 2 - 1|
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-z.png)
 
-C = (3I * S) / (1 + z)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-c.png)
 
-x = C * z
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-x.png)
 
-             | (0,0,0)  if H undefined
-             | (C,x,0)  if 0 < H <= 1
-             | (x,C,0)  if 1 < H <= 2
-(R1,G1,B1) = | (0,C,x)  if 2 < H <= 3
-             | (0,x,C)  if 3 < H <= 4
-             | (x,0,C)  if 4 < H <= 5
-             | (C,0,x)  if 5 < H <= 6
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-r1g1b1.png)
 
-m = I * (1 - S)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-m.png)
 
-(R,G,B) = (R1 + m, G1 + m, B1 + m)
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-rgb.png)
 
 ### HSV to HSL
 
