@@ -1130,7 +1130,7 @@ W is a 1x3 reference white vector based on standard illuminant.
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cie-ek.png)
 
-![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyy-lab-p.png)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-lab-p.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-lab-fn.png)
 
