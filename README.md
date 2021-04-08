@@ -584,6 +584,39 @@ let color2 = Color.from('rgb',[255,0,255]).scheme('square')
 // ]
 ```
 
+### Tint Scale
+
+todo / not yet implemented
+
+```ts
+.scheme('tint',{
+  length: number,  // number of colors in scheme
+  distance: number // 0-1, how far away from white to go
+})
+```
+
+### Shade Scale
+
+todo / not yet implemented
+
+```ts
+.scheme('shade',{
+  length: number,  // number of colors in scheme
+  distance: number // 0-1, how far away from black to go
+})
+```
+
+### Tint & Shade Scale
+
+todo / not yet implemented
+
+```ts
+.scheme('tintshade',{
+  length: number,  // number of colors in scheme
+  distance: number // 0-1, how far away from closest bound (white or black) to go
+})
+```
+
 ## Mathematics
 
 The following are the formulae used in the conversion algorithms. For succinctness, consider all values normalized ∈ [0, 1] unless stated otherwise.
