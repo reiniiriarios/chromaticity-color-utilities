@@ -1340,37 +1340,38 @@ class Convert {
    * Original algorithm:
    * https://academo.org/demos/wavelength-to-colour-relationship/
    *
-   * @param  {number}     wavelength     Wavelength of light in nanometers (positive number)
+   * @param  {Colors.nm}  nm            Wavelength of light in nanometers (positive number)
+   * @param  {number}     [gamma=0.8]   Gamma adjustment
    * @param  {boolean}    [round=true]
    * @param  {number}     [bitDepth=8]
    * @return {Colors.rgb}
    */
-  static nm2rgb(wavelength: number, gamma = 0.8, round: boolean = true, bitDepth: number = 8): Colors.rgb {
+  static nm2rgb(nm: Colors.nm, gamma: number = 0.8, round: boolean = true, bitDepth: number = 8): Colors.rgb {
     let r;
     let g;
     let b;
 
-    if (wavelength >= 380 && wavelength < 440) {
-      r = ((wavelength - 440) / (440 - 380)) * -1;
+    if (nm.wavelength >= 380 && nm.wavelength < 440) {
+      r = ((nm.wavelength - 440) / (440 - 380)) * -1;
       g = 0;
       b = 1;
     }
-    else if (wavelength >= 440 && wavelength < 490) {
+    else if (nm.wavelength >= 440 && nm.wavelength < 490) {
       r = 0;
-      g = (wavelength - 440) / (490 - 440);
+      g = (nm.wavelength - 440) / (490 - 440);
       b = 1;
     }
-    else if (wavelength >= 510 && wavelength < 580) {
-      r = (wavelength - 510) / (580 - 510);
+    else if (nm.wavelength >= 510 && nm.wavelength < 580) {
+      r = (nm.wavelength - 510) / (580 - 510);
       g = 1;
       b = 0;
     }
-    else if (wavelength >= 580 && wavelength < 645) {
+    else if (nm.wavelength >= 580 && nm.wavelength < 645) {
       r = 1;
-      g = ((wavelength - 645) / (645 - 580)) * -1;
+      g = ((nm.wavelength - 645) / (645 - 580)) * -1;
       b = 0;
     }
-    else if (wavelength >= 645 && wavelength < 781) {
+    else if (nm.wavelength >= 645 && nm.wavelength < 781) {
       r = 1;
       g = 0;
       b = 0;
@@ -1383,14 +1384,14 @@ class Convert {
 
     let factor;
     // Let the intensity fall off near the vision limits
-    if (wavelength >= 380 && wavelength < 420) {
-      factor = 0.3 + 0.7 * (wavelength - 380) / (420 - 380);
+    if (nm.wavelength >= 380 && nm.wavelength < 420) {
+      factor = 0.3 + 0.7 * (nm.wavelength - 380) / (420 - 380);
     }
-    else if (wavelength >= 420 && wavelength < 701) {
+    else if (nm.wavelength >= 420 && nm.wavelength < 701) {
       factor = 1;
     }
-    else if (wavelength >= 701 && wavelength < 781) {
-      factor = 0.3 + 0.7 * (780 - wavelength) / (780 - 700);
+    else if (nm.wavelength >= 701 && nm.wavelength < 781) {
+      factor = 0.3 + 0.7 * (780 - nm.wavelength) / (780 - 700);
     }
     else {
       factor = 0;

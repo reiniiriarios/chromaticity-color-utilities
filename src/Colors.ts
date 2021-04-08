@@ -802,6 +802,10 @@ export class nm extends colorType {
         this.valueRangeCheck(wavelength, 200, 800)
         this.wavelength = wavelength
     }
+
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.nm2rgb(this, args.gamma, args.round, args.bitDepth)
+    }
 }
 
 export class kelvin extends colorType {
