@@ -887,11 +887,82 @@ Z = ((1 - x - y) * Y) / y
 ```
 W is a 1x3 reference white vector based on standard illuminant
 
+ϵ = 0.008856, CIE-E 
+κ = 903.3, CIE-K
 
-TODO
+X' = X / W[0]
+Y' = Y / W[1]
+Z' = Z / W[2]
+
+f(n) = | n' ^ 1/3             if n > ϵ
+       | (κ * n' + 16) / 116  otherwise
+
+L* = 116 * f(Y) - 16
+a* = 500 * (f(X) - f(Y))
+b* = 200 * (f(Y) - f(Z))
 ```
 
-WIP..!
+### L\*a\*b\* to XYZ
+
+```
+W is a 1x3 reference white vector based on standard illuminant
+
+ϵ = 0.008856, CIE-E 
+κ = 903.3, CIE-K
+
+L' = (L* + 16) / 116
+a' = a* / 500 + L'
+b' = L' - b* / 200
+
+X' = | a' ^ 3               if a' ^ 3 > ϵ
+     | (116 * a' - 16) / κ  otherwise
+
+Y' = | (L' ^ 3  if L* > κ * ϵ
+     | L* * κ   otherwise
+
+Z' = | b' ^ 3               if b' ^ 3 > ϵ
+     | (116 * b' - 16) / κ  otherwise
+
+X = X' * W[0]
+Y = Y' * W[1]
+Z = Z' * W[2]
+```
+
+### XYZ to L\*u\*v\*
+
+```
+...
+```
+
+### L\*u\*v\* to XYZ
+
+```
+...
+```
+
+### RGB to YPbPr
+
+```
+...
+```
+
+### YPbPr to YCbCr
+
+```
+...
+```
+
+### YCbCr to YPbPr
+
+```
+...
+```
+
+### YPbPr to RGB
+
+```
+...
+```
 
 ## Compiling from Source
 
