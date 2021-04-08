@@ -803,6 +803,8 @@ to achieve R,G,B ∈ [0, 1]
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
+C = chroma
+
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-s.png)
@@ -836,6 +838,8 @@ to achieve R,G,B ∈ [0, 1]
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
+C = chroma
+
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsl-l.png)
@@ -843,6 +847,8 @@ to achieve R,G,B ∈ [0, 1]
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsl-s.png)
 
 ### HSL to RGB
+
+C = chroma
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-c.png)
 
@@ -871,6 +877,8 @@ to achieve R,G,B ∈ [0, 1]
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
+C = chroma
+
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsi-h.png)
@@ -894,6 +902,8 @@ I=\begin{cases}
 ### HSI to RGB
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-z.png)
+
+C = chroma
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-c.png)
 
@@ -1013,42 +1023,36 @@ M = 3x3 RGB to XYZ transformation matrix based on color space and standard illum
 
 #### sRGB
 
-```
-for X = (R,G,B)
-X' = | X / 12.92                    if X <= 0.04045
-     | ((X + 0.055) / 1.055) ^ 2.4  otherwise
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-srgb-x.png)
 
-[X]       [R']
-[Y] = M * [G']
-[Z]       [B']
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-xyz.png)
 
 #### L*
 
-```
-κ = 903.3, CIE-K
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cie-ek.png)
 
-for X = (R,G,B)
-X' = | 100 * (R / κ)            if R <= 0.08
-     | ((R + 0.16) / 1.16) ^ 3  otherwise
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-ls.png)
 
-[X]       [R']
-[Y] = M * [G']
-[Z]       [B']
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-xyz.png)
+
+<!--
+\begin{align*}
+\text{for } X &= (R,G,B) \\
+X' &=
+\begin{cases}
+100 \cdot \frac{X}{\kappa} & \text{ if } X \leq 0.08 \\ 
+(\frac{R + 0.16}{1.16})^3 & \text{ otherwise }
+\end{cases}
+\end{align*}
+-->
 
 #### Other color spaces
 
-```
-γ based on target color space
+gamma (γ) based on target color space
 
-for X = (R,G,B)
-X' = X ^ γ
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-gamma.png)
 
-[X]       [R']
-[Y] = M * [G']
-[Z]       [B']
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-xyz-xyz.png)
 
 ### XYZ to RGB
 
