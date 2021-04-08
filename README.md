@@ -9,9 +9,9 @@
 * [Usage](#usage)
 * [Color Types and Conversions](#color-types-and-conversions)
   * [RGB: Red, Green, Blue](#rgb--red-green-blue)
-  * HEX: Hexidecimal
-  * Rec. 709 RGB : HD video standard
-  * Rec. 2020 RGB : UHD video standard
+  * [HEX: Hexidecimal](#hex--hexidecimal)
+  * [Rec. 709 RGB : HD video standard](#rec-709-rgb--hd-video-standard)
+  * [Rec. 2020 RGB : UHD video standard](#rec-2020-rgb--uhd-video-standard)
   * [HSV: Hue, Saturation, Value](#hsv--hue-saturation-value)
   * [HSL: Hue, Saturation, Lightness](#hsl--hue-saturation-lightness)
   * [HSI: Hue, Saturation, Intensity](#hsi--hue-saturation-intensity)
