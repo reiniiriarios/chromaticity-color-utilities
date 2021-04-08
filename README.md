@@ -951,33 +951,61 @@ Y &=
 
 ### RGB to YIQ
 
-```
-[Y]   [0.299    0.587    0.114 ]   [R]
-[I] = [0.5959  -0.2746  -0.3213] * [G]
-[Q]   [0.2115  -0.5227   0.3112]   [B]
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-yiq-yiq.png)
 
-Y ∈ [0,1]
-I ∈ [-0.5957,0.5957]
-Q ∈ [-0.5226,0.5226]
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-yiq-in.png)
 
-or, normalized
+<!--
+\begin{bmatrix}
+Y\\ 
+I\\ 
+Q
+\end{bmatrix} =
+\begin{bmatrix}
+0.299  &  0.587  &  0.114 \\
+0.5959 & -0.2746 & -0.3213 \\
+0.2115 & -0.5227 &  0.3112
+\end{bmatrix}
+\begin{bmatrix}
+R\\ 
+G\\ 
+B
+\end{bmatrix}
 
-Y ∈ [0,255]
-I ∈ [-128, 128]
-Q ∈ [-128, 128]
-```
+\begin{align*}
+Y &\in [0,1]\\ 
+I &\in [-0.5957,0.5957] \\ 
+Q &\in [-0.5226,0.5226] \\
+\text{or}&,\text{normalized} \\
+Y &\in [0,255]\\ 
+I &\in [-128,128] \\ 
+Q &\in [-128,128] \\
+\end{align}
+-->
 
 ### YIQ to RGB
 
-```
-Y ∈ [0,1]
-I ∈ [-0.5957,0.5957]
-Q ∈ [-0.5226,0.5226]
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/yiq-rgb-in.png)
 
-[R]   [1   0.956   0.621]   [Y]
-[G] = [1  -0.272  -0.647] * [I]
-[B]   [1  -1.106   1.703]   [Q]
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/yiq-rgb-rgb.png)
+
+<!--
+\begin{bmatrix}
+R\\ 
+G\\ 
+B
+\end{bmatrix} =
+\begin{bmatrix}
+1 &  0.956 &  0.621 \\
+1 & -0.272 & -0.647 \\
+1 & -1.106 &  1.703
+\end{bmatrix}
+\begin{bmatrix}
+Y\\ 
+I\\ 
+Q
+\end{bmatrix}
+-->
 
 ### RGB to XYZ
 
