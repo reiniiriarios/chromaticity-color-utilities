@@ -33,6 +33,7 @@ export interface newColorArgs {
     yUpper?: number
     cLower?: number
     cUpper?: number
+    gamma?: number
 }
 
 export interface modifyArgs {
@@ -48,40 +49,56 @@ export interface schemeArgs {
 export abstract class colorType {
     constructor() {}
 
-    to(type:string, args?: newColorArgs) : colorType|any {
-        return this
+    public to(type:string, args?: newColorArgs) : colorType|any {
+        args = this.setArgs(args)
+        type = type.toLowerCase().replace(/[^a-z0-9]/,'')
+        switch (type) {
+            case 'rgb':
+            case 'rgba':
+                return this.torgb(args)
+            case 'hex':
+                return this.tohex(args)
+            case 'rec709':
+            case 'rgb709':
+            case 'rec709rgb':
+            case 'rgbrec709':
+                return this.torec709(args)
+            case 'rec2020':
+            case 'rgb2020':
+            case 'rec2020rgb':
+            case 'rgbrec2020':
+                return this.torec2020(args)
+            case 'hsv':
+            case 'hsva':
+                return this.tohsv(args)
+            case 'hsl':
+            case 'hsla':
+                return this.tohsl(args)
+            case 'hsi':
+            case 'hsia':
+                return this.tohsi(args)
+            case 'cmyk':
+                return this.tocmyk(args)
+            case 'yiq':
+                return this.toyiq(args)
+            case 'xyz':
+                return this.toxyz(args)
+            case 'xyy':
+                return this.toxyy(args)
+            case 'lab':
+                return this.tolab(args)
+            case 'luv':
+                return this.toluv(args)
+            case 'ypbpr':
+                return this.toypbpr(args)
+            case 'ycbcr':
+                return this.toycbcr(args)
+            default:
+                throw new Error('Unable to find conversion path')
+        }
     }
 
-    setArgs(args?: newColorArgs) : newColorArgs {
-        if (typeof args == 'undefined') args = {}
-        else if (typeof args.bitDepth === 'undefined' && typeof args.bitRate !== 'undefined') {
-            args.bitDepth = args.bitRate
-        }
-        return args
-    }
-    
-    /**
-     * Range check to make sure numeric value is within lower and upper limits
-     * Throws error on fail, returns nothing
-     *
-     * @param  {number}         value
-     * @param  {number|boolean} lowerLimit number or false
-     * @param  {number|boolean} upperLimit number or false
-     * @param  {string}         msg        error message if fail
-     */
-    valueRangeCheck(value: number, lowerLimit: number | boolean, upperLimit: number | boolean, msg?: string) : void {
-        if (!isFinite(value)) {
-            throw new Error('Invalid color value');
-        }
-        if (lowerLimit && upperLimit && lowerLimit >= upperLimit) {
-            throw new Error('Invalid range (lower limit must exceed upper limit)');
-        }
-        if ((lowerLimit && value < lowerLimit) || (upperLimit && value > upperLimit)) {
-            throw new Error(typeof msg !== 'undefined' ? msg : 'Color value out of range');
-        }
-    }
-
-    modify(modification:string, args?: modifyArgs) : colorType {
+    public modify(modification:string, args?: modifyArgs) : colorType {
         if (typeof args == 'undefined') args = {}
         switch (modification) {
             case 'blend':
@@ -116,7 +133,7 @@ export abstract class colorType {
         }
     }
 
-    scheme(type:string, args?: schemeArgs) : colorType[] {
+    public scheme(type:string, args?: schemeArgs) : colorType[] {
         if (typeof args === 'undefined') args = {}
         let og = this.constructor['name']
         let hsv = this.to('hsv', { round: false })
@@ -157,8 +174,106 @@ export abstract class colorType {
         return ogScheme
     }
 
-    css() : string {
+    public css() : string {
         return 'not yet implemented'
+    }
+
+    protected torgb(args: newColorArgs) : rgb { // always override
+        let rgbOverridden = new rgb(0, 0, 0)
+        return rgbOverridden
+    }
+
+    protected torec709(args: newColorArgs) : rec709rgb {
+        if (typeof args.bitRate !== 'undefined') args.bitDepth = args.bitRate
+        else if (typeof args.bitDepth === 'undefined') args.bitDepth = 8
+        let rgb = this.torgb(args)
+        return Convert.rgb2rec709rgb(rgb, args.round, args.bitDepth)
+    }
+    protected torec2020(args: newColorArgs) : rec2020rgb {
+        if (typeof args.bitRate !== 'undefined') args.bitDepth = args.bitRate
+        else if (typeof args.bitDepth === 'undefined') args.bitDepth = 10
+        let rgb = this.torgb(args)
+        return Convert.rgb2rec2020rgb(rgb, args.round, args.bitDepth)
+    }
+    protected tohex(args: newColorArgs) : hex {
+        let rgb = this.torgb(args)
+        return Convert.rgb2hex(rgb)
+    }
+    protected tohsv(args: newColorArgs) : hsv {
+        let rgb = this.torgb(args)
+        return Convert.rgb2hsv(rgb, args.round)
+    }
+    protected tohsl(args: newColorArgs) : hsl {
+        let rgb = this.torgb(args)
+        return Convert.rgb2hsl(rgb, args.round)
+    }
+    protected tohsi(args: newColorArgs) : hsi {
+        let rgb = this.torgb(args)
+        return Convert.rgb2hsi(rgb, args.round)
+    }
+    protected tocmyk(args: newColorArgs) : cmyk {
+        let rgb = this.torgb(args)
+        return Convert.rgb2cmyk(rgb, args.round)
+    }
+    protected toyiq(args: newColorArgs) : yiq {
+        let rgb = this.torgb(args)
+        return Convert.rgb2yiq(rgb, args.normalize, args.round)
+    }
+    protected toxyz(args: newColorArgs) : xyz {
+        let rgb = this.torgb(args)
+        return Convert.rgb2xyz(rgb, args.colorSpace, args.referenceWhite)
+    }
+    protected toxyy(args: newColorArgs) : xyy {
+        return Convert.xyz2xyy(this.toxyz(args))
+    }
+    protected tolab(args: newColorArgs) : lab {
+        return Convert.xyz2lab(this.toxyz(args))
+    }
+    protected toluv(args: newColorArgs) : luv {
+        return Convert.xyz2luv(this.toxyz(args))
+    }
+    protected toypbpr(args: newColorArgs) : ypbpr {
+        if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
+            throw new Error('Missing arguments kb and kr')
+        }
+        let rgb = this.torgb(args)
+        return Convert.rgb2ypbpr(rgb, args.kb, args.kr)
+    }
+    protected toycbcr(args: newColorArgs) : ycbcr {
+        if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
+            throw new Error('Missing arguments kb and kr')
+        }
+        let rgb = this.torgb(args)
+        return Convert.rgb2ycbcr(rgb, args.kb, args.kr)
+    }
+
+    protected setArgs(args?: newColorArgs) : newColorArgs {
+        if (typeof args == 'undefined') args = {}
+        else if (typeof args.bitDepth === 'undefined' && typeof args.bitRate !== 'undefined') {
+            args.bitDepth = args.bitRate
+        }
+        return args
+    }
+    
+    /**
+     * Range check to make sure numeric value is within lower and upper limits
+     * Throws error on fail, returns nothing
+     *
+     * @param  {number}         value
+     * @param  {number|boolean} lowerLimit number or false
+     * @param  {number|boolean} upperLimit number or false
+     * @param  {string}         msg        error message if fail
+     */
+    protected valueRangeCheck(value: number, lowerLimit: number | boolean, upperLimit: number | boolean, msg?: string) : void {
+        if (!isFinite(value)) {
+            throw new Error('Invalid color value');
+        }
+        if (lowerLimit && upperLimit && lowerLimit >= upperLimit) {
+            throw new Error('Invalid range (lower limit must exceed upper limit)');
+        }
+        if ((lowerLimit && value < lowerLimit) || (upperLimit && value > upperLimit)) {
+            throw new Error(typeof msg !== 'undefined' ? msg : 'Color value out of range');
+        }
     }
 }
 
@@ -170,57 +285,12 @@ export class hex extends colorType {
         this.hex = Util.expandHex(hex)
     }
 
-    to(type:string, args?: newColorArgs): colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.hex2rgb(this, args.bitDepth)
-            case 'hex':
-                return this
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 8
-                return Convert.rgb2rec709rgb(Convert.hex2rgb(this), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.hex2rgb(this), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.hex2rgb(this), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.hex2rgb(this), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.hex2rgb(this), args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.hex2rgb(this), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.hex2rgb(this), args.normalize, args.round)
-            case 'xyz':
-                return Convert.rgb2xyz(Convert.hex2rgb(this), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.hex2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.hex2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.hex2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.hex2rgb(this), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.hex2rgb(this), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.hex2rgb(this)
+    }
+
+    protected tohex(args: newColorArgs) : hex {
+        return this
     }
 }
 
@@ -273,57 +343,8 @@ export class rgb extends colorType {
         this.max = max
     }
 
-    to(type:string, args?: newColorArgs): colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return this
-            case 'hex':
-                return Convert.rgb2hex(this)
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 8
-                return Convert.rgb2rec709rgb(this, args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(this, args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(this, args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(this, args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(this, args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(this, args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(this, args.normalize, args.round)
-            case 'xyz':
-                return Convert.rgb2xyz(this, args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(this, args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(this, args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(this, args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(this, args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(this, args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return this
     }
 }
 
@@ -341,11 +362,11 @@ export class rec709rgb extends colorType {
             throw new Error('Invalid bitrate for Rec709, must be 8 or 10')
         }
         let max = (2 ** bitDepth) - 1
+        // this.valueRangeCheck(r, 0, max)
+        // this.valueRangeCheck(g, 0, max)
+        // this.valueRangeCheck(b, 0, max)
         if (typeof a == 'undefined') a = max
-        this.valueRangeCheck(r, 0, max)
-        this.valueRangeCheck(g, 0, max)
-        this.valueRangeCheck(b, 0, max)
-        this.valueRangeCheck(a, 0, max)
+        else this.valueRangeCheck(a, 0, max)
         this.r = r
         this.g = g
         this.b = b
@@ -354,50 +375,12 @@ export class rec709rgb extends colorType {
         this.max = max
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.rec709rgb2rgb(this, args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.rec709rgb2rgb(this))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                return this
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.rec709rgb2rgb(this, false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.rec709rgb2rgb(this, false), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.rec709rgb2rgb(this, false), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.rec709rgb2rgb(this, false), args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.rec709rgb2rgb(this, false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.rec709rgb2rgb(this, false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.rgb2xyz(Convert.rec709rgb2rgb(this, false), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.rec709rgb2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.rec709rgb2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.rec709rgb2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                throw new Error('Converting to YPbPr requires gamma correction, not supported by this package')
-            case 'ycbcr':
-                throw new Error('Converting to YCbCr requires gamma correction, not supported by this package')
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.rec709rgb2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected torec709(args: newColorArgs) : rec709rgb {
+        return this
     }
 }
 
@@ -415,11 +398,11 @@ export class rec2020rgb extends colorType {
             throw new Error('Invalid bitrate for Rec2020, must be 10 or 12')
         }
         let max = (2 ** bitDepth) - 1
+        // this.valueRangeCheck(r, 0, max)
+        // this.valueRangeCheck(g, 0, max)
+        // this.valueRangeCheck(b, 0, max)
         if (typeof a == 'undefined') a = max
-        this.valueRangeCheck(r, 0, max)
-        this.valueRangeCheck(g, 0, max)
-        this.valueRangeCheck(b, 0, max)
-        this.valueRangeCheck(a, 0, max)
+        else this.valueRangeCheck(a, 0, max)
         this.r = r
         this.g = g
         this.b = b
@@ -428,50 +411,12 @@ export class rec2020rgb extends colorType {
         this.max = max
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.rec2020rgb2rgb(this, args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.rec2020rgb2rgb(this))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.rec2020rgb2rgb(this, false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                return this
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.rec2020rgb2rgb(this, false), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.rec2020rgb2rgb(this, false), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.rec2020rgb2rgb(this, false), args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.rec2020rgb2rgb(this, false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.rec2020rgb2rgb(this, false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.rgb2xyz(Convert.rec2020rgb2rgb(this, false), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.rec2020rgb2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.rec2020rgb2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.rec2020rgb2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                throw new Error('Converting to YPbPr requires gamma correction, not supported by this package')
-            case 'ycbcr':
-                throw new Error('Converting to YCbCr requires gamma correction, not supported by this package')
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.rec2020rgb2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected torec2020(args: newColorArgs) : rec2020rgb {
+        return this
     }
 }
 
@@ -493,57 +438,20 @@ export class hsv extends colorType {
         this.a = a
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.hsv2rgb(this, args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.hsv2rgb(this))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.hsv2rgb(this, false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.hsv2rgb(this, false), args.round, args.bitDepth)
-            case 'hsv':
-                return this
-            case 'hsl':
-                return Convert.hsv2hsl(this, args.round)
-            case 'hsi':
-                return Convert.hsv2hsi(this, args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.hsv2rgb(this, false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.hsv2rgb(this, false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.rgb2xyz(Convert.hsv2rgb(this, false), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.hsv2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.hsv2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.hsv2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.hsv2rgb(this), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.hsv2rgb(this), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.hsv2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected tohsv(args: newColorArgs) : hsv {
+        return this
+    }
+
+    protected tohsl(args: newColorArgs) : hsl {
+        return Convert.hsv2hsl(this, args.round)
+    }
+
+    protected tohsi(args: newColorArgs) : hsi {
+        return Convert.hsv2hsi(this, args.round)
     }
 }
 
@@ -565,57 +473,20 @@ export class hsl extends colorType {
         this.a = a
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.hsl2rgb(this, args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.hsl2rgb(this))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.hsl2rgb(this, false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.hsl2rgb(this, false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.hsl2hsv(this, args.round)
-            case 'hsl':
-                return this
-            case 'hsi':
-                return Convert.hsl2hsi(this, args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.hsl2rgb(this, false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.hsl2rgb(this, false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.rgb2xyz(Convert.hsl2rgb(this, false), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.hsl2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.hsl2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.hsl2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.hsl2rgb(this), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.hsl2rgb(this), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.hsl2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected tohsv(args: newColorArgs) : hsv {
+        return Convert.hsl2hsv(this, args.round)
+    }
+
+    protected tohsl(args: newColorArgs) : hsl {
+        return this
+    }
+
+    protected tohsi(args: newColorArgs) : hsi {
+        return Convert.hsl2hsi(this, args.round)
     }
 }
 
@@ -637,57 +508,20 @@ export class hsi extends colorType {
         this.a = a
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.hsi2rgb(this, args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.hsi2rgb(this))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.hsi2rgb(this, false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.hsi2rgb(this, false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.hsi2hsv(this, args.round)
-            case 'hsl':
-                return Convert.hsi2hsl(this, args.round)
-            case 'hsi':
-                return this
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.hsi2rgb(this, false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.hsi2rgb(this, false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.rgb2xyz(Convert.hsi2rgb(this, false), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.hsi2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.hsi2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.hsi2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.hsi2rgb(this), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.hsi2rgb(this), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.hsi2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected tohsv(args: newColorArgs) : hsv {
+        return Convert.hsi2hsv(this, args.round)
+    }
+
+    protected tohsl(args: newColorArgs) : hsl {
+        return Convert.hsi2hsl(this, args.round)
+    }
+
+    protected tohsi(args: newColorArgs) : hsi {
+        return this
     }
 }
 
@@ -709,57 +543,12 @@ export class cmyk extends colorType {
         this.k = k
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.cmyk2rgb(this, args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.cmyk2rgb(this))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.cmyk2rgb(this, false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.cmyk2rgb(this, false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.cmyk2rgb(this, false), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.cmyk2rgb(this, false), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.cmyk2rgb(this, false), args.round)
-            case 'cmyk':
-                return this
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.cmyk2rgb(this, false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.rgb2xyz(Convert.cmyk2rgb(this, false), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.cmyk2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.cmyk2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.cmyk2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.cmyk2rgb(this), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.cmyk2rgb(this), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.cmyk2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected tocmyk(args: newColorArgs) : cmyk {
+        return this
     }
 }
 
@@ -795,57 +584,12 @@ export class yiq extends colorType {
         this.normalized = normalized
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.yiq2rgb(this, args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.yiq2rgb(this))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.yiq2rgb(this, false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.yiq2rgb(this, false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.yiq2rgb(this, false), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.yiq2rgb(this, false), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.yiq2rgb(this, false), args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.yiq2rgb(this, false), args.round)
-            case 'yiq':
-                return this
-            case 'xyz':
-                return Convert.rgb2xyz(Convert.yiq2rgb(this, false), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.yiq2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.yiq2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.yiq2rgb(this), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.yiq2rgb(this), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.yiq2rgb(this), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.yiq2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected toyiq(args: newColorArgs) : yiq {
+        return this
     }
 }
 
@@ -869,57 +613,12 @@ export class xyz extends colorType {
         this.referenceWhite = referenceWhite
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.xyz2rgb(this, args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.xyz2rgb(this))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.xyz2rgb(this, false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.xyz2rgb(this, false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.xyz2rgb(this, false), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.xyz2rgb(this, false), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.xyz2rgb(this, false), args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.xyz2rgb(this, false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.xyz2rgb(this, false), args.normalize, args.round)
-            case 'xyz':
-                return this
-            case 'xyy':
-                return Convert.xyz2xyy(this)
-            case 'lab':
-                return Convert.xyz2lab(this)
-            case 'luv':
-                return Convert.xyz2luv(this)
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.xyz2rgb(this), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.xyz2rgb(this), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.xyz2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected toxyz(args: newColorArgs) : xyz {
+        return this
     }
 }
 
@@ -939,57 +638,16 @@ export class xyy extends colorType {
         this.referenceWhite = referenceWhite
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.xyz2rgb(Convert.xyy2xyz(this), args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.xyz2rgb(Convert.xyy2xyz(this)))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.xyz2rgb(Convert.xyy2xyz(this), false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.xyz2rgb(Convert.xyy2xyz(this), false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.xyz2rgb(Convert.xyy2xyz(this), false), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.xyz2rgb(Convert.xyy2xyz(this), false), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.xyz2rgb(Convert.xyy2xyz(this), false), args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.xyz2rgb(Convert.xyy2xyz(this), false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.xyz2rgb(Convert.xyy2xyz(this), false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.xyy2xyz(this)
-            case 'xyy':
-                return this
-            case 'lab':
-                return Convert.xyz2lab(Convert.xyy2xyz(this))
-            case 'luv':
-                return Convert.xyz2luv(Convert.xyy2xyz(this))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.xyz2rgb(Convert.xyy2xyz(this)), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.xyz2rgb(Convert.xyy2xyz(this)), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.xyz2rgb(this.toxyz(args), args.round, args.bitDepth)
+    }
+
+    protected toxyz(args: newColorArgs) : xyz {
+        return Convert.xyy2xyz(this)
+    }
+
+    protected toxyy(args: newColorArgs) : xyy {
+        return this
     }
 }
 
@@ -1018,57 +676,16 @@ export class lab extends colorType {
         this.referenceWhite = referenceWhite
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.xyz2rgb(Convert.lab2xyz(this), args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.xyz2rgb(Convert.lab2xyz(this)))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.xyz2rgb(Convert.lab2xyz(this), false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.xyz2rgb(Convert.lab2xyz(this), false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.xyz2rgb(Convert.lab2xyz(this), false), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.xyz2rgb(Convert.lab2xyz(this), false), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.xyz2rgb(Convert.lab2xyz(this), false), args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.xyz2rgb(Convert.lab2xyz(this), false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.xyz2rgb(Convert.lab2xyz(this), false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.lab2xyz(this)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.lab2xyz(this))
-            case 'lab':
-                return this
-            case 'luv':
-                return Convert.xyz2luv(Convert.lab2xyz(this))
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.xyz2rgb(Convert.lab2xyz(this)), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.xyz2rgb(Convert.lab2xyz(this)), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.xyz2rgb(this.toxyz(args), args.round, args.bitDepth)
+    }
+
+    protected toxyz(args: newColorArgs) : xyz {
+        return Convert.lab2xyz(this)
+    }
+
+    protected tolab(args: newColorArgs) : lab {
+        return this
     }
 }
 
@@ -1099,57 +716,16 @@ export class luv extends colorType {
         this.referenceWhite = referenceWhite
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                return Convert.xyz2rgb(Convert.luv2xyz(this), args.round, args.bitDepth)
-            case 'hex':
-                return Convert.rgb2hex(Convert.xyz2rgb(Convert.luv2xyz(this)))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec709rgb(Convert.xyz2rgb(Convert.luv2xyz(this), false), args.round, args.bitDepth)
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                if (typeof args.bitDepth == 'undefined') args.bitDepth = 10
-                return Convert.rgb2rec2020rgb(Convert.xyz2rgb(Convert.luv2xyz(this), false), args.round, args.bitDepth)
-            case 'hsv':
-                return Convert.rgb2hsv(Convert.xyz2rgb(Convert.luv2xyz(this), false), args.round)
-            case 'hsl':
-                return Convert.rgb2hsl(Convert.xyz2rgb(Convert.luv2xyz(this), false), args.round)
-            case 'hsi':
-                return Convert.rgb2hsi(Convert.xyz2rgb(Convert.luv2xyz(this), false), args.round)
-            case 'cmyk':
-                return Convert.rgb2cmyk(Convert.xyz2rgb(Convert.luv2xyz(this), false), args.round)
-            case 'yiq':
-                return Convert.rgb2yiq(Convert.xyz2rgb(Convert.luv2xyz(this), false), args.normalize, args.round)
-            case 'xyz':
-                return Convert.luv2xyz(this)
-            case 'xyy':
-                return Convert.xyz2xyy(Convert.luv2xyz(this))
-            case 'lab':
-                return Convert.xyz2lab(Convert.luv2xyz(this))
-            case 'luv':
-                return this
-            case 'ypbpr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ypbpr(Convert.xyz2rgb(Convert.luv2xyz(this)), args.kb, args.kr)
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2ycbcr(Convert.xyz2rgb(Convert.luv2xyz(this)), args.kb, args.kr, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
-        }
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.xyz2rgb(this.toxyz(args), args.round, args.bitDepth)
+    }
+
+    protected toxyz(args: newColorArgs) : xyz {
+        return Convert.luv2xyz(this)
+    }
+
+    protected toluv(args: newColorArgs) : luv {
+        return this
     }
 }
 
@@ -1168,85 +744,22 @@ export class ypbpr extends colorType {
         this.pr = pr
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.ypbpr2rgb(this, args.kb, args.kr, args.round, args.bitDepth)
-            case 'hex':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2hex(Convert.ypbpr2rgb(this, args.kb, args.kr, true, args.bitDepth))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                throw new Error('Converting to Rec709 requires gamma correction, not supported by this package')
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                throw new Error('Converting to Rec709 requires gamma correction, not supported by this package')
-            case 'hsv':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2hsv(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.round)
-            case 'hsl':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2hsl(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.round)
-            case 'hsi':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2hsi(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.round)
-            case 'cmyk':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2cmyk(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.round)
-            case 'yiq':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2yiq(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.normalize, args.round)
-            case 'xyz':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2xyz(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.ypbpr2rgb(this, args.kb, args.kr, false, args.bitDepth), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                return this
-            case 'ycbcr':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.ypbpr2ycbcr(this, args.yLower, args.yUpper, args.cLower, args.cUpper, args.round)
-            default:
-                throw new Error('Unable to find conversion path')
+    protected torgb(args: newColorArgs) : rgb {
+        if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
+            throw new Error('Missing arguments kb and kr')
         }
+        return Convert.ypbpr2rgb(this, args.kb, args.kr, args.round, args.bitDepth)
+    }
+
+    protected toypbpr(args: newColorArgs) : ypbpr {
+        return this
+    }
+
+    protected toycbcr(args: newColorArgs) : ycbcr {
+        if (typeof args.yLower === 'undefined' || typeof args.yUpper === 'undefined' || typeof args.cLower === 'undefined' || typeof args.cUpper === 'undefined') {
+            throw new Error('Missing arguments yLower, yUpper, cLower, cUpper')
+        }
+        return Convert.ypbpr2ycbcr(this, args.yLower, args.yUpper, args.cLower, args.cUpper, args.round)
     }
 }
 
@@ -1262,82 +775,22 @@ export class ycbcr extends colorType {
         this.cr = cr
     }
 
-    to(type:string, args?: newColorArgs) : colorType {
-        args = super.setArgs(args)
-        type = type.toLowerCase()
-        switch (type) {
-            case 'rgb':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, args.round, args.bitDepth)
-            case 'hex':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2hex(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, true, args.bitDepth))
-            case 'rec709':
-            case 'rgb709':
-            case 'rec709rgb':
-            case 'rgbrec709':
-                throw new Error('Converting to Rec709 requires gamma correction, not supported by this package')
-            case 'rec2020':
-            case 'rgb2020':
-            case 'rec2020rgb':
-            case 'rgbrec2020':
-                throw new Error('Converting to Rec2020 requires gamma correction, not supported by this package')
-            case 'hsv':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2hsv(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.round)
-            case 'hsl':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2hsl(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.round)
-            case 'hsi':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2hsi(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.round)
-            case 'cmyk':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2cmyk(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.round)
-            case 'yiq':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2yiq(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.normalize, args.round)
-            case 'xyz':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.rgb2xyz(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.colorSpace, args.referenceWhite)
-            case 'xyy':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.xyz2xyy(Convert.rgb2xyz(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.colorSpace, args.referenceWhite))
-            case 'lab':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.xyz2lab(Convert.rgb2xyz(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.colorSpace, args.referenceWhite))
-            case 'luv':
-                if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
-                    throw new Error('Missing arguments kb and kr')
-                }
-                return Convert.xyz2luv(Convert.rgb2xyz(Convert.ypbpr2rgb(Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper), args.kb, args.kr, false, args.bitDepth), args.colorSpace, args.referenceWhite))
-            case 'ypbpr':
-                return Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper)
-            case 'ycbcr':
-                return this
-            default:
-                throw new Error('Unable to find conversion path')
+    protected torgb(args: newColorArgs) : rgb {
+        if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
+            throw new Error('Missing arguments kb and kr')
         }
+        return Convert.ypbpr2rgb(this.toypbpr(args), args.kb, args.kr, args.round, args.bitDepth)
+    }
+
+    protected toypbpr(args: newColorArgs) : ypbpr {
+        if (typeof args.yLower === 'undefined' || typeof args.yUpper === 'undefined' || typeof args.cLower === 'undefined' || typeof args.cUpper === 'undefined') {
+            throw new Error('Missing arguments yLower, yUpper, cLower, cUpper')
+        }
+        return Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper)
+    }
+
+    protected toycbcr(args: newColorArgs) : ycbcr {
+        return this
     }
 }
 
