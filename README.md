@@ -9,6 +9,12 @@ NOT YET PUBLISHED
 
 ## Usage
 
+Any color can be converted to any other, with only a few caveats. Construction `from()`, conversion `to()`, and modification `modify()` methods can be chained.
+
+Object properties can be accessed directly, e.g. `color.r` for the red channel value.
+
+Most colors will retain their arguments as a part of their object properties, such as bitDepth, colorSpace, etc.
+
 ```js
 const Color = require('chromaticity-color-utilities')
 
@@ -18,7 +24,22 @@ let color1 = Color.from('rgb',[255,128,0]).to('hsv')
 let color2 = Color.from('hex','ff3201').to('rec709rgb', { bitRate: 10 })
 // rec709rgb { r: 940, g: 298, b: 67, a: 940, bitDepth: 10, max: 1023 }
 
-let color3 = Color.from('rgb',[255,0,0]).modify('blend', { with: Color.from('rgb',[0,255,0])})
+let color6 = Color.from('hex', 'ff00ff').to('lab',{
+  colorSpace: 'AdobeRGB',
+  referenceWhite: 'd50'
+})
+// lab {
+//  l: 67.60166164169028,
+//  a: 101.30709261827131,
+//  b: -50.813827160707525,
+//  colorSpace: 'adobergb1998',
+//  referenceWhite: 'd50'
+// }
+
+let color7 = Color.from('hsl',[300,100,50]).to('ypbpr',{kb:0.0722, kr:0.2126})
+// ypbpr { y: 0.2848, pb: 0.3854278939426601, pr: 0.45415290830581667 }
+
+let color3 = Color.from('rgb',[255,0,0]).modify('blend', {with: Color.from('rgb',[0,255,0])})
 // rgb { r: 128, g: 128, b: 0, a: 255, bitDepth: 8, max: 255 }
 
 let color4 = Color.from('rgb',[255,0,0]).modify('blend', {
@@ -432,9 +453,140 @@ For conversion to and from XYZ, xyY, L\*a\*b\*, and L\*u\*v\*, the following col
 
 Color spaces and standard illuminant arguments are case-insensitive. Color space argument ignores any character not alphanumeric. Some common misspellings / words left out are also taken into account. (`'PAL / SECAM'` is equivalent to `'palsecamrgb'`.)
 
+## Modifying Colors
+
+### Blending Two Colors
+
+When blending two colors, the amount ∈ [0,1] refers to the percentage the second color is blended with the first. In other words, 0 means 0% of the second color and 100% of the first while 1 means 100% of the second color and 0% of the first.
+
+```ts
+let color3 = color1.modify('blend', {
+  with: color2,  // REQUIRED, can be any color of any type
+  amount: number // optional, 0 - 1, defaults to 0.5
+})
+
+//e.g.
+let color4 = Color.from('rgb',[255,0,0]).modify('blend', {
+  with: Color.from('hex','00ff00')
+})
+// rgb { r: 128, g: 128, b: 0, a: 255, bitDepth: 8, max: 255 }
+
+let color5 = Color.from('hex','ee5432').modify('blend', {
+  with: Color.from('rgb',[234, 100, 20, 64]),
+  amount: 1/3
+}).to('hsv')
+// hsv { h: 15, s: 83, v: 93, a: 75 }
+```
+
+### Darken
+
+todo
+
+### Lighten
+
+todo
+
+### Saturate
+
+todo
+
+### Desaturate
+
+todo
+
+## Color Scheme Generation
+
+Schemes can be generated from any color type. All methods return an array of colors, each the same as the input type. (If calling method on a color of type `hsl`, all values of the returned array will be of type `hsl`.)
+
+```ts
+color.scheme(type: string)
+// or
+color.scheme(type: string, {
+  angle: number // optional, hue shift angle in degrees
+})
+```
+
+### Complementary Schemes
+
+Complementary color scheme generation has a fixed angle of 180&deg;.
+
+```ts
+.scheme('complement') // angle = 180
+
+// e.g.
+let color1 = Color.from('rgb',[255,0,255]).scheme('complement')
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
+// ]
+```
+
+### Analogous, Triadic, & Split Complement Schemes
+
+These three methods are synonyms with different default angles.
+
+```ts
+.scheme('analogous', {
+  angle: number // optional, default = 30
+})
+.scheme('triadic', {
+  angle: number // optional, default = 120
+})
+.scheme('splitcomplement', {
+  angle: number // optional, default = 150
+})
+
+// e.g.
+let color1 = Color.from('rgb',[255,0,255]).scheme('analogous')
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 128, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 128, a: 255, bitDepth: 8, max: 255 }
+// ]
+let color2 = Color.from('rgb',[255,0,255]).scheme('triadic')
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 255, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 255, a: 255, bitDepth: 8, max: 255 }
+// ]
+let color3 = Color.from('rgb',[255,0,255]).scheme('splitcomplement',{angle: 160})
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 85, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 85, a: 255, bitDepth: 8, max: 255 }
+// ]
+```
+
+### Tetradic & Square Schemes
+
+These two methods are synonyms, but that the square method has a fixed angle of 90&deg;.
+
+```ts
+.scheme('tetradic', {
+  angle: number // optional, default = 45
+})
+.scheme('square') // angle = 90
+
+// e.g.
+let color1 = Color.from('rgb',[255,0,255]).scheme('tetradic',{angle: 42})
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 255, g: 0, b: 76, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 179, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
+// ]
+let color2 = Color.from('rgb',[255,0,255]).scheme('square')
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 255, g: 128, b: 0, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 128, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
+// ]
+```
+
 ## Mathematics
 
-For the following equations, consider all values normalized ∈ [0, 1] unless stated otherwise.
+The following are the formulae used in the conversion algorithms. For succinctness, consider all values normalized ∈ [0, 1] unless stated otherwise.
 
 ### Normalizing RGB
 
