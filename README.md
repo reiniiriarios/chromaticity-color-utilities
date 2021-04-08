@@ -964,37 +964,95 @@ Z = Z' * W[2]
 ### XYZ to L\*u\*v\*
 
 ```
-...
+W is a 1x3 reference white vector based on standard illuminant
+
+ϵ = 0.008856, CIE-E 
+κ = 903.3, CIE-K
+
+Y' = Y / W[1]
+
+d = X + 15 * Y + 3 * Z
+
+u' = | 0       if d = 0
+     | 4X / d  otherwise
+
+v' = | 0       if d = 0
+     | 9Y / d  otherwise
+
+L* = | 116 * Y' ^ 1/3  if Y' > ϵ
+     | Y' * κ          otherwise
+
+u'r = (4 * W[1]) / (W[0] + 15 * W[1] + 3 * W[2])
+v'r = (9 * W[1]) / (W[0] + 15 * W[1] + 3 * W[2])
+
+u* = 13 * L* * (u' - u'r)
+v* = 13 * L* * (v' - v'r)
 ```
 
 ### L\*u\*v\* to XYZ
 
 ```
-...
+W is a 1x3 reference white vector based on standard illuminant
+
+ϵ = 0.008856, CIE-E 
+κ = 903.3, CIE-K
+
+Y = | ((L* + 16) / 116) ^ 3  if L* > κ * ϵ
+    | L* / κ                 otherwise
+
+u0 = (4 * W[0]) / (W[0] + 15 * W[1] + 3 * W[2])
+v0 = (9 * W[0]) / (W[0] + 15 * W[1] + 3 * W[2])
+
+a = 1/3 * (((52 * L*) / (u* + 13 * L* * u0))) - 1)
+b = -5Y
+c = -1/3
+d = Y * (((39 * L*) / (v* + 13 * L* * v0)) - 5)
+
+X = (d - b) / (a - c)
+Z = X * a + b
 ```
 
 ### RGB to YPbPr
 
 ```
-...
+Kb and Kr constants defined from target color space
+
+Kg = 1 - Kb - Kr
+
+Y = Kr * R + Kg * G + Kb * B
+
+Pb = 0.5 * ((B - Y) / (1 - Kb))
+Pr = 0.5 * ((R - Y) / (1 - Kr))
 ```
 
 ### YPbPr to YCbCr
 
 ```
-...
+Scaling bounds given by conversion method / target space. Such as:
+
+Y scaled to:       0 - 255 JPEG
+                  16 - 235 Rec709
+Cb, Cr scaled to:  0 - 255 JPEG
+                  16 - 245 Rec709
 ```
 
 ### YCbCr to YPbPr
 
 ```
-...
+Y scaled to:         0 - 1
+Pb, Pr scaled to: -0.5 - 0.5
 ```
 
 ### YPbPr to RGB
 
 ```
-...
+Kb and Kr constants defined from target color space
+
+Kg = 1 - Kb - Kr
+
+R = Y + (2 - 2Kr) * Pr
+G = Y + (-1 * (Kb / Kg) * (2 - 2Kb)) * Pb + (-1 * (Kr / Kg) * (2 - 2Kr)) * Pr
+B = Y + (2 - 2Kb) * Pb
 ```
 
 ## Compiling from Source
