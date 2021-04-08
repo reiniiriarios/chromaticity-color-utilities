@@ -189,11 +189,61 @@ let color3 = color2.to('hex')
 
 ### Rec. 709 RGB : HD video standard
 
-todo
+Limits RGB color to video levels (16 - 235 for 8-bit or 64 to 940 for 10-bit). Input bit depth must be 8 or 10. Conversion to Y'PbPr and Y'CbCr will fail as this module does not yet have gamma adjustment implemented.
+
+This method does not currently support data levels.
+
+RGB values _may fall outside limits_.
+
+Alpha channel maintains data levels (0 - 255 / 0 - 1023).
+
+```ts
+Color.from('rec709rgb',[r, g, b, a?], {
+  round: boolean,  // optional, defaults to true
+  bitDepth: number // optional, defaults to 8, must be 8 or 10
+})
+
+.to('rec709rgb', {
+  round: boolean,  // optional, defaults to true
+  bitDepth: number // optional, defaults to 8, must be 8 or 10
+})
+
+// e.g.
+let color1 = Color.from('rec709rgb', [235, 16, 235])
+let color1 = Color.from('rec709rgb', [940, 64, 940], { bitDepth: 10 })
+
+let color3 = color2.to('rec709rgb')
+let color3 = color2.to('rec709rgb', { bitDepth: 10 })
+```
 
 ### Rec. 2020 RGB : UHD video standard
 
-todo
+Limits RGB color to video levels (64 to 940 for 10-bit or 256 to 3760 for 12-bit). Input bit depth must be 10 or 12. Conversion to Y'PbPr and Y'CbCr will fail as this module does not yet have gamma adjustment implemented.
+
+This method does not currently support data levels.
+
+RGB values _may fall outside limits_.
+
+Alpha channel maintains data levels (0 - 1023 / 0 - 4096).
+
+```ts
+Color.from('rec2020rgb',[r, g, b, a?], {
+  round: boolean,  // optional, defaults to true
+  bitDepth: number // optional, defaults to 10, must be 10 or 12
+})
+
+.to('rec2020rgb', {
+  round: boolean,  // optional, defaults to true
+  bitDepth: number // optional, defaults to 10, must be 10 or 12
+})
+
+// e.g.
+let color1 = Color.from('rec2020rgb', [940, 64, 940])
+let color1 = Color.from('rec2020rgb', [3760, 256, 3760], { bitDepth: 12 })
+
+let color3 = color2.to('rec2020rgb')
+let color3 = color2.to('rec2020rgb', { bitDepth: 10 })
+```
 
 ### HSV : Hue, Saturation, Value
 

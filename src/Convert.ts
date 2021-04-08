@@ -1058,7 +1058,7 @@ class Convert {
     }
     else if (rgb709.bitDepth == 10) {
       minFrom = 64;
-      maxFrom = 876;
+      maxFrom = 940;
     }
     else {
       throw new Error('Invalid bitrate (must be 8 or 10)');
