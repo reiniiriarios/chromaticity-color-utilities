@@ -919,26 +919,35 @@ I=\begin{cases}
 
 ### RGB to CMYK
 
-```
-K = 1 - max(R,G,B)
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-cmyk-kcmy.png)
 
-C = | 0                      if K = 1
-    | (1 - R - K) / (1 - K)  otherwise
-    
-M = | 0                      if K = 1
-    | (1 - G - K) / (1 - K)  otherwise
-    
-Y = | 0                      if K = 1
-    | (1 - B - K) / (1 - K)  otherwise
-```
+<!--
+\begin{align*}
+K &= 1 - max(R,G,B)\\ 
+C &=
+\begin{cases}
+0 & \text{ if } K=1 \\ 
+\frac{1 - R - K}{1 - K} & \text{ otherwise } 
+\end{cases}
+\\ 
+M &=
+\begin{cases}
+0 & \text{ if } K=1 \\ 
+\frac{1 - G - K}{1 - K} & \text{ otherwise } 
+\end{cases}
+\\ 
+Y &=
+\begin{cases}
+0 & \text{ if } K=1 \\ 
+\frac{1 - B - K}{1 - K} & \text{ otherwise } 
+\end{cases}
+\\ 
+\end{align*}
+-->
 
 ### CMYK to RGB
 
-```
-R = (1 - C) * (1 - K)
-G = (1 - M) * (1 - K)
-B = (1 - Y) * (1 - K)
-```
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cmyk-rgb-rgb.png)
 
 ### RGB to YIQ
 
