@@ -812,9 +812,9 @@ to achieve R,G,B ∈ [0, 1]
 
 ### RGB to HSV
 
-![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
+C references chroma
 
-C = chroma
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
@@ -847,9 +847,9 @@ C = chroma
 
 ### RGB to HSL
 
-![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
+C references chroma
 
-C = chroma
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
@@ -859,7 +859,7 @@ C = chroma
 
 ### HSL to RGB
 
-C = chroma
+C references chroma
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-c.png)
 
@@ -886,9 +886,9 @@ C = chroma
 
 ### RGB to HSI
 
-![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
+C references chroma
 
-C = chroma
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-v.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsv-c.png)
 
@@ -912,9 +912,9 @@ I=\begin{cases}
 
 ### HSI to RGB
 
-![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-z.png)
+C references chroma
 
-C = chroma
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-z.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-c.png)
 
