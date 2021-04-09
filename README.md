@@ -1197,54 +1197,72 @@ Z &= Z' \cdot W_{B}
 
 ### XYZ to L\*u\*v\*
 
-```
 W is a 1x3 reference white vector based on standard illuminant
 
-ϵ = 0.008856, CIE-E 
-κ = 903.3, CIE-K
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cie-ek.png)
 
-Y' = Y / W[1]
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-luv.png)
 
-d = X + 15 * Y + 3 * Z
-
-u' = | 0       if d = 0
-     | 4X / d  otherwise
-
-v' = | 0       if d = 0
-     | 9Y / d  otherwise
-
-L* = | 116 * Y' ^ 1/3  if Y' > ϵ
-     | Y' * κ          otherwise
-
-u'r = (4 * W[1]) / (W[0] + 15 * W[1] + 3 * W[2])
-v'r = (9 * W[1]) / (W[0] + 15 * W[1] + 3 * W[2])
-
-u* = 13 * L* * (u' - u'r)
-v* = 13 * L* * (v' - v'r)
-```
+<!--
+\begin{align*}
+Y' &= \frac{Y}{W_{G}} \\ 
+\:\\
+d &= X + 15Y + 3Z \\
+\:\\
+u' &= 
+\begin{cases}
+0 & \text{ if } d=0 \\ 
+\frac{4X}{d} & \text{ otherwise }
+\end{cases} \\
+v' &= 
+\begin{cases}
+0 & \text{ if } d=0 \\ 
+\frac{9Y}{d} & \text{ otherwise }
+\end{cases} \\
+\:\\
+L^* &= 
+\begin{cases}
+116 \cdot {Y'}^\frac{1}{3} & \text{ if } Y' > \epsilon \\ 
+Y' \cdot \kappa & \text{ otherwise }
+\end{cases} \\
+\:\\
+u'_{r} &= \frac{4 \cdot W_{G}}{W_{R} + 15 \cdot W_{G} + 3 \cdot W_{B}} \\
+v'_{r} &= \frac{9 \cdot W_{G}}{W_{R} + 15 \cdot W_{G} + 3 \cdot W_{B}} \\
+\:\\
+u^* &= L^* \cdot (u' - u'_{r}) \\
+v^* &= L^* \cdot (v' - v'_{r})
+\end{align*}
+-->
 
 ### L\*u\*v\* to XYZ
 
-```
 W is a 1x3 reference white vector based on standard illuminant
 
-ϵ = 0.008856, CIE-E 
-κ = 903.3, CIE-K
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cie-ek.png)
 
-Y = | ((L* + 16) / 116) ^ 3  if L* > κ * ϵ
-    | L* / κ                 otherwise
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/luv-xyz.png)
 
-u0 = (4 * W[0]) / (W[0] + 15 * W[1] + 3 * W[2])
-v0 = (9 * W[0]) / (W[0] + 15 * W[1] + 3 * W[2])
-
-a = 1/3 * (((52 * L*) / (u* + 13 * L* * u0))) - 1)
-b = -5Y
-c = -1/3
-d = Y * (((39 * L*) / (v* + 13 * L* * v0)) - 5)
-
-X = (d - b) / (a - c)
-Z = X * a + b
-```
+<!--
+\begin{align*}
+Y &=
+\begin{cases}
+(\frac{L^* + 16}{116})^{1/3} & \text{ if } L^* > \kappa \cdot \epsilon \\ 
+\frac{L^*}{\kappa} & \text{ otherwise }
+\end{cases}
+\\ 
+\:\\
+u_{0} &= \frac{4 \cdot W_{R}}{W_{R} + 15 \cdot W_{G} + 3 \cdot W_{B}} \\
+v_{0} &= \frac{9 \cdot W_{R}}{W_{R} + 15 \cdot W_{G} + 3 \cdot W_{B}} \\
+\:\\
+a &= \frac{1}{3} \cdot \frac{52 \cdot L^*}{u^* + 13 \cdot L^* \cdot u_{0}} - 1 \\
+b &= -5Y \\
+c &= -\frac{1}{3} \\
+d &= Y \cdot \frac{39 \cdot L^*}{v^* + 13 \cdot L^* \cdot v_{0}} - 5 \\
+\:\\
+X &= \frac{d - b}{a - c} \\
+Z &= X \cdot a + b
+\end{align*}
+-->
 
 ### RGB to YPbPr
 
