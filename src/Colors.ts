@@ -751,8 +751,10 @@ export class ypbpr extends colorType {
     y: number
     pb: number
     pr: number
+    kb: number
+    kr: number
 
-    constructor(y: number, pb:number, pr:number) {
+    constructor(y: number, pb:number, pr:number, kb: number, kr: number) {
         super()
         this.valueRangeCheck(y, 0, 1)
         this.valueRangeCheck(pb, -0.5, 0.5)
@@ -760,6 +762,8 @@ export class ypbpr extends colorType {
         this.y = y
         this.pb = pb
         this.pr = pr
+        this.kb = kb
+        this.kr = kr
     }
 
     protected torgb(args: newColorArgs) : rgb {
@@ -785,12 +789,24 @@ export class ycbcr extends colorType {
     y: number
     cb: number
     cr: number
+    yLower: number
+    yUpper: number
+    cLower: number
+    cUpper: number
 
-    constructor(y: number, cb:number, cr:number) {
+    constructor(y: number, cb:number, cr:number, yLower?: number, yUpper?: number, cLower?: number, cUpper?: number) {
         super()
         this.y = y
         this.cb = cb
         this.cr = cr
+        if (typeof yLower === 'undefined') yLower = 16
+        if (typeof yUpper === 'undefined') yUpper = 235
+        if (typeof cLower === 'undefined') cLower = 16
+        if (typeof cUpper === 'undefined') cUpper = 240
+        this.yLower = yLower
+        this.yUpper = yUpper
+        this.cLower = cLower
+        this.cUpper = cUpper
     }
 
     protected torgb(args: newColorArgs) : rgb {
@@ -801,10 +817,10 @@ export class ycbcr extends colorType {
     }
 
     protected toypbpr(args: newColorArgs) : ypbpr {
-        if (typeof args.yLower === 'undefined' || typeof args.yUpper === 'undefined' || typeof args.cLower === 'undefined' || typeof args.cUpper === 'undefined') {
-            throw new Error('Missing arguments yLower, yUpper, cLower, cUpper')
+        if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
+            throw new Error('Missing arguments kb and kr')
         }
-        return Convert.ycbcr2ypbpr(this, args.yLower, args.yUpper, args.cLower, args.cUpper)
+        return Convert.ycbcr2ypbpr(this, args.kb, args.kr)
     }
 
     protected toycbcr(args: newColorArgs) : ycbcr {

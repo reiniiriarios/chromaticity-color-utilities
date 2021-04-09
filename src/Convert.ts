@@ -1191,7 +1191,7 @@ class Convert {
     // let pb = (-0.5 * (kr / (1 - kb))) * r + (-0.5 * (kg / (1 - kb))) * g + 0.5 * b;
     // let pr = 0.5 * r + (-0.5 * (kg / (1 - kr))) * g + (-0.5 * (kb / (1 - kr))) * b;
 
-    return new Colors.ypbpr(y, pb, pr)
+    return new Colors.ypbpr(y, pb, pr, kb, kr)
   }
 
   /**
@@ -1257,18 +1257,16 @@ class Convert {
    * Y will be in range 0 to 1; Pb and Pr will be in range -0.5 to 0.5
    *
    * @param  {Colors.ycbcr} ycbcr
-   * @param  {number}       [yLower=16]   Lower bounds of Y
-   * @param  {number}       [yUpper=235] Upper bounds of Y
-   * @param  {number}       [cLower=16]   Lower bounds of Cb and Cr
-   * @param  {number}       [cUpper=240] Upper bounds of Cb and Cr
+   * @param  {number}       kb
+   * @param  {number}       kr
    * @return {Colors.ypbpr}
    */
-  static ycbcr2ypbpr(ycbcr: Colors.ycbcr, yLower: number = 16, yUpper: number = 235, cLower: number = 16, cUpper: number = 240): Colors.ypbpr {
-    let y2 = Util.scaleValueRange(ycbcr.y, yLower, yUpper, 0, 1, false);
-    let pb = Util.scaleValueRange(ycbcr.cb, cLower, cUpper, 0, 1, false) - 0.5;
-    let pr = Util.scaleValueRange(ycbcr.cr, cLower, cUpper, 0, 1, false) - 0.5;
+  static ycbcr2ypbpr(ycbcr: Colors.ycbcr, kb: number, kr: number): Colors.ypbpr {
+    let y2 = Util.scaleValueRange(ycbcr.y, ycbcr.yLower, ycbcr.yUpper, 0, 1, false);
+    let pb = Util.scaleValueRange(ycbcr.cb, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) - 0.5;
+    let pr = Util.scaleValueRange(ycbcr.cr, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) - 0.5;
 
-    return new Colors.ypbpr(y2, pb, pr)
+    return new Colors.ypbpr(y2, pb, pr, kb, kr)
   }
 
   /**

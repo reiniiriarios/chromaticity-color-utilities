@@ -22,6 +22,12 @@ interface newColorArgs {
     normalized?: boolean
     colorSpace?: string
     referenceWhite?: string
+    yLower?: number
+    yUpper?: number
+    cLower?: number
+    cUpper?: number
+    kb?: number
+    kr?: number
 }
 
 interface colorDef {
@@ -101,9 +107,12 @@ class Color implements colorDef {
                 case 'luv':
                     return new Colors.luv(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
                 case 'ypbpr':
-                    return new Colors.ypbpr(value[0], value[1], value[2])
+                    if (typeof args.kb == 'undefined' || typeof args.kr == 'undefined') {
+                        throw new Error('Must supply Kb and Kr constants')
+                    }
+                    return new Colors.ypbpr(value[0], value[1], value[2], args.kb, args.kr)
                 case 'ycbcr':
-                    return new Colors.ycbcr(value[0], value[1], value[2])
+                    return new Colors.ycbcr(value[0], value[1], value[2], args.yLower, args.yUpper, args.cLower, args.cUpper)
                 default:
                     throw new Error('Unable to determine color type')
             }

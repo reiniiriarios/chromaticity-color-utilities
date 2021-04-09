@@ -491,13 +491,16 @@ Also written Y'PbPr or YP<sub>B</sub>P<sub>R</sub>.
 * Pb = difference between blue and luma (B - Y)
 * Pr = difference between red and luma (R - Y)
 
-YPbPr conversions require Kb and Kr constants with the exception of converting to YCbCr. These values are not yet included in this package.
-
 * Kb = constant defined from target color space, such that Kb + Kr + Kg = 1
 * Kr = constant defined from target color space, such that Kb + Kr + Kg = 1
 
+Kb and Kr constants are not yet included in this package.
+
 ```ts
-Color.from('ypbpr', [y, pb, pr])
+Color.from('ypbpr', [y, pb, pr], {
+  kb: number, // REQUIRED
+  kr: number  // REQUIRED
+})
 
 .to('ypbpr',{
   kb: number, // REQUIRED
@@ -544,8 +547,15 @@ YCbCr conversions require Kb and Kr constants with the exception of converting t
 * Kb = constant defined from target color space, such that Kb + Kr + Kg = 1
 * Kr = constant defined from target color space, such that Kb + Kr + Kg = 1
 
+Upper and lower bounds vary with color space. It's recommended to always supply these values.
+
 ```ts
-Color.from('ycbcr', [y, cb, cr])
+Color.from('ycbcr', [y, cb, cr], {
+  yLower: number, // optional, default = 16,  lower bounds of Y'
+  yUpper: number, // optional, default = 235, upper bounds of Y'
+  cLower: number, // optional, default = 16,  lower bounds of Cb and Cr
+  cUpper: number  // optional, default = 240, upper bounds of Cb and Cr
+)
 
 .to('ycbcr',{
   kb: number, // REQUIRED
@@ -1266,46 +1276,47 @@ Z &= X \cdot a + b
 
 ### RGB to YPbPr
 
-```
 Kb and Kr constants defined from target color space
 
-Kg = 1 - Kb - Kr
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-ypbpr.png)
 
-Y = Kr * R + Kg * G + Kb * B
-
-Pb = 0.5 * ((B - Y) / (1 - Kb))
-Pr = 0.5 * ((R - Y) / (1 - Kr))
-```
+<!--
+\begin{align*}
+Kg &= 1 - Kb - Kr \\
+\:\\
+Y &= Kr \cdot R + Kg \cdot G + Kb \cdot B\\ 
+Pb &= 0.5 \cdot \frac{B - Y}{1 - Kb}\\ 
+Pr &= 0.5 \cdot \frac{R - Y}{1 - Kr}\\ 
+\end{align*}
+-->
 
 ### YPbPr to YCbCr
 
-```
-Scaling bounds given by conversion method / target space. Such as:
-
-Y scaled to:       0 - 255 JPEG
-                  16 - 235 Rec709
-Cb, Cr scaled to:  0 - 255 JPEG
-                  16 - 245 Rec709
-```
+Scaling bounds given by conversion method / target space. Typical bounds might be 0-255 for all values for JPEG target or 16-235 for Y and 16-245 for Cb and Cr for Rec. 709 target.
 
 ### YCbCr to YPbPr
 
-```
-Y scaled to:         0 - 1
-Pb, Pr scaled to: -0.5 - 0.5
-```
+Y is scaled to 0-1, Cb and Cr are scaled such that Pb and Pr are between -0.5 and 0.5.
 
 ### YPbPr to RGB
 
-```
 Kb and Kr constants defined from target color space
 
-Kg = 1 - Kb - Kr
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/ypbpr-rgb.png)
 
-R = Y + (2 - 2Kr) * Pr
-G = Y + (-1 * (Kb / Kg) * (2 - 2Kb)) * Pb + (-1 * (Kr / Kg) * (2 - 2Kr)) * Pr
-B = Y + (2 - 2Kb) * Pb
-```
+<!--
+\begin{align*}
+Kg &= 1 - Kb - Kr \\
+\:\\
+Pb_{0} &= (-1 \cdot \frac{Kb}{Kg} \cdot (2 - 2Kb)) \cdot Pb \\
+Pr_{0} &= (-1 \cdot \frac{Kr}{Kg} \cdot (2 - 2Kr)) \cdot Pr \\
+\:\\
+R &= Y + (2 - 2Kr) \cdot Pr \\
+G &= Y + Pb_{0} + Pr_{0} 
+\\
+B &= Y + (2 - 2Kb) \cdot Pb
+\end{align*}
+-->
 
 ## Compiling from Source
 
