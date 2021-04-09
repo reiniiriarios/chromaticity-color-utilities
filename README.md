@@ -173,7 +173,7 @@ let color4 = Color.from('rgb',[1023, 0, 1023], { bitDepth: 10 })
 
 ### HEX : Hexidecimal
 
-May use string or numberical value. Strings are case-insensitive. Short form or long form may be used. # ignored if present.
+May use string or numerical value. Strings are case-insensitive. Short form or long form may be used. # ignored if present.
 
 ```ts
 Color.from('hex',hex)
