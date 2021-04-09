@@ -71,6 +71,7 @@
   * [YPbPr to YCbCr](#ypbpr-to-ycbcr)
   * [YCbCr to YPbPr](#ycbcr-to-ypbpr)
 * [Compiling from Source](#compiling-from-source)
+* [To Do List](#to-do-list)
 
 ## Install
 
@@ -1327,3 +1328,15 @@ B &= Y + (2 - 2Kb) \cdot Pb
 `npm install`
 
 `tsc`
+
+## To Do List
+
+* Gamma adjustment modification
+* Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
+  * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
+* Lighten and darken colors
+* Saturate and desaturate colors
+* Create color schemes / gradient schemes based on tints and shades
+* Generate gradients given two colors
+* Generate triangular gradients based on three colors
+* Modification methods that retain luma

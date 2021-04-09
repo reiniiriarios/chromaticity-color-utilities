@@ -1,8 +1,8 @@
 {
   "name": "chromaticity-color-utilities",
-  "version": "0.1.3-alpha",
+  "version": "0.1.5-alpha",
   "description": "Color utilities for Node.js",
-  "main": "src/main.js",
+  "main": "dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
