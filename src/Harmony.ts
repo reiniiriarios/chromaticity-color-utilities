@@ -105,6 +105,14 @@ class Harmony {
     return this.tetradic(hsv, 90);
   }
 
+  /**
+   * Returns an array of colors of a darker shade
+   * 
+   * @param {Colors.hsl} hsl 
+   * @param {number}     colors
+   * @param {number}     [distanceToBlack=1]  0-1, where 1 is all the way to black
+   * @returns 
+   */
   static shade(hsl: Colors.hsl, colors: number, distanceToBlack: number = 1) : Colors.hsl[] {
     let hsls: Colors.hsl[] = []
     let start = hsl.l
@@ -117,6 +125,14 @@ class Harmony {
     return hsls
   }
 
+  /**
+   * Returns an array of colors of a lighter tint
+   * 
+   * @param {Colors.hsl} hsl 
+   * @param {number}     colors
+   * @param {number}     [distanceToWhite=1]  0-1, where 1 is all the way to white
+   * @returns 
+   */
   static tint(hsl: Colors.hsl, colors: number, distanceToWhite: number = 1) : Colors.hsl[] {
     let hsls: Colors.hsl[] = []
     let start = hsl.l
@@ -129,6 +145,15 @@ class Harmony {
     return hsls
   }
 
+  /**
+   * Returns an array of colors of darker shades and lighter tints
+   * 
+   * @param {Colors.hsl} hsl 
+   * @param {number}     colors
+   * @param {number}     [distance=1]       0-1, where 1 is all the way to closest bound OR white, if distanceShade given
+   * @param {number}     [distanceShade=1]  0-1, where 1 is all the way to black
+   * @returns 
+   */
   static shadetint(hsl: Colors.hsl, colors: number, distance: number = 1, distanceShade?: number) : Colors.hsl[] {
     let hsls: Colors.hsl[] = []
     let tEnd, sEnd, tSeparation, sSeparation
