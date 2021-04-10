@@ -16,7 +16,6 @@
 
 /**
  * CIE Constants of L* Function
- * [Supplement No. 2 to CIE Publication No. 15 (E-1.3.1) 1971 / (TC-1.3) 1978]
  *   ϵ = cieE
  *   κ = cieK
  * 
@@ -32,12 +31,12 @@
  *   reference illuminants (generally d50 and d65, not comprehensive)
  */
 
-// 0.008856  Actual CIE standard (used)
-// 216/24389 Intent of CIE standard
-export const cieE = 0.008856
-// 903.3     Actual CIE standard (used)
-// 24389/27  Intent of CIE standard
-export const cieK = 903.3
+// 0.008856  Initial CIE standard
+// 216/24389 Intent of CIE standard, updated to standard in 2004
+export const cieE = 216/24389
+// 903.3     Initial CIE standard
+// 24389/27  Intent of CIE standard, updated to standard in 2004
+export const cieK = 24389/27
 
 // Standard Illuminant White Points, including:
 //   Reference Hue and RGB values

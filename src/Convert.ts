@@ -874,8 +874,6 @@ class Convert {
   /**
    * Convert RGB to XYZ
    * X, Y, and Z will be between 0 and the white point reference XYZ values
-   * Formulae and matrices originally from:
-   * http://www.brucelindbloom.com
    *
    * @param  {Colors.rgb} rgb
    * @param  {string}     [colorSpace=srgb]    RGB color space (e.g. sRGB)

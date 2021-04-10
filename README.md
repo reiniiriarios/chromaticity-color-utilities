@@ -1615,11 +1615,17 @@ http://www.physics.sfasu.edu/astro/color/blackbodyc.txt
 
 todo: clean this up
 
+**Recommendation  ITU-R  BT.2020-2**, *Parameter values for ultra-high definition television systems for productionand international programme exchange*,
+https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.2020-2-201510-I!!PDF-E.pdf
+
 **Recommendation  ITU-R  BT.709-6**, *Parameter values for the HDTV standards for production and international programme exchange*,
 https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-6-201506-I!!PDF-E.pdf
 
 **Recommendation  ITU-R  BT.601-7**, *Studio encoding parameters of digital television for standard 4:3and wide-screen 16:9 aspect ratios*,
 https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.601-7-201103-I!!PDF-E.pdf
+
+*CIE 15: Technical Report: Colorimetry, 3rd edition*,
+https://archive.org/details/gov.law.cie.15.2004
 
 *Computing RGB-to-XYZ and XYZ-to-RGB matrices*,
 http://www.brucelindbloom.com
@@ -1629,3 +1635,6 @@ http://www.physics.sfasu.edu/astro/color/spectra.html
 
 *Converting temperature (Kelvin) to RGB*, 
 https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html
+
+*HSP Color Model — Alternative to HSV (HSB) and HSL*,
+https://alienryderflex.com/hsp.html
