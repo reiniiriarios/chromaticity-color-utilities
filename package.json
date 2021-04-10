@@ -28,7 +28,21 @@
     "chroma",
     "color conversion",
     "color utilities",
-    "color schemes"
+    "color modification",
+    "color schemes",
+    "color spaces",
+    "standard illuminants",
+    "video color",
+    "luminance",
+    "luminosity",
+    "perceived brightness",
+    "RGB",
+    "Rec. 709","Rec. 2020",
+    "HSV","HSL","HSI","HSP",
+    "CMYK",
+    "YIQ",
+    "CIE XYZ", "CIE xyY", "CIE Lab", "CIE Luv",
+    "ypbpr","ycbcr"
   ],
   "devDependencies": {
     "@types/express": "^4.17.11",
