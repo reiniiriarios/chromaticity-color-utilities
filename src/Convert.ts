@@ -566,6 +566,162 @@ class Convert {
     return hsl;
   }
 
+  static rgb2hsp(rgb: Colors.rgb, round: boolean = true, Pr: number = 0.299, Pg: number = 0.587, Pb: number = 0.114) : Colors.hsp {
+    if (Pr + Pg + Pb != 1) {
+      throw new Error('Pr + Pg + Pb must = 1')
+    }
+
+    let maxVal = (2 ** rgb.bitDepth) - 1
+    let r = rgb.r / maxVal
+    let g = rgb.g / maxVal
+    let b = rgb.b / maxVal
+    
+    let pb = Math.sqrt(Math.pow(r,2) * Pr + Math.pow(g,2) * Pg + Math.pow(b,2) * Pb)
+
+    let value = Math.max(r,g,b)
+    let chroma = value - Math.min(r,g,b)
+
+    let s = value ? chroma / value : 0
+
+    let h
+    if      (!chroma)    h = 0
+    else if (value == r) h = (g - b) / chroma
+    else if (value == g) h = (b - r) / chroma + 2
+    else if (value == b) h = (r - g) / chroma + 4
+    else                 h = 0
+
+    h  *= 60
+    while (h >= 360) h -= 360
+    while (h < 0) h += 360
+
+    s  *= 100
+    pb *= 100
+
+    let a = rgb.a / maxVal * 100
+
+    if (round) {
+      h = Math.round(h)
+      s = Math.round(s)
+      pb = Math.round(pb)
+      a = Math.round(a)
+    }
+
+    return new Colors.hsp(h, s, pb, a, Pr, Pg, Pb)
+  }
+
+  static hsp2rgb(hsp: Colors.hsp, round: boolean = true, bitDepth: number = 8) : Colors.rgb {
+    let hp = hsp.h / 60
+    let s =  hsp.s / 100
+    let pb = hsp.p / 100
+
+    let s0 = 1 - s
+
+    let r, g, b
+
+    let hpf = Math.floor(hp)
+    let hpp
+    if (s0 > 0) {
+      switch (hpf) {
+        case 0: //R>G>B
+          hpp = hp
+          b = pb / Math.sqrt(hsp.pr / Math.pow(s0, 2) + hsp.pg * Math.pow(1 + hpp + (1 / s0 - 1), 2) + hsp.pb)
+          r = b / s0
+          g = b + hpp * (r - b)
+          break
+        case 1: //G>R>B
+          hpp = -1 * hp + 2
+          b = pb / Math.sqrt(hsp.pg / Math.pow(s0, 2) + hsp.pr * Math.pow(1 + hpp * (1 / s0 - 1), 2) + hsp.pb)
+          g = b / s0
+          r = b + hpp * (g - b)
+          break
+        case 2: //G>B>R
+          hpp = hp - 2
+          r = pb / Math.sqrt(hsp.pg / Math.pow(s0, 2) + hsp.pb * Math.pow(1 + hpp * (1 / s0 - 1), 2) + hsp.pr)
+          g = r / s0
+          b = r + hpp * (g - r)
+          break
+        case 3: //B>G>R
+          hpp = -1 * hp + 4
+          r = pb / Math.sqrt(hsp.pb / Math.pow(s0, 2) + hsp.pr * Math.pow(1 + hpp * (1 / s0 - 1) ,2) + hsp.pr)
+          b = r / s0
+          g = r + hpp * (b - r)
+          break
+        case 4: //B>R>G
+          hpp = hp - 4
+          g = pb / Math.sqrt(hsp.pb / Math.pow(s0, 2) + hsp.pr * Math.pow(1 + hpp * (1 / s0 - 1), 2) + hsp.pg)
+          b = g / s0
+          r = g + hpp * (b - g)
+          break
+        case 5: //R>B>G
+        default:
+          hpp = -1 * hp + 6
+          g = pb / Math.sqrt(hsp.pr / Math.pow(s0, 2) + hsp.pb * Math.pow(1 + hpp * (1 / s0 - 1), 2) + hsp.pg)
+          r = g / s0
+          b = g + hpp * (r - g)
+      }
+    }
+    else {
+      switch (hpf) {
+        case 0: //R>G>B
+          hpp = hp
+          r = Math.sqrt(Math.pow(pb,2)/(hsp.pr + hsp.pg * Math.pow(hpp, 2)))
+          g = r * hpp
+          b = 0
+          break
+        case 1: //G>R>B
+          hpp = -1 * hp + 2
+          g = Math.sqrt(Math.pow(pb,2)/(hsp.pg + hsp.pr * Math.pow(hpp, 2)))
+          r = g * hpp
+          b = 0
+          break
+        case 2: //G>B>R
+          hpp = hp - 2
+          g = Math.sqrt(Math.pow(pb,2)/(hsp.pr + hsp.pg * Math.pow(hpp, 2)))
+          b = g * hpp
+          r = 0
+          break
+        case 3: //B>G>R
+          hpp = -1 * hp + 4
+          b = Math.sqrt(Math.pow(pb,2)/(hsp.pb + hsp.pg * Math.pow(hpp, 2)))
+          g = b * hpp
+          r = 0
+          break
+        case 4: //B>R>G
+          hpp = hp - 4
+          b = Math.sqrt(Math.pow(pb,2)/(hsp.pb + hsp.pr * Math.pow(hpp, 2)))
+          r = b * hpp
+          g = 0
+          break
+        case 5: //R>B>G
+        default:
+          hpp = -1 * hp + 6
+          r = Math.sqrt(Math.pow(pb,2)/(hsp.pr + hsp.pb * Math.pow(hpp, 2)))
+          b = r * hpp
+          g = 0
+      }
+    }
+
+    r = Math.min(Math.max(r,0),1)
+    g = Math.min(Math.max(g,0),1)
+    b = Math.min(Math.max(b,0),1)
+
+    let max = (2 ** bitDepth) - 1
+    r *= max
+    g *= max
+    b *= max
+
+    let a = hsp.a / 100 * max
+
+    if (round) {
+      r = Math.round(r)
+      g = Math.round(g)
+      b = Math.round(b)
+      a = Math.round(a)
+    }
+
+    return new Colors.rgb(r,g,b,a,bitDepth)
+  }
+
   /////////// CMYK ///////////
 
   /**
@@ -1335,8 +1491,6 @@ class Convert {
   /**
    * Convert a wavelength in nm to RGB
    * This is hugely perceptual and approximate
-   * Original algorithm:
-   * https://academo.org/demos/wavelength-to-colour-relationship/
    *
    * @param  {Colors.nm}  nm            Wavelength of light in nanometers (positive number)
    * @param  {number}     [gamma=0.8]   Gamma adjustment

@@ -36,10 +36,25 @@ export interface newColorArgs {
     gamma?: number
 }
 
+export interface allColorProps {
+    bitDepth?: number
+    normalized?: boolean
+    colorSpace?: string
+    referenceWhite?: string
+    kb?: number
+    kr?: number
+    yLower?: number
+    yUpper?: number
+    cLower?: number
+    cUpper?: number
+    gamma?: number
+}
+
 export interface modifyArgs {
     method?: string
     with?: colorType
     amount?: number
+    round?: boolean
 }
 
 export interface schemeArgs {
@@ -48,6 +63,20 @@ export interface schemeArgs {
 
 export abstract class colorType {
     constructor() {}
+    
+    bitDepth?: number
+    normalized?: boolean
+    colorSpace?: string
+    referenceWhite?: string
+    kb?: number
+    kr?: number
+    yLower?: number
+    yUpper?: number
+    cLower?: number
+    cUpper?: number
+    gamma?: number
+
+    a?: number
 
     public to(type:string, args?: newColorArgs) : colorType|any {
         args = this.setArgs(args)
@@ -77,6 +106,11 @@ export abstract class colorType {
             case 'hsi':
             case 'hsia':
                 return this.tohsi(args)
+            case 'hsp':
+            case 'hspa':
+            case 'hspb':
+            case 'hspba':
+                return this.tohsp(args)
             case 'cmyk':
                 return this.tocmyk(args)
             case 'yiq':
@@ -100,16 +134,26 @@ export abstract class colorType {
 
     public modify(modification:string, args?: modifyArgs) : colorType {
         if (typeof args == 'undefined') args = {}
+        let og = this.constructor['name']
+        let ogargs : allColorProps = {
+            bitDepth: this.bitDepth,
+            normalized: this.normalized,
+            colorSpace: this.colorSpace,
+            referenceWhite: this.referenceWhite,
+            kb: this.kb,
+            kr: this.kr,
+            yLower: this.yLower,
+            yUpper: this.yUpper,
+            cLower: this.cLower,
+            cUpper: this.cUpper,
+            gamma: this.gamma
+        }
+        let ogalpha : boolean|number = (typeof this.a == 'undefined' ? false : this.a)
+        let modified: colorType
         switch (modification) {
             case 'blend':
                 if (typeof args.with === 'undefined') {
                     throw new Error('Missing second color to blend with')
-                }
-                if (typeof args.amount === 'undefined') {
-                    args.amount = 0.5
-                }
-                else {
-                    this.valueRangeCheck(args.amount, 0, 1, 'Blend amount must be between 0 and 1')
                 }
                 if (typeof args.method === 'undefined') {
                     args.method = 'rgb'
@@ -119,18 +163,110 @@ export abstract class colorType {
                     case 'rgb':
                     case 'rgba':
                     case 'hex':
-                        tmpColor1 = this.to('rgb', { round: false })
-                        tmpColor2 = args.with.to('rgb', { round: false })
-                        return Modify.rgbBlend(tmpColor1, tmpColor2, args.amount)
+                        tmpColor1 = this.torgb({ round: false })
+                        tmpColor2 = args.with.torgb({ round: false })
+                        modified = Modify.rgbBlend(tmpColor1, tmpColor2, args.amount)
+                        break
                     case 'hsv':
                     case 'hsva':
-                        tmpColor1 = this.to('hsv', { round: false })
-                        tmpColor2 = args.with.to('hsv', { round: false })
-                        return Modify.hsvBlend(tmpColor1, tmpColor2, args.amount)
+                        tmpColor1 = this.tohsv({ round: false })
+                        tmpColor2 = args.with.tohsv({ round: false })
+                        modified = Modify.hsvBlend(tmpColor1, tmpColor2, args.amount)
+                        break
+                    default:
+                        throw new Error('Unrecognized blending method')
                 }
+            case 'darken':
+            case 'darker':
+                if (typeof args.method === 'undefined') {
+                    args.method = 'hsl'
+                }
+                switch (args.method) {
+                    case 'hsl':
+                    case 'hsla':
+                    case 'lightness':
+                        modified = Modify.hslDarken(this.tohsl({ round: false }), args.amount, args.round)
+                        break
+                    /*
+                    case 'luma':
+                    case 'luminance':
+                        modified = Modify.labDarken(this.tolab({ round: false }), args.amount, args.round)
+                        break
+                    */
+                    default:
+                        throw new Error('Unrecognized darken method')
+                }
+                break
+            case 'lighten':
+            case 'lighter':
+                if (typeof args.method === 'undefined') {
+                    args.method = 'hsl'
+                }
+                switch (args.method) {
+                    case 'hsl':
+                    case 'hsla':
+                    case 'lightness':
+                        modified = Modify.hslLighten(this.tohsl({ round: false }), args.amount, args.round)
+                        break
+                    /*
+                    case 'lab':
+                    case 'luma':
+                    case 'luminance':
+                        modified = Modify.labLighten(this.tolab({ round: false }), args.amount, args.round)
+                        break
+                    */
+                    default:
+                        throw new Error('Unrecognized lighten method')
+                }
+                break
+            case 'desaturate':
+            case 'desat':
+                if (typeof args.method === 'undefined') {
+                    args.method = 'hsl'
+                }
+                switch (args.method) {
+                    case 'hsv':
+                    case 'hsva':
+                    case 'value':
+                        modified = Modify.hsvDesaturate(this.tohsv({ round: false }), args.amount, args.round)
+                        break
+                    case 'hsl':
+                    case 'hsla':
+                    case 'lightness':
+                        modified = Modify.hslDesaturate(this.tohsl({ round: false }), args.amount, args.round)
+                        break
+                    default:
+                        throw new Error('Unrecognized desaturate method')
+                }
+                break
+            case 'saturate':
+            case 'sat':
+                if (typeof args.method === 'undefined') {
+                    args.method = 'hsl'
+                }
+                switch (args.method) {
+                    case 'hsv':
+                    case 'hsva':
+                    case 'value':
+                        modified = Modify.hsvSaturate(this.tohsv({ round: false }), args.amount, args.round)
+                        break
+                    case 'hsl':
+                    case 'hsla':
+                    case 'lightness':
+                        modified = Modify.hslSaturate(this.tohsl({ round: false }), args.amount, args.round)
+                        break
+                    default:
+                        throw new Error('Unrecognized saturate method')
+                }
+                break
             default:
                 throw new Error('Unrecognized modify action')
         }
+
+        let ogModified = modified.to(og, ogargs)
+        if (ogalpha) ogModified.a = ogalpha // otherwise this gets lost on some modifications
+
+        return ogModified
     }
 
     public scheme(type:string, args?: schemeArgs) : colorType[] {
@@ -210,6 +346,10 @@ export abstract class colorType {
     protected tohsi(args: newColorArgs) : hsi {
         let rgb = this.torgb(args)
         return Convert.rgb2hsi(rgb, args.round)
+    }
+    protected tohsp(args: newColorArgs) : hsp {
+        let rgb = this.torgb(args)
+        return Convert.rgb2hsp(rgb, args.round)
     }
     protected tocmyk(args: newColorArgs) : cmyk {
         let rgb = this.torgb(args)
@@ -539,6 +679,42 @@ export class hsi extends colorType {
     }
 
     protected tohsi(args: newColorArgs) : hsi {
+        return this
+    }
+}
+
+export class hsp extends colorType {
+    h: number
+    s: number
+    p: number
+    a: number
+    pr: number
+    pg: number
+    pb: number
+
+    constructor(h: number, s: number, p: number, a: number = 100, pr: number = 0.299, pg: number = 0.587,pb: number = 0.114) {
+        super()
+        this.valueRangeCheck(h, 0, 360)
+        this.valueRangeCheck(s, 0, 100)
+        this.valueRangeCheck(p, 0, 100)
+        this.valueRangeCheck(a, 0, 100)
+        if (pr + pg + pb != 1) {
+            throw new Error('Pr + Pg + Pb must = 1')
+        }
+        this.h = h
+        this.s = s
+        this.p = p
+        this.a = a
+        this.pr = pr
+        this.pg = pg
+        this.pb = pb
+    }
+
+    protected torgb(args: newColorArgs) : rgb {
+        return Convert.hsp2rgb(this, args.round, args.bitDepth)
+    }
+
+    protected tohsb(args: newColorArgs) : hsp {
         return this
     }
 }

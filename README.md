@@ -640,10 +640,13 @@ Color spaces and standard illuminant arguments are case-insensitive. Color space
 
 When blending two colors, the amount ∈ [0,1] refers to the percentage the second color is blended with the first. In other words, 0 means 0% of the second color and 100% of the first while 1 means 100% of the second color and 0% of the first.
 
+Blending methods include: `rgb`, `hsv`
+
 ```ts
 let color3 = color1.modify('blend', {
-  with: color2,  // REQUIRED, can be any color of any type
-  amount: number // optional, 0 - 1, defaults to 0.5
+  with: color2,   // REQUIRED, can be any color of any type
+  amount: number, // optional, 0 - 1, defaults to 0.5
+  method: string  // optional, defaults to 'rgb'
 })
 
 // e.g.
@@ -661,19 +664,78 @@ let color5 = Color.from('hex','ee5432').modify('blend', {
 
 ### Darken
 
-todo
+Methods available are: `lightness`, `luminance` (todo)
+
+These methods are intended to provide alternative ways of modifying a color versus changing the values directly, which can make more sense.
+
+```ts
+let color2 = color1.modify('darken', {
+  amount: number, // optional, 0 - 1, defaults to 0.5
+  method: string  // optional, defaults to 'lightness'
+  round: boolean  // optional, defaults to true
+})
+
+let color2 = Color.from('rgb',[255,0,255]).modify('darken','lightness')
+// rgb { r: 128, g: 0, b: 128, a: 200, bitDepth: 8, max: 255 }
+```
 
 ### Lighten
 
-todo
+Methods available are: `lightness`, `luminance` (todo)
+
+These methods are intended to provide alternative ways of modifying a color versus changing the values directly, which can make more sense.
+
+```ts
+let color2 = color1.modify('lighten', {
+  amount: number, // optional, 0 - 1, defaults to 0.5
+  method: string  // optional, defaults to 'lightness'
+  round: boolean  // optional, defaults to true
+})
+
+let color2 = Color.from('rgb',[255,0,255,200]).modify('lighten','lightness')
+// rgb { r: 255, g: 128, b: 255, a: 200, bitDepth: 8, max: 255 }
+```
 
 ### Saturate
 
-todo
+Methods available are: `hsv`, `hsl`. The input color type does not matter.
+
+These methods are intended to provide alternative ways of modifying a color versus changing the values directly, which can make more sense.
+
+```ts
+let color2 = color1.modify('saturate', {
+  amount: number, // optional, 0 - 1, defaults to 0.5
+  method: string  // optional, defaults to 'hsl'
+  round: boolean  // optional, defaults to true
+})
+
+let color2 = Color.from('rgb',[128,64,128,200]).modify('saturate','hsl')
+// rgb { r: 160, g: 32, b: 160, a: 200, bitDepth: 8, max: 255 }
+
+let color2 = Color.from('rgb',[128,64,128,200]).modify('saturate','hsv')
+// rgb { r: 128, g: 32, b: 128, a: 200, bitDepth: 8, max: 255 }
+```
 
 ### Desaturate
 
-todo
+Methods available are: `hsv`, `hsl`. The input color type does not matter.
+
+These methods are intended to provide alternative ways of modifying a color versus changing the values directly, which can make more sense.
+
+
+```ts
+let color2 = color1.modify('saturate', {
+  amount: number, // optional, 0 - 1, defaults to 0.5
+  method: string  // optional, defaults to 'hsl'
+  round: boolean  // optional, defaults to true
+})
+
+let color2 = Color.from('rgb',[255,0,255,200]).modify('desaturate','hsl')
+// rgb { r: 191, g: 64, b: 191, a: 200, bitDepth: 8, max: 255 }
+
+let color2 = Color.from('rgb',[255,0,255,200]).modify('desaturate','hsl')
+// rgb { r: 255, g: 128, b: 255, a: 200, bitDepth: 8, max: 255 }
+```
 
 ## Color Scheme Generation
 
@@ -925,6 +987,168 @@ C references chroma
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsi-rgb-m.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsl-rgb-rgb.png)
+
+### RGB to HSP
+
+Where P is perceived brightness. This algorithm is similar to the one Photoshop uses when converting images to greyscale.
+
+If no values are passed, the default weight for P is as follows:
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsp-p.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsp.png)
+
+<!--
+\begin{align*}
+P_{R} &= 0.299 \\ 
+P_{G} &= 0.587 \\ 
+P_{B} &= 0.114
+\end{align*}
+
+\begin{align*}
+V &= max(R,G,B) \\ 
+C &= V - min(R,G,B) \\
+\:\\
+H&=\begin{cases}
+0 & \text{ if } C=0 \\ 
+\frac{G - B}{C} & \text{ if } V=R \\ 
+\frac{B - R}{C} + 2 & \text{ if } V=G \\ 
+\frac{R - G}{C} + 4 & \text{ if } V=B \\
+\end{cases} \\
+\:\\
+S &= \begin{cases}
+0 & \text{ if } V=0 \\ 
+\frac{V}{C} & \text{ otherwise }
+\end{cases} \\
+\:\\
+P &= \sqrt{R^2 \cdot P_{R} + G^2 \cdot P_{G} + B^2 \cdot P_{B}} \\  
+\end{align*}
+-->
+
+### HSP to RGB
+
+Where P is perceived brightness. This algorithm is similar to the one Photoshop uses when converting images to greyscale.
+
+If no values are passed, the default weight for P is as follows:
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsp-p.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsp-rgb-v.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsp-rgb-f.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsp-rgb-r.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsp-rgb-g.png)
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/hsp-rgb-b.png)
+
+<!--
+\begin{align*}
+H' &= \frac{H}{60} \\ 
+S_{0} &= 1 - S \\
+H_{0} &= \begin{cases}
+H' & \text{ if } H' < 1 \\ 
+-H'+2 & \text{ if } 1 \leq H' < 2 \\
+H'-2 & \text{ if } 2 \leq H' < 3 \\
+-H'+4 & \text{ if } 3 \leq H' < 4 \\
+H'-4 & \text{ if } 4 \leq H' < 5 \\
+-H'+6 & \text{ if } 5 \leq H' < 6 \\
+\end{cases}
+\end{align*}
+
+\begin{align*}
+f_{a}(x) &= \frac{x}{S_{0}} \\
+f_{b}(x) &= x \cdot S_{0} \\
+f_{c}(x,y) &= y + H_{0} \cdot (x - y) \\
+f_{d}(x,y,z) &= \frac
+{P}
+{\sqrt{\frac{P_{x}}{S_{0}^2}}}
++ P_{y} \cdot
+(1 + H_{0} + \frac{1}{S_{0}-1})^2
++ P_{z}\\
+f_{e}(x,y) &= \sqrt{
+\frac{P^2}
+{P_{x} + P_{y} \cdot H_{0}^2}
+}
+\end{align*}
+
+
+R = \begin{cases}
+f_{a}(B) &
+    \text{ if } S_{0} > 0 \text{ and } H' < 1 \\ 
+f_{c}(G,B) &
+    \text{ if } S_{0} > 0 \text{ and } 1 \leq H' < 2 \\
+f_{d}(R,B,G) &
+    \text{ if } S_{0} > 0 \text{ and } 2 \leq H' < 3 \\
+f_{a}(B,R,G) &
+    \text{ if } S_{0} > 0 \text{ and } 3 \leq H' < 4 \\
+f_{c}(B,G) &
+    \text{ if } S_{0} > 0 \text{ and } 4 \leq H' < 5 \\
+f_{a}(G) &
+    \text{ if } S_{0} > 0 \text{ and } 5 \leq H' < 6 \\
+f_{e}(R,G) &
+    \text{ if } S_{0} = 0 \text{ and } H' < 1 \\ 
+f_{b}(G) &
+    \text{ if } S_{0} = 0 \text{ and } 1 \leq H' < 2 \\
+0 &
+    \text{ if } S_{0} = 0 \text{ and } 2 \leq H' < 4 \\
+f_{b}(B) &
+    \text{ if } S_{0} = 0 \text{ and } 4 \leq H' < 5 \\
+f_{e}(R,B) &
+    \text{ if } S_{0} = 0 \text{ and } 5 \leq H' < 6 \\
+\end{cases}
+
+G = \begin{cases}
+f_{c}(R,B) &
+    \text{ if } S_{0} > 0 \text{ and } H' < 1 \\ 
+f_{a}(B) &
+    \text{ if } S_{0} > 0 \text{ and } 1 \leq H' < 2 \\
+f_{a}(R) &
+    \text{ if } S_{0} > 0 \text{ and } 2 \leq H' < 3 \\
+f_{c}(B,R) &
+    \text{ if } S_{0} > 0 \text{ and } 3 \leq H' < 4 \\
+f_{d}(B,R,G) &
+    \text{ if } S_{0} > 0 \text{ and } 4 \leq H' < 5 \\
+f_{d}(R,B,G) &
+    \text{ if } S_{0} > 0 \text{ and } 5 \leq H' < 6 \\
+f_{b}(R) &
+    \text{ if } S_{0} = 0 \text{ and } H' < 1 \\ 
+f_{e}(G,R) &
+    \text{ if } S_{0} = 0 \text{ and } 1 \leq H' < 2 \\
+f_{e}(R,G) &
+    \text{ if } S_{0} = 0 \text{ and } 2 \leq H' < 3 \\
+f_{b}(B) &
+    \text{ if } S_{0} = 0 \text{ and } 3 \leq H' < 4 \\
+0 &
+    \text{ if } S_{0} = 0 \text{ and } 4 \leq H' < 6 \\
+\end{cases}
+
+B = \begin{cases}
+f_{a}(B) &
+    \text{ if } S_{0} > 0 \text{ and } H' < 1 \\ 
+f_{d}(G,R,B) &
+    \text{ if } S_{0} > 0 \text{ and } 1 \leq H' < 2 \\
+f_{c}(G,R) &
+    \text{ if } S_{0} > 0 \text{ and } 2 \leq H' < 3 \\
+f_{a}(R) &
+    \text{ if } S_{0} > 0 \text{ and } 3 \leq H' < 4 \\
+f_{a}(G) &
+    \text{ if } S_{0} > 0 \text{ and } 4 \leq H' < 5 \\
+f_{b}(R,G) &
+    \text{ if } S_{0} > 0 \text{ and } 5 \leq H' < 6 \\
+0 &
+    \text{ if } S_{0} = 0 \text{ and } H' < 2 \\ 
+f_{b}(G) &
+    \text{ if } S_{0} = 0 \text{ and } 2 \leq H' < 3 \\
+f_{e}(B,G) &
+    \text{ if } S_{0} = 0 \text{ and } 3 \leq H' < 4 \\
+f_{e}(B,R) &
+    \text{ if } S_{0} = 0 \text{ and } 4 \leq H' < 5 \\
+f_{b}(R) &
+    \text{ if } S_{0} = 0 \text{ and } 5 \leq H' < 6 \\
+\end{cases}
+-->
 
 ### HSV to HSL
 
@@ -1331,12 +1555,33 @@ B &= Y + (2 - 2Kb) \cdot Pb
 
 ## To Do List
 
+* HSB (perceived brightness)
 * Gamma adjustment modification
 * Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
   * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
-* Lighten and darken colors
-* Saturate and desaturate colors
 * Create color schemes / gradient schemes based on tints and shades
 * Generate gradients given two colors
 * Generate triangular gradients based on three colors
 * Modification methods that retain luma
+
+Review:
+http://www.physics.sfasu.edu/astro/color/blackbodyc.txt
+
+## References
+
+todo: clean this up
+
+**Recommendation  ITU-R  BT.709-6**, *Parameter values for the HDTV standards for production and international programme exchange*,
+https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-6-201506-I!!PDF-E.pdf
+
+**Recommendation  ITU-R  BT.601-7**, *Studio encoding parameters of digital television for standard 4:3and wide-screen 16:9 aspect ratios*,
+https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.601-7-201103-I!!PDF-E.pdf
+
+*Computing RGB-to-XYZ and XYZ-to-RGB matrices*,
+http://www.brucelindbloom.com
+
+*Approximate RGB values for Visible Wavelengths*,
+http://www.physics.sfasu.edu/astro/color/spectra.html
+
+*Converting temperature (Kelvin) to RGB*, 
+https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html

@@ -42,7 +42,9 @@ class Modify {
    * @param  {boolean}    [round=true]
    * @return {Colors.rgb}
    */
-  static rgbBlend(rgb1: Colors.rgb, rgb2: Colors.rgb, amount: number, round: boolean = true): Colors.rgb {
+  static rgbBlend(rgb1: Colors.rgb, rgb2: Colors.rgb, amount: number = 0.5, round: boolean = true): Colors.rgb {
+    amount = Math.min(Math.max(amount, 0), 1)
+
     let r3 = rgb1.r + ((rgb2.r - rgb1.r) * amount);
     let g3 = rgb1.g + ((rgb2.g - rgb1.g) * amount);
     let b3 = rgb1.b + ((rgb2.b - rgb1.b) * amount);
@@ -67,7 +69,9 @@ class Modify {
    * @param  {boolean}    [round=true]
    * @return {Colors.hsv}
    */
-  static hsvBlend(hsv1: Colors.hsv, hsv2: Colors.hsv, amount: number, round: boolean = true): Colors.hsv {
+  static hsvBlend(hsv1: Colors.hsv, hsv2: Colors.hsv, amount: number = 0.5, round: boolean = true): Colors.hsv {
+    amount = Math.min(Math.max(amount, 0), 1)
+
     let hueDiff;
     if (Math.abs(hsv2.h - hsv1.h) > 180) {
       hueDiff = 360 - Math.abs((hsv2.h - hsv1.h) * amount);
@@ -92,20 +96,46 @@ class Modify {
     return new Colors.hsv(h3, s3, v3, a3)
   }
 
-  static darken() : void {
-
+  static hslDarken(hsl: Colors.hsl, amount: number = 0.5, round: boolean = true) : Colors.hsl {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let vDarker = hsl.l * realAmount
+    if (round) vDarker = Math.round(vDarker)
+    return new Colors.hsl(hsl.h, hsl.s, vDarker, hsl.a)
   }
 
-  static lighten() : void {
-
+  static hslLighten(hsl: Colors.hsl, amount: number = 0.5, round: boolean = true) : Colors.hsl {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let vLighter = hsl.l + ((100 - hsl.l) * realAmount)
+    if (round) vLighter = Math.round(vLighter)
+    return new Colors.hsl(hsl.h, hsl.s, vLighter, hsl.a)
   }
 
-  static desaturate() : void {
-
+  static hslDesaturate(hsl: Colors.hsl, amount: number = 0.5, round: boolean = true) : Colors.hsl {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let sLess = hsl.s * realAmount
+    if (round) sLess = Math.round(sLess)
+    return new Colors.hsl(hsl.h, sLess, hsl.l, hsl.a)
   }
 
-  static saturate() : void {
+  static hslSaturate(hsl: Colors.hsl, amount: number = 0.5, round: boolean = true) : Colors.hsl {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let sMore = hsl.s + ((100 - hsl.s) * realAmount)
+    if (round) sMore = Math.round(sMore)
+    return new Colors.hsl(hsl.h, sMore, hsl.l, hsl.a)
+  }
 
+  static hsvDesaturate(hsv: Colors.hsv, amount: number = 0.5, round: boolean = true) : Colors.hsv {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let sLess = hsv.s * realAmount
+    if (round) sLess = Math.round(sLess)
+    return new Colors.hsv(hsv.h, sLess, hsv.v, hsv.a)
+  }
+
+  static hsvSaturate(hsv: Colors.hsv, amount: number = 0.5, round: boolean = true) : Colors.hsv {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let sMore = hsv.s + ((100 - hsv.s) * realAmount)
+    if (round) sMore = Math.round(sMore)
+    return new Colors.hsv(hsv.h, sMore, hsv.v, hsv.a)
   }
 }
 
