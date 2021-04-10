@@ -1751,18 +1751,18 @@ B &= Y + (2 - 2Kb) \cdot Pb
 * Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
   * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
 
-Review:
-http://www.physics.sfasu.edu/astro/color/blackbodyc.txt
-
 ## References
 
-1. International Telecommunications Union. *Recommendation  ITU-R  BT.2020-2*. "Parameter values for ultra-high definition television systems for productionand international programme exchange". (2015)
+1. International Telecommunications Union. *Recommendation  ITU-R  BT.2020-2*.
+"Parameter values for ultra-high definition television systems for productionand international programme exchange". (2015)
 https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.2020-2-201510-I!!PDF-E.pdf
 
-2. International Telecommunications Union. *Recommendation  ITU-R  BT.709-6*. "Parameter values for the HDTV standards for production and international programme exchange". (2015)
+2. International Telecommunications Union. *Recommendation  ITU-R  BT.709-6*.
+"Parameter values for the HDTV standards for production and international programme exchange". (2015)
 https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-6-201506-I!!PDF-E.pdf
 
-3. International Telecommunications Union. *Recommendation  ITU-R  BT.601-7*. "Studio encoding parameters of digital television for standard 4:3and wide-screen 16:9 aspect ratios". (2011)
+3. International Telecommunications Union. *Recommendation  ITU-R  BT.601-7*.
+"Studio encoding parameters of digital television for standard 4:3and wide-screen 16:9 aspect ratios". (2011)
 https://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.601-7-201103-I!!PDF-E.pdf
 
 4. International Commission on Illumination. *CIE 15: Technical Report: Colorimetry, 3rd edition*. (2004)
@@ -1774,10 +1774,12 @@ http://www.brucelindbloom.com
 6. Dan Bruton. "Approximate RGB values for Visible Wavelengths". (1996)
 http://www.physics.sfasu.edu/astro/color/spectra.html
 
-7. Tanner Helland. "Converting temperature (Kelvin) to RGB". (2012)
-https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html
-
-8. Darel Rex Finley. "HSP Color Model — Alternative to HSV (HSB) and HSL". (2006)
+7. Darel Rex Finley. "HSP Color Model — Alternative to HSV (HSB) and HSL". (2006)
 https://alienryderflex.com/hsp.html
 
-9. Michael Stokes (Hewlett-Packard), Matthew Anderson (Microsoft), Srinivasan Chandrasekar (Microsoft), Ricardo Motta (Hewlett-Packard). "A Standard Default Color Space for the Internet - sRGB". (1996) https://www.w3.org/Graphics/Color/sRGB.html
+8. Michael Stokes (Hewlett-Packard), Matthew Anderson (Microsoft), Srinivasan Chandrasekar (Microsoft), Ricardo Motta (Hewlett-Packard).
+"A Standard Default Color Space for the Internet - sRGB". (1996)
+https://www.w3.org/Graphics/Color/sRGB.html
+
+9. William T. Bridgman, NASA; Dan Bruton, SFASU. "RGB Values for Hot Objects". (2000)
+http://www.physics.sfasu.edu/astro/color/blackbodyc.txt

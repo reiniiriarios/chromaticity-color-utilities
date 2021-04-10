@@ -16,7 +16,7 @@
 
 import * as Colors from './Colors'
 import Util from './Util'
-import { cieE, cieK, colorSpaces } from './Reference'
+import { cieE, cieK, colorSpaces, xyzWavelengths } from './Reference'
 
 class Convert {
   /////////// NORMALIZE & GAMMA ///////////
@@ -1581,6 +1581,96 @@ class Convert {
 
   /**
    * Convert a color temperature in Kelvin to RGB
+   * Adapted from 'RGB VALUES FOR HOT OBJECTS' by William T. Bridgman, NASA, 2000
+   * http://www.physics.sfasu.edu/astro/color/blackbodyc.txt
+   * 
+   *   A black body approximation is used where the temperature,
+   *   T, is given in Kelvin.  The XYZ values are determined by
+   *   "integrating" the product of the wavelength distribution of
+   *   energy and the XYZ functions for a uniform source.
+   * 
+   * @param  {Colors.kelvin}  kelvin        Color temperature in degrees Kelvin; must fall between 1000 and 40000
+   * @param  {boolean}        [round=true]
+   * @param  {number}         [bitDepth=8]
+   * @return {Colors.rgb}
+   */
+  static kelvin2rgb(kelvin: Colors.kelvin, round: boolean = true, bitDepth: number = 8): Colors.rgb {
+    // initialize accumulators
+    let xx = 0, yy = 0, zz = 0
+    let con = 1240.0/8.617e-5
+    let dis, wavelength, weight
+    let band, nbands = xyzWavelengths.vectors.length
+
+    // loop over wavelength bands
+    // integration by trapezoid method
+    for (band = 0; band < nbands; band++) {
+      weight = (band == 0 || band == nbands - 1) ? 0.5 : 1
+
+      wavelength = 380 + band * 5
+
+      // generate a black body spectrum
+      dis = 3.74183e-16 * (1 / Math.pow(wavelength, 5)) / (Math.exp(con / (wavelength * kelvin.k)) - 1)
+
+      // simple integration over bands
+      xx += weight * dis * xyzWavelengths.vectors[band][0]
+      yy += weight * dis * xyzWavelengths.vectors[band][1]
+      zz += weight * dis * xyzWavelengths.vectors[band][2]
+    }
+
+    // re-normalize
+    let xxyyzzMax = Math.max(xx, yy, zz)
+    let x = xx / xxyyzzMax
+    let y = yy / xxyyzzMax
+    let z = zz / xxyyzzMax
+
+    let xr = xyzWavelengths.chromaticityCoordinates.r[0]
+    let yr = xyzWavelengths.chromaticityCoordinates.r[1]
+    let zr = 1 - xr - yr
+    let xg = xyzWavelengths.chromaticityCoordinates.g[0]
+    let yg = xyzWavelengths.chromaticityCoordinates.g[1]
+    let zg = 1 - xg - yg
+    let xb = xyzWavelengths.chromaticityCoordinates.b[0]
+    let yb = xyzWavelengths.chromaticityCoordinates.b[1]
+    let zb = 1 - xb - yb
+
+    // convert to rgb
+    let denominator = (xr * yg - xg * yr) * zb + (xb * yr - xr * yb) * zg + (xg * yb - xb * yg) * zr
+
+    let r = ((x  * yg - xg * y ) * zb + (xg * yb - xb * yg) * z  + (xb * y  - x  * yb) * zg) / denominator
+    let g = ((xr * y  - x  * yr) * zb + (xb * yr - xr * yb) * z  + (x  * yb - xb * y ) * zr) / denominator
+    let b = ((xr * yg - xg * yr) * z  + (x  * yr - xr * y ) * zg + (xg * y  - x  * yg) * zr) / denominator
+
+    r = Math.min(Math.max(r,0),1)
+    g = Math.min(Math.max(g,0),1)
+    b = Math.min(Math.max(b,0),1)
+
+    // adjust gamma
+    let rangeMax = Math.max(1.0e-10, r, g, b)
+    r = Math.pow(r / rangeMax, xyzWavelengths.gamma)
+    g = Math.pow(g / rangeMax, xyzWavelengths.gamma)
+    b = Math.pow(b / rangeMax, xyzWavelengths.gamma)
+
+    // adjust to given bit depth
+    let depth = (2 ** bitDepth) - 1
+    r *= depth
+    g *= depth
+    b *= depth
+    
+    r = Math.min(r,depth)
+    g = Math.min(g,depth)
+    b = Math.min(b,depth)
+
+    if (round) {
+      r = Math.round(r)
+      g = Math.round(g)
+      b = Math.round(b)
+    }
+    
+    return new Colors.rgb(r, g, b, depth, bitDepth)
+  }
+
+  /**
+   * Convert a color temperature in Kelvin to RGB
    * Not accurate for scientific purposes
    * Original algorithm from:
    * https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html
@@ -1590,7 +1680,7 @@ class Convert {
    * @param  {number}         [bitDepth=8]
    * @return {Colors.rgb}
    */
-  static kelvin2rgb(kelvin: Colors.kelvin, round: boolean = true, bitDepth: number = 8): Colors.rgb {
+  static kelvin2rgb_deprecated(kelvin: Colors.kelvin, round: boolean = true, bitDepth: number = 8): Colors.rgb {
     let k = kelvin.k / 100
     let max = ((2 ** bitDepth) - 1)
     let scalar = max / 255
