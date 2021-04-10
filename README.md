@@ -1599,7 +1599,6 @@ B &= Y + (2 - 2Kb) \cdot Pb
 
 ## To Do List
 
-* HSB (perceived brightness)
 * Gamma adjustment modification
 * Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
   * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
