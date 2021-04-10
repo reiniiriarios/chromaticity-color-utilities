@@ -1060,6 +1060,17 @@ C references chroma
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsl-s.png)
 
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/rgb-hsl-h.png)
+
+<!--
+H=\begin{cases}
+0 & \text{ if } C=0 \\ 
+\frac{G - B}{C} & \text{ if } V=R \\ 
+\frac{B - R}{C} + 2 & \text{ if } V=G \\ 
+\frac{R - G}{C} + 4 & \text{ if } V=B \\ 
+\end{cases}
+-->
+
 ### HSL to RGB
 
 C references chroma
