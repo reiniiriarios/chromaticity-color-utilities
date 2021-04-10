@@ -64,6 +64,10 @@ export interface modifyArgs {
 
 export interface schemeArgs {
     angle?: number
+    colors?: number
+    distance?: number
+    distanceToBlack?: number
+    distanceToWhite?: number
 }
 
 export abstract class colorType {
@@ -285,39 +289,67 @@ export abstract class colorType {
     public scheme(type:string, args?: schemeArgs) : colorType[] {
         if (typeof args === 'undefined') args = {}
         let og = this.constructor['name']
-        let hsv = this.to('hsv', { round: false })
-        let hsvScheme: colorType[]
+        let intScheme: colorType[]
+        let distance: number|undefined
         type = type.toLowerCase()
         switch (type) {
             case 'complement':
             case 'comp':
-                hsvScheme = Harmony.complement(hsv)
+                intScheme = Harmony.complement(this.to('hsv', { round: false }))
                 break
             case 'analogous':
-                hsvScheme = Harmony.analogous(hsv, args.angle)
+                intScheme = Harmony.analogous(this.to('hsv', { round: false }), args.angle)
                 break
             case 'split complement':
             case 'splitcomplement':
             case 'split':
-                hsvScheme = Harmony.splitComplement(hsv, args.angle)
+                intScheme = Harmony.splitComplement(this.to('hsv', { round: false }), args.angle)
                 break
             case 'triadic':
             case 'triad':
             case 'triangle':
-                hsvScheme = Harmony.triadic(hsv, args.angle)
+                intScheme = Harmony.triadic(this.to('hsv', { round: false }), args.angle)
                 break
             case 'tetradic':
             case 'tetrad':
-                hsvScheme = Harmony.tetradic(hsv, args.angle)
+                intScheme = Harmony.tetradic(this.to('hsv', { round: false }), args.angle)
                 break
             case 'square':
-                hsvScheme = Harmony.square(hsv)
+                intScheme = Harmony.square(this.to('hsv', { round: false }))
+                break
+            case 'shade':
+            case 'shades':
+            case 'darken':
+                if (typeof args.colors === 'undefined') {
+                    throw new Error('Must specify number of colors to include in scheme')
+                }
+                let distance = typeof args.distanceToBlack === 'undefined' ? args.distance : args.distanceToBlack
+                intScheme = Harmony.shade(this.to('hsl', { round: false }), args.colors, distance)
+                break
+            case 'tint':
+            case 'tints':
+            case 'lighten':
+                if (typeof args.colors === 'undefined') {
+                    throw new Error('Must specify number of colors to include in scheme')
+                }
+                distance = typeof args.distanceToWhite === 'undefined' ? args.distance : args.distanceToWhite
+                intScheme = Harmony.tint(this.to('hsl', { round: false }), args.colors, distance)
+                break
+            case 'tintshade':
+            case 'tintsshades':
+            case 'shadetint':
+            case 'shadestints':
+                if (typeof args.colors === 'undefined') {
+                    throw new Error('Must specify number of colors to include in scheme')
+                }
+                distance = typeof args.distanceToWhite === 'undefined' ? args.distance : args.distanceToWhite
+                intScheme = Harmony.shadetint(this.to('hsl', { round: false }), args.colors, distance, args.distanceToBlack)
                 break
             default:
                 throw new Error('Unrecognized color scheme')
         }
         let ogScheme: colorType[] = []
-        hsvScheme.forEach(color => {
+        intScheme.forEach(color => {
             ogScheme.push(color.to(og))
         })
         return ogScheme

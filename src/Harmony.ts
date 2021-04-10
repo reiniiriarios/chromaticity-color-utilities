@@ -104,6 +104,68 @@ class Harmony {
   static square(hsv: Colors.hsv): Array<Colors.hsv> {
     return this.tetradic(hsv, 90);
   }
+
+  static shade(hsl: Colors.hsl, colors: number, distanceToBlack: number = 1) : Colors.hsl[] {
+    let hsls: Colors.hsl[] = []
+    let start = hsl.l
+    let end   = hsl.l * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+    let separation = (start - end) / (colors - 1)
+    for (let i = 0; i < colors; i++) {
+      let nextL = Math.max(hsl.l - (separation * i), 0)
+      hsls.push(new Colors.hsl(hsl.h, hsl.s, nextL))
+    }
+    return hsls
+  }
+
+  static tint(hsl: Colors.hsl, colors: number, distanceToWhite: number = 1) : Colors.hsl[] {
+    let hsls: Colors.hsl[] = []
+    let start = hsl.l
+    let end   = hsl.l + ((100 - hsl.l) * Math.min(Math.max(distanceToWhite, 0), 1))
+    let separation = (end - start) / (colors - 1)
+    for (let i = 0; i < colors; i++) {
+      let nextL = Math.min(hsl.l + (separation * i), 100)
+      hsls.push(new Colors.hsl(hsl.h, hsl.s, nextL))
+    }
+    return hsls
+  }
+
+  static shadetint(hsl: Colors.hsl, colors: number, distance: number = 1, distanceShade?: number) : Colors.hsl[] {
+    let hsls: Colors.hsl[] = []
+    let start, tEnd, sEnd, tSeparation, sSeparation
+
+    if (typeof distanceShade === 'undefined') {
+      if (100 - hsl.l < hsl.l) {
+        tEnd = hsl.l + ((100 - hsl.l) * Math.min(Math.max(distance, 0), 1))
+        tSeparation = (tEnd - hsl.l) / colors
+        sSeparation = tSeparation
+        sEnd = hsl.l - sSeparation * colors
+      }
+      else {
+        sEnd = hsl.l * (1 - Math.min(Math.max(distance, 0), 1))
+        sSeparation = (hsl.l - sEnd) / colors
+        tSeparation = sSeparation
+        tEnd = hsl.l + tSeparation * colors
+      }
+    }
+    else {
+      tEnd  = hsl.l + ((100 - hsl.l) * Math.min(Math.max(distance, 0), 1))
+      tSeparation = (tEnd - hsl.l) / colors
+      sEnd  = hsl.l * (1 - Math.min(Math.max(distanceShade, 0), 1))
+      sSeparation = (hsl.l - sEnd) / colors
+    }
+    
+    for (let i = 0; i < colors; i++) {
+      let nextL = Math.max(sEnd + (sSeparation * i), 0)
+      hsls.push(new Colors.hsl(hsl.h, hsl.s, nextL))
+    }
+    hsls.push(hsl)
+    for (let i = 1; i <= colors; i++) {
+      let nextL = Math.min(hsl.l + (tSeparation * i), 100)
+      hsls.push(new Colors.hsl(hsl.h, hsl.s, nextL))
+    }
+
+    return hsls
+  }
 }
 
 export = Harmony

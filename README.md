@@ -37,9 +37,9 @@
   * [Complementary Schemes](#complementary-schemes)
   * [Analogous, Triadic, & Split Complement Schemes](#analogous-triadic--split-complement-schemes)
   * [Tetradic & Square Schemes](#tetradic--square-schemes)
-  * Tint Scale
-  * Shade Scale
-  * Tint & Shade Scale
+  * [Tint Scale](#tint-scale)
+  * [Shade Scale](#shade-scale)
+  * [Tint & Shade Scale](#tint--shade-scale)
 * [Mathematics](#mathematics)
   * [Normalizing RGB](#normalizing-rgb)
   * [RGB to HSV](#rgb-to-hsv)
@@ -697,6 +697,12 @@ let color4 = Color.from('rgb',[255,0,0]).modify('blend', {
 })
 // rgb { r: 128, g: 128, b: 0, a: 255, bitDepth: 8, max: 255 }
 
+let color4 = Color.from('rgb',[255,0,0]).modify('blend', {
+  with: Color.from('hex','00ff00'),
+  method: 'hsv'
+})
+// rgb { r: 255, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
+
 let color5 = Color.from('hex','ee5432').modify('blend', {
   with: Color.from('rgb',[234, 100, 20, 64]),
   amount: 1/3
@@ -877,35 +883,114 @@ let color2 = Color.from('rgb',[255,0,255]).scheme('square')
 
 ### Tint Scale
 
-todo / not yet implemented
-
 ```ts
 .scheme('tint',{
-  length: number,  // number of colors in scheme
-  distance: number // 0-1, how far away from white to go
+  colors: number,  // REQUIRED, number of colors in scheme
+  distance: number // optional, 0-1, defaults to 1, how close to white scheme should reach
 })
+
+// e.g.
+let tintScheme1 = Color.from('rgb',[100,0,100]).scheme('tint', {colors: 4})
+// [
+//   rgb { r: 100, g: 0, b: 100, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 237, g: 0, b: 237, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 255, g: 118, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 255, g: 255, b: 255, a: 255, bitDepth: 8, max: 255 }
+// ]
+
+let tintScheme2 = Color.from('rgb',[100,0,100]).scheme('tint', {colors: 4, distance: 0.5})
+// [
+//   rgb { r: 100, g: 0, b: 100, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 168, g: 0, b: 168, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 237, g: 0, b: 237, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 255, g: 50, b: 255, a: 255, bitDepth: 8, max: 255 }
+// ]
 ```
 
 ### Shade Scale
 
-todo / not yet implemented
-
 ```ts
 .scheme('shade',{
-  length: number,  // number of colors in scheme
-  distance: number // 0-1, how far away from black to go
+  length: number,  // REQUIRED, number of colors in scheme
+  distance: number // optional, 0-1, defaults to 1, how close to black scheme should reach
 })
+
+// e.g.
+let shadeScheme1 = Color.from('rgb',[255,0,255]).scheme('shade', {colors: 4})
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 170, g: 0, b: 170, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 85, g: 0, b: 85, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 0, b: 0, a: 255, bitDepth: 8, max: 255 }
+// ]
+let shadeScheme2 = Color.from('rgb',[255,0,255]).scheme('shade', {colors: 4, distance: 0.5})
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 212, g: 0, b: 212, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 170, g: 0, b: 170, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 128, g: 0, b: 128, a: 255, bitDepth: 8, max: 255 }
+// ]
 ```
 
 ### Tint & Shade Scale
 
-todo / not yet implemented
+The total number of colors in the scheme will be `colors * 2 + 1`, including the original color.
+
+Either include `distance` OR `distanceToWhite` and `distanceToBlack`. If you only include distance it will calculate distance to the nearest bound (black or white) and use that as measure for the other direction.
 
 ```ts
 .scheme('tintshade',{
-  length: number,  // number of colors in scheme
-  distance: number // 0-1, how far away from closest bound (white or black) to go
+  colors: number,          // REQUIRED, number of colors in each direction from source color
+  distance: number,        // optional, 0-1, defaults to 1 OR
+  distanceToWhite: number, // optional, 0-1, defaults to 1
+  distanceToBlack: number  // optional, 0-1, defaults to 1
 })
+
+// e.g.
+let scheme1 = Color.from('rgb',[100,0,100]).scheme('tintshade', {colors: 3})
+// [
+//   rgb { r: 0, g: 0, b: 0, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 33, g: 0, b: 33, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 67, g: 0, b: 67, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 100, g: 0, b: 100, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 133, g: 0, b: 133, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 167, g: 0, b: 167, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 200, g: 0, b: 200, a: 255, bitDepth: 8, max: 255 }
+// ]
+let scheme2 = Color.from('rgb',[200,100,200]).scheme('tintshade', {colors: 3})
+// [
+//   rgb { r: 66, g: 24, b: 66, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 118, g: 42, b: 118, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 170, g: 60, b: 170, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 200, g: 100, b: 200, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 218, g: 152, b: 218, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 237, g: 203, b: 237, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 255, g: 255, b: 255, a: 255, bitDepth: 8, max: 255 }
+// ]
+let scheme4 = Color.from('rgb',[200,100,200]).scheme('tintshade', {colors: 3, distance: 0.5})
+// [
+//   rgb { r: 144, g: 51, b: 144, a: 255, bitDepth: 8, max: 255 }, 
+//   rgb { r: 170, g: 60, b: 170, a: 255, bitDepth: 8, max: 255 }, 
+//   rgb { r: 191, g: 74, b: 191, a: 255, bitDepth: 8, max: 255 }, 
+//   rgb { r: 200, g: 100, b: 200, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 209, g: 126, b: 209, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 218, g: 152, b: 218, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 227, g: 178, b: 227, a: 255, bitDepth: 8, max: 255 } 
+// ]
+let scheme5 = Color.from('rgb',[200,100,200]).scheme('tintshade', {
+  colors: 3,
+  distanceToWhite: 1,
+  distanceToBlack: 1
+})
+// [
+//   rgb { r: 0, g: 0, b: 0, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 74, g: 26, b: 74, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 148, g: 52, b: 148, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 200, g: 100, b: 200, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 218, g: 152, b: 218, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 237, g: 203, b: 237, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 255, g: 255, b: 255, a: 255, bitDepth: 8, max: 255 }
+// ]
 ```
 
 ## Mathematics
