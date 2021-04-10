@@ -104,7 +104,7 @@ class Modify {
   }
 
   static hslLighten(hsl: Colors.hsl, amount: number = 0.5, round: boolean = true) : Colors.hsl {
-    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let realAmount = Math.min(Math.max(amount, 0), 1)
     let vLighter = hsl.l + ((100 - hsl.l) * realAmount)
     if (round) vLighter = Math.round(vLighter)
     return new Colors.hsl(hsl.h, hsl.s, vLighter, hsl.a)
@@ -118,7 +118,7 @@ class Modify {
   }
 
   static hspLighten(hsp: Colors.hsp, amount: number = 0.5, round: boolean = true) : Colors.hsp {
-    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let realAmount = Math.min(Math.max(amount, 0), 1)
     let pLighter = hsp.p + ((100 - hsp.p) * realAmount)
     if (round) pLighter = Math.round(pLighter)
     return new Colors.hsp(hsp.h, hsp.s, pLighter, hsp.a, hsp.pb, hsp.pr)
