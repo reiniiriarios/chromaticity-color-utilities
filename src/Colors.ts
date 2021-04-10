@@ -75,6 +75,8 @@ export abstract class colorType {
     referenceWhite?: string
     kb?: number
     kr?: number
+    pb?: number
+    pr?: number
     yLower?: number
     yUpper?: number
     cLower?: number
@@ -147,6 +149,8 @@ export abstract class colorType {
             referenceWhite: this.referenceWhite,
             kb: this.kb,
             kr: this.kr,
+            pb: this.pb,
+            pr: this.pr,
             yLower: this.yLower,
             yUpper: this.yUpper,
             cLower: this.cLower,
