@@ -28,6 +28,8 @@ interface newColorArgs {
     cUpper?: number
     kb?: number
     kr?: number
+    pb?: number
+    pr?: number
 }
 
 interface colorDef {
@@ -94,6 +96,10 @@ class Color implements colorDef {
                 case 'hsia':
                     if (typeof value[3] === 'undefined') value[3] = 100
                     return new Colors.hsi(value[0], value[1], value[2], value[3])
+                case 'hsp':
+                case 'hspa':
+                    if (typeof value[3] === 'undefined') value[3] = 100
+                    return new Colors.hsp(value[0], value[1], value[2], value[3], args.pb, args.pr)
                 case 'cmyk':
                     return new Colors.cmyk(value[0], value[1], value[2], value[3])
                 case 'yiq':

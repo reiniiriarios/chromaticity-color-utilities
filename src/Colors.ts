@@ -29,6 +29,8 @@ export interface newColorArgs {
     referenceWhite?: string
     kb?: number
     kr?: number
+    pb?: number
+    pr?: number
     yLower?: number
     yUpper?: number
     cLower?: number
@@ -43,6 +45,9 @@ export interface allColorProps {
     referenceWhite?: string
     kb?: number
     kr?: number
+    pb?: number
+    pr?: number
+    pg?: number
     yLower?: number
     yUpper?: number
     cLower?: number
@@ -349,7 +354,7 @@ export abstract class colorType {
     }
     protected tohsp(args: newColorArgs) : hsp {
         let rgb = this.torgb(args)
-        return Convert.rgb2hsp(rgb, args.round)
+        return Convert.rgb2hsp(rgb, args.round, args.pb, args.pr)
     }
     protected tocmyk(args: newColorArgs) : cmyk {
         let rgb = this.torgb(args)
@@ -692,13 +697,13 @@ export class hsp extends colorType {
     pg: number
     pb: number
 
-    constructor(h: number, s: number, p: number, a: number = 100, pr: number = 0.299, pg: number = 0.587,pb: number = 0.114) {
+    constructor(h: number, s: number, p: number, a: number = 100, pb: number = 0.114, pr: number = 0.299) {
         super()
         this.valueRangeCheck(h, 0, 360)
         this.valueRangeCheck(s, 0, 100)
         this.valueRangeCheck(p, 0, 100)
         this.valueRangeCheck(a, 0, 100)
-        if (pr + pg + pb != 1) {
+        if (pr + pb > 1) {
             throw new Error('Pr + Pg + Pb must = 1')
         }
         this.h = h
@@ -706,7 +711,7 @@ export class hsp extends colorType {
         this.p = p
         this.a = a
         this.pr = pr
-        this.pg = pg
+        this.pg = 1 - pr - pb
         this.pb = pb
     }
 

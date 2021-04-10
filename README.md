@@ -15,6 +15,7 @@
   * [HSV: Hue, Saturation, Value](#hsv--hue-saturation-value)
   * [HSL: Hue, Saturation, Lightness](#hsl--hue-saturation-lightness)
   * [HSI: Hue, Saturation, Intensity](#hsi--hue-saturation-intensity)
+  * [HSP: Hue, Saturation, Perceived Brightness](#hsp--hue-saturation-perceived-brightness)
   * [CMYK: Cyan, Magenta, Yellow, Black](#cmyk--cyan-magenta-yellow-black)
   * [YIQ: NTSC Color](#yiq--ntsc-color)
   * [XYZ: CIE XYZ](#xyz--cie-xyz)
@@ -28,10 +29,10 @@
 * [Color Spaces and Standard Illuminants](#color-spaces-and-standard-illuminants)
 * [Modifying Colors](#modifying-colors)
   * [Blending Two Colors](#blending-two-colors)
-  * Darken
-  * Lighten
-  * Saturate
-  * Desaturate
+  * [Darken](#darken)
+  * [Lighten](#lighten)
+  * [Saturate](#saturate)
+  * [Desaturate](#desaturate)
 * [Color Scheme Generation](#color-scheme-generation)
   * [Complementary Schemes](#complementary-schemes)
   * [Analogous, Triadic, & Split Complement Schemes](#analogous-triadic--split-complement-schemes)
@@ -47,6 +48,8 @@
   * [HSL to RGB](#hsl-to-rgb)
   * [RGB to HSI](#rgb-to-hsi)
   * [HSI to RGB](#hsi-to-rgb)
+  * [RGB to HSP](#rgb-to-hsp)
+  * [HSP to RGB](#hsp-to-rgb)
   * [HSV to HSL](#hsv-to-hsl)
   * [HSL to HSV](#hsl-to-hsv)
   * [RGB to CMYK](#rgb-to-cmyk)
@@ -292,6 +295,37 @@ Color.from('hsi',[h, s, v, a?])
 // e.g.
 let color1 = Color.from('hsi',[300, 100, 67])
 let color3 = color2.to('hsi')
+```
+
+### HSP : Hue, Saturation, Perceived Brightness
+
+The formula used to generate HSP is similar to the one Photoshop uses when converting images to greyscale.
+
+Hue value is between 0 and 360. Saturation, perceived brightness, and alpha are between 0 and 100 (as in, percent).
+
+When passing P<sub>R</sub> and P<sub>B</sub> values, P<sub>R</sub> + P<sub>G</sub> + P<sub>B</sub> must = 1.
+
+By default,
+
+* P<sub>R</sub> = 0.299
+* P<sub>G</sub> = 0.587
+* P<sub>B</sub> = 0.114
+
+```ts
+Color.from('hsp',[h, s, p, a?],{
+  pb: number // optional, default = 0.114
+  pr: number // optional, default = 0.299
+})
+
+.to('hsp',{
+  round: boolean // optional, default = true
+  pb: number     // optional, default = 0.114
+  pr: number     // optional, default = 0.299
+})
+
+// e.g.
+let color1 = Color.from('hsp',[300, 100, 50])
+let color3 = color2.to('hsp')
 ```
 
 ### CMYK : Cyan, Magenta, Yellow, Black

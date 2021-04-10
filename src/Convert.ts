@@ -566,10 +566,12 @@ class Convert {
     return hsl;
   }
 
-  static rgb2hsp(rgb: Colors.rgb, round: boolean = true, Pr: number = 0.299, Pg: number = 0.587, Pb: number = 0.114) : Colors.hsp {
-    if (Pr + Pg + Pb != 1) {
+  static rgb2hsp(rgb: Colors.rgb, round: boolean = true, Pb: number = 0.114, Pr: number = 0.299) : Colors.hsp {
+    if (Pr + Pb > 1) {
       throw new Error('Pr + Pg + Pb must = 1')
     }
+
+    let Pg = 1 - Pr - Pb
 
     let maxVal = (2 ** rgb.bitDepth) - 1
     let r = rgb.r / maxVal
@@ -606,7 +608,7 @@ class Convert {
       a = Math.round(a)
     }
 
-    return new Colors.hsp(h, s, pb, a, Pr, Pg, Pb)
+    return new Colors.hsp(h, s, pb, a, Pb, Pr)
   }
 
   static hsp2rgb(hsp: Colors.hsp, round: boolean = true, bitDepth: number = 8) : Colors.rgb {
