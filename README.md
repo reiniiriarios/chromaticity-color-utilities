@@ -797,10 +797,14 @@ let color2 = Color.from('rgb',[255,0,255,200]).modify('desaturate','hsl')
 Schemes can be generated from any color type. All methods return an array of colors, each the same as the input type. (If calling method on a color of type `hsl`, all values of the returned array will be of type `hsl`.)
 
 ```ts
-.scheme(type: string)
+// depending on scheme,
+.scheme(type: string, {
+  round: boolean // optional, defaults to true
+})
 // or
 .scheme(type: string, {
-  angle: number // optional, hue shift angle in degrees
+  angle: number, // optional, hue shift angle in degrees
+  round: boolean // optional, defaults to true
 })
 ```
 
@@ -825,13 +829,16 @@ These three methods are synonyms with different default angles.
 
 ```ts
 .scheme('analogous', {
-  angle: number // optional, default = 30
+  angle: number, // optional, default = 30
+  round: boolean // optional, defaults to true
 })
 .scheme('triadic', {
-  angle: number // optional, default = 120
+  angle: number, // optional, default = 120
+  round: boolean // optional, defaults to true
 })
 .scheme('splitcomplement', {
-  angle: number // optional, default = 150
+  angle: number, // optional, default = 150
+  round: boolean // optional, defaults to true
 })
 
 // e.g.
@@ -861,9 +868,12 @@ These two methods are synonyms, but that the square method has a fixed angle of 
 
 ```ts
 .scheme('tetradic', {
-  angle: number // optional, default = 45
+  angle: number, // optional, default = 45
+  round: boolean // optional, defaults to true
 })
-.scheme('square') // angle = 90
+.scheme('square', {
+  round: boolean // optional, defaults to true
+}) // angle = 90
 
 // e.g.
 let color1 = Color.from('rgb',[255,0,255]).scheme('tetradic',{angle: 42})
@@ -886,8 +896,9 @@ let color2 = Color.from('rgb',[255,0,255]).scheme('square')
 
 ```ts
 .scheme('tint',{
-  colors: number,  // REQUIRED, number of colors in scheme
-  distance: number // optional, 0-1, defaults to 1, how close to white scheme should reach
+  colors: number,   // REQUIRED, number of colors in scheme
+  distance: number, // optional, 0-1, defaults to 1, how close to white scheme should reach
+  round: boolean    // optional, defaults to true
 })
 
 // e.g.
@@ -912,8 +923,9 @@ let tintScheme2 = Color.from('rgb',[100,0,100]).scheme('tint', {colors: 4, dista
 
 ```ts
 .scheme('shade',{
-  length: number,  // REQUIRED, number of colors in scheme
-  distance: number // optional, 0-1, defaults to 1, how close to black scheme should reach
+  length: number,   // REQUIRED, number of colors in scheme
+  distance: number, // optional, 0-1, defaults to 1, how close to black scheme should reach
+  round: boolean    // optional, defaults to true
 })
 
 // e.g.
@@ -944,7 +956,8 @@ Either include `distance` OR `distanceToWhite` and `distanceToBlack`. If you onl
   colors: number,          // REQUIRED, number of colors in each direction from source color
   distance: number,        // optional, 0-1, defaults to 1 OR
   distanceToWhite: number, // optional, 0-1, defaults to 1
-  distanceToBlack: number  // optional, 0-1, defaults to 1
+  distanceToBlack: number, // optional, 0-1, defaults to 1
+  round: boolean           // optional, defaults to true
 })
 
 // e.g.
