@@ -797,15 +797,7 @@ let color2 = Color.from('rgb',[255,0,255,200]).modify('desaturate','hsl')
 Schemes can be generated from any color type. All methods return an array of colors, each the same as the input type. (If calling method on a color of type `hsl`, all values of the returned array will be of type `hsl`.)
 
 ```ts
-// depending on scheme,
-.scheme(type: string, {
-  round: boolean // optional, defaults to true
-})
-// or
-.scheme(type: string, {
-  angle: number, // optional, hue shift angle in degrees
-  round: boolean // optional, defaults to true
-})
+.scheme(type: string, args?: {})
 ```
 
 ### Complementary Schemes
@@ -813,7 +805,9 @@ Schemes can be generated from any color type. All methods return an array of col
 Complementary color scheme generation has a fixed angle of 180&deg;.
 
 ```ts
-.scheme('complement') // angle = 180
+.scheme('complement', { // angle = 180
+  round: boolean // optional, defaults to true
+})
 
 // e.g.
 let color1 = Color.from('rgb',[255,0,255]).scheme('complement')
