@@ -1,6 +1,6 @@
 {
   "name": "chromaticity-color-utilities",
-  "version": "0.1.9-alpha",
+  "version": "0.1.11-alpha",
   "description": "Color utilities for Node.js",
   "main": "dist/main.js",
   "scripts": {
