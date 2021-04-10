@@ -102,7 +102,7 @@ export class rgb extends colorType {
     }
 
     protected torgb(args: newColorArgs) : rgb {
-        if (args.round) {
+        if (args.round !== false) {
             this.r = Math.round(this.r)
             this.g = Math.round(this.g)
             this.b = Math.round(this.b)
@@ -144,7 +144,7 @@ export class rec709rgb extends colorType {
     }
 
     protected torec709(args: newColorArgs) : rec709rgb {
-        if (args.round) {
+        if (args.round !== false) {
             this.r = Math.round(this.r)
             this.g = Math.round(this.g)
             this.b = Math.round(this.b)
@@ -186,7 +186,7 @@ export class rec2020rgb extends colorType {
     }
 
     protected torec2020(args: newColorArgs) : rec2020rgb {
-        if (args.round) {
+        if (args.round !== false) {
             this.r = Math.round(this.r)
             this.g = Math.round(this.g)
             this.b = Math.round(this.b)
@@ -219,7 +219,7 @@ export class hsv extends colorType {
     }
 
     protected tohsv(args: newColorArgs) : hsv {
-        if (args.round) {
+        if (args.round !== false) {
             this.h = Math.round(this.h)
             this.s = Math.round(this.s)
             this.v = Math.round(this.v)
@@ -264,7 +264,7 @@ export class hsl extends colorType {
     }
 
     protected tohsl(args: newColorArgs) : hsl {
-        if (args.round) {
+        if (args.round !== false) {
             this.h = Math.round(this.h)
             this.s = Math.round(this.s)
             this.l = Math.round(this.l)
@@ -309,7 +309,7 @@ export class hsi extends colorType {
     }
 
     protected tohsi(args: newColorArgs) : hsi {
-        if (args.round) {
+        if (args.round !== false) {
             this.h = Math.round(this.h)
             this.s = Math.round(this.s)
             this.i = Math.round(this.i)
@@ -351,7 +351,7 @@ export class hsp extends colorType {
     }
 
     protected tohsb(args: newColorArgs) : hsp {
-        if (args.round) {
+        if (args.round !== false) {
             this.h = Math.round(this.h)
             this.s = Math.round(this.s)
             this.p = Math.round(this.p)
@@ -384,7 +384,7 @@ export class cmyk extends colorType {
     }
 
     protected tocmyk(args: newColorArgs) : cmyk {
-        if (args.round) {
+        if (args.round !== false) {
             this.c = Math.round(this.c)
             this.m = Math.round(this.m)
             this.y = Math.round(this.y)
@@ -431,7 +431,7 @@ export class yiq extends colorType {
     }
 
     protected toyiq(args: newColorArgs) : yiq {
-        if (args.round) {
+        if (args.round !== false) {
             this.y = Math.round(this.y)
             this.i = Math.round(this.i)
             this.q = Math.round(this.q)
@@ -532,7 +532,7 @@ export class lab extends colorType {
     }
 
     protected tolab(args: newColorArgs) : lab {
-        if (args.round) {
+        if (args.round !== false) {
             this.l = Math.round(this.l)
             this.a = Math.round(this.a)
             this.b = Math.round(this.b)
@@ -577,7 +577,7 @@ export class luv extends colorType {
     }
 
     protected toluv(args: newColorArgs) : luv {
-        if (args.round) {
+        if (args.round !== false) {
             this.l = Math.round(this.l)
             this.u = Math.round(this.u)
             this.v = Math.round(this.v)
@@ -663,7 +663,7 @@ export class ycbcr extends colorType {
     }
 
     protected toycbcr(args: newColorArgs) : ycbcr {
-        if (args.round) {
+        if (args.round !== false) {
             this.y = Math.round(this.y)
             this.cb = Math.round(this.cb)
             this.cr = Math.round(this.cr)
