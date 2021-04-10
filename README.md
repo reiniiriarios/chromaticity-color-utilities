@@ -1691,7 +1691,6 @@ B &= Y + (2 - 2Kb) \cdot Pb
 * Gamma adjustment modification
 * Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
   * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
-* Create color schemes / gradient schemes based on tints and shades
 * Generate gradients given two colors
 * Generate triangular gradients based on three colors
 * Modification methods that retain luma
