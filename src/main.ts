@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import { colorType } from './ColorType'
 import * as Colors from './Colors'
 
 interface newColorArgs {
@@ -33,11 +34,11 @@ interface newColorArgs {
 }
 
 interface colorDef {
-    from(type: string, value: number[]|string, args?: newColorArgs) : Colors.colorType
+    from(type: string, value: number[]|string, args?: newColorArgs) : colorType
 }
 
 class Color implements colorDef {
-    from(type: string, value: number[]|number|string, args?: newColorArgs) : Colors.colorType {
+    from(type: string, value: number[]|number|string, args?: newColorArgs) : colorType {
         if (typeof args === 'undefined') args = {}
         if (typeof args.bitDepth === 'undefined' && typeof args.bitRate !== 'undefined') {
             args.bitDepth = args.bitRate
