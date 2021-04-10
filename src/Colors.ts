@@ -192,12 +192,14 @@ export abstract class colorType {
                     case 'lightness':
                         modified = Modify.hslDarken(this.tohsl({ round: false }), args.amount, args.round)
                         break
-                    /*
-                    case 'luma':
-                    case 'luminance':
-                        modified = Modify.labDarken(this.tolab({ round: false }), args.amount, args.round)
+                    case 'hsp':
+                    case 'hspa':
+                    case 'brightness':
+                    case 'perceived brightness':
+                    case 'perceived':
+                    case 'perceivedbrightness':
+                        modified = Modify.hspDarken(this.tohsp({ round: false }), args.amount, args.round)
                         break
-                    */
                     default:
                         throw new Error('Unrecognized darken method')
                 }
@@ -213,13 +215,14 @@ export abstract class colorType {
                     case 'lightness':
                         modified = Modify.hslLighten(this.tohsl({ round: false }), args.amount, args.round)
                         break
-                    /*
-                    case 'lab':
-                    case 'luma':
-                    case 'luminance':
-                        modified = Modify.labLighten(this.tolab({ round: false }), args.amount, args.round)
+                    case 'hsp':
+                    case 'hspa':
+                    case 'brightness':
+                    case 'perceived brightness':
+                    case 'perceived':
+                    case 'perceivedbrightness':
+                        modified = Modify.hspLighten(this.tohsp({ round: false }), args.amount, args.round)
                         break
-                    */
                     default:
                         throw new Error('Unrecognized lighten method')
                 }

@@ -110,6 +110,20 @@ class Modify {
     return new Colors.hsl(hsl.h, hsl.s, vLighter, hsl.a)
   }
 
+  static hspDarken(hsp: Colors.hsp, amount: number = 0.5, round: boolean = true) : Colors.hsp {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let pDarker = hsp.p * realAmount
+    if (round) pDarker = Math.round(pDarker)
+    return new Colors.hsp(hsp.h, hsp.s, pDarker, hsp.a, hsp.pb, hsp.pr)
+  }
+
+  static hspLighten(hsp: Colors.hsp, amount: number = 0.5, round: boolean = true) : Colors.hsp {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let pLighter = hsp.p + ((100 - hsp.p) * realAmount)
+    if (round) pLighter = Math.round(pLighter)
+    return new Colors.hsp(hsp.h, hsp.s, pLighter, hsp.a, hsp.pb, hsp.pr)
+  }
+
   static hslDesaturate(hsl: Colors.hsl, amount: number = 0.5, round: boolean = true) : Colors.hsl {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
     let sLess = hsl.s * realAmount

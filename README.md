@@ -1,7 +1,7 @@
 # chromaticity-color-utilities
  Color utilities for Node.js.
  
- Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, Y'CbCr, and more.
+ Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, HSP, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, Y'CbCr, and more.
 
 ## Table of Contents
 
@@ -311,6 +311,8 @@ By default,
 * P<sub>G</sub> = 0.587
 * P<sub>B</sub> = 0.114
 
+** This formula is not as accurate as most others, but does offer another way of adjusting brightness in an image.
+
 ```ts
 Color.from('hsp',[h, s, p, a?],{
   pb: number // optional, default = 0.114
@@ -324,8 +326,10 @@ Color.from('hsp',[h, s, p, a?],{
 })
 
 // e.g.
-let color1 = Color.from('hsp',[300, 100, 50])
-let color3 = color2.to('hsp')
+let color1 = Color.from('hsp',[300, 100, 65]).to('rgb')
+// rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 }
+let color3 = Color.from('rgb',[255, 0, 255]).to('hsp')
+// hsp { h: 300, s: 100, p: 64, a: 100, pr: 0.299, pg: 0.587, pb: 0.114 }
 ```
 
 ### CMYK : Cyan, Magenta, Yellow, Black
@@ -698,7 +702,7 @@ let color5 = Color.from('hex','ee5432').modify('blend', {
 
 ### Darken
 
-Methods available are: `lightness`, `luminance` (todo)
+Methods available are: `hsl`/`lightness`, `hsp`/`perceived`
 
 These methods are intended to provide alternative ways of modifying a color versus changing the values directly, which can make more sense.
 
@@ -709,13 +713,16 @@ let color2 = color1.modify('darken', {
   round: boolean  // optional, defaults to true
 })
 
-let color2 = Color.from('rgb',[255,0,255]).modify('darken','lightness')
+// e.g.
+let color2 = Color.from('rgb',[255,0,255,200]).modify('darken',{method:'lightness'})
 // rgb { r: 128, g: 0, b: 128, a: 200, bitDepth: 8, max: 255 }
+let color2 = Color.from('rgb',[100,0,100]).modify('darken',{method:'hsp'})
+// rgb { r: 52, g: 0, b: 52, a: 255, bitDepth: 8, max: 255 }
 ```
 
 ### Lighten
 
-Methods available are: `lightness`, `luminance` (todo)
+Methods available are: `hsl`/`lightness`, `hsp`/`perceived`
 
 These methods are intended to provide alternative ways of modifying a color versus changing the values directly, which can make more sense.
 
@@ -726,8 +733,11 @@ let color2 = color1.modify('lighten', {
   round: boolean  // optional, defaults to true
 })
 
-let color2 = Color.from('rgb',[255,0,255,200]).modify('lighten','lightness')
+// e.g.
+let color2 = Color.from('rgb',[255,0,255,200]).modify('lighten',{method:'lightness'})
 // rgb { r: 255, g: 128, b: 255, a: 200, bitDepth: 8, max: 255 }
+let color2 = Color.from('rgb',[100,0,100]).modify('lighten',{method:'hsp'})
+// rgb { r: 250, g: 0, b: 250, a: 255, bitDepth: 8, max: 255 }
 ```
 
 ### Saturate
@@ -743,9 +753,9 @@ let color2 = color1.modify('saturate', {
   round: boolean  // optional, defaults to true
 })
 
+// e.g.
 let color2 = Color.from('rgb',[128,64,128,200]).modify('saturate','hsl')
 // rgb { r: 160, g: 32, b: 160, a: 200, bitDepth: 8, max: 255 }
-
 let color2 = Color.from('rgb',[128,64,128,200]).modify('saturate','hsv')
 // rgb { r: 128, g: 32, b: 128, a: 200, bitDepth: 8, max: 255 }
 ```
@@ -764,9 +774,9 @@ let color2 = color1.modify('saturate', {
   round: boolean  // optional, defaults to true
 })
 
+// e.g.
 let color2 = Color.from('rgb',[255,0,255,200]).modify('desaturate','hsl')
 // rgb { r: 191, g: 64, b: 191, a: 200, bitDepth: 8, max: 255 }
-
 let color2 = Color.from('rgb',[255,0,255,200]).modify('desaturate','hsl')
 // rgb { r: 255, g: 128, b: 255, a: 200, bitDepth: 8, max: 255 }
 ```
