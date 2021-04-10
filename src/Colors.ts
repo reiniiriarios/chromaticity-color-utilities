@@ -339,6 +339,8 @@ export abstract class colorType {
             case 'tintsshades':
             case 'shadetint':
             case 'shadestints':
+            case 'lightdark':
+            case 'darklight':
                 if (typeof args.colors === 'undefined') {
                     throw new Error('Must specify number of colors to include in scheme')
                 }
