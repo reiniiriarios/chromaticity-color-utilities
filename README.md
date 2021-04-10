@@ -75,6 +75,7 @@
   * [YCbCr to YPbPr](#ycbcr-to-ypbpr)
 * [Compiling from Source](#compiling-from-source)
 * [To Do List](#to-do-list)
+* [References](#references)
 
 ## Install
 
