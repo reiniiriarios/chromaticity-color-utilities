@@ -19,7 +19,7 @@
   * [CMYK: Cyan, Magenta, Yellow, Black](#cmyk--cyan-magenta-yellow-black)
   * [YIQ: NTSC Color](#yiq--ntsc-color)
   * [XYZ: CIE XYZ](#xyz--cie-xyz)
-  * [xyY: CIE xyY](#xyy-cie-xyy)
+  * [xyY: CIE xyY](#xyy--cie-xyy)
   * [Lab: CIELAB / L\*a\*b\*](#lab--cielab--lab)
   * [Luv: CIELUV / L\*u\*v\*](#luv--cieluv--luv)
   * [YPbPr: Analog video component signals](#ypbpr--analog-video-component-signals)
