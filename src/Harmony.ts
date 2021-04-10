@@ -191,6 +191,54 @@ class Harmony {
 
     return hsls
   }
+
+  /**
+   * Return an array of colors blended from color1 to color2, via rgb
+   * 
+   * @param {Colors.rgb} color1 
+   * @param {Colors.rgb} color2 
+   * @param {number}     colors  number of colors in scheme (including color1 and color2)
+   * @returns 
+   */
+  static rgbGradient(color1: Colors.rgb, color2: Colors.rgb, colors: number) : Colors.rgb[] {
+    if (colors < 2) {
+      throw new Error('Unable to generate gradient with less than two colors')
+    }
+    let inBetweenColors = colors - 2
+    let gradient: Colors.rgb[] = []
+    gradient.push(color1)
+    for (let i = 0; i < inBetweenColors; i++) {
+      let amount = (i + 1) / (inBetweenColors + 1)
+      gradient.push(Modify.rgbBlend(color1, color2, amount, false))
+    }
+    gradient.push(color2)
+
+    return gradient
+  }
+
+  /**
+   * Return an array of colors blended from color1 to color2, via hsv
+   * 
+   * @param {Colors.hsv} color1 
+   * @param {Colors.hsv} color2 
+   * @param {number}     colors  number of colors in scheme (including color1 and color2)
+   * @returns 
+   */
+  static hsvGradient(color1: Colors.hsv, color2: Colors.hsv, colors: number) : Colors.hsv[] {
+    if (colors < 2) {
+      throw new Error('Unable to generate gradient with less than two colors')
+    }
+    let inBetweenColors = colors - 2
+    let gradient: Colors.hsv[] = []
+    gradient.push(color1)
+    for (let i = 0; i < inBetweenColors; i++) {
+      let amount = (i + 1) / (inBetweenColors + 1)
+      gradient.push(Modify.hsvBlend(color1, color2, amount, false))
+    }
+    gradient.push(color2)
+
+    return gradient
+  }
 }
 
 export = Harmony

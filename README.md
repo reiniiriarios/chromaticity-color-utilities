@@ -40,6 +40,7 @@
   * [Tint Scale](#tint-scale)
   * [Shade Scale](#shade-scale)
   * [Tint & Shade Scale](#tint--shade-scale)
+  * [Gradients](#gradients)
 * [Mathematics](#mathematics)
   * [Normalizing RGB](#normalizing-rgb)
   * [RGB to HSV](#rgb-to-hsv)
@@ -1001,6 +1002,45 @@ let scheme5 = Color.from('rgb',[200,100,200]).scheme('tintshade', {
 // ]
 ```
 
+### Gradients
+
+Generate an array of colors from color1 to color2. Methods available are `rgb` and `hsv`.
+
+```ts
+.scheme('gradient',{
+  color2: colorType,  // REQUIRED, second color, of any type, to blend with
+  colors: number,     // REQUIRED, number of colors to be returned, must be > 2
+  method: string,     // optional, defaults to 'rgb'
+  round: boolean      // optional, defaults to true
+})
+
+// e.g.
+let gradient1 = Color.from('rgb',[255,0,255]).scheme('gradient',{
+  with: Color.from('hex',0x00FF00),
+  colors: 5
+})
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 191, g: 64, b: 191, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 128, g: 128, b: 128, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 64, g: 191, b: 64, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
+// ]
+
+let gradient1 = Color.from('rgb',[255,0,255]).scheme('gradient',{
+  with: Color.from('hex','00ff00'),
+  colors: 5,
+  method: 'hsv'
+})
+// [
+//   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 64, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 128, b: 255, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 191, a: 255, bitDepth: 8, max: 255 },
+//   rgb { r: 0, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
+// ]
+```
+
 ## Mathematics
 
 The following are the formulae used in the conversion algorithms. For succinctness, consider all values normalized ∈ [0, 1] unless stated otherwise.
@@ -1710,9 +1750,6 @@ B &= Y + (2 - 2Kb) \cdot Pb
 * Gamma adjustment modification
 * Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
   * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
-* Generate gradients given two colors
-* Generate triangular gradients based on three colors
-* Modification methods that retain luma
 
 Review:
 http://www.physics.sfasu.edu/astro/color/blackbodyc.txt
