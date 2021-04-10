@@ -68,6 +68,7 @@ export interface schemeArgs {
     distance?: number
     distanceToBlack?: number
     distanceToWhite?: number
+    round?: boolean
 }
 
 export abstract class colorType {
@@ -146,9 +147,10 @@ export abstract class colorType {
     public modify(modification:string, args?: modifyArgs) : colorType {
         if (typeof args == 'undefined') args = {}
         let og = this.constructor['name']
-        let ogargs : allColorProps = {
+        let ogargs : newColorArgs = {
+            round: args.round,
             bitDepth: this.bitDepth,
-            normalized: this.normalized,
+            normalize: this.normalized,
             colorSpace: this.colorSpace,
             referenceWhite: this.referenceWhite,
             kb: this.kb,
@@ -161,7 +163,7 @@ export abstract class colorType {
             cUpper: this.cUpper,
             gamma: this.gamma
         }
-        let ogalpha : boolean|number = (typeof this.a == 'undefined' ? false : this.a)
+        let ogalpha : number|undefined =  this.a
         let modified: colorType
         switch (modification) {
             case 'blend':
@@ -178,13 +180,13 @@ export abstract class colorType {
                     case 'hex':
                         tmpColor1 = this.torgb({ round: false })
                         tmpColor2 = args.with.torgb({ round: false })
-                        modified = Modify.rgbBlend(tmpColor1, tmpColor2, args.amount)
+                        modified = Modify.rgbBlend(tmpColor1, tmpColor2, args.amount, args.round)
                         break
                     case 'hsv':
                     case 'hsva':
                         tmpColor1 = this.tohsv({ round: false })
                         tmpColor2 = args.with.tohsv({ round: false })
-                        modified = Modify.hsvBlend(tmpColor1, tmpColor2, args.amount)
+                        modified = Modify.hsvBlend(tmpColor1, tmpColor2, args.amount, args.round)
                         break
                     default:
                         throw new Error('Unrecognized blending method')
@@ -281,7 +283,7 @@ export abstract class colorType {
         }
 
         let ogModified = modified.to(og, ogargs)
-        if (ogalpha) ogModified.a = ogalpha // otherwise this gets lost on some modifications
+        if (typeof ogalpha !== 'undefined') ogModified.a = ogalpha // otherwise this gets lost on some modifications
 
         return ogModified
     }
@@ -289,6 +291,23 @@ export abstract class colorType {
     public scheme(type:string, args?: schemeArgs) : colorType[] {
         if (typeof args === 'undefined') args = {}
         let og = this.constructor['name']
+        let ogargs : newColorArgs = {
+            round: args.round,
+            bitDepth: this.bitDepth,
+            normalize: this.normalized,
+            colorSpace: this.colorSpace,
+            referenceWhite: this.referenceWhite,
+            kb: this.kb,
+            kr: this.kr,
+            pb: this.pb,
+            pr: this.pr,
+            yLower: this.yLower,
+            yUpper: this.yUpper,
+            cLower: this.cLower,
+            cUpper: this.cUpper,
+            gamma: this.gamma
+        }
+        let ogalpha : number|undefined = this.a
         let intScheme: colorType[]
         let distance: number|undefined
         type = type.toLowerCase()
@@ -323,7 +342,7 @@ export abstract class colorType {
                 if (typeof args.colors === 'undefined') {
                     throw new Error('Must specify number of colors to include in scheme')
                 }
-                let distance = typeof args.distanceToBlack === 'undefined' ? args.distance : args.distanceToBlack
+                distance = typeof args.distanceToBlack === 'undefined' ? args.distance : args.distanceToBlack
                 intScheme = Harmony.shade(this.to('hsl', { round: false }), args.colors, distance)
                 break
             case 'tint':
@@ -352,7 +371,9 @@ export abstract class colorType {
         }
         let ogScheme: colorType[] = []
         intScheme.forEach(color => {
-            ogScheme.push(color.to(og))
+            let ogColor = color.to(og, ogargs)
+            if (typeof ogalpha !== 'undefined') ogColor.a = ogalpha // otherwise this gets lost on some modifications
+            ogScheme.push(ogColor)
         })
         return ogScheme
     }

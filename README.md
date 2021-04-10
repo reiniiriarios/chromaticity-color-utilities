@@ -688,7 +688,8 @@ Blending methods include: `rgb`, `hsv`
 let color3 = color1.modify('blend', {
   with: color2,   // REQUIRED, can be any color of any type
   amount: number, // optional, 0 - 1, defaults to 0.5
-  method: string  // optional, defaults to 'rgb'
+  method: string, // optional, defaults to 'rgb'
+  round: boolean  // optional, defaults to true
 })
 
 // e.g.
@@ -719,7 +720,7 @@ These methods are intended to provide alternative ways of modifying a color vers
 ```ts
 let color2 = color1.modify('darken', {
   amount: number, // optional, 0 - 1, defaults to 0.5
-  method: string  // optional, defaults to 'lightness'
+  method: string, // optional, defaults to 'lightness'
   round: boolean  // optional, defaults to true
 })
 
@@ -739,7 +740,7 @@ These methods are intended to provide alternative ways of modifying a color vers
 ```ts
 let color2 = color1.modify('lighten', {
   amount: number, // optional, 0 - 1, defaults to 0.5
-  method: string  // optional, defaults to 'lightness'
+  method: string, // optional, defaults to 'lightness'
   round: boolean  // optional, defaults to true
 })
 
@@ -759,7 +760,7 @@ These methods are intended to provide alternative ways of modifying a color vers
 ```ts
 let color2 = color1.modify('saturate', {
   amount: number, // optional, 0 - 1, defaults to 0.5
-  method: string  // optional, defaults to 'hsl'
+  method: string, // optional, defaults to 'hsl'
   round: boolean  // optional, defaults to true
 })
 
@@ -780,7 +781,7 @@ These methods are intended to provide alternative ways of modifying a color vers
 ```ts
 let color2 = color1.modify('saturate', {
   amount: number, // optional, 0 - 1, defaults to 0.5
-  method: string  // optional, defaults to 'hsl'
+  method: string, // optional, defaults to 'hsl'
   round: boolean  // optional, defaults to true
 })
 
