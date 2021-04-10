@@ -131,7 +131,7 @@ class Harmony {
 
   static shadetint(hsl: Colors.hsl, colors: number, distance: number = 1, distanceShade?: number) : Colors.hsl[] {
     let hsls: Colors.hsl[] = []
-    let start, tEnd, sEnd, tSeparation, sSeparation
+    let tEnd, sEnd, tSeparation, sSeparation
 
     if (typeof distanceShade === 'undefined') {
       if (100 - hsl.l < hsl.l) {
