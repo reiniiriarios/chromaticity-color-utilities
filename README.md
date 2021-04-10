@@ -110,6 +110,9 @@ let color6 = Color.from('hex', 'ff00ff').to('lab',{
 //  referenceWhite: 'd50'
 // }
 
+let red = Color.from('hsl',[280,80,90]).to('rgb').r
+// 250
+
 let color7 = Color.from('hsl',[300,100,50]).to('ypbpr',{kb:0.0722, kr:0.2126})
 // ypbpr { y: 0.2848, pb: 0.3854278939426601, pr: 0.45415290830581667 }
 
@@ -1636,3 +1639,5 @@ https://tannerhelland.com/2012/09/18/convert-temperature-rgb-algorithm-code.html
 
 8. Darel Rex Finley. "HSP Color Model — Alternative to HSV (HSB) and HSL". (2006)
 https://alienryderflex.com/hsp.html
+
+9. Michael Stokes (Hewlett-Packard), Matthew Anderson (Microsoft), Srinivasan Chandrasekar (Microsoft), Ricardo Motta (Hewlett-Packard). "A Standard Default Color Space for the Internet - sRGB". (1996) https://www.w3.org/Graphics/Color/sRGB.html
