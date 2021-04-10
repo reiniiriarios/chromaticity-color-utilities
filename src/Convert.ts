@@ -213,7 +213,7 @@ class Convert {
     let r, g, b
     let max = (2 ** bitDepth) - 1
     if (hsv.s == 0) {
-      let all = hsv.v / 100 * max
+      let all = hsv.v
       r = all
       g = all
       b = all
@@ -258,10 +258,15 @@ class Convert {
           g = p;
           b = q;
       }
-      r *= max
-      g *= max
-      b *= max
     }
+
+    r = Math.min(Math.max(r,0),1)
+    g = Math.min(Math.max(g,0),1)
+    b = Math.min(Math.max(b,0),1)
+
+    r *= max
+    g *= max
+    b *= max
 
     let a = Util.scaleValueRange(hsv.a, 0, 100, 0, max, round)
 
@@ -416,6 +421,10 @@ class Convert {
       }
     }
 
+    r = Math.min(Math.max(r,0),1)
+    g = Math.min(Math.max(g,0),1)
+    b = Math.min(Math.max(b,0),1)
+
     let max = (2 ** bitDepth) - 1
     r *= max;
     g *= max;
@@ -514,10 +523,10 @@ class Convert {
           g = m;
           b = m;
       }
-      r = Math.min(r, 1);
-      g = Math.min(g, 1);
-      b = Math.min(b, 1);
     }
+    r = Math.min(Math.max(r,0),1)
+    g = Math.min(Math.max(g,0),1)
+    b = Math.min(Math.max(b,0),1)
 
     let max = (2 ** bitDepth) - 1
     r *= max
