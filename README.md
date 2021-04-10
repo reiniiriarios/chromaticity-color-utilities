@@ -315,14 +315,14 @@ By default,
 
 ```ts
 Color.from('hsp',[h, s, p, a?],{
-  pb: number // optional, default = 0.114
-  pr: number // optional, default = 0.299
+  pb: number, // optional, default = 0.114
+  pr: number  // optional, default = 0.299
 })
 
 .to('hsp',{
-  round: boolean // optional, default = true
-  pb: number     // optional, default = 0.114
-  pr: number     // optional, default = 0.299
+  round: boolean, // optional, default = true
+  pb: number,     // optional, default = 0.114
+  pr: number      // optional, default = 0.299
 })
 
 // e.g.
