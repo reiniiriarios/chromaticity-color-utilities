@@ -185,6 +185,7 @@ export abstract class colorType {
                     default:
                         throw new Error('Unrecognized blending method')
                 }
+                break
             case 'darken':
             case 'darker':
                 if (typeof args.method === 'undefined') {
