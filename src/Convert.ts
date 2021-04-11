@@ -1024,12 +1024,14 @@ class Convert {
    * @return {Colors.xyy}
    */
   static xyz2xyy(xyz: Colors.xyz): Colors.xyy {
+  static xyz2xyy(xyz: Colors.xyz, referenceWhite: string = 'd65'): Colors.xyy {
+    let w = Util.validReferenceWhite(referenceWhite);
     let cx;
     let cy;
     let sum = xyz.x + xyz.y + xyz.z;
     if (!sum) {
-      cx = 0;
-      cy = 0;
+      cx = w[0];
+      cy = w[1];
     }
     else {
       cx = xyz.x / sum;
