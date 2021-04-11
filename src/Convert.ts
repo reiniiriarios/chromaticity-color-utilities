@@ -1138,6 +1138,8 @@ class Convert {
     let u = 13 * l * (up - upr);
     let v = 13 * l * (vp - vpr);
 
+    l = Math.min(Math.max(l,0),100)
+
     if (round) {
       l = Math.round(l)
       u = Math.round(u)
