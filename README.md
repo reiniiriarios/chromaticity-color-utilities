@@ -427,31 +427,19 @@ let color4 = Color.from('xyz', [0.7589799, 0.3743439, 0.7643198], {
 
 Derived from XYZ, x and y are chromaticity values while Y is the tristimulous value of a color.
 
-Available Color Spaces and Stardard Illuminants below.
+When converting to most color types, you must supply color space and standard illuminant reference white. Available Color Spaces and Stardard Illuminants below.
 
 ```ts
-Color.from('xyy', [x, y, Y], {
-  colorSpace: string,    // optional, default = 'srgb'
-  referenceWhite: string // optional, default = 'd65'
-})
+Color.from('xyy', [x, y, Y])
 
 .to('xyy',{
-  colorSpace: string,    // optional, default = 'srgb'
-  referenceWhite: string // optional, default = 'd65'
+  colorSpace: string,    // optional, defaults to 'srgb' -- ignored if converting from xyz
+  referenceWhite: string // optional, defaults to 'd65'
 })
 
 // e.g.
 let color1 = Color.from('xyy',[0.3209377411185291, 0.1541902211986945, 0.2848479])
 let color3 = color2.to('xyy')
-
-let color4 = Color.from('xyz', [
-  0.39995913879719036,
-  0.1972677588141419,
-  0.3743439
-], {
-  colorSpace: 'adobergb',
-  referenceWhite: 'd50'
-})
 ```
 
 ### Lab : CIELAB / L\*a\*b\*
@@ -1540,10 +1528,22 @@ X &=
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-xyy.png)
 
+If X = Y = Z = 0, x and y are set to the chromaticity coordinates of the reference white.
+
 <!--
 \begin{align*}
-x &= \frac{X}{X + Y + Z} \\
-y &= \frac{Y}{X + Y + Z} \\
+x &=
+\begin{cases}
+W_X & \text{ if } X = Y = Z = 0 \\ 
+\frac{X}{X + Y + Z} & \text{ otherwise }
+\end{cases}
+ \\
+y &=
+\begin{cases}
+W_Y & \text{ if } X = Y = Z = 0 \\ 
+\frac{Y}{X + Y + Z} & \text{ otherwise }
+\end{cases}
+ \\
 Y &= Y
 \end{align*}
 -->
