@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { colorSpaces, stdIlluminants } from './Reference';
+import { colorSpaces, stdIlluminants, referenceWhite } from './Reference';
 
 class Util {
   /**
@@ -191,21 +191,25 @@ class Util {
    * @param  {string|number[][]} referenceWhite
    * @return {number[][]}
    */
-  static validReferenceWhite(referenceWhite: string | number[]) : number[] {
-    let w: number[]
+  static validReferenceWhite(referenceWhite: string | referenceWhite) : referenceWhite {
+    let w: referenceWhite
     if (typeof referenceWhite == 'string') {
       referenceWhite = referenceWhite.toLowerCase();
-      if (typeof stdIlluminants[referenceWhite as keyof object] == 'undefined' ||
-          typeof stdIlluminants[referenceWhite as keyof object]['vector'] == 'undefined') {
-            throw new Error('Invalid reference white, vector not found');
+      if (typeof stdIlluminants[referenceWhite as keyof object] == 'undefined') {
+            throw new Error('Invalid reference white');
       }
-      w = stdIlluminants[referenceWhite as keyof object]['vector'];
+      w = stdIlluminants[referenceWhite as keyof object]['chrom']['2d'];
     }
     else {
       w = referenceWhite;
     }
+    let z = 1 - w['x'] - w['y']
 
-    return w;
+    return {
+      x: w['x'],
+      y: w['y'],
+      z: z
+    };
   }
 
   static validColorSpace(colorSpace: string) : object {

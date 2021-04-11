@@ -38,6 +38,12 @@ export const cieE = 216/24389
 // 24389/27  Intent of CIE standard, updated to standard in 2004
 export const cieK = 24389/27
 
+export interface referenceWhite {
+    x: number
+    y: number
+    z: number
+}
+
 // Standard Illuminant White Points, including:
 //   Reference Hue and RGB values
 //   Correlated Black Body Radiation Color Temperatures in deg K

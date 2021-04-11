@@ -17,6 +17,30 @@
 import Convert from './Convert'
 import { newColorArgs, colorType } from './ColorType'
 
+export class rgbNormalized extends colorType {
+    r: number
+    g: number
+    b: number
+    a: number
+    gamma?: number
+
+    constructor(r: number, g: number, b: number, a: number = 1, gamma?: number) {
+        super()
+        this.valueRangeCheck(r, 0, 1)
+        this.valueRangeCheck(g, 0, 1)
+        this.valueRangeCheck(b, 0, 1)
+        this.valueRangeCheck(a, 0, 1)
+        this.r = r
+        this.g = g
+        this.b = b
+        this.a = a
+        if (typeof gamma !== 'undefined') {
+            this.valueRangeCheck(gamma, 0, false)
+            this.gamma = gamma
+        }
+    }
+}
+
 export class hex extends colorType {
     hex: string
 
@@ -49,30 +73,6 @@ export class hex extends colorType {
 
     protected tohex(args: newColorArgs) : hex {
         return this
-    }
-}
-
-export class rgbNormalized extends colorType {
-    r: number
-    g: number
-    b: number
-    a: number
-    gamma?: number
-
-    constructor(r: number, g: number, b: number, a: number = 1, gamma?: number) {
-        super()
-        this.valueRangeCheck(r, 0, 1)
-        this.valueRangeCheck(g, 0, 1)
-        this.valueRangeCheck(b, 0, 1)
-        this.valueRangeCheck(a, 0, 1)
-        this.r = r
-        this.g = g
-        this.b = b
-        this.a = a
-        if (typeof gamma !== 'undefined') {
-            this.valueRangeCheck(gamma, 0, false)
-            this.gamma = gamma
-        }
     }
 }
 
@@ -444,10 +444,8 @@ export class xyz extends colorType {
     x: number
     y: number
     z: number
-    colorSpace: string
-    referenceWhite: string
 
-    constructor(x: number, y:number, z:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
+    constructor(x: number, y:number, z:number) {
         super()
         this.valueRangeCheck(x, 0, 1, 'XYZ values must be between 0 and 1')
         this.valueRangeCheck(y, 0, 1, 'XYZ values must be between 0 and 1')
@@ -455,13 +453,10 @@ export class xyz extends colorType {
         this.x = x
         this.y = y
         this.z = z
-        // error handling of the following two properties handled in conversion
-        this.colorSpace = colorSpace
-        this.referenceWhite = referenceWhite
     }
 
     protected torgb(args: newColorArgs) : rgb {
-        return Convert.xyz2rgb(this, args.round, args.bitDepth)
+        return Convert.xyz2rgb(this, args.colorSpace, args.referenceWhite, args.round, args.bitDepth)
     }
 
     protected toxyz(args: newColorArgs) : xyz {
@@ -473,20 +468,16 @@ export class xyy extends colorType {
     x: number
     y: number
     yy: number
-    colorSpace: string
-    referenceWhite: string
 
-    constructor(x: number, y:number, yy:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
+    constructor(x: number, y:number, yy:number) {
         super()
         this.x = x
         this.y = y
         this.yy = yy
-        this.colorSpace = colorSpace
-        this.referenceWhite = referenceWhite
     }
 
     protected torgb(args: newColorArgs) : rgb {
-        return Convert.xyz2rgb(this.toxyz(args), args.round, args.bitDepth)
+        return Convert.xyz2rgb(this.toxyz(args), args.colorSpace, args.referenceWhite, args.round, args.bitDepth)
     }
 
     protected toxyz(args: newColorArgs) : xyz {
@@ -502,33 +493,27 @@ export class lab extends colorType {
     l: number
     a: number
     b: number
-    colorSpace: string
-    referenceWhite: string
 
     /**
      * 
      * @param {number} l  0-1
      * @param {number} a  unbounded, but typically clamped at -128 and 127
      * @param {number} b  unbounded, but typically clamped at -128 and 127
-     * @param {string} colorSpace 
-     * @param {string} referenceWhite 
      */
-    constructor(l: number, a:number, b:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
+    constructor(l: number, a:number, b:number) {
         super()
         this.valueRangeCheck(l, 0, 100)
         this.l = l
         this.a = a
         this.b = b
-        this.colorSpace = colorSpace
-        this.referenceWhite = referenceWhite
     }
 
     protected torgb(args: newColorArgs) : rgb {
-        return Convert.xyz2rgb(this.toxyz(args), args.round, args.bitDepth)
+        return Convert.xyz2rgb(this.toxyz(args), args.colorSpace, args.referenceWhite, args.round, args.bitDepth)
     }
 
     protected toxyz(args: newColorArgs) : xyz {
-        return Convert.lab2xyz(this)
+        return Convert.lab2xyz(this, args.referenceWhite)
     }
 
     protected tolab(args: newColorArgs) : lab {
@@ -545,18 +530,14 @@ export class luv extends colorType {
     l: number
     u: number
     v: number
-    colorSpace: string
-    referenceWhite: string
 
     /**
      * 
      * @param {number} l    0-100
      * @param {number} u -100-100
      * @param {number} v -100-100
-     * @param {string} colorSpace 
-     * @param {string} referenceWhite
      */
-    constructor(l: number, u:number, v:number, colorSpace: string = 'srgb', referenceWhite: string = 'd65') {
+    constructor(l: number, u:number, v:number) {
         super()
         this.valueRangeCheck(l, 0, 100)
         // this.valueRangeCheck(u, -100, 100)
@@ -564,16 +545,14 @@ export class luv extends colorType {
         this.l = l
         this.u = u
         this.v = v
-        this.colorSpace = colorSpace
-        this.referenceWhite = referenceWhite
     }
 
     protected torgb(args: newColorArgs) : rgb {
-        return Convert.xyz2rgb(this.toxyz(args), args.round, args.bitDepth)
+        return Convert.xyz2rgb(this.toxyz(args), args.colorSpace, args.referenceWhite, args.round, args.bitDepth)
     }
 
     protected toxyz(args: newColorArgs) : xyz {
-        return Convert.luv2xyz(this)
+        return Convert.luv2xyz(this, args.referenceWhite)
     }
 
     protected toluv(args: newColorArgs) : luv {

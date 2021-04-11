@@ -400,24 +400,21 @@ All values are between 0 and 1. XYZ is only defined within the constraints of a 
 
 It is not often useful to convert _to_ XYZ, as XYZ defines real-world light and is typically then converted to a digital representation (most commonly RGB), but the functionality is present nonetheless.
 
-Available Color Spaces and Stardard Illuminants below.
+When converting to most color types, you must supply color space and standard illuminant reference white. Available Color Spaces and Stardard Illuminants below.
 
 ```ts
-Color.from('xyz', [x, y, z], {
-  colorSpace: string,    // optional, default = 'srgb'
-  referenceWhite: string // optional, default = 'd65'
-})
+Color.from('xyz', [x, y, z])
 
 .to('xyz',{
-  colorSpace: string,    // optional, default = 'srgb'
-  referenceWhite: string // optional, default = 'd65'
+  colorSpace: string,    // optional, default = 'srgb' -- ignored if converting from xyy, lab, luv
+  referenceWhite: string // optional, default = 'd65'  -- ignored if converting from xyy
 })
 
 // e.g.
 let color1 = Color.from('xyz',[0.5928939, 0.2848479, 0.969638])
 let color3 = color2.to('xyz')
 
-let color4 = Color.from('xyz', [0.7589799, 0.3743439, 0.7643198], {
+let color4 = Color.from('xyz', [0.7589799, 0.3743439, 0.7643198]).to('rgb',{
   colorSpace: 'adobergb',
   referenceWhite: 'd50'
 })
@@ -450,32 +447,22 @@ Derived from XYZ.
 * a* = position between red and green (negative indicates green, positive red)
 * b* = position between blue and yellow (negative indicates blue, positive yellow)
 
-Available Color Spaces and Stardard Illuminants below.
+When converting to most color types, you must supply color space and standard illuminant reference white. Available Color Spaces and Stardard Illuminants below.
 
 ```ts
-Color.from('lab', [l, a, b], {
-  colorSpace: string,    // optional, default = 'srgb'
-  referenceWhite: string // optional, default = 'd65'
-})
+Color.from('lab', [l, a, b])
 
 .to('lab',{
-  colorSpace: string,    // optional, default = 'srgb'
-  referenceWhite: string // optional, default = 'd65'
+  colorSpace: string,     // optional, defaults to 'srgb' -- ignored if converting from xyz, luv
+  referenceWhite: string, // optional, defaults to 'd65'
+  round: boolean          // optional, defaults to true
 })
 
 // e.g.
-let color1 = Color.from('lab',[
-  60.32421212836874,
-  98.23431188800397,
-  -60.82489220885006
-])
+let color1 = Color.from('lab',[95, 142, -88])
 let color3 = color2.to('lab')
 
-let color4 = Color.from('lab', [
-  67.60166164169028,
-  101.30709261827131,
-  -5.488771094285516
-], {
+let color4 = color1.to('rgb', {
   colorSpace: 'adobergb',
   referenceWhite: 'd50'
 })
@@ -483,34 +470,24 @@ let color4 = Color.from('lab', [
 
 ### Luv : CIELUV / L\*u\*v\*
 
-Derived from XYZ. L\* is identical to L\* in L\*a\*b\*
+Derived from XYZ. L\*, luma, is identical to L\* in L\*a\*b\*
 
-Available Color Spaces and Stardard Illuminants below.
+When converting to most color types, you must supply color space and standard illuminant reference white. Available Color Spaces and Stardard Illuminants below.
 
 ```ts
-Color.from('luv', [l, u, v], {
-  colorSpace: string,    // optional, default = 'srgb'
-  referenceWhite: string // optional, default = 'd65'
-})
+Color.from('luv', [l, u, v])
 
 .to('luv',{
-  colorSpace: string,    // optional, default = 'srgb'
-  referenceWhite: string // optional, default = 'd65'
+  colorSpace: string,     // optional, default = 'srgb' -- ignored if converting from xyz, lab
+  referenceWhite: string, // optional, default = 'd65'
+  round: boolean          // optional, defaults to true
 })
 
 // e.g.
-let color1 = Color.from('luv',[
-  60.32421212836874,
-  84.07139572483507,
-  -108.68333851910185
-])
+let color1 = Color.from('luv',[95, 132, -170])
 let color3 = color2.to('luv')
 
-let color4 = Color.from('luv', [
-  67.60166164169028,
-  124.0201282170453,
-  -87.3117870588082
-], {
+let color4 = color1.to('rgb', {
   colorSpace: 'adobergb',
   referenceWhite: 'd50'
 })

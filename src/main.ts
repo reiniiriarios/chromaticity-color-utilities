@@ -106,13 +106,13 @@ class Color implements colorDef {
                 case 'yiq':
                     return new Colors.yiq(value[0], value[1], value[2], args.normalized)
                 case 'xyz':
-                    return new Colors.xyz(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                    return new Colors.xyz(value[0], value[1], value[2])
                 case 'xyy':
-                    return new Colors.xyy(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                    return new Colors.xyy(value[0], value[1], value[2])
                 case 'lab':
-                    return new Colors.lab(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                    return new Colors.lab(value[0], value[1], value[2])
                 case 'luv':
-                    return new Colors.luv(value[0], value[1], value[2], args.colorSpace, args.referenceWhite)
+                    return new Colors.luv(value[0], value[1], value[2])
                 case 'ypbpr':
                     if (typeof args.kb == 'undefined' || typeof args.kr == 'undefined') {
                         throw new Error('Must supply Kb and Kr constants')

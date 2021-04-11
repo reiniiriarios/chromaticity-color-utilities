@@ -894,35 +894,13 @@ class Convert {
     let g = rgb.g / rgb.max
     let b = rgb.b / rgb.max
 
-    // make lowercase, include common nomenclature differences, ignore spaces, etc
-    colorSpace = colorSpace.toLowerCase().replace(/[^a-z0-9]/,'');
-    referenceWhite = referenceWhite.toLowerCase();
-
-    let conform = {
-        'adobe':     'adobergb1998',
-        'adobergb':  'adobergb1998',
-        'ntsc':      'ntscrgb',
-        'palsecam':  'palsecamrgb',
-        'pal':       'palsecamrgb',
-        'palrgb':    'palsecamrgb',
-        'secam':     'palsecamrgb',
-        'secamrgb':  'palsecamrgb',
-        'prophoto':  'prophotorgb',
-        'smpte':     'smptecrgb',
-        'smptec':    'smptecrgb',
-        'widegamut': 'widegamutrgb',
-        'ecirgbv2':  'ecirgb',
-        'ektaspace': 'ektaspaceps5'
-    };
-    if (typeof conform[colorSpace as keyof object] == 'string') {
-      colorSpace = conform[colorSpace as keyof object];
-    }
-    if (typeof colorSpaces[colorSpace as keyof object] == 'undefined' ||
-        typeof colorSpaces[colorSpace as keyof object]['rgb2xyz'] == 'undefined' ||
-        typeof colorSpaces[colorSpace as keyof object]['rgb2xyz'][referenceWhite] == 'undefined') {
+    let space = Util.validColorSpace(colorSpace)
+    referenceWhite = referenceWhite.toLowerCase()
+    if (typeof space['rgb2xyz' as keyof object] == 'undefined' ||
+        typeof space['rgb2xyz' as keyof object][referenceWhite] == 'undefined') {
           throw new Error('Transformation matrix unavailable for this color space and reference white');
     }
-    let m = colorSpaces[colorSpace as keyof object]['rgb2xyz'][referenceWhite]
+    let m = space['rgb2xyz' as keyof object][referenceWhite]
 
     if (colorSpace == 'srgb') {
       // sRGB
@@ -938,12 +916,13 @@ class Convert {
     }
     else {
       // Gamma
-      if (typeof colorSpaces[colorSpace as keyof object]['gamma'] == 'undefined') {
+      if (typeof space['gamma' as keyof object] == 'undefined') {
         throw new Error('Gamma not defined for this color space');
       }
-      r = Math.pow(r, colorSpaces[colorSpace as keyof object]['gamma']);
-      g = Math.pow(g, colorSpaces[colorSpace as keyof object]['gamma']);
-      b = Math.pow(b, colorSpaces[colorSpace as keyof object]['gamma']);
+      let gamma = space['gamma' as keyof object]
+      r = Math.pow(r, gamma);
+      g = Math.pow(g, gamma);
+      b = Math.pow(b, gamma);
     }
 
     // [X]           [R]
@@ -953,7 +932,11 @@ class Convert {
     let y = m[1][0] * r + m[1][1] * g + m[1][2] * b;
     let z = m[2][0] * r + m[2][1] * g + m[2][2] * b;
 
-    return new Colors.xyz(x,y,z,colorSpace,referenceWhite)
+    x = Math.min(Math.max(x,0),1)
+    y = Math.min(Math.max(y,0),1)
+    z = Math.min(Math.max(z,0),1)
+
+    return new Colors.xyz(x,y,z)
   }
 
   /**
@@ -965,14 +948,15 @@ class Convert {
    * @param  {number}     [bitDepth=8]
    * @return {Colors.rgb}
    */
-  static xyz2rgb(xyz: Colors.xyz, round: boolean = true, bitDepth: number = 8): Colors.rgb {
+  static xyz2rgb(xyz: Colors.xyz, colorSpace: string = 'srgb', referenceWhite: string = 'd65', round: boolean = true, bitDepth: number = 8): Colors.rgb {
 
-    if (typeof colorSpaces[xyz.colorSpace as keyof object] == 'undefined' ||
-        typeof colorSpaces[xyz.colorSpace as keyof object]['xyz2rgb'] == 'undefined' ||
-        typeof colorSpaces[xyz.colorSpace as keyof object]['xyz2rgb'][xyz.referenceWhite] == 'undefined') {
+    let space = Util.validColorSpace(colorSpace)
+    referenceWhite = referenceWhite.toLowerCase()
+    if (typeof space['rgb2xyz' as keyof object] == 'undefined' ||
+        typeof space['rgb2xyz' as keyof object][referenceWhite] == 'undefined') {
           throw new Error('Transformation matrix unavailable for this color space and reference white');
     }
-    let m = colorSpaces[xyz.colorSpace as keyof object]['xyz2rgb'][xyz.referenceWhite]
+    let m = space['rgb2xyz' as keyof object][referenceWhite]
 
     // [R]       [X]
     // [G] = [M]*[Y]  where [M] is [RGB to XYZ matrix]^-1
@@ -1019,26 +1003,26 @@ class Convert {
 
   /**
    * Convert XYZ to xyY
+   * If X = Z = Y = 0, set x and y to chromaticity coordinates of reference white
    *
    * @param  {Colors.xyz} xyz
    * @return {Colors.xyy}
    */
-  static xyz2xyy(xyz: Colors.xyz): Colors.xyy {
   static xyz2xyy(xyz: Colors.xyz, referenceWhite: string = 'd65'): Colors.xyy {
-    let w = Util.validReferenceWhite(referenceWhite);
+    let w = Util.validReferenceWhite(referenceWhite)
     let cx;
     let cy;
     let sum = xyz.x + xyz.y + xyz.z;
     if (!sum) {
-      cx = w[0];
-      cy = w[1];
+      cx = w.x;
+      cy = w.y;
     }
     else {
       cx = xyz.x / sum;
       cy = xyz.y / sum;
     }
 
-    return new Colors.xyy(cx, cy, xyz.y, xyz.colorSpace, xyz.referenceWhite)
+    return new Colors.xyy(cx, cy, xyz.y)
   }
 
   /**
@@ -1058,7 +1042,7 @@ class Convert {
       cz = ((1 - xyy.x - xyy.y) * xyy.yy) / xyy.y;
     }
 
-    return new Colors.xyz(cx, xyy.y, cz, xyy.colorSpace, xyy.referenceWhite)
+    return new Colors.xyz(cx, xyy.y, cz)
   }
 
   /////////// Lab ///////////
@@ -1067,14 +1051,16 @@ class Convert {
    * Convert XYZ to Lab
    *
    * @param  {Colors.xyz} xyz
+   * @param  {string}     referenceWhite
+   * @param  {boolean}    [round=true]
    * @return {Colors.lab}
    */
-  static xyz2lab(xyz: Colors.xyz): Colors.lab {
-    let w = Util.validReferenceWhite(xyz.referenceWhite);
+  static xyz2lab(xyz: Colors.xyz, referenceWhite: string = 'd65', round: boolean = true): Colors.lab {
+    let w = Util.validReferenceWhite(referenceWhite);
 
-    let xr = xyz.x / w[0];
-    let yr = xyz.y / w[1];
-    let zr = xyz.z / w[2];
+    let xr = xyz.x / w.x;
+    let yr = xyz.y / w.y;
+    let zr = xyz.z / w.z;
 
     let fx = xyz.x > cieE ? Math.pow(xr, 1/3) : (cieK * xr + 16) / 116;
     let fy = xyz.y > cieE ? Math.pow(yr, 1/3) : (cieK * yr + 16) / 116;
@@ -1084,7 +1070,13 @@ class Convert {
     let a = 500 * (fx - fy);
     let b = 200 * (fy - fz);
 
-    return new Colors.lab(l, a, b, xyz.colorSpace, xyz.referenceWhite)
+    if (round) {
+      l = Math.round(l)
+      a = Math.round(a)
+      b = Math.round(b)
+    }
+
+    return new Colors.lab(l, a, b)
   }
 
   /**
@@ -1093,8 +1085,8 @@ class Convert {
    * @param  {Colors.lab} lab
    * @return {Colors.xyz}
    */
-  static lab2xyz(lab: Colors.lab): Colors.xyz {
-    let w = Util.validReferenceWhite(lab.referenceWhite);
+  static lab2xyz(lab: Colors.lab, referenceWhite: string = 'd65'): Colors.xyz {
+    let w = Util.validReferenceWhite(referenceWhite);
 
     let fy = (lab.l + 16) / 116;
     let fx = lab.a / 500 + fy;
@@ -1104,11 +1096,11 @@ class Convert {
     let yr = lab.l > cieK * cieE ? Math.pow(fy, 3) : lab.l * cieK;
     let zr = Math.pow(fz, 3) > cieE ? Math.pow(fz, 3) : (116 * fz - 16) / cieK;
 
-    let x = xr * w[0];
-    let y = yr * w[1];
-    let z = zr * w[2];
+    let x = xr * w.x;
+    let y = yr * w.y;
+    let z = zr * w.z;
 
-    return new Colors.xyz(x, y, z, lab.colorSpace, lab.referenceWhite)
+    return new Colors.xyz(x, y, z)
   }
 
   /////////// Luv ///////////
@@ -1121,10 +1113,10 @@ class Convert {
    * @param  {Colors.xyz} xyz
    * @return {Colors.luv}
    */
-  static xyz2luv(xyz: Colors.xyz): Colors.luv {
-    let w = Util.validReferenceWhite(xyz.referenceWhite);
+  static xyz2luv(xyz: Colors.xyz, referenceWhite: string = 'd65', round: boolean = true): Colors.luv {
+    let w = Util.validReferenceWhite(referenceWhite);
 
-    let yr = xyz.y / w[1];
+    let yr = xyz.y / w.y;
 
     let div = xyz.x + 15 * xyz.y + 3 * xyz.z;
     let up, vp
@@ -1137,14 +1129,20 @@ class Convert {
       vp = (9 * xyz.y) / div;
     }
 
-    let upr = (4 * w[0]) / (w[0] + 15 * w[1] + 3 * w[2]);
-    let vpr = (9 * w[1]) / (w[0] + 15 * w[1] + 3 * w[2]);
+    let upr = (4 * w.x) / (w.x + 15 * w.y + 3 * w.z);
+    let vpr = (9 * w.y) / (w.x + 15 * w.y + 3 * w.z);
 
     let l = yr > cieE ? 116 * Math.pow(yr, 1/3) - 16 : cieK * yr;
     let u = 13 * l * (up - upr);
     let v = 13 * l * (vp - vpr);
 
-    return new Colors.luv(l, u, v, xyz.colorSpace, xyz.referenceWhite)
+    if (round) {
+      l = Math.round(l)
+      u = Math.round(u)
+      v = Math.round(v)
+    }
+
+    return new Colors.luv(l, u, v)
   }
 
   /**
@@ -1154,11 +1152,11 @@ class Convert {
    * @param  {Colors.luv} luv
    * @return {Colors.xyz}
    */
-  static luv2xyz(luv: Colors.luv): Colors.xyz {
-    let w = Util.validReferenceWhite(luv.referenceWhite);
+  static luv2xyz(luv: Colors.luv, referenceWhite: string = 'd65'): Colors.xyz {
+    let w = Util.validReferenceWhite(referenceWhite);
 
-    let u0 = (4 * w[0]) / (w[0] + 15 * w[1] + 3 * w[2]);
-    let v0 = (9 * w[0]) / (w[0] + 15 * w[1] + 3 * w[2]);
+    let u0 = (4 * w.x) / (w.x + 15 * w.y + 3 * w.z);
+    let v0 = (9 * w.y) / (w.x + 15 * w.y + 3 * w.z);
 
     let y = luv.l > cieK * cieE ? Math.pow((luv.l + 16) / 116, 3) : luv.l / cieK;
 
@@ -1170,7 +1168,7 @@ class Convert {
     let x = (d - b) / (a - c);
     let z = x * a + b;
 
-    return new Colors.xyz(x, y, z, luv.colorSpace, luv.referenceWhite)
+    return new Colors.xyz(x, y, z)
   }
 
   /////////// YCbCr and STANDARDS ///////////
