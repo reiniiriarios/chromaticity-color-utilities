@@ -1754,7 +1754,7 @@ I'm not 100% positive on my notation—f(v<sub>ki</sub>) is a function of each i
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/kelvin-to-xyz.png)
 
-C is the set of chromaticity coordinates associated with the black body tensor. <sup>[[9]](#references)</sup> The associated coordinates for white align with a D65 standard illuminant, but I've been unable to find any further information regarding the given RGB tristimulus values.
+C is the set of chromaticity coordinates for NTSC standard primaries. The associated coordinates given for white align with a D65 standard illuminant. <sup>[[9]](#references)</sup> <sup>[[10]](#references)</sup>
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/kelvin-xyz-to-rgb.png)
 
@@ -1847,6 +1847,8 @@ min(\frac{q_i}{m}^\gamma,1)
 * Gamma adjustment modification
 * Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
   * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
+* Write more documentation wrt mathematics.
+* Integrate my references better. :)
 
 ## References
 
@@ -1880,3 +1882,6 @@ https://www.w3.org/Graphics/Color/sRGB.html
 
 9. William T. Bridgman, NASA; Dan Bruton, SFASU. "RGB Values for Hot Objects". (2000)
 http://www.physics.sfasu.edu/astro/color/blackbodyc.txt
+
+10. C. A. Bouman. "Digital Image Processing". (2021)
+https://engineering.purdue.edu/~bouman/ece637/notes/pdf/ColorSpaces.pdf
