@@ -11,7 +11,7 @@
 
 The full docs contain information on each method as well as the mathematics behind them.
 
-[**Full Documentation >** https://reiniiriarios.github.com/chromaticity-color-utilities](https://reiniiriarios.github.com/chromaticity-color-utilities)
+[**Full Documentation >** https://reiniiriarios.github.io/chromaticity-color-utilities](https://reiniiriarios.github.io/chromaticity-color-utilities)
 
 ## Usage
 
