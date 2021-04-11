@@ -414,7 +414,8 @@ Color.from('xyz', [x, y, z])
 let color1 = Color.from('xyz',[0.5928939, 0.2848479, 0.969638])
 let color3 = color2.to('xyz')
 
-let color4 = Color.from('xyz', [0.7589799, 0.3743439, 0.7643198]).to('rgb',{
+let color4 = color1.to('rgb')
+let color5 = color1.to('rgb', {
   colorSpace: 'adobergb',
   referenceWhite: 'd50'
 })
@@ -462,7 +463,8 @@ Color.from('lab', [l, a, b])
 let color1 = Color.from('lab',[95, 142, -88])
 let color3 = color2.to('lab')
 
-let color4 = color1.to('rgb', {
+let color4 = color1.to('rgb')
+let color5 = color1.to('rgb', {
   colorSpace: 'adobergb',
   referenceWhite: 'd50'
 })
@@ -487,7 +489,8 @@ Color.from('luv', [l, u, v])
 let color1 = Color.from('luv',[95, 132, -170])
 let color3 = color2.to('luv')
 
-let color4 = color1.to('rgb', {
+let color4 = color1.to('rgb')
+let color5 = color1.to('rgb', {
   colorSpace: 'adobergb',
   referenceWhite: 'd50'
 })
@@ -1826,6 +1829,7 @@ min(\frac{q_i}{m}^\gamma,1)
   * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
 * Write more documentation wrt mathematics.
 * Integrate my references better. :)
+* Turn readme into a documentation mini-site, it's too loooooooong
 
 ## References
 
