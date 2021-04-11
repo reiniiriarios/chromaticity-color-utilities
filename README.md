@@ -74,6 +74,7 @@
   * [RGB to YPbPr](#rgb-to-ypbpr)
   * [YPbPr to YCbCr](#ypbpr-to-ycbcr)
   * [YCbCr to YPbPr](#ycbcr-to-ypbpr)
+  * [Temperature (Kelvin) to RGB](#temperature-kelvin-to-rgb)
 * [Compiling from Source](#compiling-from-source)
 * [To Do List](#to-do-list)
 * [References](#references)
