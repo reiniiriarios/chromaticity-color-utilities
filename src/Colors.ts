@@ -496,7 +496,7 @@ export class lab extends colorType {
 
     /**
      * 
-     * @param {number} l  0-1
+     * @param {number} l  0-100
      * @param {number} a  unbounded, but typically clamped at -128 and 127
      * @param {number} b  unbounded, but typically clamped at -128 and 127
      */

@@ -1070,6 +1070,8 @@ class Convert {
     let a = 500 * (fx - fy);
     let b = 200 * (fy - fz);
 
+    l = Math.min(Math.max(l,0),100)
+
     if (round) {
       l = Math.round(l)
       a = Math.round(a)
