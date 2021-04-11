@@ -1,7 +1,8 @@
-# chromaticity-color-utilities
- Color utilities for Node.js.
+# <img src="https://github.com/reiniiriarios/chromaticity-color-utilities/raw/main/docs/chromaticity-icon-01.png" width="26" height="26"> chromaticity-color-utilities
+
+Color utilities for Node.js.
  
- Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, HSP, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, Y'CbCr, and more.
+Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, HSP, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, Y'CbCr, and more.
 
 ## Install
 
