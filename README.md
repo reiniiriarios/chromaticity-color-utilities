@@ -1550,6 +1550,8 @@ W is a 1x3 reference white vector based on standard illuminant.
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-lab-lab.png)
 
+L* = min(max(L*,0)1)
+
 <!--
 \begin{align*}
 X' &= \frac{X}{W_{R}} \\
@@ -1616,6 +1618,8 @@ W is a 1x3 reference white vector based on standard illuminant
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/cie-ek.png)
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/xyz-luv.png)
+
+L* = min(max(L*,0)1)
 
 <!--
 \begin{align*}
