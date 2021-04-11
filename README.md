@@ -66,7 +66,7 @@
     * [L*](#l-1)
     * [Other color spaces](#other-color-spaces-1)
   * [XYZ to xyY](#xyz-to-xyy)
-  * [xyY to XYZ](#xyy-to-xyz)
+  * [xyY to XYZ](#xyy-to-xyz)te
   * [XYZ to L\*a\*b\*](#xyz-to-lab)
   * [L\*a\*b\* to XYZ](#lab-to-xyz)
   * [XYZ to L\*u\*v\*](#xyz-to-luv)
@@ -1746,11 +1746,15 @@ B &= Y + (2 - 2Kb) \cdot Pb
 
 ### Temperature (Kelvin) to RGB
 
-Where v is a tensor of xyz color matching vectors for wavelengths in 5nm increments from 380nm to 780nm and T is the given temperature in Kelvin. Trapezoid integration is used to sum the the XYZ values from a black body spectrum based on v and T.
+Where v is a tensor of XYZ color matching vectors for wavelengths in 5nm increments from 380nm to 780nm and T is the given temperature in Kelvin. Trapezoid integration is used to sum the the XYZ values from a black body spectrum generated from the tensor v based temperature. <sup>[[9]](#references)</sup>
+
+In other words, a black body emission spectrum is generated for a given temperature, from which a summation of each XYZ set of values in the spectrum, normalized, gives an average XYZ, the mish-mash of wavelengths that we perceive as a single color. Then that XYZ color is simply converted to RGB.
+
+I'm not 100% positive on my notation—f(v<sub>ki</sub>) is a function of each index of each vector in the tensor v.
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/kelvin-to-xyz.png)
 
-C is the set of chromaticity coordinates associated with the black body tensor.
+C is the set of chromaticity coordinates associated with the black body tensor. <sup>[[9]](#references)</sup> The associated coordinates for white align with a D65 standard illuminant, but I've been unable to find any further information regarding the given RGB tristimulus values.
 
 ![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/kelvin-xyz-to-rgb.png)
 
