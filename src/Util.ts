@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { stdIlluminants } from './Reference';
+import { colorSpaces, stdIlluminants } from './Reference';
 
 class Util {
   /**
@@ -206,6 +206,35 @@ class Util {
     }
 
     return w;
+  }
+
+  static validColorSpace(colorSpace: string) : object {
+    // make lowercase, include common nomenclature differences, ignore spaces, etc
+    colorSpace = colorSpace.toLowerCase().replace(/[^a-z0-9]/,'')
+    let conform = {
+        'adobe':     'adobergb1998',
+        'adobergb':  'adobergb1998',
+        'ntsc':      'ntscrgb',
+        'palsecam':  'palsecamrgb',
+        'pal':       'palsecamrgb',
+        'palrgb':    'palsecamrgb',
+        'secam':     'palsecamrgb',
+        'secamrgb':  'palsecamrgb',
+        'prophoto':  'prophotorgb',
+        'smpte':     'smptecrgb',
+        'smptec':    'smptecrgb',
+        'widegamut': 'widegamutrgb',
+        'ecirgbv2':  'ecirgb',
+        'ektaspace': 'ektaspaceps5'
+    }
+    if (typeof conform[colorSpace as keyof object] == 'string') {
+      colorSpace = conform[colorSpace as keyof object]
+    }
+    if (typeof colorSpaces[colorSpace as keyof object] == 'undefined') {
+      throw new Error('Unable to parse given color space')
+    }
+    let space = colorSpaces[colorSpace as keyof object]
+    return space
   }
 
   /**
