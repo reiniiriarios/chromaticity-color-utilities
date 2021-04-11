@@ -100,17 +100,15 @@ let color1 = Color.from('rgb',[255,128,0]).to('hsv')
 let color2 = Color.from('hex','ff3201').to('rec709rgb', { bitRate: 10 })
 // rec709rgb { r: 940, g: 298, b: 67, a: 940, bitDepth: 10, max: 1023 }
 
+let color6 = Color.from('hex', 'ff00ff').to('lab')
+// defaulting to sRGB color space with a D65 standard illuminant reference white
+// lab { l: 95, a: 142, b: -88 }
+
 let color6 = Color.from('hex', 'ff00ff').to('lab',{
   colorSpace: 'AdobeRGB',
-  referenceWhite: 'd50'
+  referenceWhite: 'D50'
 })
-// lab {
-//  l: 67.60166164169028,
-//  a: 101.30709261827131,
-//  b: -50.813827160707525,
-//  colorSpace: 'adobergb1998',
-//  referenceWhite: 'd50'
-// }
+// lab { l: 100, a: 150, b: -49 }
 
 let red = Color.from('hsl',[280,80,90]).to('rgb').r
 // 250
