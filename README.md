@@ -643,14 +643,22 @@ let color1 = Color.from('nm',600).to('rgb')
 
 ### Kelvin : Color Temperature Approximation
 
-This is a one-way approximatin. There is no `.to('kelvin')` method option.
+This is a one-way approximation. There is no `.to('kelvin')` method option. This method uses trapezoid integration to sum the wavelength distribution of energy through a black body tensor. While an approximation, it is a rather accurate one. Temperatures above 10k&deg;K may be less accurate, but the method allows for temperatures up to 40k&deg;K
 
 ```ts
 Color.from('kelvin', degrees)
 
 // e.g.
-let color1 = Color.from('kelvin',3500).to('rgb')
-// rgb { r: 255, g: 193, b: 141, a: 255, bitDepth: 8, max: 255 }
+let color1 = Color.from('kelvin',1000).to('rgb')
+//  rgb { r: 255, g: 13, b: 0, a: 255, bitDepth: 8, max: 255 }
+let color1 = Color.from('kelvin',2000).to('rgb')
+//  rgb { r: 255, g: 169, b: 7, a: 255, bitDepth: 8, max: 255 }
+let color1 = Color.from('kelvin',4000).to('rgb')
+//  rgb { r: 240, g: 255, b: 174, a: 255, bitDepth: 8, max: 255 }
+let color1 = Color.from('kelvin',8000).to('rgb')
+//  rgb { r: 143, g: 232, b: 255, a: 255, bitDepth: 8, max: 255 }
+let color1 = Color.from('kelvin',10000).to('rgb')
+//  rgb { r: 121, g: 210, b: 255, a: 255, bitDepth: 8, max: 255 }
 ```
 
 ## Color Spaces and Standard Illuminants
@@ -1733,6 +1741,90 @@ G &= Y + Pb_{0} + Pr_{0}
 \\
 B &= Y + (2 - 2Kb) \cdot Pb
 \end{align*}
+-->
+
+### Temperature (Kelvin) to RGB
+
+Where v is a tensor of xyz color matching vectors for wavelengths in 5nm increments from 380nm to 780nm and T is the given temperature in Kelvin. Trapezoid integration is used to sum the the XYZ values from a black body spectrum based on v and T.
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/kelvin-to-xyz.png)
+
+C is the set of chromaticity coordinates associated with the black body tensor.
+
+![](https://raw.githubusercontent.com/reiniiriarios/chromaticity-color-utilities/master/math/kelvin-xyz-to-rgb.png)
+
+<!--
+KELVIN TO XYZ
+
+\begin{align*}
+v &= \begin{bmatrix}\bar{X}_1\\\bar{Y}_1\\\bar{Z}_1\end{bmatrix}_1,
+\begin{bmatrix}\bar{X}_2\\\bar{Y}_2\\\bar{Z}_2\end{bmatrix}_2
+\cdots 
+\begin{bmatrix}\bar{X}_n\\\bar{Y}_n\\\bar{Z}_n\end{bmatrix}_n
+\\
+
+\:\\
+c &= \frac{1240}{8.617e^{-5}} \\
+
+\:\\
+\lambda &= 380 + 5k \\
+
+f(v_k_i) &=
+(3.74183e^{-16} \cdot \frac{\frac{1}{\lambda^5}}{e^{(c * T)} - 1})
+ \cdot v_k_i \\
+
+\begin{bmatrix}X'\\Y'\\Z'\end{bmatrix} &=
+\sum^N_{k=1}
+\frac{f(\vec{v_{k-1}}) + f(\vec{v_{k}})}{2}
+\Delta \vec{v_k} \\
+
+\begin{bmatrix}X\\Y\\Z\end{bmatrix} &=
+\begin{bmatrix}X'\\Y'\\Z'\end{bmatrix} \cdot \frac{1}{max(X',Y',Z')}
+\end{align*}
+
+XYZ TO RGB
+
+\begin{align*}
+C &=
+\begin{bmatrix}
+X_R & X_G & X_B \\
+Y_R & Y_G & Y_B \\
+Z_R & Z_G & Z_B
+\end{bmatrix}
+=
+\begin{bmatrix}
+0.64 & 0.29 & 0.15 \\
+0.33 & 0.60 & 0.06 \\
+0.03 & 0.11 & 0.79
+\end{bmatrix}
+
+\\
+\vec{p} &=
+\begin{bmatrix}
+R''\\G''\\B''
+\end{bmatrix}
+=
+C
+\begin{bmatrix}
+X\\Y\\Z
+\end{bmatrix} \\
+
+\vec{q} &=
+\begin{bmatrix}
+R'\\G'\\B'
+\end{bmatrix}
+=
+min(max(p_i,0),1)\\
+\gamma &= 0.8 \\
+m &= max(1.0e^{-10},R',G',B') \\
+
+\begin{bmatrix}
+R\\G\\B
+\end{bmatrix} &=
+min(\frac{q_i}{m}^\gamma,1)
+\:\\
+\end{align*}
+
 -->
 
 ## Compiling from Source
