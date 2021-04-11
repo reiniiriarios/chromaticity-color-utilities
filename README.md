@@ -66,7 +66,7 @@
     * [L*](#l-1)
     * [Other color spaces](#other-color-spaces-1)
   * [XYZ to xyY](#xyz-to-xyy)
-  * [xyY to XYZ](#xyy-to-xyz)te
+  * [xyY to XYZ](#xyy-to-xyz)
   * [XYZ to L\*a\*b\*](#xyz-to-lab)
   * [L\*a\*b\* to XYZ](#lab-to-xyz)
   * [XYZ to L\*u\*v\*](#xyz-to-luv)
