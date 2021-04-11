@@ -1,4 +1,6 @@
 node_modules/
+dist/.gitkeep
 src/*
 test.js
 math/*
+.github/*
