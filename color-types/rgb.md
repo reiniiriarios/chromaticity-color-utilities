@@ -12,6 +12,8 @@ All values are between 0 and `(2 ** bitDepth) - 1`. With a default bit depth of 
 
 8-bit color is sometimes referred to as 24-bit or 32-bit (8 bits per channel, with 32-bit including an alpha channel). This package uses the more correct implementation of 32-bit meaning 32 bits per channel, and so generally most use cases would fall between 8 and 16 bit color depth.
 
+`rgb`, `RGB`, `rgba`, and `RGBA` are synonymous.
+
 ## Example Code
 ```ts
 Color.from('rgb',[r, g, b, a?],{

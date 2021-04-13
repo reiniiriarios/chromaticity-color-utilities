@@ -9,7 +9,7 @@ use_math: true
 # Kelvin and RGB
 #### Color Temperature $\rightarrow$ Red, Green, Blue
 
-Where v is a tensor of XYZ color matching vectors for wavelengths in 5nm increments from 380nm to 780nm and T is the given temperature in Kelvin. Trapezoid integration is used to sum the XYZ values from a black body spectrum generated from the tensor v based on temperature. <sup>[[9]](/references/)</sup>
+Where v is a tensor of XYZ color matching vectors for wavelengths in 5nm increments from 380nm to 780nm and T is the given temperature in Kelvin. Trapezoid integration is used to sum the XYZ values from a black body spectrum generated from the tensor v based on temperature. <sup>[[9]](/chromaticity-color-utilities/references/)</sup>
 
 In other words, a black body emission spectrum is generated for a given temperature, from which a summation of each XYZ set of values in the spectrum, normalized, gives an average XYZ, the mish-mash of wavelengths that we perceive as a single color. Then that XYZ color is simply converted to RGB.
 
@@ -43,7 +43,7 @@ f({v_k}_i) &=
 \end{align*}
 $$
 
-C is the set of chromaticity coordinates for NTSC standard primaries. The associated coordinates given for white align with a D65 standard illuminant. <sup>[[9]](/references/)</sup> <sup>[[10]](/references/)</sup>
+C is the set of chromaticity coordinates for NTSC standard primaries. The associated coordinates given for white align with a D65 standard illuminant. <sup>[[9]](/chromaticity-color-utilities/references/)</sup> <sup>[[10]](/chromaticity-color-utilities/references/)</sup>
 
 $$
 \begin{align*}
