@@ -1,5 +1,5 @@
-node_modules/
-dist/*.js
-dist/*.d.ts
-test.js
-docs/master/*
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
