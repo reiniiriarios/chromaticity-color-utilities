@@ -965,13 +965,13 @@ class Convert {
     let g = m[1][1] * xyz.x + m[1][1] * xyz.y + m[1][2] * xyz.z;
     let b = m[2][1] * xyz.x + m[2][1] * xyz.y + m[2][2] * xyz.z;
 
-    if (xyz.colorSpace == 'srgb') {
+    if (colorSpace == 'srgb') {
       // sRGB
       r = r <= 0.0031308 ? r * 12.92 : Math.pow((r * 1.055), 1/2.4) - 0.055;
       g = g <= 0.0031308 ? g * 12.92 : Math.pow((g * 1.055), 1/2.4) - 0.055;
       b = b <= 0.0031308 ? b * 12.92 : Math.pow((b * 1.055), 1/2.4) - 0.055;
     }
-    else if (xyz.colorSpace == 'ecirgb') {
+    else if (colorSpace == 'ecirgb') {
       // L*
       r = r <= cieE ? (r * cieK) / 100 : 1.16 * Math.pow(r, 1/3) - 0.16;
       r = g <= cieE ? (g * cieK) / 100 : 1.16 * Math.pow(g, 1/3) - 0.16;
@@ -979,12 +979,12 @@ class Convert {
     }
     else {
       // Gamma
-      if (typeof colorSpaces[xyz.colorSpace as keyof object]['gamma'] == 'undefined') {
+      if (typeof space['gamma' as keyof object] == 'undefined') {
         throw new Error('Gamma not defined for this color space');
       }
-      r = Math.pow(r, 1 / colorSpaces[xyz.colorSpace as keyof object]['gamma']);
-      g = Math.pow(g, 1 / colorSpaces[xyz.colorSpace as keyof object]['gamma']);
-      b = Math.pow(b, 1 / colorSpaces[xyz.colorSpace as keyof object]['gamma']);
+      r = Math.pow(r, 1 / space['gamma' as keyof object]);
+      g = Math.pow(g, 1 / space['gamma' as keyof object]);
+      b = Math.pow(b, 1 / space['gamma' as keyof object]);
     }
 
     let max = (2 ** bitDepth) - 1

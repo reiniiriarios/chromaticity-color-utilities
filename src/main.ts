@@ -39,6 +39,7 @@ interface colorDef {
 
 class Color implements colorDef {
     from(type: string, value: number[]|number|string, args?: newColorArgs) : colorType {
+        type = type.toLowerCase().replace(/[^a-z0-9]/,'')
         if (typeof args === 'undefined') args = {}
         if (typeof args.bitDepth === 'undefined' && typeof args.bitRate !== 'undefined') {
             args.bitDepth = args.bitRate
@@ -49,6 +50,8 @@ class Color implements colorDef {
         }
         else if (typeof value === 'number') {
             switch (type) {
+                case 'hex':
+                    return new Colors.hex(value)
                 case 'nm':
                 case 'light':
                 case 'nanometers':

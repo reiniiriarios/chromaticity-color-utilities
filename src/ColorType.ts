@@ -146,6 +146,7 @@ export abstract class colorType {
     }
 
     public modify(modification:string, args?: modifyArgs) : colorType {
+        modification = modification.toLowerCase()
         if (typeof args == 'undefined') args = {}
         let og = this.constructor['name']
         let ogargs : newColorArgs = {
@@ -296,8 +297,9 @@ export abstract class colorType {
             round: args.round,
             bitDepth: this.bitDepth,
             normalize: this.normalized,
-            colorSpace: this.colorSpace,
-            referenceWhite: this.referenceWhite,
+            // Don't pass the following or the color will shift
+            // colorSpace: this.colorSpace,
+            // referenceWhite: this.referenceWhite,
             kb: this.kb,
             kr: this.kr,
             pb: this.pb,
