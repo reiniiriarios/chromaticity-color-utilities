@@ -24,8 +24,8 @@ description: >-
   Color utilities for Node.js. Conversion, modification, and color schemes
   of: RGB (at any bit depth), HSV, HSL, HSI, HSP, CYMK, YIQ, XYZ, xyY,
   L*a*b*, L*u*v*, Y'PbPr, Y'CbCr, and more.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://reiniiriarios.github.io/chromaticity-color-utilities"
+baseurl: "/chromaticity-color-utilities"
+url: "https://reiniiriarios.github.io"
 github_username:  reiniiriarios
 
 # Build settings
