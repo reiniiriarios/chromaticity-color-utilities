@@ -503,10 +503,10 @@ export abstract class colorType {
         if (!isFinite(value)) {
             throw new Error('Invalid color value');
         }
-        if (lowerLimit && upperLimit && lowerLimit >= upperLimit) {
+        if (lowerLimit !== false && upperLimit !== false && lowerLimit >= upperLimit) {
             throw new Error('Invalid range (lower limit must exceed upper limit)');
         }
-        if ((lowerLimit && value < lowerLimit) || (upperLimit && value > upperLimit)) {
+        if ((lowerLimit !== false && value < lowerLimit) || (upperLimit !== false && value > upperLimit)) {
             throw new Error(typeof msg !== 'undefined' ? msg : 'Color value out of range');
         }
     }

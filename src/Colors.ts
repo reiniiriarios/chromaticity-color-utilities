@@ -63,12 +63,12 @@ export class hex extends colorType {
             this.hex = hex
         }
         else {
-            this.hex = hex.toString(16).slice(1)
+            this.hex = hex.toString(16)
         }
     }
 
     protected torgb(args: newColorArgs) : rgb {
-        return Convert.hex2rgb(this)
+        return Convert.hex2rgb(this, args.bitDepth)
     }
 
     protected tohex(args: newColorArgs) : hex {
