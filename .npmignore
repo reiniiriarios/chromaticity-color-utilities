@@ -3,4 +3,3 @@ dist/.gitkeep
 src/*
 test.js
 .github/*
-docs/*
