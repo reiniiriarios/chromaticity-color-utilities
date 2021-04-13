@@ -8,6 +8,10 @@ Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL
 
 `npm install --save chromaticity-color-utilities`
 
+## Status
+
+Approaching complete-ish stage... testing in progress!
+
 ## Documentation
 
 The full docs contain information on each method as well as the mathematics behind them.
