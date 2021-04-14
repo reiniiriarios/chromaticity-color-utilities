@@ -431,7 +431,7 @@ class Convert {
     b *= max;
 
     
-    let a = Util.scaleValueRange(hsl.a, 0, 100, 0, max)
+    let a = Util.scaleValueRange(hsl.a, 0, 100, 0, max, round)
 
     if (round) {
       r = Math.round(r);
@@ -484,7 +484,7 @@ class Convert {
     }
     else {
       let z = 1 - Math.abs(Util.fmod(h, 2) - 1);
-      let chroma = (2 * i * s) / (1 + z);
+      let chroma = (3 * i * s) / (1 + z);
       let x = chroma * z;
       let huef = Math.floor(h);
       switch (huef) {
@@ -533,7 +533,7 @@ class Convert {
     g *= max
     b *= max
 
-    let a = Util.scaleValueRange(hsi.a, 0, 100, 0, max)
+    let a = Util.scaleValueRange(hsi.a, 0, 100, 0, max, round)
 
     if (round) {
       r = Math.round(r);
@@ -608,7 +608,7 @@ class Convert {
     s  *= 100
     pb *= 100
 
-    let a = rgb.a / maxVal * 100
+    let a = Util.scaleValueRange(rgb.a, 0, maxVal, 0, 100, round)
 
     if (round) {
       h = Math.round(h)
@@ -721,7 +721,7 @@ class Convert {
     g *= max
     b *= max
 
-    let a = hsp.a / 100 * max
+    let a = Util.scaleValueRange(hsp.a, 0, 100, 0, max, round)
 
     if (round) {
       r = Math.round(r)
@@ -864,10 +864,18 @@ class Convert {
       q = Util.scaleValueRange(q, -128, 128, -0.5226, 0.5226, false);
     }
 
+    let r = y +  0.956 * i +  0.621 * q;
+    let g = y + -0.272 * i + -0.647 * q;
+    let b = y + -1.106 * i +  1.703 * q;
+
+    r = Math.min(Math.max(r,0),1)
+    g = Math.min(Math.max(g,0),1)
+    b = Math.min(Math.max(b,0),1)
+
     let max = (2 ** bitDepth) - 1
-    let r = (y +  0.956 * i +  0.621 * q) * max;
-    let g = (y + -0.272 * i + -0.647 * q) * max;
-    let b = (y + -1.106 * i +  1.703 * q) * max;
+    r *= max
+    g *= max
+    b *= max
 
     if (round) {
       r = Math.round(r);
@@ -952,18 +960,18 @@ class Convert {
 
     let space = Util.validColorSpace(colorSpace)
     referenceWhite = referenceWhite.toLowerCase()
-    if (typeof space['rgb2xyz' as keyof object] == 'undefined' ||
-        typeof space['rgb2xyz' as keyof object][referenceWhite] == 'undefined') {
+    if (typeof space['xyz2rgb' as keyof object] == 'undefined' ||
+        typeof space['xyz2rgb' as keyof object][referenceWhite] == 'undefined') {
           throw new Error('Transformation matrix unavailable for this color space and reference white');
     }
-    let m = space['rgb2xyz' as keyof object][referenceWhite]
+    let m = space['xyz2rgb' as keyof object][referenceWhite]
 
     // [R]       [X]
     // [G] = [M]*[Y]  where [M] is [RGB to XYZ matrix]^-1
     // [B]       [Z]
     let r = m[0][0] * xyz.x + m[0][1] * xyz.y + m[0][2] * xyz.z;
-    let g = m[1][1] * xyz.x + m[1][1] * xyz.y + m[1][2] * xyz.z;
-    let b = m[2][1] * xyz.x + m[2][1] * xyz.y + m[2][2] * xyz.z;
+    let g = m[1][0] * xyz.x + m[1][1] * xyz.y + m[1][2] * xyz.z;
+    let b = m[2][0] * xyz.x + m[2][1] * xyz.y + m[2][2] * xyz.z;
 
     if (colorSpace == 'srgb') {
       // sRGB

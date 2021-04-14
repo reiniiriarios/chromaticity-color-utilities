@@ -1,5 +1,5 @@
 node_modules/
 dist/.gitkeep
 src/*
-test.js
+xtest.js
 .github/*
