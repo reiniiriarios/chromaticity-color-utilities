@@ -10,7 +10,7 @@ Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL
 
 ## Status
 
-Approaching complete-ish stage... testing in progress!
+Approaching complete-ish stage... Most conversion tests pass. Issues with XYZ. Writing tests for schemes, mods.
 
 ## Documentation
 
