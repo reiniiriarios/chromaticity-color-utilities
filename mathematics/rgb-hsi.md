@@ -44,7 +44,7 @@ $$
 \begin{align*}
 z &= 1 - |H \text{ mod } 2 - 1| \\
 \:\\
-C &= \frac{(3 \cdot I \cdot S}{1 + z} \\
+C &= \frac{3 \cdot I \cdot S}{1 + z} \\
 \:\\
 x &= C \cdot z \\
 \:\\
