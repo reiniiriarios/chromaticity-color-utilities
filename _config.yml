@@ -32,6 +32,9 @@ github_username:  reiniiriarios
 
 remote_theme: pmarsceill/just-the-docs
 
+ga_tracking: G-KHTS4RKLP9
+ga_tracking_anonymize_ip: true
+
 permalink: pretty
 
 # Back to top link
