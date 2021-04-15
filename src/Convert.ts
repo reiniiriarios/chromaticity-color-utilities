@@ -1212,7 +1212,7 @@ class Convert {
     let r = Util.scaleValueRange(rgb.r, 0, rgb.max, rgbLower, rgbUpper, round);
     let g = Util.scaleValueRange(rgb.g, 0, rgb.max, rgbLower, rgbUpper, round);
     let b = Util.scaleValueRange(rgb.b, 0, rgb.max, rgbLower, rgbUpper, round);
-    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, rgbLower, rgbUpper, round);
+    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, (2 ** bitRate) - 1, round);
 
     return new Colors.rec709rgb(r, g, b, a, bitRate)
   }
@@ -1242,16 +1242,16 @@ class Convert {
     }
 
     // Rather than require bounds, clamp values
-    let r709 = Math.min(Math.max(rgb709.r, maxFrom, minFrom));
-    let g709 = Math.min(Math.max(rgb709.g, maxFrom, minFrom));
-    let b709 = Math.min(Math.max(rgb709.b, maxFrom, minFrom));
-    let a709 = Math.min(Math.max(rgb709.a, maxFrom, minFrom));
+    let r709 = Math.min(Math.max(rgb709.r, minFrom), maxFrom);
+    let g709 = Math.min(Math.max(rgb709.g, minFrom), maxFrom);
+    let b709 = Math.min(Math.max(rgb709.b, minFrom), maxFrom);
+    let a709 = Math.min(Math.max(rgb709.a, minFrom), maxFrom);
 
     let max = ((2 ** bitDepth) - 1)
     let r = Util.scaleValueRange(r709, minFrom, maxFrom, 0, max, round);
     let g = Util.scaleValueRange(g709, minFrom, maxFrom, 0, max, round);
     let b = Util.scaleValueRange(b709, minFrom, maxFrom, 0, max, round);
-    let a = Util.scaleValueRange(a709, minFrom, maxFrom, 0, max, round);
+    let a = Util.scaleValueRange(a709, 0, rgb709.max, 0, max, round);
 
     return new Colors.rgb(r, g, b, a, bitDepth)
   }
@@ -1283,7 +1283,7 @@ class Convert {
     let r = Util.scaleValueRange(rgb.r, 0, rgb.max, rgbLower, rgbUpper, round);
     let g = Util.scaleValueRange(rgb.g, 0, rgb.max, rgbLower, rgbUpper, round);
     let b = Util.scaleValueRange(rgb.b, 0, rgb.max, rgbLower, rgbUpper, round);
-    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, rgbLower, rgbUpper, round);
+    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, (2 ** bitRate) - 1, round);
 
     return new Colors.rec2020rgb(r, g, b, a, bitRate)
   }
@@ -1313,16 +1313,16 @@ class Convert {
     }
 
     // Rather than require bounds, clamp values
-    let r2020 = Math.min(Math.max(rgb2020.r, maxFrom, minFrom));
-    let g2020 = Math.min(Math.max(rgb2020.g, maxFrom, minFrom));
-    let b2020 = Math.min(Math.max(rgb2020.b, maxFrom, minFrom));
-    let a2020 = Math.min(Math.max(rgb2020.a, maxFrom, minFrom));
+    let r2020 = Math.min(Math.max(rgb2020.r, minFrom), maxFrom);
+    let g2020 = Math.min(Math.max(rgb2020.g, minFrom), maxFrom);
+    let b2020 = Math.min(Math.max(rgb2020.b, minFrom), maxFrom);
+    let a2020 = Math.min(Math.max(rgb2020.a, minFrom), maxFrom);
 
     let max = (2 ** bitDepth) - 1
     let r = Util.scaleValueRange(r2020, minFrom, maxFrom, 0, max, round);
     let g = Util.scaleValueRange(g2020, minFrom, maxFrom, 0, max, round);
     let b = Util.scaleValueRange(b2020, minFrom, maxFrom, 0, max, round);
-    let a = Util.scaleValueRange(a2020, minFrom, maxFrom, 0, max, round);
+    let a = Util.scaleValueRange(a2020, 0, rgb2020.max, 0, max, round);
 
     return new Colors.rgb(r, g, b, a, bitDepth)
   }

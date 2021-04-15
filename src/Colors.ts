@@ -129,6 +129,9 @@ export class rec709rgb extends colorType {
         // this.valueRangeCheck(r, 0, max)
         // this.valueRangeCheck(g, 0, max)
         // this.valueRangeCheck(b, 0, max)
+        if (typeof r == 'undefined') throw new Error('r undefined')
+        if (typeof g == 'undefined') throw new Error('g undefined')
+        if (typeof b == 'undefined') throw new Error('b undefined')
         if (typeof a == 'undefined') a = max
         else this.valueRangeCheck(a, 0, max)
         this.r = r
@@ -171,6 +174,9 @@ export class rec2020rgb extends colorType {
         // this.valueRangeCheck(r, 0, max)
         // this.valueRangeCheck(g, 0, max)
         // this.valueRangeCheck(b, 0, max)
+        if (typeof r == 'undefined') throw new Error('r undefined')
+        if (typeof g == 'undefined') throw new Error('g undefined')
+        if (typeof b == 'undefined') throw new Error('b undefined')
         if (typeof a == 'undefined') a = max
         else this.valueRangeCheck(a, 0, max)
         this.r = r
@@ -503,6 +509,8 @@ export class lab extends colorType {
     constructor(l: number, a:number, b:number) {
         super()
         this.valueRangeCheck(l, 0, 100)
+        if (typeof a === 'undefined') throw new Error('a undefined')
+        if (typeof b === 'undefined') throw new Error('b undefined')
         this.l = l
         this.a = a
         this.b = b
@@ -542,6 +550,8 @@ export class luv extends colorType {
         this.valueRangeCheck(l, 0, 100)
         // this.valueRangeCheck(u, -100, 100)
         // this.valueRangeCheck(v, -100, 100)
+        if (typeof u === 'undefined') throw new Error('u undefined')
+        if (typeof v === 'undefined') throw new Error('v undefined')
         this.l = l
         this.u = u
         this.v = v
