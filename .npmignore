@@ -3,3 +3,4 @@ dist/.gitkeep
 src/*
 xtest.js
 .github/*
+test/*
