@@ -335,28 +335,28 @@ describe('limits',() => {
             let color = Color.from('ypbpr',[1,0,0])
         })
         should.throw(() => {
-            let color = Color.from('ypbpr',[1,0,0],{kb:1})
+            let color = Color.from('ypbpr',[1,0,0],{kb:1/3})
         })
         should.throw(() => {
-            let color = Color.from('ypbpr',[1,0,0],{kr:1})
+            let color = Color.from('ypbpr',[1,0,0],{kr:1/3})
         })
         should.throw(() => {
-            let color = Color.from('ypbpr',[-1,0,0],{kb:1,kr:1})
+            let color = Color.from('ypbpr',[-1,0,0],{kb:1/3,kr:1/3})
         })
         should.throw(() => {
-            let color = Color.from('ypbpr',[1,-1,0],{kb:1,kr:1})
+            let color = Color.from('ypbpr',[1,-1,0],{kb:1/3,kr:1/3})
         })
         should.throw(() => {
-            let color = Color.from('ypbpr',[1,0,-1],{kb:1,kr:1})
+            let color = Color.from('ypbpr',[1,0,-1],{kb:1/3,kr:1/3})
         })
         should.throw(() => {
-            let color = Color.from('ypbpr',[1,1,0],{kb:1,kr:1})
+            let color = Color.from('ypbpr',[1,1,0],{kb:1/3,kr:1/3})
         })
         should.throw(() => {
-            let color = Color.from('ypbpr',[1,0,1],{kb:1,kr:1})
+            let color = Color.from('ypbpr',[1,0,1],{kb:1/3,kr:1/3})
         })
         should.not.throw(() => {
-            let color = Color.from('ypbpr',[1,0,0],{kb:1,kr:1})
+            let color = Color.from('ypbpr',[1,0,0],{kb:1/3,kr:1/3})
         })
     })
     // skip ycbcr until better implementation?
