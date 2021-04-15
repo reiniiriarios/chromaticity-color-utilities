@@ -17,6 +17,38 @@ rgbIsMagenta10 = (color,a=1023) => {
     color.bitDepth.should.equal(10)
     color.max.should.equal(1023)
 }
+rec709IsMagenta = (color,a=255) => {
+    color.r.should.equal(235)
+    color.g.should.equal(16)
+    color.b.should.equal(235)
+    color.a.should.equal(a)
+    color.bitDepth.should.equal(8)
+    color.max.should.equal(255)
+}
+rec709IsMagenta10 = (color,a=1023) => {
+    color.r.should.equal(940)
+    color.g.should.equal(64)
+    color.b.should.equal(940)
+    color.a.should.equal(a)
+    color.bitDepth.should.equal(10)
+    color.max.should.equal(1023)
+}
+rec2020IsMagenta = (color,a=1023) => {
+    color.r.should.equal(940)
+    color.g.should.equal(64)
+    color.b.should.equal(940)
+    color.a.should.equal(a)
+    color.bitDepth.should.equal(10)
+    color.max.should.equal(1023)
+}
+rec2020IsMagenta12 = (color,a=1023) => {
+    color.r.should.equal(3760)
+    color.g.should.equal(256)
+    color.b.should.equal(3760)
+    color.a.should.equal(a)
+    color.bitDepth.should.equal(12)
+    color.max.should.equal(4095)
+}
 hexIsMagenta = (color) => {
     color.hex.should.equal('ff00ff')
 }
@@ -92,6 +124,36 @@ describe('conversions',() => {
             let color = Color.from('hex',hex).to('rgb',{bitDepth:10})
             rgbIsMagenta10(color)
         })
+    })
+
+    it('rgb to rec709',() => {
+        let color = rgb.to('rec709')
+        rec709IsMagenta(color,128)
+        let color2 = rgb.to('rec709',{bitDepth:10})
+        rec709IsMagenta10(color2,514) // 128 > 255/2, gains two points
+    })
+    it('rec709 to rgb',() => {
+        let color = Color.from('rec709',[235,16,235,128]).to('rgb')
+        rgbIsMagenta(color,128)
+        let color2 = Color.from('rec709',[940,64,940,512],{bitDepth:10}).to('rgb')
+        rgbIsMagenta(color2,128)
+        let color3 = Color.from('rec709',[235,16,235,128]).to('rgb',{bitDepth: 10})
+        rgbIsMagenta10(color3,514)
+    })
+
+    it('rgb to rec2020',() => {
+        let color = rgb.to('rec2020')
+        rec2020IsMagenta(color,514)
+        let color2 = rgb.to('rec2020',{bitDepth:12})
+        rec2020IsMagenta12(color2,2056) // 128 > 255/2, gains points
+    })
+    it('rec2020 to rgb',() => {
+        let color = Color.from('rec2020',[940,64,940,512]).to('rgb')
+        rgbIsMagenta(color,128)
+        let color2 = Color.from('rec2020',[3760,256,3760,2048],{bitDepth:12}).to('rgb')
+        rgbIsMagenta(color2,128)
+        let color3 = Color.from('rec2020',[940,64,940,512]).to('rgb',{bitDepth: 10})
+        rgbIsMagenta10(color3,512)
     })
     
     it('rgb to hsv',() => {
