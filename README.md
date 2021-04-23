@@ -1,8 +1,25 @@
 # <img src="https://reiniiriarios.github.io/chromaticity-color-utilities/assets/images/chromaticity-icon-01.png" width="26" height="26"> chromaticity-color-utilities
 
+![](https://img.shields.io/npm/dt/chromaticity-color-utilities) ![](https://img.shields.io/npm/types/chromaticity-color-utilities) ![](https://img.shields.io/badge/license-GPLv3-green)
+
 Color utilities for Node.js.
  
 Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, HSP, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, Y'CbCr, and more.
+
+
+```ts
+const Color = require('chromaticity-color-utilities')
+
+let color1 = Color.from('rgb',[255,128,0]).to('hsv')
+
+let scheme1 = Color.from('hex',0x9A237F).modify('desaturate',{amount:0.2}).to('lab',{
+  colorSpace: 'AdobeRGB',
+  referenceWhite: 'D50'
+}).scheme('gradient',{
+  with: Color.from('hsl',[300,50,45]),
+  colors: 5
+})
+```
 
 ## Install
 
@@ -18,7 +35,9 @@ The full docs contain information on each method as well as the mathematics behi
 
 [**Full Documentation >** https://reiniiriarios.github.io/chromaticity-color-utilities](https://reiniiriarios.github.io/chromaticity-color-utilities)
 
-## Usage
+## Example Usage
+
+See [documentation](https://reiniiriarios.github.io/chromaticity-color-utilities) for more details and usage examples.
 
 Any color can be converted to any other, with only a few caveats. Construction `from()`, conversion `to()`, and modification `modify()` methods can be chained.
 
@@ -94,6 +113,7 @@ let scheme2 = Color.from('hsl',[180, 80, 48]).scheme('tetradic', { angle: 40 })
 
 ## To Do List
 
+* YUV
 * Gamma adjustment modification
 * Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
   * note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
