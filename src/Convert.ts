@@ -514,7 +514,7 @@ class Convert {
           b = chroma + m;
           break;
         case 5:
-          r = chroma + x;
+          r = chroma + m;
           g = m;
           b = x + m;
           break;
