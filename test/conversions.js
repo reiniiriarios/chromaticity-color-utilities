@@ -192,6 +192,15 @@ describe('conversions',() => {
     it('rgb to hsp',() => {
         let color = rgb.to('hsp')
         hspIsMagenta(color,50)
+        
+        let color2 = Color.from('rgb',[66,114,242]).to('hsp')
+        color2.h.should.equal(224)
+        color2.s.should.equal(73)
+        color2.p.should.equal(49)
+        let color3 = color2.to('hsp',{round: false}).to('rgb')
+        color3.r.should.equal(66)
+        color3.g.should.equal(114) // FAILING
+        color3.b.should.equal(242)
     })
     it('hsp to rgb',() => {
         let color = Color.from('hsp',[300,100,65,50]).to('rgb')
