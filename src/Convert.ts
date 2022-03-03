@@ -939,10 +939,11 @@ class Convert {
     let x = m[0][0] * r + m[0][1] * g + m[0][2] * b;
     let y = m[1][0] * r + m[1][1] * g + m[1][2] * b;
     let z = m[2][0] * r + m[2][1] * g + m[2][2] * b;
-
-    x = Math.min(Math.max(x,0),1)
-    y = Math.min(Math.max(y,0),1)
-    z = Math.min(Math.max(z,0),1)
+    
+    // does not needed to chop the results!
+    //x = Math.min(Math.max(x,0),1)
+    //y = Math.min(Math.max(y,0),1)
+    //z = Math.min(Math.max(z,0),1)
 
     return new Colors.xyz(x,y,z)
   }
@@ -975,9 +976,9 @@ class Convert {
 
     if (colorSpace == 'srgb') {
       // sRGB
-      r = r <= 0.0031308 ? r * 12.92 : Math.pow((r * 1.055), 1/2.4) - 0.055;
-      g = g <= 0.0031308 ? g * 12.92 : Math.pow((g * 1.055), 1/2.4) - 0.055;
-      b = b <= 0.0031308 ? b * 12.92 : Math.pow((b * 1.055), 1/2.4) - 0.055;
+      r = r <= 0.0031308 ? r * 12.92 : 1.055 * Math.pow(r, 1/2.4) - 0.055;
+      g = g <= 0.0031308 ? g * 12.92 : 1.055 * Math.pow(g, 1/2.4) - 0.055;
+      b = b <= 0.0031308 ? b * 12.92 : 1.055 * Math.pow(b, 1/2.4) - 0.055;
     }
     else if (colorSpace == 'ecirgb') {
       // L*
