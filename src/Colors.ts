@@ -453,9 +453,9 @@ export class xyz extends colorType {
 
     constructor(x: number, y:number, z:number) {
         super()
-        this.valueRangeCheck(x, 0, 1, 'XYZ values must be between 0 and 1')
-        this.valueRangeCheck(y, 0, 1, 'XYZ values must be between 0 and 1')
-        this.valueRangeCheck(z, 0, 1, 'XYZ values must be between 0 and 1')
+        // this.valueRangeCheck(x, 0, 1, 'XYZ values must be between 0 and 1')
+        // this.valueRangeCheck(y, 0, 1, 'XYZ values must be between 0 and 1')
+        // this.valueRangeCheck(z, 0, 1, 'XYZ values must be between 0 and 1')
         this.x = x
         this.y = y
         this.z = z
