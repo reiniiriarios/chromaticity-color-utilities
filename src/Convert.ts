@@ -213,7 +213,7 @@ class Convert {
     let r, g, b
     let max = (2 ** bitDepth) - 1
     if (hsv.s == 0) {
-      let all = hsv.v
+      let all = hsv.v / 100;
       r = all
       g = all
       b = all
