@@ -575,6 +575,14 @@ class Convert {
     return hsl;
   }
 
+  /**
+   * Convert RGB to HSP
+   * Saturation and Perceived Brightness will be in percentages
+   *
+   * @param  {Colors.rgb} rgb
+   * @param  {boolean}    [round=true]
+   * @return {Colors.hsp}
+   */
   static rgb2hsp(rgb: Colors.rgb, round: boolean = true, Pb: number = 0.114, Pr: number = 0.299) : Colors.hsp {
     if (Pr + Pb > 1) {
       throw new Error('Pr + Pg + Pb must = 1')
@@ -620,6 +628,14 @@ class Convert {
     return new Colors.hsp(h, s, pb, a, Pb, Pr)
   }
 
+  /**
+   * Convert HSP to RGB
+   * Saturation and Perceived Brightness should be in percentages
+   *
+   * @param  {Colors.hsp} hsp
+   * @param  {boolean}    [round=true]
+   * @return {Colors.rgb}
+   */
   static hsp2rgb(hsp: Colors.hsp, round: boolean = true, bitDepth: number = 8) : Colors.rgb {
     let hp = hsp.h / 60
     let s =  hsp.s / 100
@@ -653,7 +669,7 @@ class Convert {
           break
         case 3: //B>G>R
           hpp = -1 * hp + 4
-          r = pb / Math.sqrt(hsp.pb / Math.pow(s0, 2) + hsp.pr * Math.pow(1 + hpp * (1 / s0 - 1) ,2) + hsp.pr)
+          r = pb / Math.sqrt(hsp.pb / Math.pow(s0, 2) + hsp.pg * Math.pow(1 + hpp * (1 / s0 - 1) ,2) + hsp.pr)
           b = r / s0
           g = r + hpp * (b - r)
           break
@@ -687,7 +703,7 @@ class Convert {
           break
         case 2: //G>B>R
           hpp = hp - 2
-          g = Math.sqrt(Math.pow(pb,2)/(hsp.pr + hsp.pg * Math.pow(hpp, 2)))
+          g = Math.sqrt(Math.pow(pb,2)/(hsp.pg + hsp.pb * Math.pow(hpp, 2)))
           b = g * hpp
           r = 0
           break
