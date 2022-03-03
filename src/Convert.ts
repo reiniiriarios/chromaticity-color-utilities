@@ -940,10 +940,6 @@ class Convert {
     let y = m[1][0] * r + m[1][1] * g + m[1][2] * b;
     let z = m[2][0] * r + m[2][1] * g + m[2][2] * b;
 
-    x = Math.min(Math.max(x,0),1)
-    y = Math.min(Math.max(y,0),1)
-    z = Math.min(Math.max(z,0),1)
-
     return new Colors.xyz(x,y,z)
   }
 
