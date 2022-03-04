@@ -1,6 +1,6 @@
 # <img src="https://reiniiriarios.github.io/chromaticity-color-utilities/assets/images/chromaticity-icon-01.png" width="26" height="26"> chromaticity-color-utilities
 
-![](https://img.shields.io/npm/dt/chromaticity-color-utilities) ![](https://img.shields.io/badge/types-Typescript-blue) ![](https://img.shields.io/badge/license-GPLv3-green)
+![](https://img.shields.io/npm/dt/chromaticity-color-utilities) ![](https://img.shields.io/badge/types-Typescript-blue) ![](https://img.shields.io/badge/license-GPL--3.0--or--later-blueviolet) [![](https://img.shields.io/npm/v/chromaticity-color-utilities)](https://www.npmjs.com/package/chromaticity-color-utilities)
 
 Color utilities for Node.js.
  
@@ -23,7 +23,7 @@ let scheme1 = Color.from('hex',0x9A237F).modify('desaturate',{amount:0.2}).to('l
 
 ## Install
 
-`npm install --save chromaticity-color-utilities`
+`npm i chromaticity-color-utilities`
 
 ## Status
 
