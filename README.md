@@ -125,7 +125,7 @@ npm i
 tsc
 ```
 
-Typescript not loading as dependency, install with `npm i -g typescript`.
+(Typescript not added as dependency, install with `npm i -g typescript`.)
 
 ## To Do List
 
