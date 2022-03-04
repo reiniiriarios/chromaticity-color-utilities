@@ -2,4 +2,3 @@ node_modules/
 dist/*.js
 dist/*.d.ts
 xtest.js
-scratch.js
