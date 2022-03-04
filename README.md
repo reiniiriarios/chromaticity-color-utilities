@@ -1,6 +1,6 @@
 # <img src="https://reiniiriarios.github.io/chromaticity-color-utilities/assets/images/chromaticity-icon-01.png" width="26" height="26"> chromaticity-color-utilities
 
-![](https://img.shields.io/npm/dt/chromaticity-color-utilities) ![](https://img.shields.io/npm/types/chromaticity-color-utilities) ![](https://img.shields.io/badge/license-GPLv3-green)
+![](https://img.shields.io/npm/dt/chromaticity-color-utilities) ![](https://img.shields.io/badge/types-Typescript-blue) ![](https://img.shields.io/badge/license-GPLv3-green)
 
 Color utilities for Node.js.
  
