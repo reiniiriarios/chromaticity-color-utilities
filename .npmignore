@@ -4,4 +4,7 @@ src/*
 xtest.js
 .github/*
 test/*
-scratch.js
+.prettierrc
+.prettierignore
+.gitignore
+.gitattributes
