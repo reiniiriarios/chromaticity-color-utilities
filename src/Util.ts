@@ -1,20 +1,20 @@
 // chromaticity-color-utilities
 // Copyright (C) 2021 Emma Litwa-Vulcu
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-import { colorSpaces, stdIlluminants, referenceWhite } from './Reference';
+import { colorSpaces, stdIlluminants, referenceWhite } from './Reference'
 
 class Util {
   /**
@@ -29,12 +29,22 @@ class Util {
    * @param  {boolean}      [round=true]
    * @return {number}                    scaled value
    */
-  static scaleValueRange(value: number, minFrom: number, maxFrom: number, minTo: number, maxTo: number, round: boolean = true): number {
-    let valueTo = (Math.min(maxFrom, Math.max(minFrom, value)) - minFrom) * ((maxTo - minTo) / (maxFrom - minFrom)) + minTo;
+  static scaleValueRange(
+    value: number,
+    minFrom: number,
+    maxFrom: number,
+    minTo: number,
+    maxTo: number,
+    round: boolean = true
+  ): number {
+    let valueTo =
+      (Math.min(maxFrom, Math.max(minFrom, value)) - minFrom) *
+        ((maxTo - minTo) / (maxFrom - minFrom)) +
+      minTo
     if (round) {
-      valueTo = Math.round(valueTo);
+      valueTo = Math.round(valueTo)
     }
-    return valueTo;
+    return valueTo
   }
 
   /**
@@ -45,55 +55,57 @@ class Util {
    * @return {number[][]}        matrix^-1
    */
   static matrix3x3inverse(matrix: number[][]): number[][] {
-    
     // Calculate matrices of minors and cofactors
-    let minors: number[][] = [];
-    let cofactors: number[][] = [];
-    let flip_sign = false;
+    let minors: number[][] = []
+    let cofactors: number[][] = []
+    let flip_sign = false
     matrix.forEach((row, rowN) => {
       row.forEach((val, colN) => {
-        let ax = colN == 0 ? 1 : 0;
-        let ay = rowN == 0 ? 1 : 0;
-        let dx = colN == 2 ? 1 : 2;
-        let dy = rowN == 2 ? 1 : 2;
-        let bx = colN == 2 ? 1 : 2;
-        let by = rowN == 0 ? 1 : 0;
-        let cx = colN == 0 ? 1 : 0;
-        let cy = rowN == 2 ? 1 : 2;
+        let ax = colN == 0 ? 1 : 0
+        let ay = rowN == 0 ? 1 : 0
+        let dx = colN == 2 ? 1 : 2
+        let dy = rowN == 2 ? 1 : 2
+        let bx = colN == 2 ? 1 : 2
+        let by = rowN == 0 ? 1 : 0
+        let cx = colN == 0 ? 1 : 0
+        let cy = rowN == 2 ? 1 : 2
 
-        minors[rowN][colN] = matrix[ax][ay] * matrix[dx][dy] - matrix[bx][by] * matrix[cx][cy];
+        minors[rowN][colN] =
+          matrix[ax][ay] * matrix[dx][dy] - matrix[bx][by] * matrix[cx][cy]
         if (flip_sign) {
-          cofactors[rowN][colN] = minors[rowN][colN] * -1;
-          flip_sign = false;
+          cofactors[rowN][colN] = minors[rowN][colN] * -1
+          flip_sign = false
+        } else {
+          cofactors[rowN][colN] = minors[rowN][colN]
+          flip_sign = true
         }
-        else {
-          cofactors[rowN][colN] = minors[rowN][colN];
-          flip_sign = true;
-        }
-      });
-    });
+      })
+    })
 
     // Calculate adjugate matrix
-    let adjugate: number[][] = [];
-    adjugate[0][1] = cofactors[1][0];
-    adjugate[1][0] = cofactors[0][1];
-    adjugate[0][2] = cofactors[2][0];
-    adjugate[2][0] = cofactors[0][2];
-    adjugate[1][2] = cofactors[2][1];
-    adjugate[2][1] = cofactors[1][2];
+    let adjugate: number[][] = []
+    adjugate[0][1] = cofactors[1][0]
+    adjugate[1][0] = cofactors[0][1]
+    adjugate[0][2] = cofactors[2][0]
+    adjugate[2][0] = cofactors[0][2]
+    adjugate[1][2] = cofactors[2][1]
+    adjugate[2][1] = cofactors[1][2]
 
     // Calculate determinant of matrix
-    let determinant = minors[0][0] * cofactors[0][0] + minors[0][1] * cofactors[0][1] + minors[0][2] * cofactors[0][2];
+    let determinant =
+      minors[0][0] * cofactors[0][0] +
+      minors[0][1] * cofactors[0][1] +
+      minors[0][2] * cofactors[0][2]
 
     // Calculate inverse matrix
-    let inverse: number[][] = [];
+    let inverse: number[][] = []
     adjugate.forEach((row, rowN) => {
       row.forEach((val, colN) => {
-        inverse[rowN][colN] = val * (1 / determinant);
-      });
-    });
+        inverse[rowN][colN] = val * (1 / determinant)
+      })
+    })
 
-    return inverse;
+    return inverse
   }
 
   /**
@@ -123,7 +135,17 @@ class Util {
    * @param  {number}  zw z reference white coordinate
    * @return {number[][]} 3x3 matrix for converting RGB to XYZ
    */
-   static rgb2xyzMatrix(xr: number, yr: number, xg: number, yg: number, xb: number, yb: number, xw: number, yw: number, zw: number): number[][] {
+  static rgb2xyzMatrix(
+    xr: number,
+    yr: number,
+    xg: number,
+    yg: number,
+    xb: number,
+    yb: number,
+    xw: number,
+    yw: number,
+    zw: number
+  ): number[][] {
     //       [Sr*Xr Sg*Xg Sb*Xb]
     // [M] = [Sr*Yr Sg*Yg Sb*Yb]
     //       [Sr*Zr Sg*Zg Sb*Zb]
@@ -140,24 +162,24 @@ class Util {
     let xyzrgb = [
       [xr / yr, xg / yg, xb / yb],
       [1, 1, 1],
-      [(1 - xr - yr) / yr, (1 - xg - yg) / yg, (1 - xb - yb) / yb]
-    ];
+      [(1 - xr - yr) / yr, (1 - xg - yg) / yg, (1 - xb - yb) / yb],
+    ]
 
-    let inverse = this.matrix3x3inverse(xyzrgb);
+    let inverse = this.matrix3x3inverse(xyzrgb)
 
     // Calculate the Sn matrix (as individual values)
-    let sr = inverse[0][0] * xw + inverse[0][1] * yw + inverse[0][2] * zw;
-    let sg = inverse[1][0] * xw + inverse[1][1] * yw + inverse[1][2] * zw;
-    let sb = inverse[2][0] * xw + inverse[2][1] * yw + inverse[2][2] * zw;
+    let sr = inverse[0][0] * xw + inverse[0][1] * yw + inverse[0][2] * zw
+    let sg = inverse[1][0] * xw + inverse[1][1] * yw + inverse[1][2] * zw
+    let sb = inverse[2][0] * xw + inverse[2][1] * yw + inverse[2][2] * zw
 
     // Calculate final matrix
     let m = [
       [sr * xyzrgb[0][0], sg * xyzrgb[0][1], sb * xyzrgb[0][2]],
       [sr * xyzrgb[1][0], sg * xyzrgb[1][1], sb * xyzrgb[1][2]],
-      [sr * xyzrgb[2][0], sg * xyzrgb[2][1], sb * xyzrgb[2][2]]
-    ];
+      [sr * xyzrgb[2][0], sg * xyzrgb[2][1], sb * xyzrgb[2][2]],
+    ]
 
-    return m;
+    return m
   }
 
   /**
@@ -179,57 +201,70 @@ class Util {
    * @param  {number}   zw z reference white coordinate
    * @return {number[][]}  3x3 matrix for converting XYZ to RGB
    */
-  static xyz2rgbMatrix(xr: number, yr: number, xg: number, yg: number, xb: number, yb: number, xw: number, yx: number, zw: number): number[][] {
-    let rgb2xyzM = this.rgb2xyzMatrix(xr, yr, xg, yg, xb, yb, xw, yx, zw);
-    let xyz2rgbM = this.matrix3x3inverse(rgb2xyzM);
-    return xyz2rgbM;
+  static xyz2rgbMatrix(
+    xr: number,
+    yr: number,
+    xg: number,
+    yg: number,
+    xb: number,
+    yb: number,
+    xw: number,
+    yx: number,
+    zw: number
+  ): number[][] {
+    let rgb2xyzM = this.rgb2xyzMatrix(xr, yr, xg, yg, xb, yb, xw, yx, zw)
+    let xyz2rgbM = this.matrix3x3inverse(rgb2xyzM)
+    return xyz2rgbM
   }
 
   /**
    * Finds reference white or returns input number[][] as reference white
-   * 
+   *
    * @param  {string|number[][]} referenceWhite
    * @return {number[][]}
    */
-  static validReferenceWhite(referenceWhite: string | referenceWhite) : referenceWhite {
+  static validReferenceWhite(
+    referenceWhite: string | referenceWhite
+  ): referenceWhite {
     let w: referenceWhite
     if (typeof referenceWhite == 'string') {
-      referenceWhite = referenceWhite.toLowerCase();
-      if (typeof stdIlluminants[referenceWhite as keyof object] == 'undefined') {
-            throw new Error('Invalid reference white');
+      referenceWhite = referenceWhite.toLowerCase()
+      if (
+        typeof stdIlluminants[referenceWhite as keyof object] == 'undefined'
+      ) {
+        throw new Error('Invalid reference white')
       }
-      w = stdIlluminants[referenceWhite as keyof object]['chrom']['2d'];
-    }
-    else {
-      w = referenceWhite;
+      w = stdIlluminants[referenceWhite as keyof object]['chrom']['2d']
+    } else {
+      w = referenceWhite
     }
     let z = 1 - w['x'] - w['y']
 
     return {
       x: w['x'],
       y: w['y'],
-      z: z
-    };
+      z: z,
+    }
   }
 
-  static validColorSpace(colorSpace: string) : object {
+  static validColorSpace(colorSpace: string): object {
     // make lowercase, include common nomenclature differences, ignore spaces, etc
-    colorSpace = colorSpace.toLowerCase().replace(/[^a-z0-9]/,'')
+    colorSpace = colorSpace.toLowerCase().replace(/[^a-z0-9]/, '')
     let conform = {
-        'adobe':     'adobergb1998',
-        'adobergb':  'adobergb1998',
-        'ntsc':      'ntscrgb',
-        'palsecam':  'palsecamrgb',
-        'pal':       'palsecamrgb',
-        'palrgb':    'palsecamrgb',
-        'secam':     'palsecamrgb',
-        'secamrgb':  'palsecamrgb',
-        'prophoto':  'prophotorgb',
-        'smpte':     'smptecrgb',
-        'smptec':    'smptecrgb',
-        'widegamut': 'widegamutrgb',
-        'ecirgbv2':  'ecirgb',
-        'ektaspace': 'ektaspaceps5'
+      adobe: 'adobergb1998',
+      adobergb: 'adobergb1998',
+      ntsc: 'ntscrgb',
+      palsecam: 'palsecamrgb',
+      pal: 'palsecamrgb',
+      palrgb: 'palsecamrgb',
+      secam: 'palsecamrgb',
+      secamrgb: 'palsecamrgb',
+      prophoto: 'prophotorgb',
+      smpte: 'smptecrgb',
+      smptec: 'smptecrgb',
+      widegamut: 'widegamutrgb',
+      ecirgbv2: 'ecirgb',
+      ektaspace: 'ektaspaceps5',
     }
     if (typeof conform[colorSpace as keyof object] == 'string') {
       colorSpace = conform[colorSpace as keyof object]
@@ -244,7 +279,7 @@ class Util {
   /**
    * Floating point modulo function
    * Original from: https://locutus.io/php/fmod/
-   * 
+   *
    * @param  {number} x
    * @param  {number} y
    * @return {number}
@@ -256,15 +291,15 @@ class Util {
     let l2 = 0.0
     let tmp: RegExpMatchArray | null
     tmp = x.toExponential().match(/^.\.?(.*)e(.+)$/)
-    if (tmp == null) throw new Error('value is null');
+    if (tmp == null) throw new Error('value is null')
     p = parseInt(tmp[2], 10) - (tmp[1] + '').length
     tmp = y.toExponential().match(/^.\.?(.*)e(.+)$/)
-    if (tmp == null) throw new Error('value is null');
+    if (tmp == null) throw new Error('value is null')
     pY = parseInt(tmp[2], 10) - (tmp[1] + '').length
     if (pY > p) {
       p = pY
     }
-    let tmp2: number = (x % y)
+    let tmp2: number = x % y
     if (p < -100 || p > 20) {
       // toFixed will give an out of bound error so we fix it like this:
       l = Math.round(Math.log(tmp2) / Math.log(10))

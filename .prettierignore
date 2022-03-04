@@ -1,0 +1,15 @@
+# Configs
+package.json
+tsconfig.json
+
+# Locked
+package-lock.json
+
+# dist
+dist/
+
+# vendor
+node_modules/
+
+# misc
+LICENSE
