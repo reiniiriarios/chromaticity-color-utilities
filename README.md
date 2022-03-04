@@ -10,12 +10,12 @@ Color utilities for Node.js.
 
 Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, HSP, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, Y'CbCr, and more.
 
-```ts
+```js
 const Color = require('chromaticity-color-utilities')
 
-let color1 = Color.from('rgb', [255, 128, 0]).to('hsv')
+const color1 = Color.from('rgb', [255, 128, 0]).to('hsv')
 
-let scheme1 = Color.from('hex', 0x9a237f)
+const scheme1 = Color.from('hex', 0x9a237f)
   .modify('desaturate', { amount: 0.2 })
   .to('lab', {
     colorSpace: 'AdobeRGB',
