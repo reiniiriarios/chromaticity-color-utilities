@@ -11,7 +11,7 @@ nav_order: 17
 This is a one-way approximation and is hugely perceptual. There is no `.to('nm')` method option.
 
 ```ts
-Color.from('nm', wavelength)
+Color.from('nm', wavelength: number)
 ```
 
 ## JavaScript
