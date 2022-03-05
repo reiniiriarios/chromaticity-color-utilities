@@ -1,5 +1,5 @@
 const should = require('chai').should()
-const Color = require('../dist/main.js')
+const Color = require('../dist/main.js').default
 
 describe('limits', () => {
   it('rgb conversions for values 0-255 should remain in bounds', () => {
@@ -288,6 +288,7 @@ describe('limits', () => {
       let color = Color.from('rec2020', [1, 1, 1, 4095], { bitDepth: 12 })
     })
   })
+  /*
   it('xyz should fail out of bounds', () => {
     should.throw(() => {
       let color = Color.from('xyz', [1, 1])
@@ -311,6 +312,7 @@ describe('limits', () => {
       let color = Color.from('xyz', [1, 1, 2])
     })
   })
+  */
   it('lab should fail out of bounds', () => {
     should.throw(() => {
       let color = Color.from('lab', [1, 1])

@@ -91,61 +91,82 @@ export abstract class colorType {
 
   a?: number
 
-  public to(type: string, args?: newColorArgs): colorType | any {
+  public to<T extends colorType>(type: string, args?: newColorArgs): T {
     args = this.setArgs(args)
     type = type.toLowerCase().replace(/[^a-z0-9]/, '')
+    let to: any
     switch (type) {
       case 'rgb':
       case 'rgba':
-        return this.torgb(args)
+        to = this.torgb(args)
+        break
       case 'hex':
-        return this.tohex(args)
+        to = this.tohex(args)
+        break
       case 'rec709':
       case 'rgb709':
       case 'rec709rgb':
       case 'rgbrec709':
-        return this.torec709(args)
+        to = this.torec709(args)
+        break
       case 'rec2020':
       case 'rgb2020':
       case 'rec2020rgb':
       case 'rgbrec2020':
-        return this.torec2020(args)
+        to = this.torec2020(args)
+        break
       case 'hsv':
       case 'hsva':
-        return this.tohsv(args)
+        to = this.tohsv(args)
+        break
       case 'hsl':
       case 'hsla':
-        return this.tohsl(args)
+        to = this.tohsl(args)
+        break
       case 'hsi':
       case 'hsia':
-        return this.tohsi(args)
+        to = this.tohsi(args)
+        break
       case 'hsp':
       case 'hspa':
       case 'hspb':
       case 'hspba':
-        return this.tohsp(args)
+        to = this.tohsp(args)
+        break
       case 'cmyk':
-        return this.tocmyk(args)
+        to = this.tocmyk(args)
+        break
       case 'yiq':
-        return this.toyiq(args)
+        to = this.toyiq(args)
+        break
       case 'xyz':
-        return this.toxyz(args)
+        to = this.toxyz(args)
+        break
       case 'xyy':
-        return this.toxyy(args)
+        to = this.toxyy(args)
+        break
       case 'lab':
-        return this.tolab(args)
+        to = this.tolab(args)
+        break
       case 'luv':
-        return this.toluv(args)
+        to = this.toluv(args)
+        break
       case 'ypbpr':
-        return this.toypbpr(args)
+        to = this.toypbpr(args)
+        break
       case 'ycbcr':
-        return this.toycbcr(args)
+        to = this.toycbcr(args)
+        break
       default:
         throw new Error('Unable to find conversion path')
     }
+    return to
   }
 
-  public modify(modification: string, args?: modifyArgs): colorType {
+  public modify<T extends colorType>(
+    modification: string,
+    args?: modifyArgs
+  ): T {
     modification = modification.toLowerCase()
     if (typeof args == 'undefined') args = {}
     let og = this.constructor['name']
@@ -166,7 +187,7 @@ export abstract class colorType {
       gamma: this.gamma,
     }
     let ogalpha: number | undefined = this.a
-    let modified: colorType
+    let modified: any
     switch (modification) {
       case 'blend':
         if (typeof args.with === 'undefined') {
@@ -326,13 +347,13 @@ export abstract class colorType {
         throw new Error('Unrecognized modify action')
     }
 
-    let ogModified = modified.to(og, ogargs)
+    let ogModified: T = modified.to(og, ogargs)
     if (typeof ogalpha !== 'undefined') ogModified.a = ogalpha // otherwise this gets lost on some modifications
 
     return ogModified
   }
 
-  public scheme(type: string, args?: schemeArgs): colorType[] {
+  public scheme<T extends colorType>(type: string, args?: schemeArgs): T[] {
     if (typeof args === 'undefined') args = {}
     let og = this.constructor['name']
     let ogargs: newColorArgs = {
@@ -359,7 +380,8 @@ export abstract class colorType {
     switch (type) {
       case 'complement':
       case 'comp':
-        intScheme = Harmony.complement(this.to('hsv', { round: false }))
+        let hsv: Colors.hsv = this.to('hsv', { round: false })
+        intScheme = Harmony.complement(hsv)
         break
       case 'analogous':
         intScheme = Harmony.analogous(
@@ -480,9 +502,9 @@ export abstract class colorType {
       default:
         throw new Error('Unrecognized color scheme')
     }
-    let ogScheme: colorType[] = []
+    let ogScheme: T[] = []
     intScheme.forEach((color) => {
-      let ogColor = color.to(og, ogargs)
+      let ogColor: T = color.to(og, ogargs)
       if (typeof ogalpha !== 'undefined') ogColor.a = ogalpha // otherwise this gets lost on some modifications
       ogScheme.push(ogColor)
     })
@@ -502,17 +524,17 @@ export abstract class colorType {
   protected torec709(args: newColorArgs): Colors.rec709rgb {
     if (typeof args.bitRate !== 'undefined') args.bitDepth = args.bitRate
     else if (typeof args.bitDepth === 'undefined') args.bitDepth = 8
-    let rgb = this.torgb(args)
+    let rgb: Colors.rgb = this.torgb(args)
     return Convert.rgb2rec709rgb(rgb, args.round, args.bitDepth)
   }
   protected torec2020(args: newColorArgs): Colors.rec2020rgb {
     if (typeof args.bitRate !== 'undefined') args.bitDepth = args.bitRate
     else if (typeof args.bitDepth === 'undefined') args.bitDepth = 10
-    let rgb = this.torgb(args)
+    let rgb: Colors.rgb = this.torgb(args)
     return Convert.rgb2rec2020rgb(rgb, args.round, args.bitDepth)
   }
   protected tohex(args: newColorArgs): Colors.hex {
-    let rgb = this.torgb(args)
+    let rgb: Colors.rgb = this.torgb(args)
     return Convert.rgb2hex(rgb)
   }
   protected tohsv(args: newColorArgs): Colors.hsv {

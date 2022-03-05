@@ -1,5 +1,5 @@
 const should = require('chai').should()
-const Color = require('../dist/main.js')
+const Color = require('../dist/main.js').default
 
 rgbIsMagenta = (color, a = 255) => {
   color.r.should.equal(255)

@@ -1,6 +1,6 @@
 {
   "name": "chromaticity-color-utilities",
-  "version": "0.3.0-alpha",
+  "version": "0.4.0-alpha",
   "description": "Color utilities for Node.js",
   "main": "dist/main.js",
   "scripts": {
@@ -46,7 +46,9 @@
     "ycbcr"
   ],
   "devDependencies": {
+    "@types/chai": "^4.3.0",
     "@types/express": "^4.17.11",
+    "@types/mocha": "^9.1.0",
     "@types/node": "^14.14.37",
     "chai": "^4.3.4",
     "mocha": "^8.3.2",
