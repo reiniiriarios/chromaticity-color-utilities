@@ -32,12 +32,25 @@ Color.from('yiq', [y, i, q], {
   normalize: boolean, // optional, default = true
   round: boolean      // optional, default = true (ignored/false if not normalized)
 })
+```
 
-// e.g.
-let color1 = Color.from('yiq',[105, 59, 128])
-let color3 = color2.to('yiq')
+## JavaScript
 
-let color4 = Color.from('yiq', [0.413, 0.2746, 0.5226], {normalized: false})
+```js
+const Color = require('chromaticity-color-utilities')
+
+const color1 = Color.from('yiq',[105, 59, 128])
+const color3 = color2.to('yiq')
+
+const color4 = Color.from('yiq', [0.413, 0.2746, 0.5226], {normalized: false})
+```
+
+## TypeScript
+
+```ts
+import Color, { colorTypes } from 'chromaticity-color-utilities'
+
+const c: colorTypes.yiq = Color.from('yiq',[105, 59, 128])
 ```
 
 

@@ -23,16 +23,28 @@ Color.from('lab', [l, a, b])
   referenceWhite: string, // optional, defaults to 'd65'
   round: boolean          // optional, defaults to true
 })
+```
 
-// e.g.
-let color1 = Color.from('lab',[95, 142, -88])
-let color3 = color2.to('lab')
+## JavaScript
 
-let color4 = color1.to('rgb')
-let color5 = color1.to('rgb', {
+```js
+const Color = require('chromaticity-color-utilities')
+
+const color1 = Color.from('lab',[95, 142, -88])
+const color3 = color2.to('lab')
+
+const color4 = color1.to('rgb')
+const color5 = color1.to('rgb', {
   colorSpace: 'adobergb',
   referenceWhite: 'd50'
 })
 ```
 
+## TypeScript
+
+```ts
+import Color, { colorTypes } from 'chromaticity-color-utilities'
+
+const c: colorTypes.lab = Color.from('lab',[95, 142, -88])
+```
 

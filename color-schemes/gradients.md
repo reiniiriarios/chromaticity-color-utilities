@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Gradient Scales"
+title: 'Gradient Scales'
 parent: Color Schemes
 nav_order: 7
 ---
@@ -16,11 +16,16 @@ Generate an array of colors from color1 to color2. Methods available are `rgb` a
   method: string,     // optional, defaults to 'rgb'
   round: boolean      // optional, defaults to true
 })
+```
 
-// e.g.
-let gradient1 = Color.from('rgb',[255,0,255]).scheme('gradient',{
-  with: Color.from('hex',0x00FF00),
-  colors: 5
+## JavaScript
+
+```js
+const Color = require('chromaticity-color-utilities')
+
+const gradient1 = Color.from('rgb', [255, 0, 255]).scheme('gradient', {
+  with: Color.from('hex', 0x00ff00),
+  colors: 5,
 })
 // [
 //   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
@@ -30,10 +35,10 @@ let gradient1 = Color.from('rgb',[255,0,255]).scheme('gradient',{
 //   rgb { r: 0, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
 // ]
 
-let gradient1 = Color.from('rgb',[255,0,255]).scheme('gradient',{
-  with: Color.from('hex','00ff00'),
+const gradient1 = Color.from('rgb', [255, 0, 255]).scheme('gradient', {
+  with: Color.from('hex', '00ff00'),
   colors: 5,
-  method: 'hsv'
+  method: 'hsv',
 })
 // [
 //   rgb { r: 255, g: 0, b: 255, a: 255, bitDepth: 8, max: 255 },
@@ -42,4 +47,18 @@ let gradient1 = Color.from('rgb',[255,0,255]).scheme('gradient',{
 //   rgb { r: 0, g: 255, b: 191, a: 255, bitDepth: 8, max: 255 },
 //   rgb { r: 0, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
 // ]
+```
+
+## TypeScript
+
+```ts
+import Color, { colorTypes } from 'chromaticity-color-utilities'
+
+const gradient1: colorTypes.rgb[] = Color.from('rgb', [255, 0, 255]).scheme(
+  'gradient',
+  {
+    with: Color.from('hex', 0x00ff00),
+    colors: 5,
+  }
+)
 ```

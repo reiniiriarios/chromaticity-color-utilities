@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Blending"
+title: 'Blending'
 parent: Modifying Colors
 nav_order: 1
 ---
@@ -12,29 +12,45 @@ When blending two colors, the amount ∈ [0,1] refers to the percentage the seco
 Blending methods include: `rgb`, `hsv`
 
 ```ts
-let color3 = color1.modify('blend', {
+.modify('blend', {
   with: color2,   // REQUIRED, can be any color of any type
   amount: number, // optional, 0 - 1, defaults to 0.5
   method: string, // optional, defaults to 'rgb'
-  round: boolean  // optional, defaults to true
+  round: boolean, // optional, defaults to true
 })
+```
 
-// e.g.
-let color4 = Color.from('rgb',[255,0,0]).modify('blend', {
-  with: Color.from('hex','00ff00')
+## JavaScript
+
+```js
+const Color = require('chromaticity-color-utilities')
+
+const color1 = Color.from('rgb', [255, 0, 0]).modify('blend', {
+  with: Color.from('hex', '00ff00'),
 })
 // rgb { r: 128, g: 128, b: 0, a: 255, bitDepth: 8, max: 255 }
 
-let color4 = Color.from('rgb',[255,0,0]).modify('blend', {
-  with: Color.from('hex','00ff00'),
-  method: 'hsv'
+const color2 = Color.from('rgb', [255, 0, 0]).modify('blend', {
+  with: Color.from('hex', '00ff00'),
+  method: 'hsv',
 })
 // rgb { r: 255, g: 255, b: 0, a: 255, bitDepth: 8, max: 255 }
 
-let color5 = Color.from('hex','ee5432').modify('blend', {
-  with: Color.from('rgb',[234, 100, 20, 64]),
-  amount: 1/3
-}).to('hsv')
+const color3 = Color.from('hex', 'ee5432')
+  .modify('blend', {
+    with: Color.from('rgb', [234, 100, 20, 64]),
+    amount: 1 / 3,
+  })
+  .to('hsv')
 // hsv { h: 15, s: 83, v: 93, a: 75 }
 ```
 
+## TypeScript
+
+```ts
+import Color, { colorTypes } from 'chromaticity-color-utilities'
+
+const color1: colorTypes.rgb[] = Color.from('rgb', [255, 0, 0]).modify('blend', {
+  with: Color.from('hex', '00ff00'),
+})
+```

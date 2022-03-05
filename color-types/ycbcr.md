@@ -41,15 +41,20 @@ Color.from('ycbcr', [y, cb, cr], {
   cLower: number, // optional, default = 16,  lower bounds of Cb and Cr
   cUpper: number  // optional, default = 240, upper bounds of Cb and Cr
 })
+```
 
-// e.g.
-let color1 = Color.from('ycbcr', [73, 226, 243])
-let color3 = color2.to('ycbcr',{
+## JavaScript
+
+```js
+const Color = require('chromaticity-color-utilities')
+
+const color1 = Color.from('ycbcr', [73, 226, 243])
+const color3 = color2.to('ycbcr',{
   kb: 0.0722, // Rec709
   kr: 0.2126  // Rec709
 })
-let color4 = color1.to('ypbpr')
-let color5 = color1.to('ypbpr',{
+const color4 = color1.to('ypbpr')
+const color5 = color1.to('ypbpr',{
   yLower: 0,
   yUpper: 255,
   cLower: 0,
@@ -57,4 +62,11 @@ let color5 = color1.to('ypbpr',{
 })
 ```
 
+## TypeScript
+
+```ts
+import Color, { colorTypes } from 'chromaticity-color-utilities'
+
+const c: colorTypes.ycbcr = Color.from('ycbcr', [73, 226, 243])
+```
 

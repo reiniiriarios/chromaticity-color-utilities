@@ -1,11 +1,12 @@
 ---
 layout: page
-title: "RGB"
+title: 'RGB'
 parent: Color Types and Conversions
 nav_order: 1
 ---
 
 # RGB
+
 #### Red, Green, Blue
 
 All values are between 0 and `(2 ** bitDepth) - 1`. With a default bit depth of 8, values are within 0-255. A color with a bit depth of 16 will have values ranging from 0-65535.
@@ -14,7 +15,6 @@ All values are between 0 and `(2 ** bitDepth) - 1`. With a default bit depth of 
 
 `rgb`, `RGB`, `rgba`, and `RGBA` are synonymous.
 
-## Example Code
 ```ts
 Color.from('rgb',[r, g, b, a?],{
   bitDepth: number // optional, default = 8
@@ -24,12 +24,23 @@ Color.from('rgb',[r, g, b, a?],{
   bitDepth: number, // optional, default = 8
   round: boolean    // optional, default = true
 })
-
-// e.g.
-let color1 = Color.from('rgb',[255, 0, 255])
-let color3 = color2.to('rgb')
-
-let color4 = Color.from('rgb',[1023, 0, 1023], { bitDepth: 10 })
 ```
 
+## JavaScript
 
+```js
+const Color = require('chromaticity-color-utilities')
+
+const color1 = Color.from('rgb',[255, 0, 255])
+const color3 = color2.to('rgb')
+
+const color4 = Color.from('rgb',[1023, 0, 1023], { bitDepth: 10 })
+```
+
+## TypeScript
+
+```ts
+import Color, { colorTypes } from 'chromaticity-color-utilities'
+
+const c: colorTypes.rgb = Color.from('rgb',[255, 0, 255])
+```

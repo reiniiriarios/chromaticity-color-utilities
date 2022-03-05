@@ -41,6 +41,8 @@ permalink: pretty
 #back_to_top: true
 #back_to_top_text: "Back to top"
 
+#color_scheme: dark
+
 logo: "/assets/images/chromaticity-logo-01.png"
 
 # Aux links for the upper right navigation

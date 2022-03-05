@@ -24,16 +24,29 @@ Color.from('xyz', [x, y, z])
   colorSpace: string,    // optional, default = 'srgb' -- ignored if converting from xyy, lab, luv
   referenceWhite: string // optional, default = 'd65'  -- ignored if converting from xyy
 })
+```
 
-// e.g.
-let color1 = Color.from('xyz',[0.5928939, 0.2848479, 0.969638])
-let color3 = color2.to('xyz')
+## JavaScript
 
-let color4 = color1.to('rgb')
-let color5 = color1.to('rgb', {
+```js
+const Color = require('chromaticity-color-utilities')
+
+const color1 = Color.from('xyz',[0.5928939, 0.2848479, 0.969638])
+const color3 = color2.to('xyz')
+
+const color4 = color1.to('rgb')
+const color5 = color1.to('rgb', {
   colorSpace: 'adobergb',
   referenceWhite: 'd50'
 })
+```
+
+## TypeScript
+
+```ts
+import Color, { colorTypes } from 'chromaticity-color-utilities'
+
+const c: colorTypes.xyz = Color.from('xyz',[0.5928939, 0.2848479, 0.969638])
 ```
 
 

@@ -1,0 +1,7 @@
+# Configs
+Gemfile
+_config.yml
+.github/*
+
+# Locked
+*.lock
