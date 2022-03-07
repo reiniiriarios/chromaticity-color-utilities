@@ -425,7 +425,7 @@ export class hsp extends colorType {
     return Convert.hsp2rgb(this, args.round, args.bitDepth)
   }
 
-  protected tohsb(args: newColorArgs): hsp {
+  protected tohsp(args: newColorArgs): hsp {
     if (args.round !== false) {
       this.h = Math.round(this.h)
       this.s = Math.round(this.s)
