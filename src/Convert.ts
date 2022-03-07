@@ -493,7 +493,7 @@ class Convert {
       g = m
       b = m
     } else {
-      let z = 1 - Math.abs(Util.fmod(h, 2) - 1)
+      let z = 1 - Math.abs(h % 2 - 1)
       let chroma = (3 * i * s) / (1 + z)
       let x = chroma * z
       let huef = Math.floor(h)
