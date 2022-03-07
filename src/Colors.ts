@@ -288,9 +288,9 @@ export class hsv extends colorType {
     return Convert.hsv2hsl(this, args.round)
   }
 
-  protected tohsi(args: newColorArgs): hsi {
-    return Convert.hsv2hsi(this, args.round)
-  }
+  // protected tohsi(args: newColorArgs): hsi {
+  //   return Convert.hsv2hsi(this, args.round)
+  // }
 }
 
 export class hsl extends colorType {
@@ -333,9 +333,9 @@ export class hsl extends colorType {
     return this
   }
 
-  protected tohsi(args: newColorArgs): hsi {
-    return Convert.hsl2hsi(this, args.round)
-  }
+  // protected tohsi(args: newColorArgs): hsi {
+  //   return Convert.hsl2hsi(this, args.round)
+  // }
 }
 
 export class hsi extends colorType {
@@ -364,13 +364,13 @@ export class hsi extends colorType {
     return Convert.hsi2rgb(this, args.round, args.bitDepth)
   }
 
-  protected tohsv(args: newColorArgs): hsv {
-    return Convert.hsi2hsv(this, args.round)
-  }
+  // protected tohsv(args: newColorArgs): hsv {
+  //   return Convert.hsi2hsv(this, args.round)
+  // }
 
-  protected tohsl(args: newColorArgs): hsl {
-    return Convert.hsi2hsl(this, args.round)
-  }
+  // protected tohsl(args: newColorArgs): hsl {
+  //   return Convert.hsi2hsl(this, args.round)
+  // }
 
   protected tohsi(args: newColorArgs): hsi {
     if (args.round !== false) {
