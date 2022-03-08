@@ -1237,9 +1237,9 @@ class Convert {
     let yr = xyz.y / w.y
     let zr = xyz.z / w.z
 
-    let fx = xyz.x > cieE ? Math.pow(xr, 1 / 3) : (cieK * xr + 16) / 116
-    let fy = xyz.y > cieE ? Math.pow(yr, 1 / 3) : (cieK * yr + 16) / 116
-    let fz = xyz.z > cieE ? Math.pow(zr, 1 / 3) : (cieK * zr + 16) / 116
+    let fx = xr > cieE ? Math.pow(xr, 1 / 3) : (cieK * xr + 16) / 116
+    let fy = yr > cieE ? Math.pow(yr, 1 / 3) : (cieK * yr + 16) / 116
+    let fz = zr > cieE ? Math.pow(zr, 1 / 3) : (cieK * zr + 16) / 116
 
     let l = 116 * fy - 16
     let a = 500 * (fx - fy)
@@ -1265,13 +1265,13 @@ class Convert {
   static lab2xyz(lab: Colors.lab, referenceWhite: string = 'd65'): Colors.xyz {
     let w = Util.validReferenceWhite(referenceWhite)
 
-    let fy = (lab.l + 16) / 116
-    let fx = lab.a / 500 + fy
-    let fz = fy - lab.b / 200
+    let lr = (lab.l + 16) / 116 // y
+    let ar = lab.a / 500 + lr   // x
+    let br = lr - lab.b / 200   // z
 
-    let xr = Math.pow(fx, 3) > cieE ? Math.pow(fx, 3) : (116 * fx - 16) / cieK
-    let yr = lab.l > cieK * cieE ? Math.pow(fy, 3) : lab.l * cieK
-    let zr = Math.pow(fz, 3) > cieE ? Math.pow(fz, 3) : (116 * fz - 16) / cieK
+    let xr = Math.pow(ar, 3) > cieE ? Math.pow(ar, 3) : (116 * ar - 16) / cieK
+    let yr = lab.l > cieK * cieE ? Math.pow(lr, 3) : lab.l / cieK
+    let zr = Math.pow(br, 3) > cieE ? Math.pow(br, 3) : (116 * br - 16) / cieK
 
     let x = xr * w.x
     let y = yr * w.y
@@ -1650,12 +1650,8 @@ class Convert {
       1,
       false
     )
-    let pb =
-      Util.scaleValueRange(ycbcr.cb, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) -
-      0.5
-    let pr =
-      Util.scaleValueRange(ycbcr.cr, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) -
-      0.5
+    let pb = Util.scaleValueRange(ycbcr.cb, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) - 0.5
+    let pr = Util.scaleValueRange(ycbcr.cr, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) - 0.5
 
     return new Colors.ypbpr(y2, pb, pr, kb, kr)
   }
