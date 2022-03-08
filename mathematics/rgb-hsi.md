@@ -10,7 +10,7 @@ use_math: true
 
 #### Red, Green, Blue $\rightleftarrows$ Hue, Saturation, Intensity
 
-$\mathrm{atan2}$ determines the counterclockwise angle in radians between the positive X axis and the point (x,y). The output range is $[-\pi,\pi]$
+$\mathrm{atan2}$ determines the counterclockwise angle in radians between the positive X axis and the point (x,y). The output range is $[-\pi,\pi]$.
 
 $$
 \mathrm{atan2}(y,x) = \begin{cases}
