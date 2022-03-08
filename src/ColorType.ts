@@ -566,13 +566,13 @@ export abstract class colorType {
     return Convert.rgb2xyz(rgb, args.colorSpace, args.referenceWhite)
   }
   protected toxyy(args: newColorArgs): Colors.xyy {
-    return Convert.xyz2xyy(this.toxyz(args))
+    return Convert.xyz2xyy(this.toxyz(args), args.referenceWhite)
   }
   protected tolab(args: newColorArgs): Colors.lab {
-    return Convert.xyz2lab(this.toxyz(args))
+    return Convert.xyz2lab(this.toxyz(args), args.referenceWhite, args.round)
   }
   protected toluv(args: newColorArgs): Colors.luv {
-    return Convert.xyz2luv(this.toxyz(args))
+    return Convert.xyz2luv(this.toxyz(args), args.referenceWhite, args.round)
   }
   protected toypbpr(args: newColorArgs): Colors.ypbpr {
     if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
