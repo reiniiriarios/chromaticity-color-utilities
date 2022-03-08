@@ -557,36 +557,6 @@ class Convert {
   }
 
   /**
-   * Convert HSI to HSV
-   * Saturation(I) and Intensity should be in percentages
-   * Saturation(V) and Value will be in percentages
-   *
-   * @param  {Colors.hsi} hsi
-   * @param  {boolean}    [round=true]
-   * @return {Colors.hsv}
-   */
-  static hsi2hsv(hsi: Colors.hsi, round: boolean = true): Colors.hsv {
-    let rgb = this.hsi2rgb(hsi, false)
-    let hsv = this.rgb2hsv(rgb, round)
-    return hsv
-  }
-
-  /**
-   * Convert HSI to HSL
-   * Saturation(I) and Intensity should be in percentages
-   * Saturation(L) and Lightness will be in percentages
-   *
-   * @param  {Colors.hsi} hsi
-   * @param  {boolean}    [round=true]
-   * @return {Colors.hsl}
-   */
-  static hsi2hsl(hsi: Colors.hsi, round: boolean = true): Colors.hsl {
-    let rgb = this.hsi2rgb(hsi, false)
-    let hsl = this.rgb2hsl(rgb, round)
-    return hsl
-  }
-
-  /**
    * Convert RGB to HSP
    * Saturation and Perceived Brightness will be in percentages
    *
