@@ -8,7 +8,7 @@ use_math: true
 
 # Mathematics
 
-The following are the formulae used in the conversion algorithms. For succinctness, consider all values normalized ∈ [0, 1] unless stated otherwise.
+The following are the formulae used in the conversion algorithms. For succinctness, consider primary values normalized ∈ [0, 1] (and hue ∈ [0, 360]) unless stated otherwise.
 
 ## Normalizing RGB
 
