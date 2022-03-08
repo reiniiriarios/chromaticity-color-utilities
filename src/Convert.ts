@@ -1625,7 +1625,7 @@ class Convert {
     let cb = Util.scaleValueRange(ypbpr.pb + 0.5, 0, 1, cLower, cUpper, round)
     let cr = Util.scaleValueRange(ypbpr.pr + 0.5, 0, 1, cLower, cUpper, round)
 
-    return new Colors.ycbcr(y2, cb, cr)
+    return new Colors.ycbcr(y2, cb, cr, yLower, yUpper, cLower, cUpper)
   }
 
   /**
