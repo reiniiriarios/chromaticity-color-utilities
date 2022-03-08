@@ -494,6 +494,7 @@ class Convert {
       b = m
     } else {
       let hfmod2 = Number((h - (Math.floor(h / 2) * 2)).toPrecision(8))
+      let hfmod2 = Number((h - Math.floor(h / 2) * 2).toPrecision(8))
       let z = 1 - Math.abs(hfmod2 - 1)
       let chroma = (3 * i * s) / (1 + z)
       let x = chroma * z
