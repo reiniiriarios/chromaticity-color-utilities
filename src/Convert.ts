@@ -1342,13 +1342,12 @@ class Convert {
 
     let y = luv.l > cieK * cieE ? Math.pow((luv.l + 16) / 116, 3) : luv.l / cieK
 
-    let a = (1 / 3) * ((52 * luv.l) / (luv.u + 13 * luv.l * u0) - 1)
-    let b = -5 * y
-    let c = -1 / 3
-    let d = y * ((39 * luv.l) / (luv.v + 13 * luv.l * v0) - 5)
+    let ad = luv.u + 13 * luv.l * u0
+    let adf = ad ? (52 * luv.l) / ad : 0
+    let a = (1 / 3) * (adf - 1)
 
-    let x = (d - b) / (a - c)
-    let z = x * a + b
+    let x = a + 1/3 ? (y * ((39 * luv.l) / (luv.v + 13 * luv.l * v0) - 5) + 5 * y) / (a + 1/3) : 0
+    let z = x * a - 5 * y
 
     return new Colors.xyz(x, y, z)
   }
