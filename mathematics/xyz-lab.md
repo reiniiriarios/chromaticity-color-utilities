@@ -44,8 +44,8 @@ $$
 $$
 \begin{align*}
 L' &= \frac{L^* + 16}{116} \\
-a' &= \frac{a^*}{500 + L'} \\
-b' &= \frac{L' - b^*}{200} \\
+a' &= \frac{a^*}{500} + L' \\
+b' &= L' - \frac{b^*}{200} \\
 \:\\
 X' &= \begin{cases}
 a'^3 & \text{ if } a'^3 > \epsilon \\
