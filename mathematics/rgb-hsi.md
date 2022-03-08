@@ -1,39 +1,43 @@
 ---
 layout: page
-title: "RGB and HSI"
+title: 'RGB and HSI'
 parent: Mathematics
 nav_order: 3
 use_math: true
 ---
 
 # RGB and HSI
+
 #### Red, Green, Blue $\rightleftarrows$ Hue, Saturation, Intensity
+
+$\mathrm{atan2}$ determines the counterclockwise angle in radians between the positive X axis and the point (x,y). The output range is $[-\pi,\pi]$
+
+$$
+\mathrm{atan2}(y,x) = \begin{cases}
+\atan(\frac{y}{x}) & \text{ if } x > 0 \\
+\atan(\frac{y}{x}) + \pi & \text{ if } x < 0 \text{ and } y \geq 0 \\
+\atan(\frac{y}{x}) - \pi & \text{ if } x < 0 \text{ and } y < 0 \\
+\frac{\pi}{2} & \text{ if } x = 0 \text{ and } y > 0 \\
+-\frac{\pi}{2} & \text{ if } x = 0 \text{ and } y < 0 \\
+\text{undefined} & \text{ if } x = 0 \text{ and } y = 0 
+\end{cases}
+$$
 
 ## RGB to HSI
 
-C references chroma.
-
 $$
 \begin{align*}
-V &= max(R,G,B) \\
-\:\\
-C &= V - min(R,G,B) \\
-\:\\
+I &= \frac{R + G + B}{3} \\
+\\
 S &= \begin{cases}
-0 & \text{ if } V = 0 \\
-\frac{C}{V} & \text{ otherwise }
+1 - \frac{min(R, G, B)}{I} & \text{ if } I > 0 \\
+0 & \text{ otherwise } \\
 \end{cases} \\
-\:\\
+\\
 H &= \begin{cases}
-0 & \text{ if } C=0 \\ 
-\frac{G - B}{C} \: \text{ mod } \: 6 & \text{ if } V=R \\ 
-\frac{B - R}{C} + 2 & \text{ if } V=G \\ 
-\frac{R - G}{C} + 4 & \text{ if } V=B \\ 
-\end{cases}\\
-\:\\
-I &= \begin{cases}
-0 & \text{ if } C=0 \\ 
-(R + G + B) \cdot \frac{1}{3} & \text{ otherwise }
+\mathrm{atan2}(\frac{\sqrt{3}}{2}(G - B), \frac{1}{2}(2R - G - B))
+& \text{ if } I > 0 \\
+0 & \text{ otherwise }
 \end{cases}
 \end{align*}
 $$
@@ -42,25 +46,25 @@ $$
 
 $$
 \begin{align*}
-z &= 1 - |H \text{ mod } 2 - 1| \\
-\:\\
-C &= \frac{3 \cdot I \cdot S}{1 + z} \\
-\:\\
-x &= C \cdot z \\
-\:\\
-(R_{1},G_{1},B_{1}) &=
-\begin{cases}
-(0,0,0) & \text{ if } H \: \mathrm{undefined} \\ 
-(C,x,0) & \text{ if } 0 < H \leq 1 \\
-(x,C,0) & \text{ if } 1 < H \leq 2 \\
-(0,C,x) & \text{ if } 2 < H \leq 3 \\
-(0,x,C) & \text{ if } 3 < H \leq 4 \\
-(x,0,C) & \text{ if } 4 < H \leq 5 \\
-(C,0,x) & \text{ if } 5 < H \leq 6 \\
+f(a) &= \frac{\cos((H-a)\frac{\pi}{180})}{\cos(60 - (H - a))\frac{\pi}{180}} \\
+\\
+R &= \begin{cases}
+I \cdot (1 + S \cdot f(0)) & \text{ if } H < 120 \\
+I \cdot (1 - S) & \text{ if } 120 \leq H < 240 \\
+3I - G - B & \text{ if } 240 \leq H
 \end{cases} \\
-\:\\
-m &= I \cdot (1 - S) \\
-\:\\
-(R,G,B) &= (R_1 + m, G_1 + m, B_1 + m)
+\\
+G &= \begin{cases}
+3I - R - B & \text{ if } H < 120 \\
+I \cdot (1 + S \cdot f(120)) & \text{ if } 120 \leq H < 240 \\
+I \cdot (1 - S) & \text{ if } 240 \leq H
+\end{cases} \\
+\\
+B &= \begin{cases}
+I \cdot (1 - S) & \text{ if } H < 120 \\
+3I - R - G & \text{ if } 120 \leq H < 240 \\
+I \cdot (1 + S \cdot f(240)) & \text{ if } 240 \leq H
+\end{cases} \\
+\\
 \end{align*}
 $$
