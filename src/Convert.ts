@@ -1482,7 +1482,7 @@ class Convert {
     let minFrom, maxFrom
     if (rgb2020.bitDepth == 10) {
       minFrom = 64
-      maxFrom = 876
+      maxFrom = 940
     } else if (rgb2020.bitDepth == 12) {
       minFrom = 256
       maxFrom = 3760
