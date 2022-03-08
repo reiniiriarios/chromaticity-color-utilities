@@ -49,21 +49,21 @@ $$
 f(a) &= \frac{\cos((H-a)\frac{\pi}{180})}{\cos(60 - (H - a))\frac{\pi}{180}} \\
 \\
 R &= \begin{cases}
-I \cdot (1 + S \cdot f(0)) & \text{ if } H < 120 \\
+I \cdot (1 + S \cdot f(0)) & \text{ if } 0 \leq H < 120 \\
 I \cdot (1 - S) & \text{ if } 120 \leq H < 240 \\
-3I - G - B & \text{ if } 240 \leq H
+3I - G - B & \text{ if } 240 \leq H < 360
 \end{cases} \\
 \\
 G &= \begin{cases}
-3I - R - B & \text{ if } H < 120 \\
+3I - R - B & \text{ if } 0 \leq H < 120 \\
 I \cdot (1 + S \cdot f(120)) & \text{ if } 120 \leq H < 240 \\
-I \cdot (1 - S) & \text{ if } 240 \leq H
+I \cdot (1 - S) & \text{ if } 240 \leq H < 360
 \end{cases} \\
 \\
 B &= \begin{cases}
-I \cdot (1 - S) & \text{ if } H < 120 \\
+I \cdot (1 - S) & \text{ if } 0 \leq H < 120 \\
 3I - R - G & \text{ if } 120 \leq H < 240 \\
-I \cdot (1 + S \cdot f(240)) & \text{ if } 240 \leq H
+I \cdot (1 + S \cdot f(240)) & \text{ if } 240 \leq H < 360
 \end{cases} \\
 \\
 \end{align*}
