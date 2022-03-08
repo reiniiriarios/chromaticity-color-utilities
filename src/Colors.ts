@@ -808,7 +808,7 @@ export class ycbcr extends colorType {
   }
 
   toString = (): string => {
-    return `ypbpr: { y: ${this.y}, cb: ${this.pb}, cr: ${this.pr}, yLower: ${this.yLower}, yUpper: ${this.yUpper}, cLower: ${this.cLower}, cUpper: ${this.cUpper} }`
+    return `ycbcr: { y: ${this.y}, cb: ${this.cb}, cr: ${this.cr}, yLower: ${this.yLower}, yUpper: ${this.yUpper}, cLower: ${this.cLower}, cUpper: ${this.cUpper} }`
   }
 
   protected torgb(args: newColorArgs): rgb {
