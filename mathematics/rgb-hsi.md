@@ -14,9 +14,9 @@ $\mathrm{atan2}$ determines the counterclockwise angle in radians between the po
 
 $$
 \mathrm{atan2}(y,x) = \begin{cases}
-\atan(\frac{y}{x}) & \text{ if } x > 0 \\
-\atan(\frac{y}{x}) + \pi & \text{ if } x < 0 \text{ and } y \geq 0 \\
-\atan(\frac{y}{x}) - \pi & \text{ if } x < 0 \text{ and } y < 0 \\
+\mathrm{atan}(\frac{y}{x}) & \text{ if } x > 0 \\
+\mathrm{atan}(\frac{y}{x}) + \pi & \text{ if } x < 0 \text{ and } y \geq 0 \\
+\mathrm{atan}(\frac{y}{x}) - \pi & \text{ if } x < 0 \text{ and } y < 0 \\
 \frac{\pi}{2} & \text{ if } x = 0 \text{ and } y > 0 \\
 -\frac{\pi}{2} & \text{ if } x = 0 \text{ and } y < 0 \\
 \text{undefined} & \text{ if } x = 0 \text{ and } y = 0 
