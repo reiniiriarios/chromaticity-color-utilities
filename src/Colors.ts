@@ -40,7 +40,7 @@ export class rgbNormalized extends colorType {
     }
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `rgbNormalized: { r: ${this.r}, g: ${this.g}, b: ${this.b}, a: ${this.a}, gamma: ${this.gamma} }`
   }
 }
@@ -74,7 +74,7 @@ export class hex extends colorType {
     }
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `hex: { hex: ${this.hex} }`
   }
 
@@ -123,7 +123,7 @@ export class rgb extends colorType {
     this.max = max
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `rgb: { r: ${this.r}, g: ${this.g}, b: ${this.b}, a: ${this.a}, bitDepth: ${this.bitDepth} }`
   }
 
@@ -174,7 +174,7 @@ export class rec709rgb extends colorType {
     this.max = max
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `rec709rgb: { r: ${this.r}, g: ${this.g}, b: ${this.b}, a: ${this.a}, bitDepth: ${this.bitDepth} }`
   }
 
@@ -229,7 +229,7 @@ export class rec2020rgb extends colorType {
     this.max = max
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `rec2020rgb: { r: ${this.r}, g: ${this.g}, b: ${this.b}, a: ${this.a}, bitDepth: ${this.bitDepth} }`
   }
 
@@ -266,7 +266,7 @@ export class hsv extends colorType {
     this.a = a
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `hsv: { h: ${this.h}, s: ${this.s}, v: ${this.v}, a: ${this.a} }`
   }
 
@@ -311,7 +311,7 @@ export class hsl extends colorType {
     this.a = a
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `hsl: { h: ${this.h}, s: ${this.s}, l: ${this.l}, a: ${this.a} }`
   }
 
@@ -356,7 +356,7 @@ export class hsi extends colorType {
     this.a = a
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `hsi: { h: ${this.h}, s: ${this.s}, i: ${this.i}, a: ${this.a} }`
   }
 
@@ -417,7 +417,7 @@ export class hsp extends colorType {
     this.pb = pb
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `hsp: { h: ${this.h}, s: ${this.s}, p: ${this.p}, a: ${this.a}, pr: ${this.pr}, pg: ${this.pg}, pb: ${this.pb} }`
   }
 
@@ -454,7 +454,7 @@ export class cmyk extends colorType {
     this.k = k
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `cmyk: { c: ${this.c}, m: ${this.m}, y: ${this.y}, k: ${this.k} }`
   }
 
@@ -534,7 +534,7 @@ export class yiq extends colorType {
     this.normalized = normalized
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `yiq: { y: ${this.y}, i: ${this.i}, q: ${this.q}, normalized: ${this.normalized} }`
   }
 
@@ -567,7 +567,7 @@ export class xyz extends colorType {
     this.z = z
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `xyz: { x: ${this.x}, y: ${this.y}, z: ${this.z} }`
   }
 
@@ -608,7 +608,7 @@ export class xyy extends colorType {
     )
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `xyy: { x: ${this.x}, y: ${this.y}, yy: ${this.yy} }`
   }
 
@@ -642,7 +642,7 @@ export class lab extends colorType {
     this.b = b
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `lab: { l: ${this.l}, a: ${this.a}, b: ${this.b} }`
   }
 
@@ -693,7 +693,7 @@ export class luv extends colorType {
     this.v = v
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `luv: { l: ${this.l}, u: ${this.u}, v: ${this.v} }`
   }
 
@@ -740,7 +740,7 @@ export class ypbpr extends colorType {
     this.kr = kr
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `ypbpr: { y: ${this.y}, pb: ${this.pb}, pr: ${this.pr}, kb: ${this.kb}, kr: ${this.kr} }`
   }
 
@@ -807,7 +807,7 @@ export class ycbcr extends colorType {
     this.cUpper = cUpper
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `ycbcr: { y: ${this.y}, cb: ${this.cb}, cr: ${this.cr}, yLower: ${this.yLower}, yUpper: ${this.yUpper}, cLower: ${this.cLower}, cUpper: ${this.cUpper} }`
   }
 
@@ -855,7 +855,7 @@ export class nm extends colorType {
     this.wavelength = wavelength
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `nm: { wavelength: ${this.wavelength} }`
   }
 
@@ -878,7 +878,7 @@ export class kelvin extends colorType {
     this.k = k
   }
 
-  toString = (): string => {
+  public toString(): string {
     return `kelvin: { k: ${this.k} }`
   }
 
