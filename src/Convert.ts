@@ -167,6 +167,51 @@ class Convert {
     let g = rgb.g / rgb.max
     let b = rgb.b / rgb.max
 
+    let i = (r + g + b) / 3
+
+    let h = 0, s = 0
+    if (i) {
+      s = 1 - Math.min(r, g, b) / i
+
+      h = Math.atan2(
+        Math.sqrt(3) / 2 * (g - b),
+        0.5 * (2 * r - g - b)
+      ) * (180 / Math.PI)
+
+      if (h < 0) h += 360
+      s = Math.min(Math.max(s, 0), 1)
+      i = Math.min(Math.max(i, 0), 1)
+      s *= 100
+      i *= 100
+    }
+
+    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 100, round)
+
+    if (round) {
+      h = Math.round(h)
+      s = Math.round(s)
+      i = Math.round(i)
+    }
+
+    return new Colors.hsi(h, s, i, a)
+  }
+
+  /**
+   * Convert RGB to HSI
+   * Saturation and Intensity are in percentages
+   *
+   * @param  {Colors.rgb} rgb
+   * @param  {boolean}    [round=true]
+   * @return {Colors.hsi}
+   */
+  static rgb2hsi_deprecated(
+    rgb: Colors.rgb,
+    round: boolean = true
+  ): Colors.hsi {
+    let r = rgb.r / rgb.max
+    let g = rgb.g / rgb.max
+    let b = rgb.b / rgb.max
+
     let max = Math.max(r, g, b)
     let min = Math.min(r, g, b)
 
@@ -479,6 +524,63 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
+    let h = hsi.h - 360 * Math.floor(hsi.h / 360)
+    let s = hsi.s / 100
+    let i = hsi.i / 100
+
+    let r, g, b
+    if (h < 120) {
+      b = i * (1 - s)
+      r = i * (1 + s * Math.cos(h * (Math.PI/180)) / Math.cos((60-h)*(Math.PI/180)))
+      g = 3 * i - r - b
+    }
+    else if (h < 240) {
+      h = h - 120
+      r = i * (1 - s)
+      g = i * (1 + s * Math.cos(h * (Math.PI/180)) / Math.cos((60-h)*(Math.PI/180)))
+      b = 3 * i - r - g
+    }
+    else {
+      h = h - 240
+      g = i * (1 - s)
+      b = i * (1 + s * Math.cos(h * (Math.PI/180)) / Math.cos((60-h)*(Math.PI/180)))
+      r = 3 * i - g - b
+    }
+
+    r = Math.min(Math.max(r, 0), 1)
+    g = Math.min(Math.max(g, 0), 1)
+    b = Math.min(Math.max(b, 0), 1)
+
+    let max = 2 ** bitDepth - 1
+    r *= max
+    g *= max
+    b *= max
+
+    if (round) {
+      r = Math.round(r)
+      g = Math.round(g)
+      b = Math.round(b)
+    }
+
+    let a = Util.scaleValueRange(hsi.a, 0, 100, 0, 2 ** bitDepth - 1, round)
+
+    return new Colors.rgb(r, g, b, a, bitDepth)
+  }
+
+  /**
+   * Convert HSI to RGB
+   * Saturation and Intensity should be in percentages
+   *
+   * @param  {Colors.hsi} hsi
+   * @param  {boolean}    [round=true]
+   * @param  {number}     [bitDepth=8]
+   * @return {Colors.rgb}
+   */
+  static hsi2rgb_deprecated(
+    hsi: Colors.hsi,
+    round: boolean = true,
+    bitDepth: number = 8
+  ): Colors.rgb {
     let h = hsi.h / 60
     let s = hsi.s / 100
     let i = hsi.i / 100
@@ -493,7 +595,6 @@ class Convert {
       g = m
       b = m
     } else {
-      let hfmod2 = Number((h - (Math.floor(h / 2) * 2)).toPrecision(8))
       let hfmod2 = Number((h - Math.floor(h / 2) * 2).toPrecision(8))
       let z = 1 - Math.abs(hfmod2 - 1)
       let chroma = (3 * i * s) / (1 + z)
