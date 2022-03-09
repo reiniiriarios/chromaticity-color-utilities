@@ -78,9 +78,9 @@ describe('conversions to RGB and back', function () {
   it('hsi', () => {
     toRgbAndBack('hsi', false, 5, 1)
   })
-  // it('hsp', () => {
-  //   toRgbAndBack('hsp', false, 20, 1)         // FAILING
-  // })
+  it('hsp', () => {
+    toRgbAndBack('hsp', false, 20, 1)         // FAILING
+  })
   it('rec709rgb', () => {
     toRgbAndBack('rec709rgb', false, 5)
   })
@@ -96,12 +96,15 @@ describe('conversions to RGB and back', function () {
   it('xyz', () => {
     toRgbAndBack('xyz', false, 5)
   })
-  // it('lab', () => {
-  //   toRgbAndBack('lab', false, 20, 3)         // FAILING
-  // })
-  // it('luv', () => {
-  //   toRgbAndBack('luv', false, 20, 2)         // FAILING
-  // })
+  it('xyy', () => {
+    toRgbAndBack('xyy', false, 5)
+  })
+  it('lab', () => {
+    toRgbAndBack('lab', false, 20, 3)         // FAILING
+  })
+  it('luv', () => {
+    toRgbAndBack('luv', false, 20, 2)         // FAILING
+  })
   it('ypbpr', () => {
     toRgbAndBack('ypbpr', false, 5, undefined, { kb: 1/3, kr: 1/3 }, { kb: 1/3, kr: 1/3 })
   })
