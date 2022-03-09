@@ -744,6 +744,7 @@ class Convert {
     if (s0 > 0) {
       switch (hpf) {
         case 0: //R>G>B
+          // something weird going on in this case, but the math looks right
           hpp = hp
           b =
             pb /
