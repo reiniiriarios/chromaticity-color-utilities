@@ -288,31 +288,6 @@ describe('limits', () => {
       let color = Color.from('rec2020', [1, 1, 1, 4095], { bitDepth: 12 })
     })
   })
-  /*
-  it('xyz should fail out of bounds', () => {
-    should.throw(() => {
-      let color = Color.from('xyz', [1, 1])
-    })
-    should.throw(() => {
-      let color = Color.from('xyz', [-1, 1, 1])
-    })
-    should.throw(() => {
-      let color = Color.from('xyz', [1, -1, 1])
-    })
-    should.throw(() => {
-      let color = Color.from('xyz', [1, 1, -1])
-    })
-    should.throw(() => {
-      let color = Color.from('xyz', [2, 1, 1])
-    })
-    should.throw(() => {
-      let color = Color.from('xyz', [1, 2, 1])
-    })
-    should.throw(() => {
-      let color = Color.from('xyz', [1, 1, 2])
-    })
-  })
-  */
   it('lab should fail out of bounds', () => {
     should.throw(() => {
       let color = Color.from('lab', [1, 1])
