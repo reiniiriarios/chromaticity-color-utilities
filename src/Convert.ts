@@ -1206,7 +1206,7 @@ class Convert {
    */
   static xyy2xyz(xyy: Colors.xyy): Colors.xyz {
     let cx, cz
-    if (xyy.y) {
+    if (!xyy.yy) {
       cx = 0
       cz = 0
     } else {
@@ -1214,7 +1214,7 @@ class Convert {
       cz = ((1 - xyy.x - xyy.y) * xyy.yy) / xyy.y
     }
 
-    return new Colors.xyz(cx, xyy.y, cz)
+    return new Colors.xyz(cx, xyy.yy, cz)
   }
 
   /////////// Lab ///////////
