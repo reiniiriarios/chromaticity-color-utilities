@@ -61,7 +61,13 @@ const yourMethod = (rgb: colorTypes.rgb): colorTypes.hsv => {
 
 ## Status
 
-Approaching complete-ish stage... Most conversion tests pass. Issues with XYZ. Writing tests for schemes, mods.
+Approaching complete-ish stage... Most tests pass.
+
+### Known Issues
+
+- L\*a\*b\* failing
+- L\*u\*v\* failing
+- HSP > RGB failing in one case
 
 ## Documentation
 
