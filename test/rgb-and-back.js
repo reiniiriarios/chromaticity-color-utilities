@@ -66,48 +66,47 @@ toRgbAndBack = (
 
 describe('conversions to RGB and back', function () {
   this.timeout(5 * 60000) //5min
-  // it('hex', () => {
-  //   toRgbAndBack('hex', false, 5)
-  // })
-  // it('hsv', () => {
-  //   toRgbAndBack('hsv', false, 5)
-  // })
-  // it('hsl', () => {
-  //   toRgbAndBack('hsv', false, 5, 1)
-  // })
-  // it('hsi', () => {
-  //   toRgbAndBack('hsi', false, 5, 1)
-  // })
+  it('hex', () => {
+    toRgbAndBack('hex', false, 5)
+  })
+  it('hsv', () => {
+    toRgbAndBack('hsv', false, 5)
+  })
+  it('hsl', () => {
+    toRgbAndBack('hsv', false, 5, 1)
+  })
+  it('hsi', () => {
+    toRgbAndBack('hsi', false, 5, 1)
+  })
   // it('hsp', () => {
   //   toRgbAndBack('hsp', false, 20, 1)         // FAILING
   // })
-  // it('rec709rgb', () => {
-  //   toRgbAndBack('rec709rgb', false, 5)
-  // })
-  // it('rec2020rgb', () => {
-  //   toRgbAndBack('rec2020rgb', false, 5, 5)
-  // })
-  // it('cmyk', () => {
-  //   toRgbAndBack('cmyk', false, 5)
-  // })
-  // it('yiq', () => {
-  //   toRgbAndBack('yiq', false, 5, 0.2)
-  // })
-  // it('xyz', () => {
-  //   toRgbAndBack('xyz', false, 5)
-  // })
+  it('rec709rgb', () => {
+    toRgbAndBack('rec709rgb', false, 5)
+  })
+  it('rec2020rgb', () => {
+    toRgbAndBack('rec2020rgb', false, 5, 1)
+  })
+  it('cmyk', () => {
+    toRgbAndBack('cmyk', false, 5)
+  })
+  it('yiq', () => {
+    toRgbAndBack('yiq', false, 5, 0.2)
+  })
+  it('xyz', () => {
+    toRgbAndBack('xyz', false, 5)
+  })
   // it('lab', () => {
   //   toRgbAndBack('lab', false, 20, 3)         // FAILING
   // })
   // it('luv', () => {
   //   toRgbAndBack('luv', false, 20, 2)         // FAILING
   // })
-  // it('ypbpr', () => {
-  //   toRgbAndBack('ypbpr', false, 5, undefined, { kb: 1/3, kr: 1/3 }, { kb: 1/3, kr: 1/3 })
-  // })
-  // it('ycbcr', () => {
-  //   // high tolerance required; floating point issues?
-  //   toRgbAndBack('ycbcr', false, 5, 1.8, { kb: 1/3, kr: 1/3 }, { kb: 1/3, kr: 1/3 })
-  // })
-
+  it('ypbpr', () => {
+    toRgbAndBack('ypbpr', false, 5, undefined, { kb: 1/3, kr: 1/3 }, { kb: 1/3, kr: 1/3 })
+  })
+  it('ycbcr', () => {
+    // high tolerance required; floating point issues?
+    toRgbAndBack('ycbcr', false, 5, 1.8, { kb: 1/3, kr: 1/3 }, { kb: 1/3, kr: 1/3 })
+  })
 })
