@@ -170,3 +170,4 @@ tsc
 - Write more documentation wrt mathematics.
 - Integrate my references better. :)
 - For RGBA to CMYK, mix alpha with white
+- Support for 8-digit hex values (RRGGBBAA)
