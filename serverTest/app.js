@@ -8,7 +8,7 @@ function grad(method) {
   content += '<div><h3>'+method+'</h3>'
   Color.from('hex',0xcc0000).scheme('gradient', {
     with: Color.from('hex','00aaaa'),
-    colors: 10,
+    colors: 20,
     method: method
   }).forEach(color => {
     content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
@@ -22,6 +22,7 @@ grad('hsl')
 grad('hsi')
 grad('hsp')
 grad('cmyk')
+//grad('yiq') same as rgb
 
 const fullContent = template(content)
 let app = http.createServer((req, res) => {
