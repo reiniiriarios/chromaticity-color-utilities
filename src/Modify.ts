@@ -257,6 +257,36 @@ class Modify {
     return new Colors.cmyk(c3, m3, y3, k3)
   }
 
+  /**
+   * Blend one YIQ color with another
+   *
+   * @param  {Colors.yiq} c1
+   * @param  {Colors.yiq} c2
+   * @param  {number}     amount amount to blend (0-1)
+   * @param  {boolean}    [round=true]
+   * @return {Colors.yiq}
+   */
+  static yiqBlend(
+    c1: Colors.yiq,
+    c2: Colors.yiq,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.yiq {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    let y = c1.y + (c2.y - c1.y) * amount
+    let i = c1.i + (c2.i - c1.i) * amount
+    let q = c1.q + (c2.q - c1.q) * amount
+
+    if (round) {
+      y = Math.round(y)
+      i = Math.round(i)
+      q = Math.round(q)
+    }
+
+    return new Colors.yiq(y, i, q)
+  }
+
   static rgbDarken(
     rgb: Colors.rgb,
     amount: number = 0.5,

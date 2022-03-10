@@ -294,6 +294,16 @@ class Harmony {
             )
           )
           break
+        case 'yiq':
+          gradient.push(
+            Modify.yiqBlend(
+              color1.to('yiq', { round: false }),
+              color2.to('yiq', { round: false }),
+              amount,
+              false
+            )
+          )
+          break
       }
     }
     gradient.push(color2)
