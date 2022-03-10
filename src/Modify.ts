@@ -257,6 +257,40 @@ class Modify {
     return new Colors.cmyk(c3, m3, y3, k3)
   }
 
+  static rgbDarken(
+    rgb: Colors.rgb,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.rgb {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let rd = rgb.r * realAmount
+    let gd = rgb.g * realAmount
+    let bd = rgb.b * realAmount
+    if (round) {
+      rd = Math.round(rd)
+      gd = Math.round(gd)
+      bd = Math.round(bd)
+    }
+    return new Colors.rgb(rd, gd, bd, rgb.a)
+  }
+
+  static rgbLighten(
+    rgb: Colors.rgb,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.rgb {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let rl = rgb.r + (100 - rgb.r) * realAmount
+    let gl = rgb.g + (100 - rgb.g) * realAmount
+    let bl = rgb.b + (100 - rgb.b) * realAmount
+    if (round) {
+      rl = Math.round(rl)
+      gl = Math.round(gl)
+      bl = Math.round(bl)
+    }
+    return new Colors.rgb(rl, gl, bl, rgb.a)
+  }
+
   static hslDarken(
     hsl: Colors.hsl,
     amount: number = 0.5,

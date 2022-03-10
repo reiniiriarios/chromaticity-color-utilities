@@ -231,6 +231,14 @@ export abstract class colorType {
           args.method = 'hsl'
         }
         switch (args.method) {
+          case 'rgb':
+          case 'rgba':
+            modified = Modify.rgbDarken(
+              this.torgb({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
           case 'hsl':
           case 'hsla':
           case 'lightness':
@@ -262,6 +270,14 @@ export abstract class colorType {
           args.method = 'hsl'
         }
         switch (args.method) {
+          case 'rgb':
+          case 'rgba':
+            modified = Modify.rgbLighten(
+              this.torgb({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
           case 'hsl':
           case 'hsla':
           case 'lightness':
