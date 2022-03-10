@@ -4,6 +4,7 @@ src/*
 xtest.js
 .github/*
 test/*
+serverTest/*
 .prettierrc
 .prettierignore
 .gitignore

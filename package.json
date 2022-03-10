@@ -1,10 +1,11 @@
 {
   "name": "chromaticity-color-utilities",
-  "version": "0.6.0-alpha",
+  "version": "0.6.3-alpha",
   "description": "Color utilities for Node.js",
   "main": "dist/main.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "servetest": "nodemon serverTest/app.js"
   },
   "dependencies": {},
   "engines": {
