@@ -4,64 +4,24 @@ const Color = require('../dist/main.js').default
 
 let content = ''
 
-content += '<div><h3>default</h3>'
-Color.from('hex',0xaa0000).scheme('gradient', {
-  with: Color.from('rgb',[0, 128, 0]),
-  colors: 10
-}).forEach(color => {
-  content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-})
-content += '</div>'
+function grad(method) {
+  content += '<div><h3>'+method+'</h3>'
+  Color.from('hex',0xcc0000).scheme('gradient', {
+    with: Color.from('hex','00aaaa'),
+    colors: 10,
+    method: method
+  }).forEach(color => {
+    content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
+  })
+  content += '</div>'
+}
 
-content += '<div><h3>hsv</h3>'
-Color.from('hex',0xaa0000).scheme('gradient', {
-  with: Color.from('rgb',[0, 128, 0]),
-  colors: 10,
-  method: 'hsv'
-}).forEach(color => {
-  content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-})
-content += '</div>'
-
-content += '<div><h3>hsl</h3>'
-Color.from('hex',0xaa0000).scheme('gradient', {
-  with: Color.from('rgb',[0, 128, 0]),
-  colors: 10,
-  method: 'hsl'
-}).forEach(color => {
-  content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-})
-content += '</div>'
-
-content += '<div><h3>hsi</h3>'
-Color.from('hex',0xaa0000).scheme('gradient', {
-  with: Color.from('rgb',[0, 128, 0]),
-  colors: 10,
-  method: 'hsi'
-}).forEach(color => {
-  content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-})
-content += '</div>'
-
-content += '<div><h3>hsp</h3>'
-Color.from('hex',0xaa0000).scheme('gradient', {
-  with: Color.from('rgb',[0, 128, 0]),
-  colors: 10,
-  method: 'hsp'
-}).forEach(color => {
-  content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-})
-content += '</div>'
-
-content += '<div><h3>cmyk</h3>'
-Color.from('hex',0xaa0000).scheme('gradient', {
-  with: Color.from('rgb',[0, 128, 0]),
-  colors: 10,
-  method: 'cmyk'
-}).forEach(color => {
-  content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-})
-content += '</div>'
+grad('rgb')
+grad('hsv')
+grad('hsl')
+grad('hsi')
+grad('hsp')
+grad('cmyk')
 
 const fullContent = template(content)
 let app = http.createServer((req, res) => {
