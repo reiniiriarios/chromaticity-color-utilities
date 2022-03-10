@@ -478,26 +478,12 @@ export abstract class colorType {
         if (typeof args.method === 'undefined') {
           args.method = 'rgb'
         }
-        switch (args.method) {
-          case 'rgb':
-          case 'rgba':
-            intScheme = Harmony.rgbGradient(
-              this.torgb({ round: false }),
-              args.with.torgb({ round: false }),
-              args.colors
-            )
-            break
-          case 'hsv':
-          case 'hsva':
-            intScheme = Harmony.hsvGradient(
-              this.tohsv({ round: false }),
-              args.with.tohsv({ round: false }),
-              args.colors
-            )
-            break
-          default:
-            throw new Error('Unrecognized saturate method')
-        }
+        intScheme = Harmony.gradient(
+          args.method,
+          this,
+          args.with,
+          args.colors
+        )
         break
       default:
         throw new Error('Unrecognized color scheme')

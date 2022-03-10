@@ -204,55 +204,97 @@ class Harmony {
   }
 
   /**
-   * Return an array of colors blended from color1 to color2, via rgb
+   * Return an array of colors blended from color1 to color2
    *
-   * @param {Colors.rgb} color1
-   * @param {Colors.rgb} color2
-   * @param {number}     colors  number of colors in scheme (including color1 and color2)
+   * ... this doesn't work with generics b/c each switch case complains ...
+   * ... possible to do? ...
+   *
+   * @param {any}    color1
+   * @param {any}    color2
+   * @param {number} colors  number of colors in scheme (including color1 and color2)
    * @returns
    */
-  static rgbGradient(
-    color1: Colors.rgb,
-    color2: Colors.rgb,
+  static gradient(
+    type: string,
+    color1: any,
+    color2: any,
     colors: number
-  ): Colors.rgb[] {
+  ): any[] {
     if (colors < 2) {
       throw new Error('Unable to generate gradient with less than two colors')
     }
     let inBetweenColors = colors - 2
-    let gradient: Colors.rgb[] = []
+    let gradient = []
     gradient.push(color1)
     for (let i = 0; i < inBetweenColors; i++) {
       let amount = (i + 1) / (inBetweenColors + 1)
-      gradient.push(Modify.rgbBlend(color1, color2, amount, false))
-    }
-    gradient.push(color2)
-
-    return gradient
-  }
-
-  /**
-   * Return an array of colors blended from color1 to color2, via hsv
-   *
-   * @param {Colors.hsv} color1
-   * @param {Colors.hsv} color2
-   * @param {number}     colors  number of colors in scheme (including color1 and color2)
-   * @returns
-   */
-  static hsvGradient(
-    color1: Colors.hsv,
-    color2: Colors.hsv,
-    colors: number
-  ): Colors.hsv[] {
-    if (colors < 2) {
-      throw new Error('Unable to generate gradient with less than two colors')
-    }
-    let inBetweenColors = colors - 2
-    let gradient: Colors.hsv[] = []
-    gradient.push(color1)
-    for (let i = 0; i < inBetweenColors; i++) {
-      let amount = (i + 1) / (inBetweenColors + 1)
-      gradient.push(Modify.hsvBlend(color1, color2, amount, false))
+      switch (type) {
+        case 'rgb':
+        case 'rgba':
+          gradient.push(
+            Modify.rgbBlend(
+              color1.to('rgb', { round: false }),
+              color2.to('rgb', { round: false }),
+              amount,
+              false
+            )
+          )
+          break
+        case 'hsv':
+        case 'hsva':
+          gradient.push(
+            Modify.hsvBlend(
+              color1.to('hsv', { round: false }),
+              color2.to('hsv', { round: false }),
+              amount,
+              false
+            )
+          )
+          break
+        case 'hsl':
+        case 'hsla':
+          gradient.push(
+            Modify.hslBlend(
+              color1.to('hsl', { round: false }),
+              color2.to('hsl', { round: false }),
+              amount,
+              false
+            )
+          )
+          break
+        case 'hsi':
+        case 'hsia':
+          gradient.push(
+            Modify.hsiBlend(
+              color1.to('hsi', { round: false }),
+              color2.to('hsi', { round: false }),
+              amount,
+              false
+            )
+          )
+          break
+        case 'hsp':
+        case 'hspa':
+          gradient.push(
+            Modify.hspBlend(
+              color1.to('hsp', { round: false }),
+              color2.to('hsp', { round: false }),
+              amount,
+              false
+            )
+          )
+          break
+        case 'cmyk':
+          gradient.push(
+            Modify.cmykBlend(
+              color1.to('cmyk', { round: false }),
+              color2.to('cmyk', { round: false }),
+              amount,
+              false
+            )
+          )
+          break
+      }
     }
     gradient.push(color2)
 

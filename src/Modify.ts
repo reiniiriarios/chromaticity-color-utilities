@@ -105,6 +105,158 @@ class Modify {
     return new Colors.hsv(h3, s3, v3, a3)
   }
 
+  /**
+   * Blend one HSL color with another
+   *
+   * @param  {Colors.hsl} hsl1
+   * @param  {Colors.hsl} hsl2
+   * @param  {number}     amount amount to blend (0-1)
+   * @param  {boolean}    [round=true]
+   * @return {Colors.hsl}
+   */
+  static hslBlend(
+    hsl1: Colors.hsl,
+    hsl2: Colors.hsl,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsl {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    let hueDiff
+    if (Math.abs(hsl2.h - hsl1.h) > 180) {
+      hueDiff = 360 - Math.abs((hsl2.h - hsl1.h) * amount)
+      if (hsl1.h > hsl2.h) hueDiff *= -1
+    } else {
+      hueDiff = (hsl2.h - hsl1.h) * amount
+    }
+
+    let h3 = this.hueShift(hsl1.h, hueDiff)
+    let s3 = hsl1.s + (hsl2.s - hsl1.s) * amount
+    let l3 = hsl1.l + (hsl2.l - hsl1.l) * amount
+    let a3 = hsl1.a + (hsl2.a - hsl1.a) * amount
+
+    if (round) {
+      h3 = Math.round(h3)
+      s3 = Math.round(s3)
+      l3 = Math.round(l3)
+      a3 = Math.round(a3)
+    }
+
+    return new Colors.hsl(h3, s3, l3, a3)
+  }
+
+  /**
+   * Blend one HSI color with another
+   *
+   * @param  {Colors.hsi} hsi1
+   * @param  {Colors.hsi} hsi2
+   * @param  {number}     amount amount to blend (0-1)
+   * @param  {boolean}    [round=true]
+   * @return {Colors.hsi}
+   */
+  static hsiBlend(
+    hsi1: Colors.hsi,
+    hsi2: Colors.hsi,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsi {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    let hueDiff
+    if (Math.abs(hsi2.h - hsi1.h) > 180) {
+      hueDiff = 360 - Math.abs((hsi2.h - hsi1.h) * amount)
+      if (hsi1.h > hsi2.h) hueDiff *= -1
+    } else {
+      hueDiff = (hsi2.h - hsi1.h) * amount
+    }
+
+    let h3 = this.hueShift(hsi1.h, hueDiff)
+    let s3 = hsi1.s + (hsi2.s - hsi1.s) * amount
+    let i3 = hsi1.i + (hsi2.i - hsi1.i) * amount
+    let a3 = hsi1.a + (hsi2.a - hsi1.a) * amount
+
+    if (round) {
+      h3 = Math.round(h3)
+      s3 = Math.round(s3)
+      i3 = Math.round(i3)
+      a3 = Math.round(a3)
+    }
+
+    return new Colors.hsi(h3, s3, i3, a3)
+  }
+
+  /**
+   * Blend one HSP color with another
+   *
+   * @param  {Colors.hsp} hsp1
+   * @param  {Colors.hsp} hsp2
+   * @param  {number}     amount amount to blend (0-1)
+   * @param  {boolean}    [round=true]
+   * @return {Colors.hsp}
+   */
+  static hspBlend(
+    hsp1: Colors.hsp,
+    hsp2: Colors.hsp,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsp {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    let hueDiff
+    if (Math.abs(hsp2.h - hsp1.h) > 180) {
+      hueDiff = 360 - Math.abs((hsp2.h - hsp1.h) * amount)
+      if (hsp1.h > hsp2.h) hueDiff *= -1
+    } else {
+      hueDiff = (hsp2.h - hsp1.h) * amount
+    }
+
+    let h3 = this.hueShift(hsp1.h, hueDiff)
+    let s3 = hsp1.s + (hsp2.s - hsp1.s) * amount
+    let p3 = hsp1.p + (hsp2.p - hsp1.p) * amount
+    let a3 = hsp1.a + (hsp2.a - hsp1.a) * amount
+
+    if (round) {
+      h3 = Math.round(h3)
+      s3 = Math.round(s3)
+      p3 = Math.round(p3)
+      a3 = Math.round(a3)
+    }
+
+    return new Colors.hsp(h3, s3, p3, a3)
+  }
+
+  /**
+   * Blend one CMYK color with another
+   *
+   * @param  {Colors.cmyk} cmyk1
+   * @param  {Colors.cmyk} cmyk2
+   * @param  {number}      amount amount to blend (0-1)
+   * @param  {boolean}     [round=true]
+   * @return {Colors.cmyk}
+   */
+  static cmykBlend(
+    cmyk1: Colors.cmyk,
+    cmyk2: Colors.cmyk,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.cmyk {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    let c3 = cmyk1.c + (cmyk2.c - cmyk1.c) * amount
+    let m3 = cmyk1.m + (cmyk2.m - cmyk1.m) * amount
+    let y3 = cmyk1.y + (cmyk2.y - cmyk1.y) * amount
+    let k3 = cmyk1.k + (cmyk2.k - cmyk1.k) * amount
+
+    if (round) {
+      c3 = Math.round(c3)
+      m3 = Math.round(m3)
+      y3 = Math.round(y3)
+      k3 = Math.round(k3)
+    }
+
+    return new Colors.cmyk(c3, m3, y3, k3)
+  }
+
   static hslDarken(
     hsl: Colors.hsl,
     amount: number = 0.5,
