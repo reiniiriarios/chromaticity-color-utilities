@@ -433,7 +433,8 @@ class Convert {
     } else {
       let chroma = (1 - Math.abs(2 * l - 1)) * s
       let huef = Math.floor(h)
-      let x = chroma * (1 - Math.abs(Util.fmod(h, 2) - 1))
+      let huefmod = Number((h - (Math.floor(h / 2) * 2)).toPrecision(8))
+      let x = chroma * (1 - Math.abs(huefmod - 1))
       let m = l - chroma / 2
 
       switch (huef) {
