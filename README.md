@@ -169,5 +169,4 @@ tsc
   - note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
 - Write more documentation wrt mathematics.
 - Integrate my references better. :)
-- Validate YIQ
 - For RGBA to CMYK, mix alpha with white
