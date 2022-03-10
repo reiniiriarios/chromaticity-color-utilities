@@ -285,29 +285,7 @@ class Util {
    * @return {number}
    */
   static fmod(x: number, y: number): number {
-    let p = 0
-    let pY = 0
-    let l = 0.0
-    let l2 = 0.0
-    let tmp: RegExpMatchArray | null
-    tmp = x.toExponential().match(/^.\.?(.*)e(.+)$/)
-    if (tmp == null) throw new Error('value is null')
-    p = parseInt(tmp[2], 10) - (tmp[1] + '').length
-    tmp = y.toExponential().match(/^.\.?(.*)e(.+)$/)
-    if (tmp == null) throw new Error('value is null')
-    pY = parseInt(tmp[2], 10) - (tmp[1] + '').length
-    if (pY > p) {
-      p = pY
-    }
-    let tmp2: number = x % y
-    if (p < -100 || p > 20) {
-      // toFixed will give an out of bound error so we fix it like this:
-      l = Math.round(Math.log(tmp2) / Math.log(10))
-      l2 = Math.pow(10, l)
-      return parseFloat((tmp2 / l2).toFixed(l - p)) * l2
-    } else {
-      return parseFloat(tmp2.toFixed(-p))
-    }
+    return Number((x - (Math.floor(x / y) * y)).toPrecision(8))
   }
 }
 
