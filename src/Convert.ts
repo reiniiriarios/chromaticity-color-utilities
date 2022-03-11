@@ -761,7 +761,7 @@ class Convert {
             pb /
             Math.sqrt(
               hsp.pr / Math.pow(s0, 2) +
-                hsp.pg * Math.pow(1 + hpp + (1 / s0 - 1), 2) +
+                hsp.pg * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
                 hsp.pb
             )
           r = b / s0
