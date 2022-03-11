@@ -828,76 +828,82 @@ class Harmony {
           sKSep: number
 
         if (typeof distanceShade === 'undefined') {
-          let percentDistanceToWhite = (400 - cmyk.c, cmyk.m, cmyk.y, cmyk.k) / 400
-          if (percentDistanceToWhite < 0.5) {
-            tCEnd = cmyk.c + (100 - cmyk.c) * Math.min(Math.max(distance, 0), 1)
-            tCSep = (tCEnd - cmyk.c) / colors
-            sCEnd = cmyk.c * percentDistanceToWhite
-            sCSep = (cmyk.c - sCEnd) / colors
-            
-            tMEnd = cmyk.m + (100 - cmyk.m) * Math.min(Math.max(distance, 0), 1)
-            tMSep = (tMEnd - cmyk.m) / colors
-            sMEnd = cmyk.m * percentDistanceToWhite
-            sMSep = (cmyk.m - sMEnd) / colors
-            
-            tYEnd = cmyk.y + (100 - cmyk.y) * Math.min(Math.max(distance, 0), 1)
-            tYSep = (tYEnd - cmyk.y) / colors
-            sYEnd = cmyk.y * percentDistanceToWhite
-            sYSep = (cmyk.y - sYEnd) / colors
-            
-            tKEnd = cmyk.k + (100 - cmyk.k) * Math.min(Math.max(distance, 0), 1)
-            tKSep = (tKEnd - cmyk.k) / colors
-            sKEnd = cmyk.k * percentDistanceToWhite
-            sKSep = (cmyk.k - sKEnd) / colors
+          let percentDistanceToWhite: number = (cmyk.c + cmyk.m + cmyk.y + cmyk.k) / 400
 
+          // not sure how to calculate when to go up or down with cmyk, so using rgb
+          let rgb: Colors.rgb = cmyk.to('rgb')
+          let perceivedDistanceToWhite: number = (rgb.max * 3 - rgb.r - rgb.g - rgb.b) / (rgb.max * 3)
+
+          if (perceivedDistanceToWhite > 0.5) {
+            // closer to black
+            sCEnd = cmyk.c + (100 - cmyk.c) * Math.min(Math.max(distance, 0), 1)
+            sCSep = (sCEnd - cmyk.c) / colors
+            tCEnd = cmyk.c * percentDistanceToWhite
+            tCSep = (cmyk.c - tCEnd) / colors
+            
+            sMEnd = cmyk.m + (100 - cmyk.m) * Math.min(Math.max(distance, 0), 1)
+            sMSep = (sMEnd - cmyk.m) / colors
+            tMEnd = cmyk.m * percentDistanceToWhite
+            tMSep = (cmyk.m - tMEnd) / colors
+            
+            sYEnd = cmyk.y + (100 - cmyk.y) * Math.min(Math.max(distance, 0), 1)
+            sYSep = (sYEnd - cmyk.y) / colors
+            tYEnd = cmyk.y * percentDistanceToWhite
+            tYSep = (cmyk.y - tYEnd) / colors
+            
+            sKEnd = cmyk.k + (100 - cmyk.k) * Math.min(Math.max(distance, 0), 1)
+            sKSep = (sKEnd - cmyk.k) / colors
+            tKEnd = cmyk.k * percentDistanceToWhite
+            tKSep = (cmyk.k - tKEnd) / colors
           } else {
-            sCEnd = cmyk.c * (1 - Math.min(Math.max(distance, 0), 1))
-            sCSep = (cmyk.c - sCEnd) / colors
-            tCEnd = cmyk.c * (1 + ((100 - cmyk.c) / 100))
-            tCSep = (tCEnd - cmyk.c) / colors
+            // closer to white
+            tCEnd = cmyk.c * (1 - Math.min(Math.max(distance, 0), 1))
+            tCSep = (cmyk.c - tCEnd) / colors
+            sCEnd = cmyk.c * (1 + ((100 - cmyk.c) / 100))
+            sCSep = (sCEnd - cmyk.c) / colors
             
-            sMEnd = cmyk.m * (1 - Math.min(Math.max(distance, 0), 1))
-            sMSep = (cmyk.m - sMEnd) / colors
-            tMEnd = cmyk.m * (1 + ((100 - cmyk.m) / 100))
-            tMSep = (tMEnd - cmyk.m) / colors
+            tMEnd = cmyk.m * (1 - Math.min(Math.max(distance, 0), 1))
+            tMSep = (cmyk.m - tMEnd) / colors
+            sMEnd = cmyk.m * (1 + ((100 - cmyk.m) / 100))
+            sMSep = (sMEnd - cmyk.m) / colors
             
-            sYEnd = cmyk.y * (1 - Math.min(Math.max(distance, 0), 1))
-            sYSep = (cmyk.y - sYEnd) / colors
-            tYEnd = cmyk.y * (1 + ((100 - cmyk.y) / 100))
-            tYSep = (tYEnd - cmyk.y) / colors
+            tYEnd = cmyk.y * (1 - Math.min(Math.max(distance, 0), 1))
+            tYSep = (cmyk.y - tYEnd) / colors
+            sYEnd = cmyk.y * (1 + ((100 - cmyk.y) / 100))
+            sYSep = (sYEnd - cmyk.y) / colors
             
-            sKEnd = cmyk.k * (1 - Math.min(Math.max(distance, 0), 1))
-            sKSep = (cmyk.k - sKEnd) / colors
-            tKEnd = cmyk.k * (1 + ((100 - cmyk.k) / 100))
-            tKSep = (tKEnd - cmyk.k) / colors
+            tKEnd = cmyk.k * (1 - Math.min(Math.max(distance, 0), 1))
+            tKSep = (cmyk.k - tKEnd) / colors
+            sKEnd = cmyk.k * (1 + ((100 - cmyk.k) / 100))
+            sKSep = (sKEnd - cmyk.k) / colors
           }
         } else {
-          tCEnd = cmyk.c + (100 - cmyk.c) * Math.min(Math.max(distance, 0), 1)
-          tCSep = (tCEnd - cmyk.c) / colors
-          sCEnd = cmyk.c * (1 - Math.min(Math.max(distanceShade, 0), 1))
-          sCSep = (cmyk.c - sCEnd) / colors
+          sCEnd = cmyk.c + (100 - cmyk.c) * Math.min(Math.max(distance, 0), 1)
+          sCSep = (sCEnd - cmyk.c) / colors
+          tCEnd = cmyk.c * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          tCSep = (cmyk.c - tCEnd) / colors
           
-          tMEnd = cmyk.m + (100 - cmyk.m) * Math.min(Math.max(distance, 0), 1)
-          tMSep = (tMEnd - cmyk.m) / colors
-          sMEnd = cmyk.m * (1 - Math.min(Math.max(distanceShade, 0), 1))
-          sMSep = (cmyk.m - sMEnd) / colors
+          sMEnd = cmyk.m + (100 - cmyk.m) * Math.min(Math.max(distance, 0), 1)
+          sMSep = (sMEnd - cmyk.m) / colors
+          tMEnd = cmyk.m * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          tMSep = (cmyk.m - tMEnd) / colors
           
-          tYEnd = cmyk.y + (100 - cmyk.y) * Math.min(Math.max(distance, 0), 1)
-          tYSep = (tYEnd - cmyk.y) / colors
-          sYEnd = cmyk.y * (1 - Math.min(Math.max(distanceShade, 0), 1))
-          sYSep = (cmyk.y - sYEnd) / colors
+          sYEnd = cmyk.y + (100 - cmyk.y) * Math.min(Math.max(distance, 0), 1)
+          sYSep = (sYEnd - cmyk.y) / colors
+          tYEnd = cmyk.y * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          tYSep = (cmyk.y - tYEnd) / colors
           
-          tKEnd = cmyk.k + (100 - cmyk.k) * Math.min(Math.max(distance, 0), 1)
-          tKSep = (tKEnd - cmyk.k) / colors
-          sKEnd = cmyk.k * (1 - Math.min(Math.max(distanceShade, 0), 1))
-          sKSep = (cmyk.k - sKEnd) / colors
+          sKEnd = cmyk.k + (100 - cmyk.k) * Math.min(Math.max(distance, 0), 1)
+          sKSep = (sKEnd - cmyk.k) / colors
+          tKEnd = cmyk.k * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          tKSep = (cmyk.k - tKEnd) / colors
         }
 
         for (let i = 0; i < colors; i++) {
-          let cNext = Math.min(Math.max(sCEnd + sCSep * i, 0), 100)
-          let mNext = Math.min(Math.max(sMEnd + sMSep * i, 0), 100)
-          let yNext = Math.min(Math.max(sYEnd + sYSep * i, 0), 100)
-          let kNext = Math.min(Math.max(sKEnd + sKSep * i, 0), 100)
+          let cNext = Math.min(Math.max(sCEnd - sCSep * i, 0), 100)
+          let mNext = Math.min(Math.max(sMEnd - sMSep * i, 0), 100)
+          let yNext = Math.min(Math.max(sYEnd - sYSep * i, 0), 100)
+          let kNext = Math.min(Math.max(sKEnd - sKSep * i, 0), 100)
           scheme.push(
             new Colors.cmyk(cNext, mNext, yNext, kNext).to(
               color.constructor.name,
@@ -908,10 +914,10 @@ class Harmony {
           )
         }
         for (let i = 0; i <= colors; i++) {
-          let cNext = Math.min(Math.max(cmyk.c + tCSep * i, 0), 100)
-          let mNext = Math.min(Math.max(cmyk.m + tMSep * i, 0), 100)
-          let yNext = Math.min(Math.max(cmyk.y + tYSep * i, 0), 100)
-          let kNext = Math.min(Math.max(cmyk.k + tKSep * i, 0), 100)
+          let cNext = Math.min(Math.max(cmyk.c - tCSep * i, 0), 100)
+          let mNext = Math.min(Math.max(cmyk.m - tMSep * i, 0), 100)
+          let yNext = Math.min(Math.max(cmyk.y - tYSep * i, 0), 100)
+          let kNext = Math.min(Math.max(cmyk.k - tKSep * i, 0), 100)
           scheme.push(
             new Colors.cmyk(cNext, mNext, yNext, kNext).to(
               color.constructor.name,
