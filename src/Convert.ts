@@ -740,7 +740,11 @@ class Convert {
 
     let r, g, b
 
+    // console.log('hsp2rgb')
+    // console.log(Math.round(hsp.h), Math.round(hsp.s), Math.round(hsp.p))
+
     let hpf = Math.floor(hp)
+    // console.log(s0, hpf)
     let hpp
     if (s0 > 0) {
       switch (hpf) {
@@ -867,6 +871,8 @@ class Convert {
     r *= max
     g *= max
     b *= max
+
+    // console.log(Math.round(r), Math.round(g), Math.round(b))
 
     let a = Util.scaleValueRange(hsp.a, 0, 100, 0, max, round)
 
