@@ -197,8 +197,6 @@ class Modify {
       hueDiff = (a - b) * amount
     }
 
-    console.log(hueDiff)
-
     let h3 = this.hueShift(hsi1.h, hueDiff)
     let s3 = hsi1.s + (hsi2.s - hsi1.s) * amount
     let i3 = hsi1.i + (hsi2.i - hsi1.i) * amount
