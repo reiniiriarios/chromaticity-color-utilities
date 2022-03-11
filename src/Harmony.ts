@@ -342,56 +342,6 @@ class Harmony {
   }
 
   /**
-   * Returns an array of colors of darker shades and lighter tints
-   *
-   * @param {Colors.hsl} hsl
-   * @param {number}     colors
-   * @param {number}     [distance=1]       0-1, where 1 is all the way to closest bound OR white, if distanceShade given
-   * @param {number}     [distanceShade=1]  0-1, where 1 is all the way to black
-   * @returns 
-   */
-  static shadetint_hsl(
-    hsl: Colors.hsl,
-    colors: number,
-    distance: number = 1,
-    distanceShade?: number
-  ): Colors.hsl[] {
-    let hsls: Colors.hsl[] = []
-    let tEnd, sEnd, tSeparation, sSeparation
-
-    if (typeof distanceShade === 'undefined') {
-      if (100 - hsl.l < hsl.l) {
-        tEnd = hsl.l + (100 - hsl.l) * Math.min(Math.max(distance, 0), 1)
-        tSeparation = (tEnd - hsl.l) / colors
-        sSeparation = tSeparation
-        sEnd = hsl.l - sSeparation * colors
-      } else {
-        sEnd = hsl.l * (1 - Math.min(Math.max(distance, 0), 1))
-        sSeparation = (hsl.l - sEnd) / colors
-        tSeparation = sSeparation
-        tEnd = hsl.l + tSeparation * colors
-      }
-    } else {
-      tEnd = hsl.l + (100 - hsl.l) * Math.min(Math.max(distance, 0), 1)
-      tSeparation = (tEnd - hsl.l) / colors
-      sEnd = hsl.l * (1 - Math.min(Math.max(distanceShade, 0), 1))
-      sSeparation = (hsl.l - sEnd) / colors
-    }
-
-    for (let i = 0; i < colors; i++) {
-      let nextL = Math.max(sEnd + sSeparation * i, 0)
-      hsls.push(new Colors.hsl(hsl.h, hsl.s, nextL))
-    }
-    hsls.push(hsl)
-    for (let i = 1; i <= colors; i++) {
-      let nextL = Math.min(hsl.l + tSeparation * i, 100)
-      hsls.push(new Colors.hsl(hsl.h, hsl.s, nextL))
-    }
-
-    return hsls
-  }
-
-  /**
    * Return an array of colors blended from color1 to color2
    *
    * @param {T extends colorType} color1
