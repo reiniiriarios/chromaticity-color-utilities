@@ -82,12 +82,21 @@ class Modify {
   ): Colors.hsv {
     amount = Math.min(Math.max(amount, 0), 1)
 
-    let hueDiff
-    if (Math.abs(hsv2.h - hsv1.h) > 180) {
-      hueDiff = 360 - Math.abs((hsv2.h - hsv1.h) * amount)
-      if (hsv1.h > hsv2.h) hueDiff *= -1
-    } else {
-      hueDiff = (hsv2.h - hsv1.h) * amount
+    let hueDiff: number
+    let a: number, b: number
+    if (hsv1.h > hsv2.h) {
+      a = hsv1.h
+      b = hsv2.h
+    }
+    else {
+      a = hsv2.h
+      b = hsv1.h
+    }
+    if (a - b > 180) {
+      hueDiff = 360 - (a - b) * amount
+    }
+    else {
+      hueDiff = (a - b) * amount
     }
 
     let h3 = this.hueShift(hsv1.h, hueDiff)
@@ -122,12 +131,21 @@ class Modify {
   ): Colors.hsl {
     amount = Math.min(Math.max(amount, 0), 1)
 
-    let hueDiff
-    if (Math.abs(hsl2.h - hsl1.h) > 180) {
-      hueDiff = 360 - Math.abs((hsl2.h - hsl1.h) * amount)
-      if (hsl1.h > hsl2.h) hueDiff *= -1
-    } else {
-      hueDiff = (hsl2.h - hsl1.h) * amount
+    let hueDiff: number
+    let a: number, b: number
+    if (hsl1.h > hsl2.h) {
+      a = hsl1.h
+      b = hsl2.h
+    }
+    else {
+      a = hsl2.h
+      b = hsl1.h
+    }
+    if (a - b > 180) {
+      hueDiff = 360 - (a - b) * amount
+    }
+    else {
+      hueDiff = (a - b) * amount
     }
 
     let h3 = this.hueShift(hsl1.h, hueDiff)
@@ -162,13 +180,24 @@ class Modify {
   ): Colors.hsi {
     amount = Math.min(Math.max(amount, 0), 1)
 
-    let hueDiff
-    if (Math.abs(hsi2.h - hsi1.h) > 180) {
-      hueDiff = 360 - Math.abs((hsi2.h - hsi1.h) * amount)
-      if (hsi1.h > hsi2.h) hueDiff *= -1
-    } else {
-      hueDiff = (hsi2.h - hsi1.h) * amount
+    let hueDiff: number
+    let a: number, b: number
+    if (hsi1.h > hsi2.h) {
+      a = hsi1.h
+      b = hsi2.h
     }
+    else {
+      a = hsi2.h
+      b = hsi1.h
+    }
+    if (a - b > 180) {
+      hueDiff = 360 - (a - b) * amount
+    }
+    else {
+      hueDiff = (a - b) * amount
+    }
+
+    console.log(hueDiff)
 
     let h3 = this.hueShift(hsi1.h, hueDiff)
     let s3 = hsi1.s + (hsi2.s - hsi1.s) * amount
@@ -202,12 +231,21 @@ class Modify {
   ): Colors.hsp {
     amount = Math.min(Math.max(amount, 0), 1)
 
-    let hueDiff
-    if (Math.abs(hsp2.h - hsp1.h) > 180) {
-      hueDiff = 360 - Math.abs((hsp2.h - hsp1.h) * amount)
-      if (hsp1.h > hsp2.h) hueDiff *= -1
-    } else {
-      hueDiff = (hsp2.h - hsp1.h) * amount
+    let hueDiff: number
+    let a: number, b: number
+    if (hsp1.h > hsp2.h) {
+      a = hsp1.h
+      b = hsp2.h
+    }
+    else {
+      a = hsp2.h
+      b = hsp1.h
+    }
+    if (a - b > 180) {
+      hueDiff = 360 - (a - b) * amount
+    }
+    else {
+      hueDiff = (a - b) * amount
     }
 
     let h3 = this.hueShift(hsp1.h, hueDiff)
