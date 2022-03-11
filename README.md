@@ -167,6 +167,7 @@ tsc
 - Gamma adjustment modification
 - Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
   - note to self: rec709 does gamma conversion before while rec2020 does gamma conversion after when converting to ypbpr (I think)
+- Need way more comments and better variable names
 - Write more documentation wrt mathematics.
 - Integrate my references better. :)
 - For RGBA to CMYK, mix alpha with white
