@@ -418,7 +418,6 @@ class Harmony {
           let nextM = Math.max(cmyk.m - mSep * i, 0)
           let nextY = Math.max(cmyk.y - ySep * i, 0)
           let nextK = Math.max(cmyk.k - kSep * i, 0)
-          console.log(nextC, nextM, nextY, nextK)
           scheme.push(
             new Colors.cmyk(nextC, nextM, nextY, nextK).to(
               color.constructor.name,
