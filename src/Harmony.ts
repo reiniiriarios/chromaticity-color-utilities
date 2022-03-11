@@ -126,16 +126,62 @@ class Harmony {
     let scheme: T[] = []
     let start: number, end: number, separation: number
     switch (method) {
-      case 'hsl':
-      case 'hsla':
       case 'hsv':
       case 'hsva':
+        let hsv: Colors.hsv = color.to('hsv', { round: false })
+        start = hsv.v
+        end = start * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+        separation = (start - end) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextV = Math.max(start - separation * i, 0)
+          scheme.push(
+            new Colors.hsv(hsv.h, hsv.s, nextV, hsv.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        break
       case 'hsi':
       case 'hsia':
+        let hsi: Colors.hsi = color.to('hsi', { round: false })
+        start = hsi.i
+        end = start * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+        separation = (start - end) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextI = Math.max(start - separation * i, 0)
+          scheme.push(
+            new Colors.hsi(hsi.h, hsi.s, nextI, hsi.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        break
       case 'hsp':
       case 'hspa':
-      case 'lightness':
-      case 'brightness':
+        let hsp: Colors.hsp = color.to('hsp', { round: false })
+        start = hsp.p
+        end = start * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+        separation = (start - end) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextP = Math.max(start - separation * i, 0)
+          scheme.push(
+            new Colors.hsp(hsp.h, hsp.s, nextP, hsp.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        break
+      case 'hsl':
+      case 'hsla':
         let hsl: Colors.hsl = color.to('hsl', { round: false })
         start = hsl.l
         end = start * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
@@ -143,9 +189,12 @@ class Harmony {
         for (let i = 0; i < colors; i++) {
           let nextL = Math.max(start - separation * i, 0)
           scheme.push(
-            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, {
-              round: round,
-            })
+            new Colors.hsl(hsl.h, hsl.s, nextL, hsl.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
           )
         }
         break
@@ -162,7 +211,28 @@ class Harmony {
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
               color.constructor.name,
-              { round: round }
+              { round: round, bitDepth: rgb.bitDepth }
+            )
+          )
+        }
+        break
+      case 'rgb2':
+      case 'rgba2':
+        let rgb2: Colors.rgb = color.to('rgb', { round: false })
+        let rEnd = rgb2.r * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+        let gEnd = rgb2.g * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+        let bEnd = rgb2.b * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+        let rSep = (rgb2.r - rEnd) / (colors - 1)
+        let gSep = (rgb2.g - gEnd) / (colors - 1)
+        let bSep = (rgb2.b - bEnd) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let rNext = Math.max(rgb2.r - rSep * i, 0)
+          let gNext = Math.max(rgb2.g - gSep * i, 0)
+          let bNext = Math.max(rgb2.b - bSep * i, 0)
+          scheme.push(
+            new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
+              color.constructor.name,
+              { round: round, bitDepth: rgb2.bitDepth }
             )
           )
         }
@@ -193,16 +263,60 @@ class Harmony {
     let scheme: T[] = []
     let start: number, end: number, separation: number
     switch (method) {
-      case 'hsl':
-      case 'hsla':
       case 'hsv':
       case 'hsva':
+        let hsv: Colors.hsv = color.to('hsv', { round: false })
+        let startV = hsv.v
+        let endV =
+          startV + (100 - startV) * Math.min(Math.max(distanceToWhite, 0), 1)
+        let separationV = (endV - startV) / (colors - 1)
+        let startVS = hsv.s
+        let separationVS = (0 - startVS) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextV = Math.min(startV + separationV * i, 100)
+          let nextS = Math.min(startVS + separationVS * i, 100)
+          scheme.push(
+            new Colors.hsv(hsv.h, nextS, nextV).to(color.constructor.name, {
+              round: round,
+            })
+          )
+        }
+        break
       case 'hsi':
       case 'hsia':
+        let hsi: Colors.hsi = color.to('hsi', { round: false })
+        start = hsi.i
+        end = start + (100 - start) * Math.min(Math.max(distanceToWhite, 0), 1)
+        separation = (end - start) / (colors - 1)
+        let startIS = hsi.s
+        let separationIS = (0 - startIS) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextI = Math.min(start + separation * i, 100)
+          let nextS = Math.min(startIS + separationIS * i, 100)
+          scheme.push(
+            new Colors.hsi(hsi.h, nextS, nextI).to(color.constructor.name, {
+              round: round,
+            })
+          )
+        }
+        break
       case 'hsp':
       case 'hspa':
-      case 'lightness':
-      case 'brightness':
+        let hsp: Colors.hsp = color.to('hsp', { round: false })
+        start = hsp.p
+        end = start + (100 - start) * Math.min(Math.max(distanceToWhite, 0), 1)
+        separation = (end - start) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextP = Math.min(start + separation * i, 100)
+          scheme.push(
+            new Colors.hsl(hsp.h, hsp.s, nextP).to(color.constructor.name, {
+              round: round,
+            })
+          )
+        }
+        break
+      case 'hsl':
+      case 'hsla':
         let hsl: Colors.hsl = color.to('hsl', { round: false })
         start = hsl.l
         end = start + (100 - start) * Math.min(Math.max(distanceToWhite, 0), 1)
@@ -231,6 +345,33 @@ class Harmony {
             new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
               color.constructor.name,
               { round: round, bitDepth: rgb.bitDepth }
+            )
+          )
+        }
+        break
+      case 'rgb2':
+      case 'rgba2':
+        let rgb2: Colors.rgb = color.to('rgb', { round: false })
+        let rEnd =
+          rgb2.r +
+          (rgb2.max - rgb2.r) * Math.min(Math.max(distanceToWhite, 0), 1)
+        let gEnd =
+          rgb2.g +
+          (rgb2.max - rgb2.g) * Math.min(Math.max(distanceToWhite, 0), 1)
+        let bEnd =
+          rgb2.b +
+          (rgb2.max - rgb2.b) * Math.min(Math.max(distanceToWhite, 0), 1)
+        let rSep = (rEnd - rgb2.r) / (colors - 1)
+        let gSep = (gEnd - rgb2.g) / (colors - 1)
+        let bSep = (bEnd - rgb2.b) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let rNext = Math.min(rgb2.r + rSep * i, rgb2.max)
+          let gNext = Math.min(rgb2.g + gSep * i, rgb2.max)
+          let bNext = Math.min(rgb2.b + bSep * i, rgb2.max)
+          scheme.push(
+            new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
+              color.constructor.name,
+              { round: round, bitDepth: rgb2.bitDepth }
             )
           )
         }
@@ -266,14 +407,6 @@ class Harmony {
     switch (method) {
       case 'hsl':
       case 'hsla':
-      case 'hsv':
-      case 'hsva':
-      case 'hsi':
-      case 'hsia':
-      case 'hsp':
-      case 'hspa':
-      case 'lightness':
-      case 'brightness':
         let hsl: Colors.hsl = color.to('hsl', { round: false })
         if (typeof distanceShade === 'undefined') {
           if (100 - hsl.l < hsl.l) {
@@ -297,18 +430,178 @@ class Harmony {
         for (let i = 0; i < colors; i++) {
           let nextL = Math.max(sEnd + sSeparation * i, 0)
           scheme.push(
-            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, {
-              round: round,
-            })
+            new Colors.hsl(hsl.h, hsl.s, nextL, hsl.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
           )
         }
         scheme.push(hsl.to(color.constructor.name, { round: round }))
         for (let i = 1; i <= colors; i++) {
           let nextL = Math.min(hsl.l + tSeparation * i, 100)
           scheme.push(
-            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, {
-              round: round,
-            })
+            new Colors.hsl(hsl.h, hsl.s, nextL, hsl.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        break
+      case 'hsv':
+      case 'hsva':
+        let hsv: Colors.hsv = color.to('hsv', { round: false })
+        let separationTVS: number
+        if (typeof distanceShade === 'undefined') {
+          let distanceFromWhite = 100 - hsv.v + hsv.s
+          if (distanceFromWhite < 100) {
+            // closer to white
+            tEnd = hsv.v + (100 - hsv.v) * Math.min(Math.max(distance, 0), 1)
+            tSeparation = (tEnd - hsv.v) / colors
+            separationTVS = (0 - hsv.s) / colors
+            sSeparation = tSeparation - separationTVS
+            sEnd = hsv.v - sSeparation * colors
+          } else {
+            // closer to black
+            sEnd = hsv.v * (1 - Math.min(Math.max(distance, 0), 1))
+            sSeparation = (hsv.v - sEnd) / colors
+            tEnd = hsv.v + sSeparation * (colors - 1)
+            separationTVS = (-1 * Math.abs(hsv.s - tEnd)) / colors
+            // tint spacing should take saturation into account?
+            tSeparation = sSeparation + separationTVS
+          }
+        } else {
+          tEnd = hsv.v + (100 - hsv.v) * Math.min(Math.max(distance, 0), 1)
+          tSeparation = (tEnd - hsv.v) / colors
+          sEnd = hsv.v * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sSeparation = (hsv.v - sEnd) / colors
+          separationTVS = (0 - hsv.s) / colors
+        }
+
+        for (let i = 0; i < colors; i++) {
+          let nextV = Math.min(Math.max(sEnd + sSeparation * i, 0), 100)
+          scheme.push(
+            new Colors.hsv(hsv.h, hsv.s, nextV, hsv.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        for (let i = 0; i <= colors; i++) {
+          let nextV = Math.max(Math.min(hsv.v + tSeparation * i, 100), 0)
+          let nextTVS = Math.min(Math.max(hsv.s + separationTVS * i, 0), 100)
+          scheme.push(
+            new Colors.hsv(hsv.h, nextTVS, nextV, hsv.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        break
+      case 'hsi':
+      case 'hsia':
+        let hsi: Colors.hsi = color.to('hsi', { round: false })
+        let separationTIS: number
+        if (typeof distanceShade === 'undefined') {
+          let distanceFromWhite = 100 - hsi.i + hsi.s
+          if (distanceFromWhite < 100) {
+            // closer to white
+            tEnd = hsi.i + (100 - hsi.i) * Math.min(Math.max(distance, 0), 1)
+            tSeparation = (tEnd - hsi.i) / colors
+            sSeparation = tSeparation
+            sEnd = hsi.i - sSeparation * colors
+            separationTIS = (0 - hsi.s) / colors
+          } else {
+            // closer to black
+            sEnd = hsi.i * (1 - Math.min(Math.max(distance, 0), 1))
+            sSeparation = (hsi.i - sEnd) / colors
+            tSeparation = sSeparation
+            tEnd = hsi.i + tSeparation * (colors - 1)
+            separationTIS = (-1 * Math.abs(hsi.s - tEnd)) / colors
+          }
+        } else {
+          tEnd = hsi.i + (100 - hsi.i) * Math.min(Math.max(distance, 0), 1)
+          tSeparation = (tEnd - hsi.i) / colors
+          sEnd = hsi.i * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sSeparation = (hsi.i - sEnd) / colors
+          separationTIS = (0 - hsi.s) / colors
+        }
+
+        for (let i = 0; i < colors; i++) {
+          let nextI = Math.max(sEnd + sSeparation * i, 0)
+          scheme.push(
+            new Colors.hsi(hsi.h, hsi.s, nextI, hsi.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        scheme.push(hsi.to(color.constructor.name, { round: round }))
+        for (let i = 1; i <= colors; i++) {
+          let nextI = Math.min(hsi.i + tSeparation * i, 100)
+          let nextTIS = Math.max(hsi.s + separationTIS * i, 0)
+          scheme.push(
+            new Colors.hsi(hsi.h, nextTIS, nextI, hsi.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        break
+      case 'hsp':
+      case 'hspa':
+        let hsp: Colors.hsp = color.to('hsp', { round: false })
+        if (typeof distanceShade === 'undefined') {
+          if (100 - hsp.p < hsp.p) {
+            tEnd = hsp.p + (100 - hsp.p) * Math.min(Math.max(distance, 0), 1)
+            tSeparation = (tEnd - hsp.p) / colors
+            sSeparation = tSeparation
+            sEnd = hsp.p - sSeparation * colors
+          } else {
+            sEnd = hsp.p * (1 - Math.min(Math.max(distance, 0), 1))
+            sSeparation = (hsp.p - sEnd) / colors
+            tSeparation = sSeparation
+            tEnd = hsp.p + tSeparation * colors
+          }
+        } else {
+          tEnd = hsp.p + (100 - hsp.p) * Math.min(Math.max(distance, 0), 1)
+          tSeparation = (tEnd - hsp.p) / colors
+          sEnd = hsp.p * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sSeparation = (hsp.p - sEnd) / colors
+        }
+
+        for (let i = 0; i < colors; i++) {
+          let nextP = Math.max(sEnd + sSeparation * i, 0)
+          scheme.push(
+            new Colors.hsp(hsp.h, hsp.s, nextP, hsp.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        scheme.push(hsp.to(color.constructor.name, { round: round }))
+        for (let i = 1; i <= colors; i++) {
+          let nextP = Math.min(hsp.p + tSeparation * i, 100)
+          scheme.push(
+            new Colors.hsp(hsp.h, hsp.s, nextP, hsp.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
           )
         }
         break
@@ -324,7 +617,6 @@ class Harmony {
             tSeparation = (tEnd - minVal) / colors
             sSeparation = tSeparation
             sEnd = minVal - sSeparation * colors
-            console.log(tEnd, tSeparation, sEnd, sSeparation)
           } else {
             sEnd = maxVal * (1 - Math.min(Math.max(distance, 0), 1))
             sSeparation = (maxVal - sEnd) / colors
@@ -359,6 +651,100 @@ class Harmony {
             new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
               color.constructor.name,
               { round: round, bitDepth: rgb.bitDepth }
+            )
+          )
+        }
+        break
+      case 'rgb2':
+      case 'rgba2':
+        let rgb2: Colors.rgb = color.to('rgb', { round: false })
+        let tREnd: number,
+          tGEnd: number,
+          tBEnd: number,
+          sREnd: number,
+          sGEnd: number,
+          sBEnd: number,
+          tRSep: number,
+          tGSep: number,
+          tBSep: number,
+          sRSep: number,
+          sGSep: number,
+          sBSep: number
+
+        if (typeof distanceShade === 'undefined') {
+          let percentDistanceToWhite = (rgb2.max * 3 - rgb2.r - rgb2.g - rgb2.b) / (rgb2.max * 3)
+          if (percentDistanceToWhite < 0.5) {
+            tREnd = rgb2.r + (rgb2.max - rgb2.r) * Math.min(Math.max(distance, 0), 1)
+            tRSep = (tREnd - rgb2.r) / colors
+            sREnd = rgb2.r * percentDistanceToWhite
+            sRSep = (rgb2.r - sREnd) / colors
+
+            tGEnd = rgb2.g + (rgb2.max - rgb2.g) * Math.min(Math.max(distance, 0), 1)
+            tGSep = (tGEnd - rgb2.g) / colors
+            sGEnd = rgb2.g * percentDistanceToWhite
+            sGSep = (rgb2.g - sGEnd) / colors
+
+            tBEnd = rgb2.b + (rgb2.max - rgb2.b) * Math.min(Math.max(distance, 0), 1)
+            tBSep = (tBEnd - rgb2.b) / colors
+            sBEnd = rgb2.b * percentDistanceToWhite
+            sBSep = (rgb2.b - sBEnd) / colors
+
+          } else {
+            sREnd = rgb2.r * (1 - Math.min(Math.max(distance, 0), 1))
+            sRSep = (rgb2.r - sREnd) / colors
+            tRSep = rgb2.r * percentDistanceToWhite / (colors - 1)
+            tREnd = rgb2.r + tRSep * colors
+
+            sGEnd = rgb2.g * (1 - Math.min(Math.max(distance, 0), 1))
+            sGSep = (rgb2.g - sGEnd) / colors
+            tGSep = rgb2.g * percentDistanceToWhite / (colors - 1)
+            tGEnd = rgb2.g + tGSep * colors
+
+            sBEnd = rgb2.b * (1 - Math.min(Math.max(distance, 0), 1))
+            sBSep = (rgb2.b - sBEnd) / colors
+            tBSep = rgb2.b * percentDistanceToWhite / (colors - 1)
+            tBEnd = rgb2.b + tBSep * colors
+          }
+        } else {
+          tREnd = rgb2.r + (rgb2.max - rgb2.r) * Math.min(Math.max(distance, 0), 1)
+          tRSep = (tREnd - rgb2.r) / colors
+          sREnd = rgb2.r * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sRSep = (rgb2.r - sREnd) / colors
+
+          tGEnd = rgb2.g + (rgb2.max - rgb2.g) * Math.min(Math.max(distance, 0), 1)
+          tGSep = (tGEnd - rgb2.g) / colors
+          sGEnd = rgb2.g * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sGSep = (rgb2.g - sGEnd) / colors
+
+          tBEnd = rgb2.b + (rgb2.max - rgb2.b) * Math.min(Math.max(distance, 0), 1)
+          tBSep = (tBEnd - rgb2.b) / colors
+          sBEnd = rgb2.b * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sBSep = (rgb2.b - sBEnd) / colors
+        }
+
+        for (let i = 0; i < colors; i++) {
+          let rNext = Math.min(Math.max(sREnd + sRSep * i, 0), rgb2.max)
+          let gNext = Math.min(Math.max(sGEnd + sGSep * i, 0), rgb2.max)
+          let bNext = Math.min(Math.max(sBEnd + sBSep * i, 0), rgb2.max)
+          scheme.push(
+            new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        for (let i = 0; i <= colors; i++) {
+          let rNext = Math.min(Math.max(rgb2.r + tRSep * i, 0), rgb2.max)
+          let gNext = Math.min(Math.max(rgb2.g + tGSep * i, 0), rgb2.max)
+          let bNext = Math.min(Math.max(rgb2.b + tBSep * i, 0), rgb2.max)
+          scheme.push(
+            new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
             )
           )
         }

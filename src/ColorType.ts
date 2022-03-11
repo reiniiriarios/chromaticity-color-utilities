@@ -169,7 +169,7 @@ export abstract class colorType {
   ): T {
     modification = modification.toLowerCase()
     if (typeof args == 'undefined') args = {}
-    let og = this.constructor['name']
+    let og: string = this.constructor['name']
     let ogargs: newColorArgs = {
       round: args.round,
       bitDepth: this.bitDepth,
@@ -443,7 +443,7 @@ export abstract class colorType {
             : args.distanceToBlack
         intScheme = Harmony.shade(
           this,
-          args.method ?? 'hsl',
+          args.method ? args.method.toLowerCase() : 'hsl',
           args.colors,
           distance ?? 1,
           args.round ?? true
@@ -461,7 +461,7 @@ export abstract class colorType {
             : args.distanceToWhite
         intScheme = Harmony.tint(
           this,
-          args.method ?? 'hsl',
+          args.method ? args.method.toLowerCase() : 'hsl',
           args.colors,
           distance ?? 1,
           args.round ?? true
@@ -482,7 +482,7 @@ export abstract class colorType {
             : args.distanceToWhite
         intScheme = Harmony.shadetint(
           this,
-          args.method ?? 'hsl',
+          args.method ? args.method.toLowerCase() : 'hsl',
           args.colors,
           args.round ?? true,
           distance ?? 1,
@@ -497,11 +497,8 @@ export abstract class colorType {
         if (typeof args.with === 'undefined') {
           throw new Error('Must specify second color')
         }
-        if (typeof args.method === 'undefined') {
-          args.method = 'rgb'
-        }
         intScheme = Harmony.gradient(
-          args.method,
+          args.method ? args.method.toLowerCase() : 'rgb',
           this,
           args.with,
           args.colors,

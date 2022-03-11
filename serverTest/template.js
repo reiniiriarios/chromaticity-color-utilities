@@ -18,11 +18,11 @@ module.exports = function template(content) {
   }
   .container {
     margin: 2rem;
-    display: grid;
-    grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
   }
   .container > div {
     padding: 1rem;
+    width: 7rem;
+    display: inline-block;
   }
   h1, h2, h3, h4 { margin: 0; padding: 0; }
   h2 { font-size: 1rem; }
@@ -35,9 +35,7 @@ module.exports = function template(content) {
   </style>
     </head>
     <body>
-      <div class="container">
-        ${content}
-      </div>
+      ${content}
     </body>
   </html>  
 `
