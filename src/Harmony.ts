@@ -319,7 +319,6 @@ class Harmony {
         let minVal = Math.min(rgb.r, rgb.g, rgb.b)
         if (typeof distanceShade === 'undefined') {
           if (rgb.max - minVal < maxVal) {
-            console.log('a')
             tEnd =
               minVal + (rgb.max - minVal) * Math.min(Math.max(distance, 0), 1)
             tSeparation = (tEnd - minVal) / colors
@@ -327,14 +326,12 @@ class Harmony {
             sEnd = minVal - sSeparation * colors
             console.log(tEnd, tSeparation, sEnd, sSeparation)
           } else {
-            console.log('b')
             sEnd = maxVal * (1 - Math.min(Math.max(distance, 0), 1))
             sSeparation = (maxVal - sEnd) / colors
             tSeparation = sSeparation
             tEnd = maxVal + tSeparation * colors
           }
         } else {
-          console.log('c')
           tEnd =
             minVal + (rgb.max - minVal) * Math.min(Math.max(distance, 0), 1)
           tSeparation = (tEnd - minVal) / colors
