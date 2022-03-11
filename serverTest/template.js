@@ -23,8 +23,11 @@ module.exports = function template(content) {
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
   }
   .container > div {
-    
+    padding: 1rem;
   }
+  h1, h2, h3, h4 { margin: 0; padding: 0; }
+  h2 { font-size: 1rem; }
+  h3 { font-size: 1.6rem; margin-bottom: 1rem; }
   .color {
     display: inline-block;
     width: 2rem;

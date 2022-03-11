@@ -16,6 +16,7 @@
 
 import Modify from './Modify'
 import * as Colors from './Colors'
+import { colorType } from './ColorType'
 
 class Harmony {
   /**
@@ -108,49 +109,236 @@ class Harmony {
   /**
    * Returns an array of colors of a darker shade
    *
-   * @param {Colors.hsl} hsl
-   * @param {number}     colors
-   * @param {number}     [distanceToBlack=1]  0-1, where 1 is all the way to black
-   * @returns
+   * @param {T extends colorType} color
+   * @param {string}              [method='hsl']
+   * @param {number}              colors
+   * @param {number}              [distanceToBlack=1]  0-1, where 1 is all the way to black
+   * @param {boolesn}             [round=true]
+   * @returns {T[]}
    */
-  static shade(
-    hsl: Colors.hsl,
+  static shade<T extends colorType>(
+    color: T,
+    method: string = 'hsl',
     colors: number,
-    distanceToBlack: number = 1
-  ): Colors.hsl[] {
-    let hsls: Colors.hsl[] = []
-    let start = hsl.l
-    let end = hsl.l * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
-    let separation = (start - end) / (colors - 1)
-    for (let i = 0; i < colors; i++) {
-      let nextL = Math.max(hsl.l - separation * i, 0)
-      hsls.push(new Colors.hsl(hsl.h, hsl.s, nextL))
+    distanceToBlack: number = 1,
+    round: boolean = true
+  ): T[] {
+    let scheme: T[] = []
+    let start: number, end: number, separation: number
+    switch (method) {
+      case 'hsl':
+      case 'hsla':
+      case 'hsv':
+      case 'hsva':
+      case 'hsi':
+      case 'hsia':
+      case 'hsp':
+      case 'hspa':
+      case 'lightness':
+      case 'brightness':
+        let hsl: Colors.hsl = color.to('hsl', { round: false })
+        start = hsl.l
+        end = start * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+        separation = (start - end) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextL = Math.max(start - separation * i, 0)
+          scheme.push(
+            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, { round: round })
+          )
+        }
+        break
+      case 'rgb':
+      case 'rgba':
+        let rgb: Colors.rgb = color.to('rgb', { round: false })
+        start = Math.max(rgb.r, rgb.g, rgb.b)
+        end = start * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
+        separation = (start - end) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let rNext = Math.max(rgb.r - separation * i, 0)
+          let gNext = Math.max(rgb.g - separation * i, 0)
+          let bNext = Math.max(rgb.b - separation * i, 0)
+          scheme.push(
+            new Colors.rgb(rNext, gNext, bNext, rgb.a).to(color.constructor.name, { round: round })
+          )
+        }
+        break
+      default:
+        throw new Error('Invalid method for generating color scheme')
     }
-    return hsls
+    return scheme
   }
 
+  
   /**
    * Returns an array of colors of a lighter tint
    *
-   * @param {Colors.hsl} hsl
-   * @param {number}     colors
-   * @param {number}     [distanceToWhite=1]  0-1, where 1 is all the way to white
-   * @returns
+   * @param {T extends colorType} color
+   * @param {string}              [method='hsl']
+   * @param {number}              colors
+   * @param {number}              [distanceToWhite=1]  0-1, where 1 is all the way to white
+   * @param {boolesn}             [round=true]
+   * @returns {T[]}
    */
-  static tint(
-    hsl: Colors.hsl,
+  static tint<T extends colorType>(
+    color: T,
+    method: string = 'hsl',
     colors: number,
-    distanceToWhite: number = 1
-  ): Colors.hsl[] {
-    let hsls: Colors.hsl[] = []
-    let start = hsl.l
-    let end = hsl.l + (100 - hsl.l) * Math.min(Math.max(distanceToWhite, 0), 1)
-    let separation = (end - start) / (colors - 1)
-    for (let i = 0; i < colors; i++) {
-      let nextL = Math.min(hsl.l + separation * i, 100)
-      hsls.push(new Colors.hsl(hsl.h, hsl.s, nextL))
+    distanceToWhite: number = 1,
+    round: boolean = true
+  ): T[] {
+    let scheme: T[] = []
+    let start: number, end: number, separation: number
+    switch (method) {
+      case 'hsl':
+      case 'hsla':
+      case 'hsv':
+      case 'hsva':
+      case 'hsi':
+      case 'hsia':
+      case 'hsp':
+      case 'hspa':
+      case 'lightness':
+      case 'brightness':
+        let hsl: Colors.hsl = color.to('hsl', { round: false })
+        start = hsl.l
+        end = start + (100 - start) * Math.min(Math.max(distanceToWhite, 0), 1)
+        separation = (end - start) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextL = Math.min(start + separation * i, 100)
+          scheme.push(
+            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, { round: round })
+          )
+        }
+        break
+      case 'rgb':
+      case 'rgba':
+        let rgb: Colors.rgb = color.to('rgb', { round: false })
+        start = Math.min(rgb.r, rgb.g, rgb.b)
+        end = start + (rgb.max - start) * Math.min(Math.max(distanceToWhite, 0), 1)
+        separation = (end - start) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let rNext = Math.min(rgb.r + separation * i, rgb.max)
+          let gNext = Math.min(rgb.g + separation * i, rgb.max)
+          let bNext = Math.min(rgb.b + separation * i, rgb.max)
+          scheme.push(
+            new Colors.rgb(rNext, gNext, bNext, rgb.a).to(color.constructor.name, { round: round, bitDepth: rgb.bitDepth })
+          )
+        }
+        break
+      default:
+        throw new Error('Invalid method for generating color scheme')
     }
-    return hsls
+    return scheme
+  }
+
+  /**
+   * Returns an array of colors of darker shades and lighter tints
+   *
+   * @param {T extends colorType} color
+   * @param {number}     colors
+   * @param {number}     [distance=1]       0-1, where 1 is all the way to closest bound OR white, if distanceShade given
+   * @param {number}     [distanceShade=1]  0-1, where 1 is all the way to black
+   * @returns 
+   */
+  static shadetint<T extends colorType>(
+    color: T,
+    method: string,
+    colors: number,
+    round: boolean = true,
+    distance: number = 1,
+    distanceShade?: number
+  ): T[] {
+    let scheme: T[] = []
+    let tEnd: number, sEnd: number, tSeparation: number, sSeparation: number
+
+    switch (method) {
+      case 'hsl':
+      case 'hsla':
+      case 'hsv':
+      case 'hsva':
+      case 'hsi':
+      case 'hsia':
+      case 'hsp':
+      case 'hspa':
+      case 'lightness':
+      case 'brightness':
+        let hsl: Colors.hsl = color.to('hsl', { round: false })
+        if (typeof distanceShade === 'undefined') {
+          if (100 - hsl.l < hsl.l) {
+            tEnd = hsl.l + (100 - hsl.l) * Math.min(Math.max(distance, 0), 1)
+            tSeparation = (tEnd - hsl.l) / colors
+            sSeparation = tSeparation
+            sEnd = hsl.l - sSeparation * colors
+          } else {
+            sEnd = hsl.l * (1 - Math.min(Math.max(distance, 0), 1))
+            sSeparation = (hsl.l - sEnd) / colors
+            tSeparation = sSeparation
+            tEnd = hsl.l + tSeparation * colors
+          }
+        } else {
+          tEnd = hsl.l + (100 - hsl.l) * Math.min(Math.max(distance, 0), 1)
+          tSeparation = (tEnd - hsl.l) / colors
+          sEnd = hsl.l * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sSeparation = (hsl.l - sEnd) / colors
+        }
+
+        for (let i = 0; i < colors; i++) {
+          let nextL = Math.max(sEnd + sSeparation * i, 0)
+          scheme.push(new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, { round: round }))
+        }
+        scheme.push(hsl.to(color.constructor.name, { round: round }))
+        for (let i = 1; i <= colors; i++) {
+          let nextL = Math.min(hsl.l + tSeparation * i, 100)
+          scheme.push(new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, { round: round }))
+        }
+        break
+      case 'rgb':
+      case 'rgba':
+        let rgb: Colors.rgb = color.to('rgb', { round: false })
+        let maxVal = Math.max(rgb.r, rgb.g, rgb.b)
+        let minVal = Math.min(rgb.r, rgb.g, rgb.b)
+        if (typeof distanceShade === 'undefined') {
+          if (rgb.max - minVal < maxVal) {
+            console.log('a')
+            tEnd = minVal + (rgb.max - minVal) * Math.min(Math.max(distance, 0), 1)
+            tSeparation = (tEnd - minVal) / colors
+            sSeparation = tSeparation
+            sEnd = minVal - sSeparation * colors
+            console.log(tEnd, tSeparation, sEnd, sSeparation)
+          } else {
+            console.log('b')
+            sEnd = maxVal * (1 - Math.min(Math.max(distance, 0), 1))
+            sSeparation = (maxVal - sEnd) / colors
+            tSeparation = sSeparation
+            tEnd = maxVal + tSeparation * colors
+          }
+        } else {
+          console.log('c')
+          tEnd = minVal + (rgb.max - minVal) * Math.min(Math.max(distance, 0), 1)
+          tSeparation = (tEnd - minVal) / colors
+          sEnd = maxVal * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sSeparation = (maxVal - sEnd) / colors
+        }
+
+        for (let i = 1; i <= colors; i++) {
+          let rNext = Math.max(rgb.r - sSeparation * i, 0)
+          let gNext = Math.max(rgb.g - sSeparation * i, 0)
+          let bNext = Math.max(rgb.b - sSeparation * i, 0)
+          scheme.unshift(new Colors.rgb(rNext, gNext, bNext, rgb.a).to(color.constructor.name, { round: round, bitDepth: rgb.bitDepth }))
+        }
+        scheme.push(rgb.to(color.constructor.name, { round: round }))
+        for (let i = 1; i <= colors; i++) {
+          let rNext = Math.min(rgb.r + tSeparation * i, rgb.max)
+          let gNext = Math.min(rgb.g + tSeparation * i, rgb.max)
+          let bNext = Math.min(rgb.b + tSeparation * i, rgb.max)
+          scheme.push(new Colors.rgb(rNext, gNext, bNext, rgb.a).to(color.constructor.name, { round: round, bitDepth: rgb.bitDepth }))
+        }
+        break
+      default:
+        throw new Error('Invalid method for generating color scheme')
+    }
+
+    return scheme
   }
 
   /**
@@ -160,9 +348,9 @@ class Harmony {
    * @param {number}     colors
    * @param {number}     [distance=1]       0-1, where 1 is all the way to closest bound OR white, if distanceShade given
    * @param {number}     [distanceShade=1]  0-1, where 1 is all the way to black
-   * @returns
+   * @returns 
    */
-  static shadetint(
+  static shadetint_hsl(
     hsl: Colors.hsl,
     colors: number,
     distance: number = 1,
@@ -206,25 +394,23 @@ class Harmony {
   /**
    * Return an array of colors blended from color1 to color2
    *
-   * ... this doesn't work with generics b/c each switch case complains ...
-   * ... possible to do? ...
-   *
-   * @param {any}    color1
-   * @param {any}    color2
-   * @param {number} colors  number of colors in scheme (including color1 and color2)
-   * @returns
+   * @param {T extends colorType} color1
+   * @param {T extends colorType} color2
+   * @param {number}              colors  number of colors in scheme (including color1 and color2)
+   * @returns {T[]}
    */
-  static gradient(
+  static gradient<T extends colorType>(
     type: string,
-    color1: any,
-    color2: any,
-    colors: number
-  ): any[] {
+    color1: T,
+    color2: T,
+    colors: number,
+    round: boolean = true
+  ): T[] {
     if (colors < 2) {
       throw new Error('Unable to generate gradient with less than two colors')
     }
     let inBetweenColors = colors - 2
-    let gradient = []
+    let gradient: T[] = []
     gradient.push(color1)
     for (let i = 0; i < inBetweenColors; i++) {
       let amount = (i + 1) / (inBetweenColors + 1)
@@ -237,7 +423,7 @@ class Harmony {
               color2.to('rgb', { round: false }),
               amount,
               false
-            )
+            ).to(color1.constructor.name, { round: round })
           )
           break
         case 'hsv':
@@ -248,7 +434,7 @@ class Harmony {
               color2.to('hsv', { round: false }),
               amount,
               false
-            )
+            ).to(color1.constructor.name, { round: round })
           )
           break
         case 'hsl':
@@ -259,7 +445,7 @@ class Harmony {
               color2.to('hsl', { round: false }),
               amount,
               false
-            )
+            ).to(color1.constructor.name, { round: round })
           )
           break
         case 'hsi':
@@ -270,7 +456,7 @@ class Harmony {
               color2.to('hsi', { round: false }),
               amount,
               false
-            )
+            ).to(color1.constructor.name, { round: round })
           )
           break
         case 'hsp':
@@ -281,7 +467,7 @@ class Harmony {
               color2.to('hsp', { round: false }),
               amount,
               false
-            )
+            ).to(color1.constructor.name, { round: round })
           )
           break
         case 'cmyk':
@@ -291,7 +477,7 @@ class Harmony {
               color2.to('cmyk', { round: false }),
               amount,
               false
-            )
+            ).to(color1.constructor.name, { round: round })
           )
           break
         case 'yiq':
@@ -301,7 +487,7 @@ class Harmony {
               color2.to('yiq', { round: false }),
               amount,
               false
-            )
+            ).to(color1.constructor.name, { round: round })
           )
           break
       }

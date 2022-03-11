@@ -442,9 +442,11 @@ export abstract class colorType {
             ? args.distance
             : args.distanceToBlack
         intScheme = Harmony.shade(
-          this.to('hsl', { round: false }),
+          this,
+          args.method ?? 'hsl',
           args.colors,
-          distance
+          distance ?? 1,
+          args.round ?? true
         )
         break
       case 'tint':
@@ -458,9 +460,11 @@ export abstract class colorType {
             ? args.distance
             : args.distanceToWhite
         intScheme = Harmony.tint(
-          this.to('hsl', { round: false }),
+          this,
+          args.method ?? 'hsl',
           args.colors,
-          distance
+          distance ?? 1,
+          args.round ?? true
         )
         break
       case 'tintshade':
@@ -477,9 +481,11 @@ export abstract class colorType {
             ? args.distance
             : args.distanceToWhite
         intScheme = Harmony.shadetint(
-          this.to('hsl', { round: false }),
+          this,
+          args.method ?? 'hsl',
           args.colors,
-          distance,
+          args.round ?? true,
+          distance ?? 1,
           args.distanceToBlack
         )
         break
@@ -498,7 +504,8 @@ export abstract class colorType {
           args.method,
           this,
           args.with,
-          args.colors
+          args.colors,
+          args.round
         )
         break
       default:
