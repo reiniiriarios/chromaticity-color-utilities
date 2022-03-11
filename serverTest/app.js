@@ -4,15 +4,29 @@ const Color = require('../dist/main.js').default
 
 let content = ''
 
+function colorBlock(hex, tip) {
+  return (
+    '<span class="color" style="background-color: #' +
+    hex +
+    '"><span class="tip">' +
+    tip +
+    '</span></span> ' +
+    hex +
+    '<br>'
+  )
+}
+
 function grad(method, start, end) {
-  content += '<div><h2>gradient</h2><h3>'+method+'</h3>'
-  Color.from('hex',start).scheme('gradient', {
-    with: Color.from('hex',end),
-    colors: 20,
-    method: method
-  }).forEach(color => {
-    content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-  })
+  content += '<div><h2>gradient</h2><h3>' + method + '</h3>'
+  Color.from('hex', start)
+    .scheme('gradient', {
+      with: Color.from('hex', end),
+      colors: 20,
+      method: method,
+    })
+    .forEach((color) => {
+      content += colorBlock(color.hex, color.to(method).toString())
+    })
   content += '</div>'
 }
 
@@ -34,15 +48,18 @@ grad('cmyk', 0xaa22bb, 0x55aa00)
 content += '</div>'
 
 function shade(method, start) {
-  content += '<div><h2>shade</h2><h3>'+method+'</h3>'
-  Color.from('hex',start).scheme('shade', {
-    colors: 20,
-    method: method,
-    distance: 1,
-    round: true
-  }).forEach(color => {
-    content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-  })
+  content += '<div><h2>shade</h2><h3>' + method + '</h3>'
+  Color.from('hex', start)
+    .scheme('shade', {
+      colors: 20,
+      method: method,
+      distance: 1,
+      round: true,
+    })
+    .forEach((color) => {
+      tipMethod = method.replace(/[0-9]/,'')
+      content += colorBlock(color.hex, color.to(tipMethod).toString())
+    })
   content += '</div>'
 }
 
@@ -62,15 +79,18 @@ shade('rgb2', 0x22aaee)
 content += '</div>'
 
 function tint(method, start) {
-  content += '<div><h2>tint</h2><h3>'+method+'</h3>'
-  Color.from('hex',start).scheme('tint', {
-    colors: 20,
-    method: method,
-    distance: 1,
-    round: true
-  }).forEach(color => {
-    content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-  })
+  content += '<div><h2>tint</h2><h3>' + method + '</h3>'
+  Color.from('hex', start)
+    .scheme('tint', {
+      colors: 20,
+      method: method,
+      distance: 1,
+      round: true,
+    })
+    .forEach((color) => {
+      tipMethod = method.replace(/[0-9]/,'')
+      content += colorBlock(color.hex, color.to(tipMethod).toString())
+    })
   content += '</div>'
 }
 
@@ -90,15 +110,18 @@ tint('rgb2', 0x22aaee)
 content += '</div>'
 
 function shadetint(method, start) {
-  content += '<div><h2>shadetint</h2><h3>'+method+'</h3>'
-  Color.from('hex',start).scheme('shadetint', {
-    colors: 10,
-    method: method,
-    distance: 1,
-    round: true
-  }).forEach(color => {
-    content += '<i class="color" style="background-color: #'+color.hex+'"></i> '+color.hex+'<br>'
-  })
+  content += '<div><h2>shadetint</h2><h3>' + method + '</h3>'
+  Color.from('hex', start)
+    .scheme('shadetint', {
+      colors: 10,
+      method: method,
+      distance: 1,
+      round: true,
+    })
+    .forEach((color) => {
+      tipMethod = method.replace(/[0-9]/,'')
+      content += colorBlock(color.hex, color.to(tipMethod).toString())
+    })
   content += '</div>'
 }
 

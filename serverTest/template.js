@@ -31,6 +31,21 @@ module.exports = function template(content) {
     display: inline-block;
     width: 2rem;
     height: 1rem;
+    position: relative;
+    cursor: help;
+  }
+  .tip {
+    position: absolute;
+    left: 2.5rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(0,0,0,0.85);
+    width: 16rem;
+    display: none;
+    z-index: 1000;
+    font-size: 0.75rem;
+  }
+  .color:hover .tip {
+    display: block;
   }
   </style>
     </head>
