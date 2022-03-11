@@ -169,14 +169,14 @@ class Convert {
 
     let i = (r + g + b) / 3
 
-    let h = 0, s = 0
+    let h = 0,
+      s = 0
     if (i) {
       s = 1 - Math.min(r, g, b) / i
 
-      h = Math.atan2(
-        Math.sqrt(3) / 2 * (g - b),
-        0.5 * (2 * r - g - b)
-      ) * (180 / Math.PI)
+      h =
+        Math.atan2((Math.sqrt(3) / 2) * (g - b), 0.5 * (2 * r - g - b)) *
+        (180 / Math.PI)
 
       if (h < 0) h += 360
       s = Math.min(Math.max(s, 0), 1)
@@ -433,7 +433,7 @@ class Convert {
     } else {
       let chroma = (1 - Math.abs(2 * l - 1)) * s
       let huef = Math.floor(h)
-      let huefmod = Number((h - (Math.floor(h / 2) * 2)).toPrecision(8))
+      let huefmod = Number((h - Math.floor(h / 2) * 2).toPrecision(8))
       let x = chroma * (1 - Math.abs(huefmod - 1))
       let m = l - chroma / 2
 
@@ -532,19 +532,29 @@ class Convert {
     let r, g, b
     if (h < 120) {
       b = i * (1 - s)
-      r = i * (1 + s * Math.cos(h * (Math.PI/180)) / Math.cos((60-h)*(Math.PI/180)))
+      r =
+        i *
+        (1 +
+          (s * Math.cos(h * (Math.PI / 180))) /
+            Math.cos((60 - h) * (Math.PI / 180)))
       g = 3 * i - r - b
-    }
-    else if (h < 240) {
+    } else if (h < 240) {
       h = h - 120
       r = i * (1 - s)
-      g = i * (1 + s * Math.cos(h * (Math.PI/180)) / Math.cos((60-h)*(Math.PI/180)))
+      g =
+        i *
+        (1 +
+          (s * Math.cos(h * (Math.PI / 180))) /
+            Math.cos((60 - h) * (Math.PI / 180)))
       b = 3 * i - r - g
-    }
-    else {
+    } else {
       h = h - 240
       g = i * (1 - s)
-      b = i * (1 + s * Math.cos(h * (Math.PI/180)) / Math.cos((60-h)*(Math.PI/180)))
+      b =
+        i *
+        (1 +
+          (s * Math.cos(h * (Math.PI / 180))) /
+            Math.cos((60 - h) * (Math.PI / 180)))
       r = 3 * i - g - b
     }
 
@@ -740,16 +750,12 @@ class Convert {
 
     let r, g, b
 
-    // console.log('hsp2rgb')
-    // console.log(Math.round(hsp.h), Math.round(hsp.s), Math.round(hsp.p))
-
     let hpf = Math.floor(hp)
     // console.log(s0, hpf)
     let hpp
     if (s0 > 0) {
       switch (hpf) {
         case 0: //R>G>B
-          // something weird going on in this case, but the math looks right
           hpp = hp
           b =
             pb /
@@ -872,7 +878,15 @@ class Convert {
     g *= max
     b *= max
 
-    // console.log(Math.round(r), Math.round(g), Math.round(b))
+    console.log(
+      Math.round(hsp.h),
+      Math.round(hsp.s),
+      Math.round(hsp.p),
+      '=>',
+      Math.round(r).toString(16) +
+        Math.round(g).toString(16) +
+        Math.round(b).toString(16)
+    )
 
     let a = Util.scaleValueRange(hsp.a, 0, 100, 0, max, round)
 
@@ -1274,8 +1288,8 @@ class Convert {
     let w = Util.validReferenceWhite(referenceWhite)
 
     let lr = (lab.l + 16) / 116 // y
-    let ar = lab.a / 500 + lr   // x
-    let br = lr - lab.b / 200   // z
+    let ar = lab.a / 500 + lr // x
+    let br = lr - lab.b / 200 // z
 
     let xr = Math.pow(ar, 3) > cieE ? Math.pow(ar, 3) : (116 * ar - 16) / cieK
     let yr = lab.l > cieK * cieE ? Math.pow(lr, 3) : lab.l / cieK
@@ -1354,7 +1368,11 @@ class Convert {
     let adf = ad ? (52 * luv.l) / ad : 0
     let a = (1 / 3) * (adf - 1)
 
-    let x = a + 1/3 ? (y * ((39 * luv.l) / (luv.v + 13 * luv.l * v0) - 5) + 5 * y) / (a + 1/3) : 0
+    let x =
+      a + 1 / 3
+        ? (y * ((39 * luv.l) / (luv.v + 13 * luv.l * v0) - 5) + 5 * y) /
+          (a + 1 / 3)
+        : 0
     let z = x * a - 5 * y
 
     return new Colors.xyz(x, y, z)
@@ -1657,8 +1675,12 @@ class Convert {
       1,
       false
     )
-    let pb = Util.scaleValueRange(ycbcr.cb, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) - 0.5
-    let pr = Util.scaleValueRange(ycbcr.cr, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) - 0.5
+    let pb =
+      Util.scaleValueRange(ycbcr.cb, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) -
+      0.5
+    let pr =
+      Util.scaleValueRange(ycbcr.cr, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) -
+      0.5
 
     return new Colors.ypbpr(y2, pb, pr, kb, kr)
   }
