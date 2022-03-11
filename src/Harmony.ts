@@ -237,6 +237,32 @@ class Harmony {
           )
         }
         break
+      case 'cmyk':
+        let cmyk: Colors.cmyk = color.to('cmyk', { round: false })
+        // reverse algorithm, max k is all values = 100
+        let cEnd = cmyk.c + (100 - cmyk.c) * Math.min(Math.max(distanceToBlack, 0), 1)
+        let mEnd = cmyk.m + (100 - cmyk.m) * Math.min(Math.max(distanceToBlack, 0), 1)
+        let yEnd = cmyk.y + (100 - cmyk.y) * Math.min(Math.max(distanceToBlack, 0), 1)
+        let kEnd = cmyk.k + (100 - cmyk.k) * Math.min(Math.max(distanceToBlack, 0), 1)
+        let cSep = (cmyk.c - cEnd) / (colors - 1)
+        let mSep = (cmyk.m - mEnd) / (colors - 1)
+        let ySep = (cmyk.y - yEnd) / (colors - 1)
+        let kSep = (cmyk.k - kEnd) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextC = Math.min(cmyk.c - cSep * i, 100)
+          let nextM = Math.min(cmyk.m - mSep * i, 100)
+          let nextY = Math.min(cmyk.y - ySep * i, 100)
+          let nextK = Math.min(cmyk.k - kSep * i, 100)
+          scheme.push(
+            new Colors.cmyk(nextC, nextM, nextY, nextK).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        break
       default:
         throw new Error('Invalid method for generating color scheme')
     }
@@ -372,6 +398,33 @@ class Harmony {
             new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
               color.constructor.name,
               { round: round, bitDepth: rgb2.bitDepth }
+            )
+          )
+        }
+        break
+      case 'cmyk':
+        let cmyk: Colors.cmyk = color.to('cmyk', { round: false })
+        // reverse algorithm, max "white" is all values = 0
+        let cEnd = cmyk.c * (1 - Math.min(Math.max(distanceToWhite, 0), 1))
+        let mEnd = cmyk.m * (1 - Math.min(Math.max(distanceToWhite, 0), 1))
+        let yEnd = cmyk.y * (1 - Math.min(Math.max(distanceToWhite, 0), 1))
+        let kEnd = cmyk.k * (1 - Math.min(Math.max(distanceToWhite, 0), 1))
+        let cSep = (cmyk.c - cEnd) / (colors - 1)
+        let mSep = (cmyk.m - mEnd) / (colors - 1)
+        let ySep = (cmyk.y - yEnd) / (colors - 1)
+        let kSep = (cmyk.k - kEnd) / (colors - 1)
+        for (let i = 0; i < colors; i++) {
+          let nextC = Math.max(cmyk.c - cSep * i, 0)
+          let nextM = Math.max(cmyk.m - mSep * i, 0)
+          let nextY = Math.max(cmyk.y - ySep * i, 0)
+          let nextK = Math.max(cmyk.k - kSep * i, 0)
+          console.log(nextC, nextM, nextY, nextK)
+          scheme.push(
+            new Colors.cmyk(nextC, nextM, nextY, nextK).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
             )
           )
         }

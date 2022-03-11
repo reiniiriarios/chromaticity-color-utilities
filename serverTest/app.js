@@ -70,12 +70,14 @@ shade('hsi', 0xee5588)
 shade('hsp', 0xee5588)
 shade('rgb', 0xee5588)
 shade('rgb2', 0xee5588)
+shade('cmyk', 0xee5588)
 shade('hsl', 0x22aaee)
 shade('hsv', 0x22aaee)
 shade('hsi', 0x22aaee)
 shade('hsp', 0x22aaee)
 shade('rgb', 0x22aaee)
 shade('rgb2', 0x22aaee)
+shade('cmyk', 0x22aaee)
 content += '</div>'
 
 function tint(method, start) {
@@ -101,12 +103,14 @@ tint('hsi', 0x881155)
 tint('hsp', 0x881155)
 tint('rgb', 0x881155)
 tint('rgb2', 0x881155)
+tint('cmyk', 0x881155)
 tint('hsl', 0x22aaee)
 tint('hsv', 0x22aaee)
 tint('hsi', 0x22aaee)
 tint('hsp', 0x22aaee)
 tint('rgb', 0x22aaee)
 tint('rgb2', 0x22aaee)
+tint('cmyk', 0x22aaee)
 content += '</div>'
 
 function shadetint(method, start) {
