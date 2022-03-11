@@ -614,23 +614,30 @@ class Harmony {
       case 'hsp':
       case 'hspa':
         let hsp: Colors.hsp = color.to('hsp', { round: false })
+        // console.log('grad-color',hsp.toString())
+        let separationTPS: number
         if (typeof distanceShade === 'undefined') {
           if (100 - hsp.p < hsp.p) {
+            // closer to white
             tEnd = hsp.p + (100 - hsp.p) * Math.min(Math.max(distance, 0), 1)
             tSeparation = (tEnd - hsp.p) / colors
             sSeparation = tSeparation
             sEnd = hsp.p - sSeparation * colors
+            separationTPS = (0 - hsp.s) / colors
           } else {
+            // closer to black
             sEnd = hsp.p * (1 - Math.min(Math.max(distance, 0), 1))
             sSeparation = (hsp.p - sEnd) / colors
             tSeparation = sSeparation
             tEnd = hsp.p + tSeparation * colors
+            separationTPS = (-1 * Math.abs(hsp.s - tEnd)) / colors
           }
         } else {
           tEnd = hsp.p + (100 - hsp.p) * Math.min(Math.max(distance, 0), 1)
           tSeparation = (tEnd - hsp.p) / colors
           sEnd = hsp.p * (1 - Math.min(Math.max(distanceShade, 0), 1))
           sSeparation = (hsp.p - sEnd) / colors
+          separationTPS = (0 - hsp.s) / colors
         }
 
         for (let i = 0; i < colors; i++) {
@@ -644,11 +651,11 @@ class Harmony {
             )
           )
         }
-        scheme.push(hsp.to(color.constructor.name, { round: round }))
-        for (let i = 1; i <= colors; i++) {
+        for (let i = 0; i <= colors; i++) {
           let nextP = Math.min(hsp.p + tSeparation * i, 100)
+          let nextTPS = Math.max(hsp.s + separationTPS * i, 0)
           scheme.push(
-            new Colors.hsp(hsp.h, hsp.s, nextP, hsp.a).to(
+            new Colors.hsp(hsp.h, nextTPS, nextP, hsp.a).to(
               color.constructor.name,
               {
                 round: round,
@@ -793,6 +800,120 @@ class Harmony {
           let bNext = Math.min(Math.max(rgb2.b + tBSep * i, 0), rgb2.max)
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        break
+      case 'cmyk':
+        let cmyk: Colors.cmyk = color.to('cmyk', { round: false })
+        let tCEnd: number,
+          tMEnd: number,
+          tYEnd: number,
+          tKEnd: number,
+          sCEnd: number,
+          sMEnd: number,
+          sYEnd: number,
+          sKEnd: number,
+          tCSep: number,
+          tMSep: number,
+          tYSep: number,
+          tKSep: number,
+          sCSep: number,
+          sMSep: number,
+          sYSep: number,
+          sKSep: number
+
+        if (typeof distanceShade === 'undefined') {
+          let percentDistanceToWhite = (400 - cmyk.c, cmyk.m, cmyk.y, cmyk.k) / 400
+          if (percentDistanceToWhite < 0.5) {
+            tCEnd = cmyk.c + (100 - cmyk.c) * Math.min(Math.max(distance, 0), 1)
+            tCSep = (tCEnd - cmyk.c) / colors
+            sCEnd = cmyk.c * percentDistanceToWhite
+            sCSep = (cmyk.c - sCEnd) / colors
+            
+            tMEnd = cmyk.m + (100 - cmyk.m) * Math.min(Math.max(distance, 0), 1)
+            tMSep = (tMEnd - cmyk.m) / colors
+            sMEnd = cmyk.m * percentDistanceToWhite
+            sMSep = (cmyk.m - sMEnd) / colors
+            
+            tYEnd = cmyk.y + (100 - cmyk.y) * Math.min(Math.max(distance, 0), 1)
+            tYSep = (tYEnd - cmyk.y) / colors
+            sYEnd = cmyk.y * percentDistanceToWhite
+            sYSep = (cmyk.y - sYEnd) / colors
+            
+            tKEnd = cmyk.k + (100 - cmyk.k) * Math.min(Math.max(distance, 0), 1)
+            tKSep = (tKEnd - cmyk.k) / colors
+            sKEnd = cmyk.k * percentDistanceToWhite
+            sKSep = (cmyk.k - sKEnd) / colors
+
+          } else {
+            sCEnd = cmyk.c * (1 - Math.min(Math.max(distance, 0), 1))
+            sCSep = (cmyk.c - sCEnd) / colors
+            tCEnd = cmyk.c * (1 + ((100 - cmyk.c) / 100))
+            tCSep = (tCEnd - cmyk.c) / colors
+            
+            sMEnd = cmyk.m * (1 - Math.min(Math.max(distance, 0), 1))
+            sMSep = (cmyk.m - sMEnd) / colors
+            tMEnd = cmyk.m * (1 + ((100 - cmyk.m) / 100))
+            tMSep = (tMEnd - cmyk.m) / colors
+            
+            sYEnd = cmyk.y * (1 - Math.min(Math.max(distance, 0), 1))
+            sYSep = (cmyk.y - sYEnd) / colors
+            tYEnd = cmyk.y * (1 + ((100 - cmyk.y) / 100))
+            tYSep = (tYEnd - cmyk.y) / colors
+            
+            sKEnd = cmyk.k * (1 - Math.min(Math.max(distance, 0), 1))
+            sKSep = (cmyk.k - sKEnd) / colors
+            tKEnd = cmyk.k * (1 + ((100 - cmyk.k) / 100))
+            tKSep = (tKEnd - cmyk.k) / colors
+          }
+        } else {
+          tCEnd = cmyk.c + (100 - cmyk.c) * Math.min(Math.max(distance, 0), 1)
+          tCSep = (tCEnd - cmyk.c) / colors
+          sCEnd = cmyk.c * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sCSep = (cmyk.c - sCEnd) / colors
+          
+          tMEnd = cmyk.m + (100 - cmyk.m) * Math.min(Math.max(distance, 0), 1)
+          tMSep = (tMEnd - cmyk.m) / colors
+          sMEnd = cmyk.m * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sMSep = (cmyk.m - sMEnd) / colors
+          
+          tYEnd = cmyk.y + (100 - cmyk.y) * Math.min(Math.max(distance, 0), 1)
+          tYSep = (tYEnd - cmyk.y) / colors
+          sYEnd = cmyk.y * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sYSep = (cmyk.y - sYEnd) / colors
+          
+          tKEnd = cmyk.k + (100 - cmyk.k) * Math.min(Math.max(distance, 0), 1)
+          tKSep = (tKEnd - cmyk.k) / colors
+          sKEnd = cmyk.k * (1 - Math.min(Math.max(distanceShade, 0), 1))
+          sKSep = (cmyk.k - sKEnd) / colors
+        }
+
+        for (let i = 0; i < colors; i++) {
+          let cNext = Math.min(Math.max(sCEnd + sCSep * i, 0), 100)
+          let mNext = Math.min(Math.max(sMEnd + sMSep * i, 0), 100)
+          let yNext = Math.min(Math.max(sYEnd + sYSep * i, 0), 100)
+          let kNext = Math.min(Math.max(sKEnd + sKSep * i, 0), 100)
+          scheme.push(
+            new Colors.cmyk(cNext, mNext, yNext, kNext).to(
+              color.constructor.name,
+              {
+                round: round,
+              }
+            )
+          )
+        }
+        for (let i = 0; i <= colors; i++) {
+          let cNext = Math.min(Math.max(cmyk.c + tCSep * i, 0), 100)
+          let mNext = Math.min(Math.max(cmyk.m + tMSep * i, 0), 100)
+          let yNext = Math.min(Math.max(cmyk.y + tYSep * i, 0), 100)
+          let kNext = Math.min(Math.max(cmyk.k + tKSep * i, 0), 100)
+          scheme.push(
+            new Colors.cmyk(cNext, mNext, yNext, kNext).to(
               color.constructor.name,
               {
                 round: round,
