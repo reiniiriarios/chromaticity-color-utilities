@@ -692,18 +692,18 @@ class Harmony {
           } else {
             sREnd = rgb2.r * (1 - Math.min(Math.max(distance, 0), 1))
             sRSep = (rgb2.r - sREnd) / colors
-            tRSep = rgb2.r * percentDistanceToWhite / (colors - 1)
-            tREnd = rgb2.r + tRSep * colors
+            tREnd = rgb2.r * (1 + ((rgb2.max - rgb2.r) / rgb2.max))
+            tRSep = (tREnd - rgb2.r) / colors
 
             sGEnd = rgb2.g * (1 - Math.min(Math.max(distance, 0), 1))
             sGSep = (rgb2.g - sGEnd) / colors
-            tGSep = rgb2.g * percentDistanceToWhite / (colors - 1)
-            tGEnd = rgb2.g + tGSep * colors
+            tGEnd = rgb2.g * (1 + ((rgb2.max - rgb2.g) / rgb2.max))
+            tGSep = (tGEnd - rgb2.g) / colors
 
             sBEnd = rgb2.b * (1 - Math.min(Math.max(distance, 0), 1))
             sBSep = (rgb2.b - sBEnd) / colors
-            tBSep = rgb2.b * percentDistanceToWhite / (colors - 1)
-            tBEnd = rgb2.b + tBSep * colors
+            tBEnd = rgb2.b * (1 + ((rgb2.max - rgb2.b) / rgb2.max))
+            tBSep = (tBEnd - rgb2.b) / colors
           }
         } else {
           tREnd = rgb2.r + (rgb2.max - rgb2.r) * Math.min(Math.max(distance, 0), 1)
