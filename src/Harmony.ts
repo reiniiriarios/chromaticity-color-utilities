@@ -143,7 +143,9 @@ class Harmony {
         for (let i = 0; i < colors; i++) {
           let nextL = Math.max(start - separation * i, 0)
           scheme.push(
-            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, { round: round })
+            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, {
+              round: round,
+            })
           )
         }
         break
@@ -158,7 +160,10 @@ class Harmony {
           let gNext = Math.max(rgb.g - separation * i, 0)
           let bNext = Math.max(rgb.b - separation * i, 0)
           scheme.push(
-            new Colors.rgb(rNext, gNext, bNext, rgb.a).to(color.constructor.name, { round: round })
+            new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
+              color.constructor.name,
+              { round: round }
+            )
           )
         }
         break
@@ -168,7 +173,6 @@ class Harmony {
     return scheme
   }
 
-  
   /**
    * Returns an array of colors of a lighter tint
    *
@@ -206,7 +210,9 @@ class Harmony {
         for (let i = 0; i < colors; i++) {
           let nextL = Math.min(start + separation * i, 100)
           scheme.push(
-            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, { round: round })
+            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, {
+              round: round,
+            })
           )
         }
         break
@@ -214,14 +220,18 @@ class Harmony {
       case 'rgba':
         let rgb: Colors.rgb = color.to('rgb', { round: false })
         start = Math.min(rgb.r, rgb.g, rgb.b)
-        end = start + (rgb.max - start) * Math.min(Math.max(distanceToWhite, 0), 1)
+        end =
+          start + (rgb.max - start) * Math.min(Math.max(distanceToWhite, 0), 1)
         separation = (end - start) / (colors - 1)
         for (let i = 0; i < colors; i++) {
           let rNext = Math.min(rgb.r + separation * i, rgb.max)
           let gNext = Math.min(rgb.g + separation * i, rgb.max)
           let bNext = Math.min(rgb.b + separation * i, rgb.max)
           scheme.push(
-            new Colors.rgb(rNext, gNext, bNext, rgb.a).to(color.constructor.name, { round: round, bitDepth: rgb.bitDepth })
+            new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
+              color.constructor.name,
+              { round: round, bitDepth: rgb.bitDepth }
+            )
           )
         }
         break
@@ -235,10 +245,12 @@ class Harmony {
    * Returns an array of colors of darker shades and lighter tints
    *
    * @param {T extends colorType} color
-   * @param {number}     colors
-   * @param {number}     [distance=1]       0-1, where 1 is all the way to closest bound OR white, if distanceShade given
-   * @param {number}     [distanceShade=1]  0-1, where 1 is all the way to black
-   * @returns 
+   * @param {string}              method
+   * @param {number}              colors
+   * @param {boolean}             [round=true]
+   * @param {number}              [distance=1]       0-1, where 1 is all the way to closest bound OR white, if distanceShade given
+   * @param {number}              [distanceShade=1]  0-1, where 1 is all the way to black
+   * @returns
    */
   static shadetint<T extends colorType>(
     color: T,
@@ -284,12 +296,20 @@ class Harmony {
 
         for (let i = 0; i < colors; i++) {
           let nextL = Math.max(sEnd + sSeparation * i, 0)
-          scheme.push(new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, { round: round }))
+          scheme.push(
+            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, {
+              round: round,
+            })
+          )
         }
         scheme.push(hsl.to(color.constructor.name, { round: round }))
         for (let i = 1; i <= colors; i++) {
           let nextL = Math.min(hsl.l + tSeparation * i, 100)
-          scheme.push(new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, { round: round }))
+          scheme.push(
+            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, {
+              round: round,
+            })
+          )
         }
         break
       case 'rgb':
@@ -300,7 +320,8 @@ class Harmony {
         if (typeof distanceShade === 'undefined') {
           if (rgb.max - minVal < maxVal) {
             console.log('a')
-            tEnd = minVal + (rgb.max - minVal) * Math.min(Math.max(distance, 0), 1)
+            tEnd =
+              minVal + (rgb.max - minVal) * Math.min(Math.max(distance, 0), 1)
             tSeparation = (tEnd - minVal) / colors
             sSeparation = tSeparation
             sEnd = minVal - sSeparation * colors
@@ -314,7 +335,8 @@ class Harmony {
           }
         } else {
           console.log('c')
-          tEnd = minVal + (rgb.max - minVal) * Math.min(Math.max(distance, 0), 1)
+          tEnd =
+            minVal + (rgb.max - minVal) * Math.min(Math.max(distance, 0), 1)
           tSeparation = (tEnd - minVal) / colors
           sEnd = maxVal * (1 - Math.min(Math.max(distanceShade, 0), 1))
           sSeparation = (maxVal - sEnd) / colors
@@ -324,14 +346,24 @@ class Harmony {
           let rNext = Math.max(rgb.r - sSeparation * i, 0)
           let gNext = Math.max(rgb.g - sSeparation * i, 0)
           let bNext = Math.max(rgb.b - sSeparation * i, 0)
-          scheme.unshift(new Colors.rgb(rNext, gNext, bNext, rgb.a).to(color.constructor.name, { round: round, bitDepth: rgb.bitDepth }))
+          scheme.unshift(
+            new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
+              color.constructor.name,
+              { round: round, bitDepth: rgb.bitDepth }
+            )
+          )
         }
         scheme.push(rgb.to(color.constructor.name, { round: round }))
         for (let i = 1; i <= colors; i++) {
           let rNext = Math.min(rgb.r + tSeparation * i, rgb.max)
           let gNext = Math.min(rgb.g + tSeparation * i, rgb.max)
           let bNext = Math.min(rgb.b + tSeparation * i, rgb.max)
-          scheme.push(new Colors.rgb(rNext, gNext, bNext, rgb.a).to(color.constructor.name, { round: round, bitDepth: rgb.bitDepth }))
+          scheme.push(
+            new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
+              color.constructor.name,
+              { round: round, bitDepth: rgb.bitDepth }
+            )
+          )
         }
         break
       default:

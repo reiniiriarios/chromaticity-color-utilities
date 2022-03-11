@@ -1,4 +1,3 @@
-
 module.exports = function template(content) {
   return `
   <!doctype html>
