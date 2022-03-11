@@ -42,7 +42,7 @@ shade('rgb')
 
 function tint(method) {
   content += '<div><h2>tint</h2><h3>'+method+'</h3>'
-  Color.from('hex',0xaa3366).scheme('tint', {
+  Color.from('hex',0x881155).scheme('tint', {
     colors: 20,
     method: method,
     distance: 1,
