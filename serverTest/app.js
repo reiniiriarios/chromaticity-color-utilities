@@ -50,13 +50,13 @@ grad('cmyk', 'aa22bb', '55aa00')
 // grad('yiq', 'aa22bb', '55aa00') //same as rgb??
 content += '</div>'
 
-function shade(method, start) {
+function shade(method, start, amount = 1) {
   content += '<div><h2>shade</h2><h3>' + method + '</h3>'
   Color.from('hex', start)
     .scheme('shade', {
       colors: 20,
       method: method,
-      distance: 1,
+      distance: amount,
       round: true,
     })
     .forEach((color) => {
@@ -84,13 +84,30 @@ shade('rgb2', '22aaee')
 shade('cmyk', '22aaee')
 content += '</div>'
 
-function tint(method, start) {
+content += '<div class="container">'
+shade('hsl', 'ee5588', 0.5)
+shade('hsv', 'ee5588', 0.5)
+shade('hsi', 'ee5588', 0.5)
+shade('hsp', 'ee5588', 0.5)
+shade('rgb', 'ee5588', 0.5)
+shade('rgb2', 'ee5588', 0.5)
+shade('cmyk', 'ee5588', 0.5)
+shade('hsl', '22aaee', 0.5)
+shade('hsv', '22aaee', 0.5)
+shade('hsi', '22aaee', 0.5)
+shade('hsp', '22aaee', 0.5)
+shade('rgb', '22aaee', 0.5)
+shade('rgb2', '22aaee', 0.5)
+shade('cmyk', '22aaee', 0.5)
+content += '</div>'
+
+function tint(method, start, amount = 1) {
   content += '<div><h2>tint</h2><h3>' + method + '</h3>'
   Color.from('hex', start)
     .scheme('tint', {
       colors: 20,
       method: method,
-      distance: 1,
+      distance: amount,
       round: true,
     })
     .forEach((color) => {
@@ -116,6 +133,23 @@ tint('hsp', '22aaee')
 tint('rgb', '22aaee')
 tint('rgb2', '22aaee')
 tint('cmyk', '22aaee')
+content += '</div>'
+
+content += '<div class="container">'
+tint('hsl', '881155', 0.5)
+tint('hsv', '881155', 0.5)
+tint('hsi', '881155', 0.5)
+tint('hsp', '881155', 0.5)
+tint('rgb', '881155', 0.5)
+tint('rgb2', '881155', 0.5)
+tint('cmyk', '881155', 0.5)
+tint('hsl', '22aaee', 0.5)
+tint('hsv', '22aaee', 0.5)
+tint('hsi', '22aaee', 0.5)
+tint('hsp', '22aaee', 0.5)
+tint('rgb', '22aaee', 0.5)
+tint('rgb2', '22aaee', 0.5)
+tint('cmyk', '22aaee', 0.5)
 content += '</div>'
 
 function shadetint(method, start, fullGamut) {

@@ -297,7 +297,8 @@ class Harmony {
           startV + (100 - startV) * Math.min(Math.max(distanceToWhite, 0), 1)
         let separationV = (endV - startV) / (colors - 1)
         let startVS = hsv.s
-        let separationVS = (0 - startVS) / (colors - 1)
+        let endVS = (1 - distanceToWhite) * 100
+        let separationVS = (endVS - startVS) / (colors - 1)
         for (let i = 0; i < colors; i++) {
           let nextV = Math.min(startV + separationV * i, 100)
           let nextS = Math.min(startVS + separationVS * i, 100)
@@ -314,7 +315,8 @@ class Harmony {
         start = hsi.i
         end = start + (100 - start) * Math.min(Math.max(distanceToWhite, 0), 1)
         separation = (end - start) / (colors - 1)
-        let separationIS = (0 - hsi.s) / (colors - 1)
+        let endIS = (1 - distanceToWhite) * 100
+        let separationIS = (endIS - hsi.s) / (colors - 1)
         for (let i = 0; i < colors; i++) {
           let nextI = Math.min(start + separation * i, 100)
           let nextS = Math.min(hsi.s + separationIS * i, 100)
@@ -331,7 +333,8 @@ class Harmony {
         start = hsp.p
         end = start + (100 - start) * Math.min(Math.max(distanceToWhite, 0), 1)
         separation = (end - start) / (colors - 1)
-        let separationPS = (0 - hsp.s) / (colors - 1)
+        let endPS = (1 - distanceToWhite) * 100
+        let separationPS = (endPS - hsp.s) / (colors - 1)
         for (let i = 0; i < colors; i++) {
           let nextP = Math.min(start + separation * i, 100)
           let nextS = Math.min(hsp.s + separationPS * i, 100)
