@@ -878,16 +878,6 @@ class Convert {
     g *= max
     b *= max
 
-    console.log(
-      Math.round(hsp.h),
-      Math.round(hsp.s),
-      Math.round(hsp.p),
-      '=>',
-      Math.round(r).toString(16) +
-        Math.round(g).toString(16) +
-        Math.round(b).toString(16)
-    )
-
     let a = Util.scaleValueRange(hsp.a, 0, 100, 0, max, round)
 
     if (round) {
