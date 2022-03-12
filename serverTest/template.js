@@ -47,6 +47,15 @@ module.exports = function template(content) {
   .color:hover .tip {
     display: block;
   }
+  label {
+    margin-left: 0.5rem;
+    font-family: 'Consolas', 'Lucida Console', 'Source Mono Pro', 'Roboto Mono', monospace;
+    opacity: 0.75;
+  }
+  label.highlight {
+    font-weight: bold;
+    opacity: 1;
+  }
   </style>
     </head>
     <body>
