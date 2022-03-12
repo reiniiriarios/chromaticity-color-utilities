@@ -65,8 +65,7 @@ Approaching complete-ish stage... Most tests pass.
 
 ### Known Issues
 
-- L\*a\*b\* failing
-- L\*u\*v\* failing
+- YCbCr validates only with a high tolerance. Not sure if floating point issue.
 
 ## Documentation
 
@@ -162,6 +161,10 @@ tsc
 
 ## To Do List
 
+- LCHab
+- LCHuv
+- HSLuv
+- HPLuv
 - YUV
 - Gamma adjustment modification
 - Auto-gamma adjustment and conversion for rec709, rec2020, and jpeg to/from ypbpr
