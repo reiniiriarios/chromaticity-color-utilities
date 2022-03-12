@@ -100,10 +100,10 @@ describe('conversions to RGB and back', function () {
     toRgbAndBack('xyy', false, 5)
   })
   it('lab', () => {
-    toRgbAndBack('lab', false, 20, 3)         // FAILING
+    toRgbAndBack('lab', false, 5)
   })
   it('luv', () => {
-    toRgbAndBack('luv', false, 20, 2)         // FAILING
+    toRgbAndBack('luv', false, 5)
   })
   it('ypbpr', () => {
     toRgbAndBack('ypbpr', false, 5, undefined, { kb: 1/3, kr: 1/3 }, { kb: 1/3, kr: 1/3 })

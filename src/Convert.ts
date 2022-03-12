@@ -1278,11 +1278,13 @@ class Convert {
     let w = Util.validReferenceWhite(referenceWhite)
 
     let lr = (lab.l + 16) / 116 // y
-    let ar = lab.a / 500 + lr // x
-    let br = lr - lab.b / 200 // z
+    let ar = lab.a / 500 + lr   // x
+    let br = lr - lab.b / 200   // z
 
     let xr = Math.pow(ar, 3) > cieE ? Math.pow(ar, 3) : (116 * ar - 16) / cieK
+    // the following two y(r) formulae seem to be equivalent??? somehow???
     let yr = lab.l > cieK * cieE ? Math.pow(lr, 3) : lab.l / cieK
+    // let yr = Math.pow(lr, 3) > cieE ? Math.pow(lr, 3) : (116 * lr - 16) / cieK
     let zr = Math.pow(br, 3) > cieE ? Math.pow(br, 3) : (116 * br - 16) / cieK
 
     let x = xr * w.x

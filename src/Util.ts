@@ -230,21 +230,22 @@ class Util {
     if (typeof referenceWhite == 'string') {
       referenceWhite = referenceWhite.toLowerCase()
       if (
-        typeof stdIlluminants[referenceWhite as keyof object] == 'undefined'
+        typeof stdIlluminants[referenceWhite as keyof object] == 'undefined' ||
+        typeof stdIlluminants[referenceWhite as keyof object]['vector'] == 'undefined'
       ) {
         throw new Error('Invalid reference white')
       }
-      w = stdIlluminants[referenceWhite as keyof object]['chrom']['2d']
+      let v = stdIlluminants[referenceWhite as keyof object]['vector']
+      w = {
+        x: v[0],
+        y: v[1],
+        z: v[2],
+      }
     } else {
       w = referenceWhite
     }
-    let z = 1 - w['x'] - w['y']
 
-    return {
-      x: w['x'],
-      y: w['y'],
-      z: z,
-    }
+    return w
   }
 
   static validColorSpace(colorSpace: string): object {

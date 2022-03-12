@@ -98,14 +98,14 @@ xyzIsMagenta = (color) => {
   color.z.should.equal(0.969638)
 }
 labIsMagenta = (color) => {
-  color.l.should.equal(95)
-  color.a.should.equal(142)
-  color.b.should.equal(-88)
+  color.l.should.equal(60)
+  color.a.should.equal(98)
+  color.b.should.equal(-61)
 }
 luvIsMagenta = (color) => {
-  color.l.should.equal(95)
-  color.u.should.equal(132)
-  color.v.should.equal(-170)
+  color.l.should.equal(60)
+  color.u.should.equal(84)
+  color.v.should.equal(-109)
 }
 
 describe('conversions', () => {
