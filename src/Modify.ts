@@ -83,20 +83,11 @@ class Modify {
     amount = Math.min(Math.max(amount, 0), 1)
 
     let hueDiff: number
-    let a: number, b: number
-    if (hsv1.h > hsv2.h) {
-      a = hsv1.h
-      b = hsv2.h
+    if (Math.abs(hsv2.h - hsv1.h) > 180) {
+      hueDiff = 360 - (hsv2.h - hsv1.h) * amount * -1
     }
     else {
-      a = hsv2.h
-      b = hsv1.h
-    }
-    if (a - b > 180) {
-      hueDiff = 360 - (a - b) * amount
-    }
-    else {
-      hueDiff = (a - b) * amount
+      hueDiff = (hsv2.h - hsv1.h) * amount
     }
 
     let h3 = this.hueShift(hsv1.h, hueDiff)
@@ -132,20 +123,11 @@ class Modify {
     amount = Math.min(Math.max(amount, 0), 1)
 
     let hueDiff: number
-    let a: number, b: number
-    if (hsl1.h > hsl2.h) {
-      a = hsl1.h
-      b = hsl2.h
+    if (Math.abs(hsl2.h - hsl1.h) > 180) {
+      hueDiff = 360 - (hsl2.h - hsl1.h) * amount * -1
     }
     else {
-      a = hsl2.h
-      b = hsl1.h
-    }
-    if (a - b > 180) {
-      hueDiff = 360 - (a - b) * amount
-    }
-    else {
-      hueDiff = (a - b) * amount
+      hueDiff = (hsl2.h - hsl1.h) * amount
     }
 
     let h3 = this.hueShift(hsl1.h, hueDiff)
@@ -181,20 +163,11 @@ class Modify {
     amount = Math.min(Math.max(amount, 0), 1)
 
     let hueDiff: number
-    let a: number, b: number
-    if (hsi1.h > hsi2.h) {
-      a = hsi1.h
-      b = hsi2.h
+    if (Math.abs(hsi2.h - hsi1.h) > 180) {
+      hueDiff = 360 - (hsi2.h - hsi1.h) * amount * -1
     }
     else {
-      a = hsi2.h
-      b = hsi1.h
-    }
-    if (a - b > 180) {
-      hueDiff = 360 - (a - b) * amount
-    }
-    else {
-      hueDiff = (a - b) * amount
+      hueDiff = (hsi2.h - hsi1.h) * amount
     }
 
     let h3 = this.hueShift(hsi1.h, hueDiff)
@@ -230,20 +203,11 @@ class Modify {
     amount = Math.min(Math.max(amount, 0), 1)
 
     let hueDiff: number
-    let a: number, b: number
-    if (hsp1.h > hsp2.h) {
-      a = hsp1.h
-      b = hsp2.h
+    if (Math.abs(hsp2.h - hsp1.h) > 180) {
+      hueDiff = 360 - (hsp2.h - hsp1.h) * amount * -1
     }
     else {
-      a = hsp2.h
-      b = hsp1.h
-    }
-    if (a - b > 180) {
-      hueDiff = 360 - (a - b) * amount
-    }
-    else {
-      hueDiff = (a - b) * amount
+      hueDiff = (hsp2.h - hsp1.h) * amount
     }
 
     let h3 = this.hueShift(hsp1.h, hueDiff)

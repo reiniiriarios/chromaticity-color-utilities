@@ -40,14 +40,87 @@ grad('hsl', 'cc1111', '11aaaa')
 grad('hsi', 'cc1111', '11aaaa')
 grad('hsp', 'cc1111', '11aaaa')
 grad('cmyk', 'cc1111', '11aaaa')
-// grad('yiq', 'cc1111', '11aaaa') //same as rgb??
 grad('rgb', 'aa22bb', '55aa00')
 grad('hsv', 'aa22bb', '55aa00')
 grad('hsl', 'aa22bb', '55aa00')
 grad('hsi', 'aa22bb', '55aa00')
 grad('hsp', 'aa22bb', '55aa00')
 grad('cmyk', 'aa22bb', '55aa00')
-// grad('yiq', 'aa22bb', '55aa00') //same as rgb??
+content += '</div>'
+
+content += '<div class="container">'
+grad('rgb', '11aaaa', 'cc1111')
+grad('hsv', '11aaaa', 'cc1111')
+grad('hsl', '11aaaa', 'cc1111')
+grad('hsi', '11aaaa', 'cc1111')
+grad('hsp', '11aaaa', 'cc1111')
+grad('cmyk', '11aaaa', 'cc1111')
+grad('rgb', '55aa00', 'aa22bb')
+grad('hsv', '55aa00', 'aa22bb')
+grad('hsl', '55aa00', 'aa22bb')
+grad('hsi', '55aa00', 'aa22bb')
+grad('hsp', '55aa00', 'aa22bb')
+grad('cmyk', '55aa00', 'aa22bb')
+content += '</div>'
+
+content += '<div class="container">'
+grad('rgb', 'ee8822', '118844')
+grad('hsv', 'ee8822', '118844')
+grad('hsl', 'ee8822', '118844')
+grad('hsi', 'ee8822', '118844')
+grad('hsp', 'ee8822', '118844')
+grad('cmyk', 'ee8822', '118844')
+grad('rgb', 'ee2288', '114488')
+grad('hsv', 'ee2288', '114488')
+grad('hsl', 'ee2288', '114488')
+grad('hsi', 'ee2288', '114488')
+grad('hsp', 'ee2288', '114488')
+grad('cmyk', 'ee2288', '114488')
+content += '</div>'
+
+content += '<div class="container">'
+grad('rgb', '118844', 'ee8822')
+grad('hsv', '118844', 'ee8822')
+grad('hsl', '118844', 'ee8822')
+grad('hsi', '118844', 'ee8822')
+grad('hsp', '118844', 'ee8822')
+grad('cmyk', '118844', 'ee8822')
+grad('rgb', '114488', 'ee2288')
+grad('hsv', '114488', 'ee2288')
+grad('hsl', '114488', 'ee2288')
+grad('hsi', '114488', 'ee2288')
+grad('hsp', '114488', 'ee2288')
+grad('cmyk', '114488', 'ee2288')
+content += '</div>'
+
+content += '<div class="container">'
+grad('rgb', '445566', 'ff2255')
+grad('hsv', '445566', 'ff2255')
+grad('hsl', '445566', 'ff2255')
+grad('hsi', '445566', 'ff2255')
+grad('hsp', '445566', 'ff2255')
+grad('cmyk', '445566', 'ff2255')
+grad('rgb', 'eeccaa', '1133ff')
+grad('hsv', 'eeccaa', '1133ff')
+grad('hsl', 'eeccaa', '1133ff')
+grad('hsi', 'eeccaa', '1133ff')
+grad('hsp', 'eeccaa', '1133ff')
+grad('cmyk', 'eeccaa', '1133ff')
+content += '</div>'
+
+content += '<div class="container">'
+grad('rgb', 'ff2255', '445566')
+grad('hsv', 'ff2255', '445566')
+grad('hsl', 'ff2255', '445566')
+grad('hsi', 'ff2255', '445566')
+grad('hsp', 'ff2255', '445566')
+grad('cmyk', 'ff2255', '445566')
+grad('rgb', '1133ff', 'eeccaa')
+grad('hsv', '1133ff', 'eeccaa')
+grad('hsl', '1133ff', 'eeccaa')
+grad('hsi', '1133ff', 'eeccaa')
+grad('hsp', '1133ff', 'eeccaa')
+grad('cmyk', '1133ff', 'eeccaa')
 content += '</div>'
 
 function shade(method, start, amount = 1) {
