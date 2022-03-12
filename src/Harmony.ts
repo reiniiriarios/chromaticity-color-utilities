@@ -511,13 +511,14 @@ class Harmony {
       case 'hsva':
         let hsv: Colors.hsv = color.to('hsv', { round: false })
         let separationTVS: number
+        let endTVS: number = (1 - distance) * 100
         if (typeof distanceShade === 'undefined') {
           let distanceFromWhite = 100 - hsv.v + hsv.s
           if (distanceFromWhite < 100) {
             // closer to white
             tEnd = hsv.v + (100 - hsv.v) * Math.min(Math.max(distance, 0), 1)
             tSeparation = (tEnd - hsv.v) / colors
-            separationTVS = (0 - hsv.s) / colors
+            separationTVS = (endTVS - hsv.s) / colors
             sSeparation = tSeparation - separationTVS
             sEnd = hsv.v - sSeparation * colors
           } else {
@@ -534,7 +535,7 @@ class Harmony {
           tSeparation = (tEnd - hsv.v) / colors
           sEnd = hsv.v * (1 - Math.min(Math.max(distanceShade, 0), 1))
           sSeparation = (hsv.v - sEnd) / colors
-          separationTVS = (0 - hsv.s) / colors
+          separationTVS = (endTVS - hsv.s) / colors
         }
 
         for (let i = 0; i < colors; i++) {
@@ -565,6 +566,7 @@ class Harmony {
       case 'hsia':
         let hsi: Colors.hsi = color.to('hsi', { round: false })
         let separationTIS: number
+        let endTIS: number = (1 - distance) * 100
         if (typeof distanceShade === 'undefined') {
           let distanceFromWhite = 100 - hsi.i + hsi.s
           if (distanceFromWhite < 100) {
@@ -573,7 +575,7 @@ class Harmony {
             tSeparation = (tEnd - hsi.i) / colors
             sSeparation = tSeparation
             sEnd = hsi.i - sSeparation * colors
-            separationTIS = (0 - hsi.s) / colors
+            separationTIS = (endTIS - hsi.s) / colors
           } else {
             // closer to black
             sEnd = hsi.i * (1 - Math.min(Math.max(distance, 0), 1))
@@ -587,7 +589,7 @@ class Harmony {
           tSeparation = (tEnd - hsi.i) / colors
           sEnd = hsi.i * (1 - Math.min(Math.max(distanceShade, 0), 1))
           sSeparation = (hsi.i - sEnd) / colors
-          separationTIS = (0 - hsi.s) / colors
+          separationTIS = (endTIS - hsi.s) / colors
         }
 
         for (let i = 0; i < colors; i++) {
@@ -618,8 +620,8 @@ class Harmony {
       case 'hsp':
       case 'hspa':
         let hsp: Colors.hsp = color.to('hsp', { round: false })
-        // console.log('grad-color',hsp.toString())
         let separationTPS: number
+        let endTPS: number = (1 - distance) * 100
         if (typeof distanceShade === 'undefined') {
           if (100 - hsp.p < hsp.p) {
             // closer to white
@@ -627,7 +629,7 @@ class Harmony {
             tSeparation = (tEnd - hsp.p) / colors
             sSeparation = tSeparation
             sEnd = hsp.p - sSeparation * colors
-            separationTPS = (0 - hsp.s) / colors
+            separationTPS = (endTPS - hsp.s) / colors
           } else {
             // closer to black
             sEnd = hsp.p * (1 - Math.min(Math.max(distance, 0), 1))
@@ -641,7 +643,7 @@ class Harmony {
           tSeparation = (tEnd - hsp.p) / colors
           sEnd = hsp.p * (1 - Math.min(Math.max(distanceShade, 0), 1))
           sSeparation = (hsp.p - sEnd) / colors
-          separationTPS = (0 - hsp.s) / colors
+          separationTPS = (endTPS - hsp.s) / colors
         }
 
         for (let i = 0; i < colors; i++) {

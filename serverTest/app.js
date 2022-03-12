@@ -152,14 +152,14 @@ tint('rgb2', '22aaee', 0.5)
 tint('cmyk', '22aaee', 0.5)
 content += '</div>'
 
-function shadetint(method, start, fullGamut) {
+function shadetint(method, start, amountT = 1, amountS = undefined) {
   content += '<div><h2>shadetint</h2><h3>' + method + '</h3>'
   Color.from('hex', start)
     .scheme('shadetint', {
       colors: 10,
       method: method,
-      distance: 1,
-      distanceToBlack: fullGamut ? 1 : undefined,
+      distance: amountT,
+      distanceToBlack: amountS,
       round: true,
     })
     .forEach((color) => {
@@ -188,6 +188,23 @@ shadetint('cmyk', '44ddee')
 content += '</div>'
 
 content += '<div class="container">'
+shadetint('hsl', 'eeaa44', 0.5)
+shadetint('hsv', 'eeaa44', 0.5)
+shadetint('hsi', 'eeaa44', 0.5)
+shadetint('hsp', 'eeaa44', 0.5)
+shadetint('rgb', 'eeaa44', 0.5)
+shadetint('rgb2', 'eeaa44', 0.5)
+shadetint('cmyk', 'eeaa44', 0.5)
+shadetint('hsl', '44ddee', 0.5)
+shadetint('hsv', '44ddee', 0.5)
+shadetint('hsi', '44ddee', 0.5)
+shadetint('hsp', '44ddee', 0.5)
+shadetint('rgb', '44ddee', 0.5)
+shadetint('rgb2', '44ddee', 0.5)
+shadetint('cmyk', '44ddee', 0.5)
+content += '</div>'
+
+content += '<div class="container">'
 shadetint('hsl', '882211')
 shadetint('hsv', '882211')
 shadetint('hsi', '882211')
@@ -205,20 +222,54 @@ shadetint('cmyk', '117766')
 content += '</div>'
 
 content += '<div class="container">'
-shadetint('hsl', 'ee2266', true)
-shadetint('hsv', 'ee2266', true)
-shadetint('hsi', 'ee2266', true)
-shadetint('hsp', 'ee2266', true)
-shadetint('rgb', 'ee2266', true)
-shadetint('rgb2', 'ee2266', true)
-shadetint('cmyk', 'ee2266', true)
-shadetint('hsl', '55aa11', true)
-shadetint('hsv', '55aa11', true)
-shadetint('hsi', '55aa11', true)
-shadetint('hsp', '55aa11', true)
-shadetint('rgb', '55aa11', true)
-shadetint('rgb2', '55aa11', true)
-shadetint('cmyk', '55aa11', true)
+shadetint('hsl', '882211', 0.5)
+shadetint('hsv', '882211', 0.5)
+shadetint('hsi', '882211', 0.5)
+shadetint('hsp', '882211', 0.5)
+shadetint('rgb', '882211', 0.5)
+shadetint('rgb2', '882211', 0.5)
+shadetint('cmyk', '882211', 0.5)
+shadetint('hsl', '117766', 0.5)
+shadetint('hsv', '117766', 0.5)
+shadetint('hsi', '117766', 0.5)
+shadetint('hsp', '117766', 0.5)
+shadetint('rgb', '117766', 0.5)
+shadetint('rgb2', '117766', 0.5)
+shadetint('cmyk', '117766', 0.5)
+content += '</div>'
+
+content += '<div class="container">'
+shadetint('hsl', 'ee2266', 1, 1)
+shadetint('hsv', 'ee2266', 1, 1)
+shadetint('hsi', 'ee2266', 1, 1)
+shadetint('hsp', 'ee2266', 1, 1)
+shadetint('rgb', 'ee2266', 1, 1)
+shadetint('rgb2', 'ee2266', 1, 1)
+shadetint('cmyk', 'ee2266', 1, 1)
+shadetint('hsl', '55aa11', 1, 1)
+shadetint('hsv', '55aa11', 1, 1)
+shadetint('hsi', '55aa11', 1, 1)
+shadetint('hsp', '55aa11', 1, 1)
+shadetint('rgb', '55aa11', 1, 1)
+shadetint('rgb2', '55aa11', 1, 1)
+shadetint('cmyk', '55aa11', 1, 1)
+content += '</div>'
+
+content += '<div class="container">'
+shadetint('hsl', 'ee2266', 0.5, 0.5)
+shadetint('hsv', 'ee2266', 0.5, 0.5)
+shadetint('hsi', 'ee2266', 0.5, 0.5)
+shadetint('hsp', 'ee2266', 0.5, 0.5)
+shadetint('rgb', 'ee2266', 0.5, 0.5)
+shadetint('rgb2', 'ee2266', 0.5, 0.5)
+shadetint('cmyk', 'ee2266', 0.5, 0.5)
+shadetint('hsl', '55aa11', 0.5, 0.5)
+shadetint('hsv', '55aa11', 0.5, 0.5)
+shadetint('hsi', '55aa11', 0.5, 0.5)
+shadetint('hsp', '55aa11', 0.5, 0.5)
+shadetint('rgb', '55aa11', 0.5, 0.5)
+shadetint('rgb2', '55aa11', 0.5, 0.5)
+shadetint('cmyk', '55aa11', 0.5, 0.5)
 content += '</div>'
 
 const fullContent = template(content)
