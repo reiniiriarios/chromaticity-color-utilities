@@ -314,11 +314,10 @@ class Harmony {
         start = hsi.i
         end = start + (100 - start) * Math.min(Math.max(distanceToWhite, 0), 1)
         separation = (end - start) / (colors - 1)
-        let startIS = hsi.s
-        let separationIS = (0 - startIS) / (colors - 1)
+        let separationIS = (0 - hsi.s) / (colors - 1)
         for (let i = 0; i < colors; i++) {
           let nextI = Math.min(start + separation * i, 100)
-          let nextS = Math.min(startIS + separationIS * i, 100)
+          let nextS = Math.min(hsi.s + separationIS * i, 100)
           scheme.push(
             new Colors.hsi(hsi.h, nextS, nextI).to(color.constructor.name, {
               round: round,
@@ -332,10 +331,12 @@ class Harmony {
         start = hsp.p
         end = start + (100 - start) * Math.min(Math.max(distanceToWhite, 0), 1)
         separation = (end - start) / (colors - 1)
+        let separationPS = (0 - hsp.s) / (colors - 1)
         for (let i = 0; i < colors; i++) {
           let nextP = Math.min(start + separation * i, 100)
+          let nextS = Math.min(hsp.s + separationPS * i, 100)
           scheme.push(
-            new Colors.hsl(hsp.h, hsp.s, nextP).to(color.constructor.name, {
+            new Colors.hsp(hsp.h, nextS, nextP).to(color.constructor.name, {
               round: round,
             })
           )
