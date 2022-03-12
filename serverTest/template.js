@@ -4,9 +4,7 @@ module.exports = function template(content) {
   <html>
     <head>
       <meta charset="utf-8">
-      <title>reinii.riarios</title>
-      <link rel="stylesheet" type="text/css" href="font.css">
-      <link rel="stylesheet" type="text/css" href="glitch.css">
+      <title>chromaticity tests</title>
   <style>
   body {
     padding: 0;
