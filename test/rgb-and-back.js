@@ -73,13 +73,13 @@ describe('conversions to RGB and back', function () {
     toRgbAndBack('hsv', false, 5)
   })
   it('hsl', () => {
-    toRgbAndBack('hsv', false, 5, 1)
+    toRgbAndBack('hsv', false, 5)
   })
   it('hsi', () => {
-    toRgbAndBack('hsi', false, 5, 1)
+    toRgbAndBack('hsi', false, 5)
   })
   it('hsp', () => {
-    toRgbAndBack('hsp', false, 20, 1)         // FAILING
+    toRgbAndBack('hsp', false, 5)
   })
   it('rec709rgb', () => {
     toRgbAndBack('rec709rgb', false, 5)
