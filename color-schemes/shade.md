@@ -7,9 +7,12 @@ nav_order: 5
 
 # Shade Scales
 
+Method can be one of: `rgb`, `rgb2`, `hsl`, `hsv`, `hsi`, `hsp`, or `cmyk`. Each will produce a different gradient. `rgb` modifies each r, g, and b value by the same amount, while `rgb2` scales each value evenly.
+
 ```ts
 .scheme('shade',{
-  length: number,   // REQUIRED, number of colors in scheme
+  colors: number,   // REQUIRED, number of colors in scheme
+  method: string,   // optional, defaults to hsl
   distance: number, // optional, 0-1, defaults to 1, how close to black scheme should reach
   round: boolean    // optional, defaults to true
 })

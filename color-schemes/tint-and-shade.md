@@ -11,9 +11,12 @@ The total number of colors in the scheme will be `colors * 2 + 1`, including the
 
 Either include `distance` OR `distanceToWhite` and `distanceToBlack`. If you only include distance it will calculate distance to the nearest bound (black or white) and use that as measure for the other direction.
 
+Method can be one of: `rgb`, `rgb2`, `hsl`, `hsv`, `hsi`, or `hsp`. Each will produce a different gradient. `rgb` modifies each r, g, and b value by the same amount, while `rgb2` scales each value evenly.
+
 ```ts
 .scheme('tintshade',{
   colors: number,          // REQUIRED, number of colors in each direction from source color
+  method: string,          // optional, defaults to hsl
   distance: number,        // optional, 0-1, defaults to 1 OR
   distanceToWhite: number, // optional, 0-1, defaults to 1
   distanceToBlack: number, // optional, 0-1, defaults to 1
