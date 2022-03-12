@@ -67,7 +67,6 @@ Approaching complete-ish stage... Most tests pass.
 
 - L\*a\*b\* failing
 - L\*u\*v\* failing
-- HSP > RGB failing in one case
 
 ## Documentation
 
