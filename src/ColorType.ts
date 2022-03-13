@@ -487,6 +487,27 @@ export abstract class colorType {
               args.round
             )
             break
+          case 'hsi':
+          case 'hsia':
+          case 'intensity':
+            modified = Modify.hsiDesaturate(
+              this.tohsi({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'hsp':
+          case 'hspa':
+          case 'brightness':
+          case 'perceived brightness':
+          case 'perceived':
+          case 'perceivedbrightness':
+            modified = Modify.hspDesaturate(
+              this.tohsp({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
           default:
             throw new Error('Unrecognized desaturate method: ' + args.method)
         }
@@ -511,6 +532,27 @@ export abstract class colorType {
           case 'lightness':
             modified = Modify.hslSaturate(
               this.tohsl({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'hsi':
+          case 'hsia':
+          case 'intensity':
+            modified = Modify.hsiSaturate(
+              this.tohsi({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'hsp':
+          case 'hspa':
+          case 'brightness':
+          case 'perceived brightness':
+          case 'perceived':
+          case 'perceivedbrightness':
+            modified = Modify.hspSaturate(
+              this.tohsp({ round: false }),
               args.amount,
               args.round
             )

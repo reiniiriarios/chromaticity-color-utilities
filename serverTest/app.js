@@ -429,6 +429,78 @@ darken('rgb', '22aaee')
 darken('cmyk', '22aaee')
 content += '</div>'
 
+function saturate(method, start) {
+  content += '<div><h2>saturate</h2><h3>' + method + '</h3>'
+  let colors = []
+  let cstart = Color.from('hex', start)
+  for (i = 0; i < 9; i++) {
+    colors.push(
+      cstart.modify('saturate', {
+        method: method,
+        amount: (i + 1) / 10
+      })
+    )
+  }
+  content += colorBlock(start, 'start', highlight)
+  colors.forEach((color, i) => {
+    highlight = color.hex == start
+    tip = (i + 1) / 10
+    content += colorBlock(color.hex, tip, highlight)
+  })
+  content += '</div>'
+}
+
+content += '<div class="container">'
+saturate('hsl', 'ccaabb')
+saturate('hsv', 'ccaabb')
+saturate('hsi', 'ccaabb')
+saturate('hsp', 'ccaabb')
+// saturate('rgb', 'ee5588')
+// saturate('cmyk', 'ee5588')
+saturate('hsl', 'aabbcc')
+saturate('hsv', 'aabbcc')
+saturate('hsi', 'aabbcc')
+saturate('hsp', 'aabbcc')
+// saturate('rgb', '22aaee')
+// saturate('cmyk', '22aaee')
+content += '</div>'
+
+function desaturate(method, start) {
+  content += '<div><h2>desaturate</h2><h3>' + method + '</h3>'
+  let colors = []
+  let cstart = Color.from('hex', start)
+  for (i = 0; i < 9; i++) {
+    colors.push(
+      cstart.modify('desaturate', {
+        method: method,
+        amount: (i + 1) / 10
+      })
+    )
+  }
+  content += colorBlock(start, 'start', highlight)
+  colors.forEach((color, i) => {
+    highlight = color.hex == start
+    tip = (i + 1) / 10
+    content += colorBlock(color.hex, tip, highlight)
+  })
+  content += '</div>'
+}
+
+content += '<div class="container">'
+desaturate('hsl', 'ff0033')
+desaturate('hsv', 'ff0033')
+desaturate('hsi', 'ff0033')
+desaturate('hsp', 'ff0033')
+// desaturate('rgb', 'ee5588')
+// desaturate('cmyk', 'ee5588')
+desaturate('hsl', '0033ff')
+desaturate('hsv', '0033ff')
+desaturate('hsi', '0033ff')
+desaturate('hsp', '0033ff')
+// desaturate('rgb', '22aaee')
+// desaturate('cmyk', '22aaee')
+content += '</div>'
+
 const fullContent = template(content)
 let app = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' })

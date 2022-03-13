@@ -528,6 +528,50 @@ class Modify {
     if (round) sMore = Math.round(sMore)
     return new Colors.hsv(hsv.h, sMore, hsv.v, hsv.a)
   }
+
+  static hsiDesaturate(
+    hsi: Colors.hsi,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsi {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let sLess = hsi.s * realAmount
+    if (round) sLess = Math.round(sLess)
+    return new Colors.hsi(hsi.h, sLess, hsi.i, hsi.a)
+  }
+
+  static hsiSaturate(
+    hsi: Colors.hsi,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsi {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let sMore = hsi.s + (100 - hsi.s) * realAmount
+    if (round) sMore = Math.round(sMore)
+    return new Colors.hsi(hsi.h, sMore, hsi.i, hsi.a)
+  }
+
+  static hspDesaturate(
+    hsp: Colors.hsp,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsp {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let sLess = hsp.s * realAmount
+    if (round) sLess = Math.round(sLess)
+    return new Colors.hsp(hsp.h, sLess, hsp.p, hsp.a)
+  }
+
+  static hspSaturate(
+    hsp: Colors.hsp,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsp {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let sMore = hsp.s + (100 - hsp.s) * realAmount
+    if (round) sMore = Math.round(sMore)
+    return new Colors.hsp(hsp.h, sMore, hsp.p, hsp.a)
+  }
 }
 
 export = Modify
