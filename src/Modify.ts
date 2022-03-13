@@ -501,7 +501,7 @@ class Modify {
     amount: number = 0.5,
     round: boolean = true
   ): Colors.hsl {
-    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let realAmount = Math.min(Math.max(amount, 0), 1)
     let sMore = hsl.s + (100 - hsl.s) * realAmount
     if (round) sMore = Math.round(sMore)
     return new Colors.hsl(hsl.h, sMore, hsl.l, hsl.a)
@@ -523,7 +523,7 @@ class Modify {
     amount: number = 0.5,
     round: boolean = true
   ): Colors.hsv {
-    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let realAmount = Math.min(Math.max(amount, 0), 1)
     let sMore = hsv.s + (100 - hsv.s) * realAmount
     if (round) sMore = Math.round(sMore)
     return new Colors.hsv(hsv.h, sMore, hsv.v, hsv.a)
