@@ -104,10 +104,10 @@ export abstract class colorType {
   /**
    * Stringify object
    *
-   * @param   {string} whitespace equiv to third JSON.stringify parameter
+   * @param   {string | number} whitespace equiv to third JSON.stringify parameter
    * @returns {string}
    */
-  public toString(whitespace?: string, quotes: boolean = true): string {
+  public toString(whitespace?: string | number, quotes: boolean = true): string {
     let colon = whitespace ? ': ' : ':' // only have a space if the string is whitespaced
     let json = JSON.stringify(this.toStringValues(), null, whitespace)
     if (!quotes) {
