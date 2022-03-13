@@ -93,6 +93,29 @@ export abstract class colorType {
 
   a?: number
 
+  /**
+   * Returns generic simplified object for toString()
+   * Overwrite with each subclass
+   *
+   * @returns {object}
+   */
+  protected toStringValues = (): object => ({})
+
+  /**
+   * Stringify object
+   *
+   * @param   {string} whitespace equiv to third JSON.stringify parameter
+   * @returns {string}
+   */
+  public toString(whitespace?: string, quotes: boolean = true): string {
+    let colon = whitespace ? ': ' : ':' // only have a space if the string is whitespaced
+    let json = JSON.stringify(this.toStringValues(), null, whitespace)
+    if (!quotes) {
+      json = json.replace(/"([^"]+)":/g, '$1:')
+    }
+    return this.getType() + colon + json
+  }
+
   public to<T extends colorType>(type: string, args?: newColorArgs): T {
     args = this.setArgs(args)
     type = type.toLowerCase().replace(/[^a-z0-9]/, '')

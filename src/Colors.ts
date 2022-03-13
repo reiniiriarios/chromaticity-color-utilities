@@ -42,9 +42,13 @@ export class rgbNormalized extends colorType {
     }
   }
 
-  public toString(): string {
-    return `rgbNormalized: { r: ${this.r}, g: ${this.g}, b: ${this.b}, a: ${this.a}, gamma: ${this.gamma} }`
-  }
+  protected toStringValues = (): object => ({
+      r: this.r,
+      g: this.g,
+      b: this.b,
+      a: this.a,
+      gamma: this.gamma
+  })
 }
 
 export class hex extends colorType {
@@ -78,9 +82,9 @@ export class hex extends colorType {
     }
   }
 
-  public toString(): string {
-    return `hex: { hex: ${this.hex} }`
-  }
+  protected toStringValues = (): object => ({
+      hex: this.hex
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hex2rgb(this, args.bitDepth)
@@ -129,9 +133,13 @@ export class rgb extends colorType {
     this.max = max
   }
 
-  public toString(): string {
-    return `rgb: { r: ${this.r}, g: ${this.g}, b: ${this.b}, a: ${this.a}, bitDepth: ${this.bitDepth} }`
-  }
+  protected toStringValues = (): object => ({
+      r: this.r,
+      g: this.g,
+      b: this.b,
+      a: this.a,
+      bitDepth: this.bitDepth
+  })
 
   protected torgb(args: newColorArgs): rgb {
     if (args.round !== false) {
@@ -182,9 +190,13 @@ export class rec709rgb extends colorType {
     this.max = max
   }
 
-  public toString(): string {
-    return `rec709rgb: { r: ${this.r}, g: ${this.g}, b: ${this.b}, a: ${this.a}, bitDepth: ${this.bitDepth} }`
-  }
+  protected toStringValues = (): object => ({
+      r: this.r,
+      g: this.g,
+      b: this.b,
+      a: this.a,
+      bitDepth: this.bitDepth
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.rec709rgb2rgb(this, args.round, args.bitDepth)
@@ -239,9 +251,13 @@ export class rec2020rgb extends colorType {
     this.max = max
   }
 
-  public toString(): string {
-    return `rec2020rgb: { r: ${this.r}, g: ${this.g}, b: ${this.b}, a: ${this.a}, bitDepth: ${this.bitDepth} }`
-  }
+  protected toStringValues = (): object => ({
+      r: this.r,
+      g: this.g,
+      b: this.b,
+      a: this.a,
+      bitDepth: this.bitDepth
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.rec2020rgb2rgb(this, args.round, args.bitDepth)
@@ -278,9 +294,12 @@ export class hsv extends colorType {
     this.a = a
   }
 
-  public toString(): string {
-    return `hsv: { h: ${this.h}, s: ${this.s}, v: ${this.v}, a: ${this.a} }`
-  }
+  protected toStringValues = (): object => ({
+      h: this.h,
+      s: this.s,
+      v: this.v,
+      a: this.a
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hsv2rgb(this, args.round, args.bitDepth)
@@ -325,9 +344,12 @@ export class hsl extends colorType {
     this.a = a
   }
 
-  public toString(): string {
-    return `hsl: { h: ${this.h}, s: ${this.s}, l: ${this.l}, a: ${this.a} }`
-  }
+  protected toStringValues = (): object => ({
+      h: this.h,
+      s: this.s,
+      l: this.l,
+      a: this.a
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hsl2rgb(this, args.round, args.bitDepth)
@@ -372,9 +394,12 @@ export class hsi extends colorType {
     this.a = a
   }
 
-  public toString(): string {
-    return `hsi: { h: ${this.h}, s: ${this.s}, i: ${this.i}, a: ${this.a} }`
-  }
+  protected toStringValues = (): object => ({
+      h: this.h,
+      s: this.s,
+      i: this.i,
+      a: this.a
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hsi2rgb(this, args.round, args.bitDepth)
@@ -431,13 +456,18 @@ export class hsp extends colorType {
     this.p = p
     this.a = a
     this.pr = pr
-    this.pg = 1 - pr - pb
     this.pb = pb
+    this.pg = 1 - pr - pb
   }
 
-  public toString(): string {
-    return `hsp: { h: ${this.h}, s: ${this.s}, p: ${this.p}, a: ${this.a}, pr: ${this.pr}, pg: ${this.pg}, pb: ${this.pb} }`
-  }
+  protected toStringValues = (): object => ({
+      h: this.h,
+      s: this.s,
+      p: this.p,
+      a: this.a,
+      pb: this.pb,
+      pr: this.pr
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hsp2rgb(this, args.round, args.bitDepth)
@@ -474,9 +504,12 @@ export class cmyk extends colorType {
     this.k = k
   }
 
-  public toString(): string {
-    return `cmyk: { c: ${this.c}, m: ${this.m}, y: ${this.y}, k: ${this.k} }`
-  }
+  protected toStringValues = (): object => ({
+    c: this.c,
+    m: this.m,
+    y: this.y,
+    k: this.k,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.cmyk2rgb(this, args.round, args.bitDepth)
@@ -556,9 +589,12 @@ export class yiq extends colorType {
     this.normalized = normalized
   }
 
-  public toString(): string {
-    return `yiq: { y: ${this.y}, i: ${this.i}, q: ${this.q}, normalized: ${this.normalized} }`
-  }
+  protected toStringValues = (): object => ({
+    y: this.y,
+    i: this.i,
+    q: this.q,
+    normalized: this.normalized,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.yiq2rgb(this, args.round, args.bitDepth)
@@ -591,9 +627,11 @@ export class xyz extends colorType {
     this.z = z
   }
 
-  public toString(): string {
-    return `xyz: { x: ${this.x}, y: ${this.y}, z: ${this.z} }`
-  }
+  protected toStringValues = (): object => ({
+    x: this.x,
+    y: this.y,
+    z: this.z,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.xyz2rgb(
@@ -634,9 +672,11 @@ export class xyy extends colorType {
     )
   }
 
-  public toString(): string {
-    return `xyy: { x: ${this.x}, y: ${this.y}, yy: ${this.yy} }`
-  }
+  protected toStringValues = (): object => ({
+    x: this.x,
+    y: this.y,
+    yy: this.yy,
+  })
 
   protected toxyz(args: newColorArgs): xyz {
     return Convert.xyy2xyz(this)
@@ -670,9 +710,11 @@ export class lab extends colorType {
     this.b = b
   }
 
-  public toString(): string {
-    return `lab: { l: ${this.l}, a: ${this.a}, b: ${this.b} }`
-  }
+  protected toStringValues = (): object => ({
+    l: this.l,
+    a: this.a,
+    b: this.b,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.xyz2rgb(
@@ -723,9 +765,11 @@ export class luv extends colorType {
     this.v = v
   }
 
-  public toString(): string {
-    return `luv: { l: ${this.l}, u: ${this.u}, v: ${this.v} }`
-  }
+  protected toStringValues = (): object => ({
+    l: this.l,
+    u: this.u,
+    v: this.v,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.xyz2rgb(
@@ -772,9 +816,13 @@ export class ypbpr extends colorType {
     this.kr = kr
   }
 
-  public toString(): string {
-    return `ypbpr: { y: ${this.y}, pb: ${this.pb}, pr: ${this.pr}, kb: ${this.kb}, kr: ${this.kr} }`
-  }
+  protected toStringValues = (): object => ({
+    y: this.y,
+    pb: this.pb,
+    pr: this.pr,
+    kb: this.kb,
+    kr: this.kr,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
@@ -841,9 +889,15 @@ export class ycbcr extends colorType {
     this.cUpper = cUpper
   }
 
-  public toString(): string {
-    return `ycbcr: { y: ${this.y}, cb: ${this.cb}, cr: ${this.cr}, yLower: ${this.yLower}, yUpper: ${this.yUpper}, cLower: ${this.cLower}, cUpper: ${this.cUpper} }`
-  }
+  protected toStringValues = (): object => ({
+    y: this.y,
+    cb: this.cb,
+    cr: this.cr,
+    yLower: this.yLower,
+    yUpper: this.yUpper,
+    cLower: this.cLower,
+    cUpper: this.cUpper,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
@@ -891,9 +945,9 @@ export class nm extends colorType {
     this.wavelength = wavelength
   }
 
-  public toString(): string {
-    return `nm: { wavelength: ${this.wavelength} }`
-  }
+  protected toStringValues = (): object => ({
+    wavelength: this.wavelength,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.nm2rgb(this, args.gamma, args.round, args.bitDepth)
@@ -916,9 +970,9 @@ export class kelvin extends colorType {
     this.k = k
   }
 
-  public toString(): string {
-    return `kelvin: { k: ${this.k} }`
-  }
+  protected toStringValues = (): object => ({
+    k: this.k,
+  })
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.kelvin2rgb(this, args.round, args.bitDepth)
