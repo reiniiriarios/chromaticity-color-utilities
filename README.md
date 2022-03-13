@@ -1,4 +1,4 @@
-# <img src="https://reiniiriarios.github.io/chromaticity-color-utilities/assets/images/chromaticity-icon-01.png" width="26" height="26"> chromaticity-color-utilities
+# <img src="https://reiniiriarios.github.io/chromaticity-color-utilities/img/chromaticity-icon-01.png" width="26" height="26"> chromaticity-color-utilities
 
 ![downloads](https://img.shields.io/npm/dt/chromaticity-color-utilities)
 ![types: Typescript](https://img.shields.io/badge/types-Typescript-blue)
@@ -61,11 +61,13 @@ const yourMethod = (rgb: colorTypes.rgb): colorTypes.hsv => {
 
 ## Status
 
-Approaching complete-ish stage... Most tests pass.
+Approaching complete-ish stage... All tests are passing.
 
 ### Known Issues
 
 - YCbCr validates only with a high tolerance. Not sure if floating point issue.
+- shadetint(cmyk) seems to be reading distanceToWhite and distanceToBlack incorrectly
+- shadetint(cmyk) oversaturates toward black when auto and closest bound is white
 
 ## Documentation
 
