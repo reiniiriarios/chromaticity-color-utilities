@@ -18,6 +18,8 @@ import Convert from './Convert'
 import { newColorArgs, colorType } from './ColorType'
 
 export class rgbNormalized extends colorType {
+  protected type: string = 'rgbNormalized'
+
   r: number
   g: number
   b: number
@@ -46,6 +48,8 @@ export class rgbNormalized extends colorType {
 }
 
 export class hex extends colorType {
+  protected type: string = 'hex'
+
   hex: string
 
   constructor(hex: string | number) {
@@ -88,6 +92,8 @@ export class hex extends colorType {
 }
 
 export class rgb extends colorType {
+  protected type: string = 'rgb'
+
   r: number
   g: number
   b: number
@@ -139,6 +145,8 @@ export class rgb extends colorType {
 }
 
 export class rec709rgb extends colorType {
+  protected type: string = 'rec709rgb'
+
   r: number
   g: number
   b: number
@@ -194,6 +202,8 @@ export class rec709rgb extends colorType {
 }
 
 export class rec2020rgb extends colorType {
+  protected type: string = 'rec2020rgb'
+
   r: number
   g: number
   b: number
@@ -249,6 +259,8 @@ export class rec2020rgb extends colorType {
 }
 
 export class hsv extends colorType {
+  protected type: string = 'hsv'
+
   h: number
   s: number
   v: number
@@ -294,6 +306,8 @@ export class hsv extends colorType {
 }
 
 export class hsl extends colorType {
+  protected type: string = 'hsl'
+
   h: number
   s: number
   l: number
@@ -339,6 +353,8 @@ export class hsl extends colorType {
 }
 
 export class hsi extends colorType {
+  protected type: string = 'hsi'
+
   h: number
   s: number
   i: number
@@ -384,6 +400,8 @@ export class hsi extends colorType {
 }
 
 export class hsp extends colorType {
+  protected type: string = 'hsp'
+
   h: number
   s: number
   p: number
@@ -437,6 +455,8 @@ export class hsp extends colorType {
 }
 
 export class cmyk extends colorType {
+  protected type: string = 'cmyk'
+
   c: number
   m: number
   y: number
@@ -474,6 +494,8 @@ export class cmyk extends colorType {
 }
 
 export class yiq extends colorType {
+  protected type: string = 'yiq'
+
   y: number
   i: number
   q: number
@@ -553,6 +575,8 @@ export class yiq extends colorType {
 }
 
 export class xyz extends colorType {
+  protected type: string = 'xyz'
+
   x: number
   y: number
   z: number
@@ -587,6 +611,8 @@ export class xyz extends colorType {
 }
 
 export class xyy extends colorType {
+  protected type: string = 'xyy'
+
   x: number
   y: number
   yy: number
@@ -622,6 +648,8 @@ export class xyy extends colorType {
 }
 
 export class lab extends colorType {
+  protected type: string = 'lab'
+
   l: number
   a: number
   b: number
@@ -671,6 +699,8 @@ export class lab extends colorType {
 }
 
 export class luv extends colorType {
+  protected type: string = 'luv'
+
   l: number
   u: number
   v: number
@@ -722,6 +752,8 @@ export class luv extends colorType {
 }
 
 export class ypbpr extends colorType {
+  protected type: string = 'ypbpr'
+
   y: number
   pb: number
   pr: number
@@ -776,6 +808,8 @@ export class ypbpr extends colorType {
 }
 
 export class ycbcr extends colorType {
+  protected type: string = 'ycbcr'
+
   y: number
   cb: number
   cr: number
@@ -842,6 +876,8 @@ export class ycbcr extends colorType {
 }
 
 export class nm extends colorType {
+  protected type: string = 'nm'
+
   wavelength: number
 
   constructor(wavelength: number) {
@@ -865,6 +901,8 @@ export class nm extends colorType {
 }
 
 export class kelvin extends colorType {
+  protected type: string = 'kelvin'
+
   k: number
 
   constructor(k: number) {

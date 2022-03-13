@@ -75,6 +75,8 @@ export interface schemeArgs {
 export abstract class colorType {
   constructor() {}
 
+  protected type: string = 'colorType'
+
   bitDepth?: number
   normalized?: boolean
   colorSpace?: string
@@ -158,9 +160,18 @@ export abstract class colorType {
         to = this.toycbcr(args)
         break
       default:
-        throw new Error('Unable to find conversion path')
+        throw new Error(
+          'Unable to find conversion path from ' +
+            this.getType() +
+            ' to ' +
+            type
+        )
     }
     return to
+  }
+
+  public getType(): string {
+    return this.type
   }
 
   public modify<T extends colorType>(
@@ -169,7 +180,7 @@ export abstract class colorType {
   ): T {
     modification = modification.toLowerCase()
     if (typeof args == 'undefined') args = {}
-    let og: string = this.constructor['name']
+    let og: string = this.getType()
     let ogargs: newColorArgs = {
       round: args.round,
       bitDepth: this.bitDepth,
@@ -371,7 +382,7 @@ export abstract class colorType {
 
   public scheme<T extends colorType>(type: string, args?: schemeArgs): T[] {
     if (typeof args === 'undefined') args = {}
-    let og = this.constructor['name']
+    let og = this.getType()
     let ogargs: newColorArgs = {
       round: args.round,
       bitDepth: this.bitDepth,
@@ -622,7 +633,7 @@ export abstract class colorType {
     msg?: string
   ): void {
     if (!isFinite(value)) {
-      throw new Error('Invalid color value')
+      throw new Error('Invalid color value: ' + value)
     }
     if (
       lowerLimit !== false &&
@@ -636,7 +647,15 @@ export abstract class colorType {
       (upperLimit !== false && value > upperLimit)
     ) {
       throw new Error(
-        typeof msg !== 'undefined' ? msg : 'Color value out of range'
+        typeof msg !== 'undefined'
+          ? msg
+          : 'Color value: ' +
+            value +
+            ' out of range [' +
+            lowerLimit +
+            ',' +
+            upperLimit +
+            ']'
       )
     }
   }

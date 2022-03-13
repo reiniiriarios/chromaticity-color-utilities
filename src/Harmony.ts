@@ -136,7 +136,7 @@ class Harmony {
           let nextV = Math.max(start - separation * i, 0)
           scheme.push(
             new Colors.hsv(hsv.h, hsv.s, nextV, hsv.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -154,7 +154,7 @@ class Harmony {
           let nextI = Math.max(start - separation * i, 0)
           scheme.push(
             new Colors.hsi(hsi.h, hsi.s, nextI, hsi.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -172,7 +172,7 @@ class Harmony {
           let nextP = Math.max(start - separation * i, 0)
           scheme.push(
             new Colors.hsp(hsp.h, hsp.s, nextP, hsp.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -190,7 +190,7 @@ class Harmony {
           let nextL = Math.max(start - separation * i, 0)
           scheme.push(
             new Colors.hsl(hsl.h, hsl.s, nextL, hsl.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -210,7 +210,7 @@ class Harmony {
           let bNext = Math.max(rgb.b - separation * i, 0)
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
-              color.constructor.name,
+              color.getType(),
               { round: round, bitDepth: rgb.bitDepth }
             )
           )
@@ -231,7 +231,7 @@ class Harmony {
           let bNext = Math.max(rgb2.b - bSep * i, 0)
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
-              color.constructor.name,
+              color.getType(),
               { round: round, bitDepth: rgb2.bitDepth }
             )
           )
@@ -255,7 +255,7 @@ class Harmony {
           let nextK = Math.min(cmyk.k - kSep * i, 100)
           scheme.push(
             new Colors.cmyk(nextC, nextM, nextY, nextK).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -303,7 +303,7 @@ class Harmony {
           let nextV = Math.min(startV + separationV * i, 100)
           let nextS = Math.min(startVS + separationVS * i, 100)
           scheme.push(
-            new Colors.hsv(hsv.h, nextS, nextV).to(color.constructor.name, {
+            new Colors.hsv(hsv.h, nextS, nextV).to(color.getType(), {
               round: round,
             })
           )
@@ -321,7 +321,7 @@ class Harmony {
           let nextI = Math.min(start + separation * i, 100)
           let nextS = Math.min(hsi.s + separationIS * i, 100)
           scheme.push(
-            new Colors.hsi(hsi.h, nextS, nextI).to(color.constructor.name, {
+            new Colors.hsi(hsi.h, nextS, nextI).to(color.getType(), {
               round: round,
             })
           )
@@ -339,7 +339,7 @@ class Harmony {
           let nextP = Math.min(start + separation * i, 100)
           let nextS = Math.min(hsp.s + separationPS * i, 100)
           scheme.push(
-            new Colors.hsp(hsp.h, nextS, nextP).to(color.constructor.name, {
+            new Colors.hsp(hsp.h, nextS, nextP).to(color.getType(), {
               round: round,
             })
           )
@@ -354,7 +354,7 @@ class Harmony {
         for (let i = 0; i < colors; i++) {
           let nextL = Math.min(start + separation * i, 100)
           scheme.push(
-            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.constructor.name, {
+            new Colors.hsl(hsl.h, hsl.s, nextL).to(color.getType(), {
               round: round,
             })
           )
@@ -373,7 +373,7 @@ class Harmony {
           let bNext = Math.min(rgb.b + separation * i, rgb.max)
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
-              color.constructor.name,
+              color.getType(),
               { round: round, bitDepth: rgb.bitDepth }
             )
           )
@@ -400,7 +400,7 @@ class Harmony {
           let bNext = Math.min(rgb2.b + bSep * i, rgb2.max)
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
-              color.constructor.name,
+              color.getType(),
               { round: round, bitDepth: rgb2.bitDepth }
             )
           )
@@ -424,7 +424,7 @@ class Harmony {
           let nextK = Math.max(cmyk.k - kSep * i, 0)
           scheme.push(
             new Colors.cmyk(nextC, nextM, nextY, nextK).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -487,19 +487,19 @@ class Harmony {
           let nextL = Math.max(sEnd + sSeparation * i, 0)
           scheme.push(
             new Colors.hsl(hsl.h, hsl.s, nextL, hsl.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
             )
           )
         }
-        scheme.push(hsl.to(color.constructor.name, { round: round }))
+        scheme.push(hsl.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
           let nextL = Math.min(hsl.l + tSeparation * i, 100)
           scheme.push(
             new Colors.hsl(hsl.h, hsl.s, nextL, hsl.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -542,7 +542,7 @@ class Harmony {
           let nextV = Math.min(Math.max(sEnd + sSeparation * i, 0), 100)
           scheme.push(
             new Colors.hsv(hsv.h, hsv.s, nextV, hsv.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -554,7 +554,7 @@ class Harmony {
           let nextTVS = Math.min(Math.max(hsv.s + separationTVS * i, 0), 100)
           scheme.push(
             new Colors.hsv(hsv.h, nextTVS, nextV, hsv.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -596,20 +596,20 @@ class Harmony {
           let nextI = Math.max(sEnd + sSeparation * i, 0)
           scheme.push(
             new Colors.hsi(hsi.h, hsi.s, nextI, hsi.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
             )
           )
         }
-        scheme.push(hsi.to(color.constructor.name, { round: round }))
+        scheme.push(hsi.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
           let nextI = Math.min(hsi.i + tSeparation * i, 100)
           let nextTIS = Math.max(hsi.s + separationTIS * i, 0)
           scheme.push(
             new Colors.hsi(hsi.h, nextTIS, nextI, hsi.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -650,7 +650,7 @@ class Harmony {
           let nextP = Math.max(sEnd + sSeparation * i, 0)
           scheme.push(
             new Colors.hsp(hsp.h, hsp.s, nextP, hsp.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -662,7 +662,7 @@ class Harmony {
           let nextTPS = Math.max(hsp.s + separationTPS * i, 0)
           scheme.push(
             new Colors.hsp(hsp.h, nextTPS, nextP, hsp.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -702,19 +702,19 @@ class Harmony {
           let bNext = Math.max(rgb.b - sSeparation * i, 0)
           scheme.unshift(
             new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
-              color.constructor.name,
+              color.getType(),
               { round: round, bitDepth: rgb.bitDepth }
             )
           )
         }
-        scheme.push(rgb.to(color.constructor.name, { round: round }))
+        scheme.push(rgb.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
           let rNext = Math.min(rgb.r + tSeparation * i, rgb.max)
           let gNext = Math.min(rgb.g + tSeparation * i, rgb.max)
           let bNext = Math.min(rgb.b + tSeparation * i, rgb.max)
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb.a).to(
-              color.constructor.name,
+              color.getType(),
               { round: round, bitDepth: rgb.bitDepth }
             )
           )
@@ -793,7 +793,7 @@ class Harmony {
           let bNext = Math.min(Math.max(sBEnd + sBSep * i, 0), rgb2.max)
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -806,7 +806,7 @@ class Harmony {
           let bNext = Math.min(Math.max(rgb2.b + tBSep * i, 0), rgb2.max)
           scheme.push(
             new Colors.rgb(rNext, gNext, bNext, rgb2.a).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -912,7 +912,7 @@ class Harmony {
           let kNext = Math.min(Math.max(sKEnd - sKSep * i, 0), 100)
           scheme.push(
             new Colors.cmyk(cNext, mNext, yNext, kNext).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -926,7 +926,7 @@ class Harmony {
           let kNext = Math.min(Math.max(cmyk.k - tKSep * i, 0), 100)
           scheme.push(
             new Colors.cmyk(cNext, mNext, yNext, kNext).to(
-              color.constructor.name,
+              color.getType(),
               {
                 round: round,
               }
@@ -973,7 +973,7 @@ class Harmony {
               color2.to('rgb', { round: false }),
               amount,
               false
-            ).to(color1.constructor.name, { round: round })
+            ).to(color1.getType(), { round: round })
           )
           break
         case 'hsv':
@@ -984,7 +984,7 @@ class Harmony {
               color2.to('hsv', { round: false }),
               amount,
               false
-            ).to(color1.constructor.name, { round: round })
+            ).to(color1.getType(), { round: round })
           )
           break
         case 'hsl':
@@ -995,7 +995,7 @@ class Harmony {
               color2.to('hsl', { round: false }),
               amount,
               false
-            ).to(color1.constructor.name, { round: round })
+            ).to(color1.getType(), { round: round })
           )
           break
         case 'hsi':
@@ -1006,7 +1006,7 @@ class Harmony {
               color2.to('hsi', { round: false }),
               amount,
               false
-            ).to(color1.constructor.name, { round: round })
+            ).to(color1.getType(), { round: round })
           )
           break
         case 'hsp':
@@ -1017,7 +1017,7 @@ class Harmony {
               color2.to('hsp', { round: false }),
               amount,
               false
-            ).to(color1.constructor.name, { round: round })
+            ).to(color1.getType(), { round: round })
           )
           break
         case 'cmyk':
@@ -1027,7 +1027,7 @@ class Harmony {
               color2.to('cmyk', { round: false }),
               amount,
               false
-            ).to(color1.constructor.name, { round: round })
+            ).to(color1.getType(), { round: round })
           )
           break
         case 'yiq':
@@ -1037,7 +1037,7 @@ class Harmony {
               color2.to('yiq', { round: false }),
               amount,
               false
-            ).to(color1.constructor.name, { round: round })
+            ).to(color1.getType(), { round: round })
           )
           break
       }
