@@ -309,16 +309,80 @@ class Modify {
     amount: number = 0.5,
     round: boolean = true
   ): Colors.rgb {
-    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let rl = rgb.r + (100 - rgb.r) * realAmount
-    let gl = rgb.g + (100 - rgb.g) * realAmount
-    let bl = rgb.b + (100 - rgb.b) * realAmount
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let rl = rgb.r + (rgb.max - rgb.r) * realAmount
+    let gl = rgb.g + (rgb.max - rgb.g) * realAmount
+    let bl = rgb.b + (rgb.max - rgb.b) * realAmount
     if (round) {
       rl = Math.round(rl)
       gl = Math.round(gl)
       bl = Math.round(bl)
     }
     return new Colors.rgb(rl, gl, bl, rgb.a)
+  }
+
+  static cmykDarken(
+    cmyk: Colors.cmyk,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.cmyk {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let c2 = cmyk.c + (100 - cmyk.c) * realAmount
+    let m2 = cmyk.m + (100 - cmyk.m) * realAmount
+    let y2 = cmyk.y + (100 - cmyk.y) * realAmount
+    let k2 = cmyk.k + (100 - cmyk.k) * realAmount
+    if (round) {
+      c2 = Math.round(c2)
+      m2 = Math.round(m2)
+      y2 = Math.round(y2)
+      k2 = Math.round(k2)
+    }
+    return new Colors.cmyk(c2, m2, y2, k2)
+  }
+
+  static cmykLighten(
+    cmyk: Colors.cmyk,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.cmyk {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let c2 = cmyk.c * realAmount
+    let m2 = cmyk.m * realAmount
+    let y2 = cmyk.y * realAmount
+    let k2 = cmyk.k * realAmount
+    if (round) {
+      c2 = Math.round(c2)
+      m2 = Math.round(m2)
+      y2 = Math.round(y2)
+      k2 = Math.round(k2)
+    }
+    return new Colors.cmyk(c2, m2, y2, k2)
+  }
+
+  static cmykBlackDarken(
+    cmyk: Colors.cmyk,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.cmyk {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let k2 = cmyk.k + (100 - cmyk.k) * realAmount
+    if (round) {
+      k2 = Math.round(k2)
+    }
+    return new Colors.cmyk(cmyk.c, cmyk.m, cmyk.y, k2)
+  }
+
+  static cmykBlackLighten(
+    cmyk: Colors.cmyk,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.cmyk {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let k2 = cmyk.k * realAmount
+    if (round) {
+      k2 = Math.round(k2)
+    }
+    return new Colors.cmyk(cmyk.c, cmyk.m, cmyk.y, k2)
   }
 
   static hslDarken(
@@ -341,6 +405,50 @@ class Modify {
     let vLighter = hsl.l + (100 - hsl.l) * realAmount
     if (round) vLighter = Math.round(vLighter)
     return new Colors.hsl(hsl.h, hsl.s, vLighter, hsl.a)
+  }
+
+  static hsvDarken(
+    hsv: Colors.hsv,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsv {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let vDarker = hsv.v * realAmount
+    if (round) vDarker = Math.round(vDarker)
+    return new Colors.hsv(hsv.h, hsv.s, vDarker, hsv.a)
+  }
+
+  static hsvLighten(
+    hsv: Colors.hsv,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsv {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let vLighter = hsv.v + (100 - hsv.v) * realAmount
+    if (round) vLighter = Math.round(vLighter)
+    return new Colors.hsv(hsv.h, hsv.s, vLighter, hsv.a)
+  }
+
+  static hsiDarken(
+    hsi: Colors.hsi,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsi {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let vDarker = hsi.i * realAmount
+    if (round) vDarker = Math.round(vDarker)
+    return new Colors.hsi(hsi.h, hsi.s, vDarker, hsi.a)
+  }
+
+  static hsiLighten(
+    hsi: Colors.hsi,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.hsi {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let vLighter = hsi.i + (100 - hsi.i) * realAmount
+    if (round) vLighter = Math.round(vLighter)
+    return new Colors.hsi(hsi.h, hsi.s, vLighter, hsi.a)
   }
 
   static hspDarken(

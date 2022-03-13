@@ -310,7 +310,12 @@ export abstract class colorType {
       case 'darken':
       case 'darker':
         if (typeof args.method === 'undefined') {
-          args.method = 'hsl'
+          if (['rgb','hsl','hsi','hsv','hsp','cmyk'].includes(og)) {
+            args.method = og
+          }
+          else {
+            args.method = 'hsl'
+          }
         }
         switch (args.method) {
           case 'rgb':
@@ -330,6 +335,24 @@ export abstract class colorType {
               args.round
             )
             break
+          case 'hsv':
+          case 'hsva':
+          case 'value':
+            modified = Modify.hsvDarken(
+              this.tohsv({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'hsi':
+          case 'hsia':
+          case 'intensity':
+            modified = Modify.hsiDarken(
+              this.tohsi({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
           case 'hsp':
           case 'hspa':
           case 'brightness':
@@ -342,6 +365,22 @@ export abstract class colorType {
               args.round
             )
             break
+          case 'cmyk':
+            modified = Modify.cmykDarken(
+              this.tocmyk({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'cmyk2':
+          case 'black':
+          case 'cmykBlack':
+            modified = Modify.cmykBlackDarken(
+              this.tocmyk({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
           default:
             throw new Error('Unrecognized darken method')
         }
@@ -349,7 +388,12 @@ export abstract class colorType {
       case 'lighten':
       case 'lighter':
         if (typeof args.method === 'undefined') {
-          args.method = 'hsl'
+          if (['rgb','hsl','hsi','hsv','hsp','cmyk'].includes(og)) {
+            args.method = og
+          }
+          else {
+            args.method = 'hsl'
+          }
         }
         switch (args.method) {
           case 'rgb':
@@ -369,6 +413,24 @@ export abstract class colorType {
               args.round
             )
             break
+          case 'hsv':
+          case 'hsva':
+          case 'value':
+            modified = Modify.hsvLighten(
+              this.tohsv({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'hsi':
+          case 'hsia':
+          case 'intensity':
+            modified = Modify.hsiLighten(
+              this.tohsi({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
           case 'hsp':
           case 'hspa':
           case 'brightness':
@@ -377,6 +439,22 @@ export abstract class colorType {
           case 'perceivedbrightness':
             modified = Modify.hspLighten(
               this.tohsp({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'cmyk':
+            modified = Modify.cmykLighten(
+              this.tocmyk({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'cmyk2':
+          case 'black':
+          case 'cmykBlack':
+            modified = Modify.cmykBlackLighten(
+              this.tocmyk({ round: false }),
               args.amount,
               args.round
             )
