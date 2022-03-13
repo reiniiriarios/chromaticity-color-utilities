@@ -205,7 +205,12 @@ export abstract class colorType {
           throw new Error('Missing second color to blend with')
         }
         if (typeof args.method === 'undefined') {
-          args.method = 'rgb'
+          if (['rgb','hsl','hsi','hsv','hsp','cmyk'].includes(og)) {
+            args.method = og
+          }
+          else {
+            args.method = 'rgb'
+          }
         }
         let tmpColor1, tmpColor2
         switch (args.method) {
@@ -226,6 +231,49 @@ export abstract class colorType {
             tmpColor1 = this.tohsv({ round: false })
             tmpColor2 = args.with.tohsv({ round: false })
             modified = Modify.hsvBlend(
+              tmpColor1,
+              tmpColor2,
+              args.amount,
+              args.round
+            )
+            break
+          case 'hsl':
+          case 'hsla':
+            tmpColor1 = this.tohsl({ round: false })
+            tmpColor2 = args.with.tohsl({ round: false })
+            modified = Modify.hslBlend(
+              tmpColor1,
+              tmpColor2,
+              args.amount,
+              args.round
+            )
+            break
+          case 'hsi':
+          case 'hsia':
+            tmpColor1 = this.tohsi({ round: false })
+            tmpColor2 = args.with.tohsi({ round: false })
+            modified = Modify.hsiBlend(
+              tmpColor1,
+              tmpColor2,
+              args.amount,
+              args.round
+            )
+            break
+          case 'hsp':
+          case 'hspa':
+            tmpColor1 = this.tohsp({ round: false })
+            tmpColor2 = args.with.tohsp({ round: false })
+            modified = Modify.hspBlend(
+              tmpColor1,
+              tmpColor2,
+              args.amount,
+              args.round
+            )
+            break
+          case 'cmyk':
+            tmpColor1 = this.tocmyk({ round: false })
+            tmpColor2 = args.with.tocmyk({ round: false })
+            modified = Modify.cmykBlend(
               tmpColor1,
               tmpColor2,
               args.amount,
