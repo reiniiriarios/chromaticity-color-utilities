@@ -135,7 +135,11 @@ function shade(method, start, amount = 1) {
     .forEach((color) => {
       highlight = color.hex == start
       tipMethod = method.replace(/[0-9]/, '')
-      content += colorBlock(color.hex, color.to(tipMethod).toString(), highlight)
+      content += colorBlock(
+        color.hex,
+        color.to(tipMethod).toString(),
+        highlight
+      )
     })
   content += '</div>'
 }
@@ -186,7 +190,11 @@ function tint(method, start, amount = 1) {
     .forEach((color) => {
       highlight = color.hex == start
       tipMethod = method.replace(/[0-9]/, '')
-      content += colorBlock(color.hex, color.to(tipMethod).toString(), highlight)
+      content += colorBlock(
+        color.hex,
+        color.to(tipMethod).toString(),
+        highlight
+      )
     })
   content += '</div>'
 }
@@ -238,7 +246,11 @@ function shadetint(method, start, amountT = 1, amountS = undefined) {
     .forEach((color) => {
       highlight = color.hex == start
       tipMethod = method.replace(/[0-9]/, '')
-      content += colorBlock(color.hex, color.to(tipMethod).toString(), highlight)
+      content += colorBlock(
+        color.hex,
+        color.to(tipMethod).toString(),
+        highlight
+      )
     })
   content += '</div>'
 }
@@ -345,11 +357,83 @@ shadetint('rgb2', '55aa11', 0.5, 0.5)
 shadetint('cmyk', '55aa11', 0.5, 0.5)
 content += '</div>'
 
+function lighten(method, start) {
+  content += '<div><h2>lighten</h2><h3>' + method + '</h3>'
+  let colors = []
+  let cstart = Color.from('hex', start)
+  for (i = 0; i < 9; i++) {
+    colors.push(
+      cstart.modify('lighten', {
+        method: method,
+        amount: (i + 1) / 10
+      })
+    )
+  }
+  content += colorBlock(start, 'start', highlight)
+  colors.forEach((color, i) => {
+    highlight = color.hex == start
+    tip = (i + 1) / 10
+    content += colorBlock(color.hex, tip, highlight)
+  })
+  content += '</div>'
+}
+
+content += '<div class="container">'
+lighten('hsl', '881155')
+lighten('hsv', '881155')
+lighten('hsi', '881155')
+lighten('hsp', '881155')
+lighten('rgb', '881155')
+lighten('cmyk', '881155')
+lighten('hsl', '22aaee')
+lighten('hsv', '22aaee')
+lighten('hsi', '22aaee')
+lighten('hsp', '22aaee')
+lighten('rgb', '22aaee')
+lighten('cmyk', '22aaee')
+content += '</div>'
+
+function darken(method, start) {
+  content += '<div><h2>darken</h2><h3>' + method + '</h3>'
+  let colors = []
+  let cstart = Color.from('hex', start)
+  for (i = 0; i < 9; i++) {
+    colors.push(
+      cstart.modify('darken', {
+        method: method,
+        amount: (i + 1) / 10
+      })
+    )
+  }
+  content += colorBlock(start, 'start', highlight)
+  colors.forEach((color, i) => {
+    highlight = color.hex == start
+    tip = (i + 1) / 10
+    content += colorBlock(color.hex, tip, highlight)
+  })
+  content += '</div>'
+}
+
+content += '<div class="container">'
+darken('hsl', 'ee5588')
+darken('hsv', 'ee5588')
+darken('hsi', 'ee5588')
+darken('hsp', 'ee5588')
+darken('rgb', 'ee5588')
+darken('cmyk', 'ee5588')
+darken('hsl', '22aaee')
+darken('hsv', '22aaee')
+darken('hsi', '22aaee')
+darken('hsp', '22aaee')
+darken('rgb', '22aaee')
+darken('cmyk', '22aaee')
+content += '</div>'
+
 const fullContent = template(content)
 let app = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' })
   res.end(fullContent)
 })
 
-app.listen(3000, '127.0.0.1')
-console.log('Node server running on port 3000')
+app.listen(3005, '127.0.0.1')
+console.log('Node server running on port 3005')

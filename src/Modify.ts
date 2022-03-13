@@ -326,7 +326,7 @@ class Modify {
     amount: number = 0.5,
     round: boolean = true
   ): Colors.cmyk {
-    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let realAmount = Math.min(Math.max(amount, 0), 1)
     let c2 = cmyk.c + (100 - cmyk.c) * realAmount
     let m2 = cmyk.m + (100 - cmyk.m) * realAmount
     let y2 = cmyk.y + (100 - cmyk.y) * realAmount
@@ -345,7 +345,7 @@ class Modify {
     amount: number = 0.5,
     round: boolean = true
   ): Colors.cmyk {
-    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
     let c2 = cmyk.c * realAmount
     let m2 = cmyk.m * realAmount
     let y2 = cmyk.y * realAmount
@@ -424,9 +424,13 @@ class Modify {
     round: boolean = true
   ): Colors.hsv {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let vLighter = hsv.v + (100 - hsv.v) * realAmount
-    if (round) vLighter = Math.round(vLighter)
-    return new Colors.hsv(hsv.h, hsv.s, vLighter, hsv.a)
+    let vLighter: number = hsv.v + (100 - hsv.v) * realAmount
+    let sLighter: number = (1 - realAmount) * 100
+    if (round) {
+      vLighter = Math.round(vLighter)
+      sLighter = Math.round(sLighter)
+    }
+    return new Colors.hsv(hsv.h, sLighter, vLighter, hsv.a)
   }
 
   static hsiDarken(
@@ -447,8 +451,12 @@ class Modify {
   ): Colors.hsi {
     let realAmount = Math.min(Math.max(amount, 0), 1)
     let vLighter = hsi.i + (100 - hsi.i) * realAmount
-    if (round) vLighter = Math.round(vLighter)
-    return new Colors.hsi(hsi.h, hsi.s, vLighter, hsi.a)
+    let sLighter: number = (1 - realAmount) * 100
+    if (round) {
+      vLighter = Math.round(vLighter)
+      sLighter = Math.round(sLighter)
+    }
+    return new Colors.hsi(hsi.h, sLighter, vLighter, hsi.a)
   }
 
   static hspDarken(
@@ -469,8 +477,12 @@ class Modify {
   ): Colors.hsp {
     let realAmount = Math.min(Math.max(amount, 0), 1)
     let pLighter = hsp.p + (100 - hsp.p) * realAmount
-    if (round) pLighter = Math.round(pLighter)
-    return new Colors.hsp(hsp.h, hsp.s, pLighter, hsp.a, hsp.pb, hsp.pr)
+    let sLighter: number = (1 - realAmount) * 100
+    if (round) {
+      pLighter = Math.round(pLighter)
+      sLighter = Math.round(sLighter)
+    }
+    return new Colors.hsp(hsp.h, sLighter, pLighter, hsp.a, hsp.pb, hsp.pr)
   }
 
   static hslDesaturate(
