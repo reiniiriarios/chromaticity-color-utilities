@@ -304,7 +304,7 @@ export abstract class colorType {
             )
             break
           default:
-            throw new Error('Unrecognized blending method')
+            throw new Error('Unrecognized blending method: ' + args.method)
         }
         break
       case 'darken':
@@ -382,7 +382,7 @@ export abstract class colorType {
             )
             break
           default:
-            throw new Error('Unrecognized darken method')
+            throw new Error('Unrecognized darken method: ' + args.method)
         }
         break
       case 'lighten':
@@ -460,7 +460,7 @@ export abstract class colorType {
             )
             break
           default:
-            throw new Error('Unrecognized lighten method')
+            throw new Error('Unrecognized lighten method: ' + args.method)
         }
         break
       case 'desaturate':
@@ -488,7 +488,7 @@ export abstract class colorType {
             )
             break
           default:
-            throw new Error('Unrecognized desaturate method')
+            throw new Error('Unrecognized desaturate method: ' + args.method)
         }
         break
       case 'saturate':
@@ -516,11 +516,11 @@ export abstract class colorType {
             )
             break
           default:
-            throw new Error('Unrecognized saturate method')
+            throw new Error('Unrecognized saturate method: ' + args.method)
         }
         break
       default:
-        throw new Error('Unrecognized modify action')
+        throw new Error('Unrecognized modify action: ' + modification)
     }
 
     let ogModified: T = modified.to(og, ogargs)
