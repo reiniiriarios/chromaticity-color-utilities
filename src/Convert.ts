@@ -1257,7 +1257,7 @@ class Convert {
     let a = 500 * (fx - fy)
     let b = 200 * (fy - fz)
 
-    l = Math.min(Math.max(l, 0), 100)
+    l = Math.max(l, 0) // specular white can be over 100
 
     if (round) {
       l = Math.round(l)
@@ -1283,8 +1283,8 @@ class Convert {
 
     let xr = Math.pow(ar, 3) > cieE ? Math.pow(ar, 3) : (116 * ar - 16) / cieK
     // the following two y(r) formulae seem to be equivalent??? somehow???
-    let yr = lab.l > cieK * cieE ? Math.pow(lr, 3) : lab.l / cieK
-    // let yr = Math.pow(lr, 3) > cieE ? Math.pow(lr, 3) : (116 * lr - 16) / cieK
+    // let yr = lab.l > cieK * cieE ? Math.pow(lr, 3) : lab.l / cieK
+    let yr = Math.pow(lr, 3) > cieE ? Math.pow(lr, 3) : (116 * lr - 16) / cieK
     let zr = Math.pow(br, 3) > cieE ? Math.pow(br, 3) : (116 * br - 16) / cieK
 
     let x = xr * w.x

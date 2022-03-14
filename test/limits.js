@@ -295,9 +295,6 @@ describe('limits', () => {
     should.throw(() => {
       let color = Color.from('lab', [-1, 1, 1])
     })
-    should.throw(() => {
-      let color = Color.from('lab', [101, 1, 1])
-    })
   })
   it('luv should fail out of bounds', () => {
     should.throw(() => {

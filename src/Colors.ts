@@ -696,13 +696,13 @@ export class lab extends colorType {
 
   /**
    *
-   * @param {number} l  0-100
+   * @param {number} l  0-100+
    * @param {number} a  unbounded, but typically clamped at -128 and 127
    * @param {number} b  unbounded, but typically clamped at -128 and 127
    */
   constructor(l: number, a: number, b: number) {
     super()
-    this.valueRangeCheck(l, 0, 100)
+    this.valueRangeCheck(l, 0, false)
     if (typeof a === 'undefined') throw new Error('a undefined')
     if (typeof b === 'undefined') throw new Error('b undefined')
     this.l = l
