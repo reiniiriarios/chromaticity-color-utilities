@@ -359,7 +359,7 @@ class Modify {
     return new Colors.cmyk(c2, m2, y2, k2)
   }
 
-  static cmykBlackDarken(
+  static cmyk2Darken(
     cmyk: Colors.cmyk,
     amount: number = 0.5,
     round: boolean = true
@@ -372,7 +372,7 @@ class Modify {
     return new Colors.cmyk(cmyk.c, cmyk.m, cmyk.y, k2)
   }
 
-  static cmykBlackLighten(
+  static cmyk2Lighten(
     cmyk: Colors.cmyk,
     amount: number = 0.5,
     round: boolean = true
@@ -483,6 +483,129 @@ class Modify {
       sLighter = Math.round(sLighter)
     }
     return new Colors.hsp(hsp.h, sLighter, pLighter, hsp.a, hsp.pb, hsp.pr)
+  }
+
+  static labDarken(
+    lab: Colors.lab,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.lab {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let lDarker = lab.l * realAmount
+    let aDarker = lab.a * realAmount
+    let bDarker = lab.b * realAmount
+    if (round) {
+      lDarker = Math.round(lDarker)
+      aDarker = Math.round(aDarker)
+      bDarker = Math.round(bDarker)
+    }
+    return new Colors.lab(lDarker, aDarker, bDarker)
+  }
+
+  static labLighten(
+    lab: Colors.lab,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.lab {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let realAmountAB = 1 - Math.min(Math.max(amount, 0), 1)
+    let lLighter = lab.l + (100 - lab.l) * realAmount
+    let aLighter = lab.a * realAmountAB
+    let bLighter = lab.b * realAmountAB
+    if (round) {
+      lLighter = Math.round(lLighter)
+      aLighter = Math.round(aLighter)
+      bLighter = Math.round(bLighter)
+    }
+    return new Colors.lab(lLighter, aLighter, bLighter)
+  }
+
+  static lab2Darken(
+    lab: Colors.lab,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.lab {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let lDarker = lab.l * realAmount
+    if (round) {
+      lDarker = Math.round(lDarker)
+    }
+    return new Colors.lab(lDarker, lab.a, lab.b)
+  }
+
+  static lab2Lighten(
+    lab: Colors.lab,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.lab {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let lLighter = lab.l + (100 - lab.l) * realAmount
+    if (round) {
+      lLighter = Math.round(lLighter)
+    }
+    return new Colors.lab(lLighter, lab.a, lab.b)
+  }
+
+  static luvDarken(
+    luv: Colors.luv,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.luv {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let lDarker = luv.l * realAmount
+    let uDarker = luv.u * realAmount
+    let vDarker = luv.v * realAmount
+    if (round) {
+      lDarker = Math.round(lDarker)
+      uDarker = Math.round(uDarker)
+      vDarker = Math.round(vDarker)
+    }
+    return new Colors.luv(lDarker, uDarker, vDarker)
+  }
+
+  static luvLighten(
+    luv: Colors.luv,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.luv {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let realAmountAB = 1 - Math.min(Math.max(amount, 0), 1)
+    let lLighter = luv.l + (100 - luv.l) * realAmount
+    let uLighter = luv.u * realAmountAB
+    let vLighter = luv.v * realAmountAB
+    if (round) {
+      lLighter = Math.round(lLighter)
+      uLighter = Math.round(uLighter)
+      vLighter = Math.round(vLighter)
+    }
+    return new Colors.luv(lLighter, uLighter, vLighter)
+  }
+
+  // breaks as L* approaches 0
+  static luv2Darken(
+    luv: Colors.luv,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.luv {
+    let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
+    let lDarker = luv.l * realAmount
+    if (round) {
+      lDarker = Math.round(lDarker)
+    }
+    return new Colors.luv(lDarker, luv.u, luv.v)
+  }
+
+  static luv2Lighten(
+    luv: Colors.luv,
+    amount: number = 0.5,
+    round: boolean = true
+  ): Colors.luv {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let lLighter = luv.l + (100 - luv.l) * realAmount
+    if (round) {
+      lLighter = Math.round(lLighter)
+    }
+    return new Colors.luv(lLighter, luv.u, luv.v)
   }
 
   static hslDesaturate(

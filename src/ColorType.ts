@@ -107,9 +107,14 @@ export abstract class colorType {
    * @param   {string | number} whitespace equiv to third JSON.stringify parameter
    * @returns {string}
    */
-  public toString(whitespace?: string | number, quotes: boolean = true, showType: boolean = true): string {
+  public toString(
+    whitespace?: string | number | null,
+    quotes: boolean = true,
+    showType: boolean = true
+  ): string {
     // only have a space if the string is whitespaced
     let type = showType ? this.getType() + (whitespace ? ': ' : ':') : ''
+    if (whitespace == null) whitespace = undefined
     let json = JSON.stringify(this.toStringValues(), null, whitespace)
     if (!quotes) {
       json = json.replace(/"([^"]+)":/g, '$1:')
@@ -229,10 +234,9 @@ export abstract class colorType {
           throw new Error('Missing second color to blend with')
         }
         if (typeof args.method === 'undefined') {
-          if (['rgb','hsl','hsi','hsv','hsp','cmyk'].includes(og)) {
+          if (['rgb', 'hsl', 'hsi', 'hsv', 'hsp', 'cmyk'].includes(og)) {
             args.method = og
-          }
-          else {
+          } else {
             args.method = 'rgb'
           }
         }
@@ -311,10 +315,9 @@ export abstract class colorType {
       case 'darken':
       case 'darker':
         if (typeof args.method === 'undefined') {
-          if (['rgb','hsl','hsi','hsv','hsp','cmyk'].includes(og)) {
+          if (['rgb', 'hsl', 'hsi', 'hsv', 'hsp', 'cmyk'].includes(og)) {
             args.method = og
-          }
-          else {
+          } else {
             args.method = 'hsl'
           }
         }
@@ -375,9 +378,37 @@ export abstract class colorType {
             break
           case 'cmyk2':
           case 'black':
-          case 'cmykBlack':
-            modified = Modify.cmykBlackDarken(
+            modified = Modify.cmyk2Darken(
               this.tocmyk({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'lab':
+            modified = Modify.labDarken(
+              this.tolab({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'lab2':
+          case 'lstar':
+            modified = Modify.lab2Darken(
+              this.tolab({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'luv':
+            modified = Modify.luvDarken(
+              this.toluv({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'luv2':
+            modified = Modify.luv2Darken(
+              this.toluv({ round: false }),
               args.amount,
               args.round
             )
@@ -389,10 +420,9 @@ export abstract class colorType {
       case 'lighten':
       case 'lighter':
         if (typeof args.method === 'undefined') {
-          if (['rgb','hsl','hsi','hsv','hsp','cmyk'].includes(og)) {
+          if (['rgb', 'hsl', 'hsi', 'hsv', 'hsp', 'cmyk'].includes(og)) {
             args.method = og
-          }
-          else {
+          } else {
             args.method = 'hsl'
           }
         }
@@ -453,9 +483,37 @@ export abstract class colorType {
             break
           case 'cmyk2':
           case 'black':
-          case 'cmykBlack':
-            modified = Modify.cmykBlackLighten(
+            modified = Modify.cmyk2Lighten(
               this.tocmyk({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'lab':
+            modified = Modify.labLighten(
+              this.tolab({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'lab2':
+          case 'lstar':
+            modified = Modify.lab2Lighten(
+              this.tolab({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'luv':
+            modified = Modify.luvLighten(
+              this.toluv({ round: false }),
+              args.amount,
+              args.round
+            )
+            break
+          case 'luv2':
+            modified = Modify.luv2Lighten(
+              this.toluv({ round: false }),
               args.amount,
               args.round
             )
@@ -467,10 +525,9 @@ export abstract class colorType {
       case 'desaturate':
       case 'desat':
         if (typeof args.method === 'undefined') {
-          if (['hsl','hsi','hsv','hsp'].includes(og)) {
+          if (['hsl', 'hsi', 'hsv', 'hsp'].includes(og)) {
             args.method = og
-          }
-          else {
+          } else {
             args.method = 'hsl'
           }
         }
@@ -521,10 +578,9 @@ export abstract class colorType {
       case 'saturate':
       case 'sat':
         if (typeof args.method === 'undefined') {
-          if (['hsl','hsi','hsv','hsp'].includes(og)) {
+          if (['hsl', 'hsi', 'hsv', 'hsp'].includes(og)) {
             args.method = og
-          }
-          else {
+          } else {
             args.method = 'hsl'
           }
         }

@@ -358,21 +358,27 @@ shadetint('cmyk', '55aa11', 0.5, 0.5)
 content += '</div>'
 
 function lighten(method, start) {
+  let realMethod = method.replace(/[^a-z]/, '')
   content += '<div><h2>lighten</h2><h3>' + method + '</h3>'
   let colors = []
   let cstart = Color.from('hex', start)
-  for (i = 0; i < 9; i++) {
+  for (i = 0; i < 10; i++) {
     colors.push(
       cstart.modify('lighten', {
         method: method,
-        amount: (i + 1) / 10
+        amount: (i + 1) / 10,
       })
     )
   }
-  content += colorBlock(start, 'start', highlight)
+  content += colorBlock(
+    start,
+    Color.from('hex', start).to(realMethod).toString(1),
+    highlight
+  )
   colors.forEach((color, i) => {
     highlight = color.hex == start
-    tip = (i + 1) / 10
+    // tip = (i + 1) / 10
+    tip = color.to(realMethod).toString(1)
     content += colorBlock(color.hex, tip, highlight)
   })
   content += '</div>'
@@ -385,30 +391,48 @@ lighten('hsi', '881155')
 lighten('hsp', '881155')
 lighten('rgb', '881155')
 lighten('cmyk', '881155')
+lighten('cmyk2', '881155')
+lighten('lab', '881155')
+lighten('lab2', '881155')
+lighten('luv', '881155')
+lighten('luv2', '881155')
+content += '</div>'
+content += '<div class="container">'
 lighten('hsl', '22aaee')
 lighten('hsv', '22aaee')
 lighten('hsi', '22aaee')
 lighten('hsp', '22aaee')
 lighten('rgb', '22aaee')
 lighten('cmyk', '22aaee')
+lighten('cmyk2', '22aaee')
+lighten('lab', '22aaee')
+lighten('lab2', '22aaee')
+lighten('luv', '22aaee')
+lighten('luv2', '22aaee')
 content += '</div>'
 
 function darken(method, start) {
+  let realMethod = method.replace(/[^a-z]/, '')
+  if (realMethod == 'black') realMethod = 'cmyk'
   content += '<div><h2>darken</h2><h3>' + method + '</h3>'
   let colors = []
   let cstart = Color.from('hex', start)
-  for (i = 0; i < 9; i++) {
-    colors.push(
-      cstart.modify('darken', {
-        method: method,
-        amount: (i + 1) / 10
-      })
-    )
+  for (i = 0; i < 10; i++) {
+    let darker = cstart.modify('darken', {
+      method: method,
+      amount: (i + 1) / 10,
+    })
+    colors.push(darker)
   }
-  content += colorBlock(start, 'start', highlight)
+  content += colorBlock(
+    start,
+    Color.from('hex', start).to(realMethod).toString(1),
+    highlight
+  )
   colors.forEach((color, i) => {
     highlight = color.hex == start
-    tip = (i + 1) / 10
+    // tip = (i + 1) / 10
+    tip = color.to(realMethod).toString(1)
     content += colorBlock(color.hex, tip, highlight)
   })
   content += '</div>'
@@ -421,12 +445,24 @@ darken('hsi', 'ee5588')
 darken('hsp', 'ee5588')
 darken('rgb', 'ee5588')
 darken('cmyk', 'ee5588')
+darken('cmyk2', 'ee5588')
+darken('lab', 'ee5588')
+darken('lab2', 'ee5588')
+darken('luv', 'ee5588')
+darken('luv2', 'ee5588')
+content += '</div>'
+content += '<div class="container">'
 darken('hsl', '22aaee')
 darken('hsv', '22aaee')
 darken('hsi', '22aaee')
 darken('hsp', '22aaee')
 darken('rgb', '22aaee')
 darken('cmyk', '22aaee')
+darken('cmyk2', '22aaee')
+darken('lab', '22aaee')
+darken('lab2', '22aaee')
+darken('luv', '22aaee')
+darken('luv2', '22aaee')
 content += '</div>'
 
 function saturate(method, start) {
@@ -437,7 +473,7 @@ function saturate(method, start) {
     colors.push(
       cstart.modify('saturate', {
         method: method,
-        amount: (i + 1) / 10
+        amount: (i + 1) / 10,
       })
     )
   }
@@ -473,7 +509,7 @@ function desaturate(method, start) {
     colors.push(
       cstart.modify('desaturate', {
         method: method,
-        amount: (i + 1) / 10
+        amount: (i + 1) / 10,
       })
     )
   }
