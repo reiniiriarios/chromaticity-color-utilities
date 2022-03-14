@@ -250,8 +250,7 @@ export abstract class colorType {
             modified = Modify.rgbBlend(
               tmpColor1,
               tmpColor2,
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsv':
@@ -261,8 +260,7 @@ export abstract class colorType {
             modified = Modify.hsvBlend(
               tmpColor1,
               tmpColor2,
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsl':
@@ -272,8 +270,7 @@ export abstract class colorType {
             modified = Modify.hslBlend(
               tmpColor1,
               tmpColor2,
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsi':
@@ -283,8 +280,7 @@ export abstract class colorType {
             modified = Modify.hsiBlend(
               tmpColor1,
               tmpColor2,
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsp':
@@ -294,8 +290,7 @@ export abstract class colorType {
             modified = Modify.hspBlend(
               tmpColor1,
               tmpColor2,
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'cmyk':
@@ -304,8 +299,7 @@ export abstract class colorType {
             modified = Modify.cmykBlend(
               tmpColor1,
               tmpColor2,
-              args.amount,
-              args.round
+              args.amount
             )
             break
           default:
@@ -326,8 +320,7 @@ export abstract class colorType {
           case 'rgba':
             modified = Modify.rgbDarken(
               this.torgb({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsl':
@@ -335,8 +328,7 @@ export abstract class colorType {
           case 'lightness':
             modified = Modify.hslDarken(
               this.tohsl({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsv':
@@ -344,8 +336,7 @@ export abstract class colorType {
           case 'value':
             modified = Modify.hsvDarken(
               this.tohsv({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsi':
@@ -353,8 +344,7 @@ export abstract class colorType {
           case 'intensity':
             modified = Modify.hsiDarken(
               this.tohsi({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsp':
@@ -365,52 +355,45 @@ export abstract class colorType {
           case 'perceivedbrightness':
             modified = Modify.hspDarken(
               this.tohsp({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'cmyk':
             modified = Modify.cmykDarken(
               this.tocmyk({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'cmyk2':
           case 'black':
             modified = Modify.cmyk2Darken(
               this.tocmyk({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'lab':
             modified = Modify.labDarken(
               this.tolab({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'lab2':
           case 'lstar':
             modified = Modify.lab2Darken(
               this.tolab({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'luv':
             modified = Modify.luvDarken(
               this.toluv({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'luv2':
             modified = Modify.luv2Darken(
               this.toluv({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           default:
@@ -431,8 +414,7 @@ export abstract class colorType {
           case 'rgba':
             modified = Modify.rgbLighten(
               this.torgb({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsl':
@@ -440,8 +422,7 @@ export abstract class colorType {
           case 'lightness':
             modified = Modify.hslLighten(
               this.tohsl({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsv':
@@ -449,8 +430,7 @@ export abstract class colorType {
           case 'value':
             modified = Modify.hsvLighten(
               this.tohsv({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsi':
@@ -458,8 +438,7 @@ export abstract class colorType {
           case 'intensity':
             modified = Modify.hsiLighten(
               this.tohsi({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsp':
@@ -470,52 +449,45 @@ export abstract class colorType {
           case 'perceivedbrightness':
             modified = Modify.hspLighten(
               this.tohsp({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'cmyk':
             modified = Modify.cmykLighten(
               this.tocmyk({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'cmyk2':
           case 'black':
             modified = Modify.cmyk2Lighten(
               this.tocmyk({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'lab':
             modified = Modify.labLighten(
               this.tolab({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'lab2':
           case 'lstar':
             modified = Modify.lab2Lighten(
               this.tolab({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'luv':
             modified = Modify.luvLighten(
               this.toluv({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'luv2':
             modified = Modify.luv2Lighten(
               this.toluv({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           default:
@@ -537,8 +509,7 @@ export abstract class colorType {
           case 'value':
             modified = Modify.hsvDesaturate(
               this.tohsv({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsl':
@@ -546,8 +517,7 @@ export abstract class colorType {
           case 'lightness':
             modified = Modify.hslDesaturate(
               this.tohsl({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsi':
@@ -555,8 +525,7 @@ export abstract class colorType {
           case 'intensity':
             modified = Modify.hsiDesaturate(
               this.tohsi({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsp':
@@ -567,8 +536,7 @@ export abstract class colorType {
           case 'perceivedbrightness':
             modified = Modify.hspDesaturate(
               this.tohsp({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           default:
@@ -590,8 +558,7 @@ export abstract class colorType {
           case 'value':
             modified = Modify.hsvSaturate(
               this.tohsv({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsl':
@@ -599,8 +566,7 @@ export abstract class colorType {
           case 'lightness':
             modified = Modify.hslSaturate(
               this.tohsl({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsi':
@@ -608,8 +574,7 @@ export abstract class colorType {
           case 'intensity':
             modified = Modify.hsiSaturate(
               this.tohsi({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           case 'hsp':
@@ -620,8 +585,7 @@ export abstract class colorType {
           case 'perceivedbrightness':
             modified = Modify.hspSaturate(
               this.tohsp({ round: false }),
-              args.amount,
-              args.round
+              args.amount
             )
             break
           default:

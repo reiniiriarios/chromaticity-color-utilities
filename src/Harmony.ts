@@ -971,8 +971,7 @@ class Harmony {
             Modify.rgbBlend(
               color1.to('rgb', { round: false }),
               color2.to('rgb', { round: false }),
-              amount,
-              false
+              amount
             ).to(color1.getType(), { round: round })
           )
           break
@@ -982,8 +981,7 @@ class Harmony {
             Modify.hsvBlend(
               color1.to('hsv', { round: false }),
               color2.to('hsv', { round: false }),
-              amount,
-              false
+              amount
             ).to(color1.getType(), { round: round })
           )
           break
@@ -993,8 +991,7 @@ class Harmony {
             Modify.hslBlend(
               color1.to('hsl', { round: false }),
               color2.to('hsl', { round: false }),
-              amount,
-              false
+              amount
             ).to(color1.getType(), { round: round })
           )
           break
@@ -1004,8 +1001,7 @@ class Harmony {
             Modify.hsiBlend(
               color1.to('hsi', { round: false }),
               color2.to('hsi', { round: false }),
-              amount,
-              false
+              amount
             ).to(color1.getType(), { round: round })
           )
           break
@@ -1015,8 +1011,7 @@ class Harmony {
             Modify.hspBlend(
               color1.to('hsp', { round: false }),
               color2.to('hsp', { round: false }),
-              amount,
-              false
+              amount
             ).to(color1.getType(), { round: round })
           )
           break
@@ -1025,8 +1020,7 @@ class Harmony {
             Modify.cmykBlend(
               color1.to('cmyk', { round: false }),
               color2.to('cmyk', { round: false }),
-              amount,
-              false
+              amount
             ).to(color1.getType(), { round: round })
           )
           break
@@ -1035,8 +1029,7 @@ class Harmony {
             Modify.yiqBlend(
               color1.to('yiq', { round: false }),
               color2.to('yiq', { round: false }),
-              amount,
-              false
+              amount
             ).to(color1.getType(), { round: round })
           )
           break
