@@ -444,7 +444,29 @@ var Colors = __importStar(__webpack_require__(4269));
 var colorType = /** @class */ (function () {
     function colorType() {
         this.type = 'colorType';
+        /**
+         * Returns generic simplified object for toString()
+         * Overwrite with each subclass
+         *
+         * @returns {object}
+         */
+        this.toStringValues = function () { return ({}); };
     }
+    /**
+     * Stringify object
+     *
+     * @param   {string | number} whitespace equiv to third JSON.stringify parameter
+     * @returns {string}
+     */
+    colorType.prototype.toString = function (whitespace, quotes) {
+        if (quotes === void 0) { quotes = true; }
+        var colon = whitespace ? ': ' : ':'; // only have a space if the string is whitespaced
+        var json = JSON.stringify(this.toStringValues(), null, whitespace);
+        if (!quotes) {
+            json = json.replace(/"([^"]+)":/g, '$1:');
+        }
+        return this.getType() + colon + json;
+    };
     colorType.prototype.to = function (type, args) {
         args = this.setArgs(args);
         type = type.toLowerCase().replace(/[^a-z0-9]/, '');
@@ -513,7 +535,7 @@ var colorType = /** @class */ (function () {
                 break;
             default:
                 throw new Error('Unable to find conversion path from ' +
-                    this.constructor.name +
+                    this.getType() +
                     ' to ' +
                     type);
         }
@@ -526,7 +548,7 @@ var colorType = /** @class */ (function () {
         modification = modification.toLowerCase();
         if (typeof args == 'undefined')
             args = {};
-        var og = this.constructor['name'];
+        var og = this.getType();
         var ogargs = {
             round: args.round,
             bitDepth: this.bitDepth,
@@ -551,7 +573,12 @@ var colorType = /** @class */ (function () {
                     throw new Error('Missing second color to blend with');
                 }
                 if (typeof args.method === 'undefined') {
-                    args.method = 'rgb';
+                    if (['rgb', 'hsl', 'hsi', 'hsv', 'hsp', 'cmyk'].includes(og)) {
+                        args.method = og;
+                    }
+                    else {
+                        args.method = 'rgb';
+                    }
                 }
                 var tmpColor1 = void 0, tmpColor2 = void 0;
                 switch (args.method) {
@@ -568,14 +595,42 @@ var colorType = /** @class */ (function () {
                         tmpColor2 = args.with.tohsv({ round: false });
                         modified = Modify_1.default.hsvBlend(tmpColor1, tmpColor2, args.amount, args.round);
                         break;
+                    case 'hsl':
+                    case 'hsla':
+                        tmpColor1 = this.tohsl({ round: false });
+                        tmpColor2 = args.with.tohsl({ round: false });
+                        modified = Modify_1.default.hslBlend(tmpColor1, tmpColor2, args.amount, args.round);
+                        break;
+                    case 'hsi':
+                    case 'hsia':
+                        tmpColor1 = this.tohsi({ round: false });
+                        tmpColor2 = args.with.tohsi({ round: false });
+                        modified = Modify_1.default.hsiBlend(tmpColor1, tmpColor2, args.amount, args.round);
+                        break;
+                    case 'hsp':
+                    case 'hspa':
+                        tmpColor1 = this.tohsp({ round: false });
+                        tmpColor2 = args.with.tohsp({ round: false });
+                        modified = Modify_1.default.hspBlend(tmpColor1, tmpColor2, args.amount, args.round);
+                        break;
+                    case 'cmyk':
+                        tmpColor1 = this.tocmyk({ round: false });
+                        tmpColor2 = args.with.tocmyk({ round: false });
+                        modified = Modify_1.default.cmykBlend(tmpColor1, tmpColor2, args.amount, args.round);
+                        break;
                     default:
-                        throw new Error('Unrecognized blending method');
+                        throw new Error('Unrecognized blending method: ' + args.method);
                 }
                 break;
             case 'darken':
             case 'darker':
                 if (typeof args.method === 'undefined') {
-                    args.method = 'hsl';
+                    if (['rgb', 'hsl', 'hsi', 'hsv', 'hsp', 'cmyk'].includes(og)) {
+                        args.method = og;
+                    }
+                    else {
+                        args.method = 'hsl';
+                    }
                 }
                 switch (args.method) {
                     case 'rgb':
@@ -587,6 +642,16 @@ var colorType = /** @class */ (function () {
                     case 'lightness':
                         modified = Modify_1.default.hslDarken(this.tohsl({ round: false }), args.amount, args.round);
                         break;
+                    case 'hsv':
+                    case 'hsva':
+                    case 'value':
+                        modified = Modify_1.default.hsvDarken(this.tohsv({ round: false }), args.amount, args.round);
+                        break;
+                    case 'hsi':
+                    case 'hsia':
+                    case 'intensity':
+                        modified = Modify_1.default.hsiDarken(this.tohsi({ round: false }), args.amount, args.round);
+                        break;
                     case 'hsp':
                     case 'hspa':
                     case 'brightness':
@@ -595,14 +660,27 @@ var colorType = /** @class */ (function () {
                     case 'perceivedbrightness':
                         modified = Modify_1.default.hspDarken(this.tohsp({ round: false }), args.amount, args.round);
                         break;
+                    case 'cmyk':
+                        modified = Modify_1.default.cmykDarken(this.tocmyk({ round: false }), args.amount, args.round);
+                        break;
+                    case 'cmyk2':
+                    case 'black':
+                    case 'cmykBlack':
+                        modified = Modify_1.default.cmykBlackDarken(this.tocmyk({ round: false }), args.amount, args.round);
+                        break;
                     default:
-                        throw new Error('Unrecognized darken method');
+                        throw new Error('Unrecognized darken method: ' + args.method);
                 }
                 break;
             case 'lighten':
             case 'lighter':
                 if (typeof args.method === 'undefined') {
-                    args.method = 'hsl';
+                    if (['rgb', 'hsl', 'hsi', 'hsv', 'hsp', 'cmyk'].includes(og)) {
+                        args.method = og;
+                    }
+                    else {
+                        args.method = 'hsl';
+                    }
                 }
                 switch (args.method) {
                     case 'rgb':
@@ -614,6 +692,16 @@ var colorType = /** @class */ (function () {
                     case 'lightness':
                         modified = Modify_1.default.hslLighten(this.tohsl({ round: false }), args.amount, args.round);
                         break;
+                    case 'hsv':
+                    case 'hsva':
+                    case 'value':
+                        modified = Modify_1.default.hsvLighten(this.tohsv({ round: false }), args.amount, args.round);
+                        break;
+                    case 'hsi':
+                    case 'hsia':
+                    case 'intensity':
+                        modified = Modify_1.default.hsiLighten(this.tohsi({ round: false }), args.amount, args.round);
+                        break;
                     case 'hsp':
                     case 'hspa':
                     case 'brightness':
@@ -622,8 +710,16 @@ var colorType = /** @class */ (function () {
                     case 'perceivedbrightness':
                         modified = Modify_1.default.hspLighten(this.tohsp({ round: false }), args.amount, args.round);
                         break;
+                    case 'cmyk':
+                        modified = Modify_1.default.cmykLighten(this.tocmyk({ round: false }), args.amount, args.round);
+                        break;
+                    case 'cmyk2':
+                    case 'black':
+                    case 'cmykBlack':
+                        modified = Modify_1.default.cmykBlackLighten(this.tocmyk({ round: false }), args.amount, args.round);
+                        break;
                     default:
-                        throw new Error('Unrecognized lighten method');
+                        throw new Error('Unrecognized lighten method: ' + args.method);
                 }
                 break;
             case 'desaturate':
@@ -642,8 +738,21 @@ var colorType = /** @class */ (function () {
                     case 'lightness':
                         modified = Modify_1.default.hslDesaturate(this.tohsl({ round: false }), args.amount, args.round);
                         break;
+                    case 'hsi':
+                    case 'hsia':
+                    case 'intensity':
+                        modified = Modify_1.default.hsiDesaturate(this.tohsi({ round: false }), args.amount, args.round);
+                        break;
+                    case 'hsp':
+                    case 'hspa':
+                    case 'brightness':
+                    case 'perceived brightness':
+                    case 'perceived':
+                    case 'perceivedbrightness':
+                        modified = Modify_1.default.hspDesaturate(this.tohsp({ round: false }), args.amount, args.round);
+                        break;
                     default:
-                        throw new Error('Unrecognized desaturate method');
+                        throw new Error('Unrecognized desaturate method: ' + args.method);
                 }
                 break;
             case 'saturate':
@@ -662,12 +771,25 @@ var colorType = /** @class */ (function () {
                     case 'lightness':
                         modified = Modify_1.default.hslSaturate(this.tohsl({ round: false }), args.amount, args.round);
                         break;
+                    case 'hsi':
+                    case 'hsia':
+                    case 'intensity':
+                        modified = Modify_1.default.hsiSaturate(this.tohsi({ round: false }), args.amount, args.round);
+                        break;
+                    case 'hsp':
+                    case 'hspa':
+                    case 'brightness':
+                    case 'perceived brightness':
+                    case 'perceived':
+                    case 'perceivedbrightness':
+                        modified = Modify_1.default.hspSaturate(this.tohsp({ round: false }), args.amount, args.round);
+                        break;
                     default:
-                        throw new Error('Unrecognized saturate method');
+                        throw new Error('Unrecognized saturate method: ' + args.method);
                 }
                 break;
             default:
-                throw new Error('Unrecognized modify action');
+                throw new Error('Unrecognized modify action: ' + modification);
         }
         var ogModified = modified.to(og, ogargs);
         if (typeof ogalpha !== 'undefined')
@@ -678,7 +800,7 @@ var colorType = /** @class */ (function () {
         var _a, _b, _c;
         if (typeof args === 'undefined')
             args = {};
-        var og = this.constructor['name'];
+        var og = this.getType();
         var ogargs = {
             round: args.round,
             bitDepth: this.bitDepth,
@@ -960,6 +1082,13 @@ var rgbNormalized = /** @class */ (function (_super) {
         if (a === void 0) { a = 1; }
         var _this = _super.call(this) || this;
         _this.type = 'rgbNormalized';
+        _this.toStringValues = function () { return ({
+            r: _this.r,
+            g: _this.g,
+            b: _this.b,
+            a: _this.a,
+            gamma: _this.gamma
+        }); };
         _this.valueRangeCheck(r, 0, 1);
         _this.valueRangeCheck(g, 0, 1);
         _this.valueRangeCheck(b, 0, 1);
@@ -974,9 +1103,6 @@ var rgbNormalized = /** @class */ (function (_super) {
         }
         return _this;
     }
-    rgbNormalized.prototype.toString = function () {
-        return "rgbNormalized: { r: ".concat(this.r, ", g: ").concat(this.g, ", b: ").concat(this.b, ", a: ").concat(this.a, ", gamma: ").concat(this.gamma, " }");
-    };
     return rgbNormalized;
 }(ColorType_1.colorType));
 exports.rgbNormalized = rgbNormalized;
@@ -985,6 +1111,9 @@ var hex = /** @class */ (function (_super) {
     function hex(hex) {
         var _this = _super.call(this) || this;
         _this.type = 'hex';
+        _this.toStringValues = function () { return ({
+            hex: _this.hex
+        }); };
         if (typeof hex === 'string') {
             if (hex.charAt(0) == '#') {
                 hex = hex.substring(1);
@@ -1010,9 +1139,6 @@ var hex = /** @class */ (function (_super) {
         }
         return _this;
     }
-    hex.prototype.toString = function () {
-        return "hex: { hex: ".concat(this.hex, " }");
-    };
     hex.prototype.torgb = function (args) {
         return Convert_1.default.hex2rgb(this, args.bitDepth);
     };
@@ -1028,6 +1154,13 @@ var rgb = /** @class */ (function (_super) {
         if (bitDepth === void 0) { bitDepth = 8; }
         var _this = _super.call(this) || this;
         _this.type = 'rgb';
+        _this.toStringValues = function () { return ({
+            r: _this.r,
+            g: _this.g,
+            b: _this.b,
+            a: _this.a,
+            bitDepth: _this.bitDepth
+        }); };
         _this.valueRangeCheck(bitDepth, 1, false, 'Bit depth must be a positive number greater than 1');
         var max = Math.pow(2, bitDepth) - 1;
         if (typeof a == 'undefined')
@@ -1044,9 +1177,6 @@ var rgb = /** @class */ (function (_super) {
         _this.max = max;
         return _this;
     }
-    rgb.prototype.toString = function () {
-        return "rgb: { r: ".concat(this.r, ", g: ").concat(this.g, ", b: ").concat(this.b, ", a: ").concat(this.a, ", bitDepth: ").concat(this.bitDepth, " }");
-    };
     rgb.prototype.torgb = function (args) {
         if (args.round !== false) {
             this.r = Math.round(this.r);
@@ -1065,6 +1195,13 @@ var rec709rgb = /** @class */ (function (_super) {
         if (bitDepth === void 0) { bitDepth = 8; }
         var _this = _super.call(this) || this;
         _this.type = 'rec709rgb';
+        _this.toStringValues = function () { return ({
+            r: _this.r,
+            g: _this.g,
+            b: _this.b,
+            a: _this.a,
+            bitDepth: _this.bitDepth
+        }); };
         if (bitDepth != 8 && bitDepth != 10) {
             throw new Error('Invalid bitrate for Rec709, must be 8 or 10');
         }
@@ -1090,9 +1227,6 @@ var rec709rgb = /** @class */ (function (_super) {
         _this.max = max;
         return _this;
     }
-    rec709rgb.prototype.toString = function () {
-        return "rec709rgb: { r: ".concat(this.r, ", g: ").concat(this.g, ", b: ").concat(this.b, ", a: ").concat(this.a, ", bitDepth: ").concat(this.bitDepth, " }");
-    };
     rec709rgb.prototype.torgb = function (args) {
         return Convert_1.default.rec709rgb2rgb(this, args.round, args.bitDepth);
     };
@@ -1114,6 +1248,13 @@ var rec2020rgb = /** @class */ (function (_super) {
         if (bitDepth === void 0) { bitDepth = 10; }
         var _this = _super.call(this) || this;
         _this.type = 'rec2020rgb';
+        _this.toStringValues = function () { return ({
+            r: _this.r,
+            g: _this.g,
+            b: _this.b,
+            a: _this.a,
+            bitDepth: _this.bitDepth
+        }); };
         if (bitDepth != 10 && bitDepth != 12) {
             throw new Error('Invalid bitrate for Rec2020, must be 10 or 12');
         }
@@ -1139,9 +1280,6 @@ var rec2020rgb = /** @class */ (function (_super) {
         _this.max = max;
         return _this;
     }
-    rec2020rgb.prototype.toString = function () {
-        return "rec2020rgb: { r: ".concat(this.r, ", g: ").concat(this.g, ", b: ").concat(this.b, ", a: ").concat(this.a, ", bitDepth: ").concat(this.bitDepth, " }");
-    };
     rec2020rgb.prototype.torgb = function (args) {
         return Convert_1.default.rec2020rgb2rgb(this, args.round, args.bitDepth);
     };
@@ -1163,6 +1301,12 @@ var hsv = /** @class */ (function (_super) {
         if (a === void 0) { a = 100; }
         var _this = _super.call(this) || this;
         _this.type = 'hsv';
+        _this.toStringValues = function () { return ({
+            h: _this.h,
+            s: _this.s,
+            v: _this.v,
+            a: _this.a
+        }); };
         _this.valueRangeCheck(h, 0, 360);
         _this.valueRangeCheck(s, 0, 100);
         _this.valueRangeCheck(v, 0, 100);
@@ -1173,9 +1317,6 @@ var hsv = /** @class */ (function (_super) {
         _this.a = a;
         return _this;
     }
-    hsv.prototype.toString = function () {
-        return "hsv: { h: ".concat(this.h, ", s: ").concat(this.s, ", v: ").concat(this.v, ", a: ").concat(this.a, " }");
-    };
     hsv.prototype.torgb = function (args) {
         return Convert_1.default.hsv2rgb(this, args.round, args.bitDepth);
     };
@@ -1200,6 +1341,12 @@ var hsl = /** @class */ (function (_super) {
         if (a === void 0) { a = 100; }
         var _this = _super.call(this) || this;
         _this.type = 'hsl';
+        _this.toStringValues = function () { return ({
+            h: _this.h,
+            s: _this.s,
+            l: _this.l,
+            a: _this.a
+        }); };
         _this.valueRangeCheck(h, 0, 360);
         _this.valueRangeCheck(s, 0, 100);
         _this.valueRangeCheck(l, 0, 100);
@@ -1210,9 +1357,6 @@ var hsl = /** @class */ (function (_super) {
         _this.a = a;
         return _this;
     }
-    hsl.prototype.toString = function () {
-        return "hsl: { h: ".concat(this.h, ", s: ").concat(this.s, ", l: ").concat(this.l, ", a: ").concat(this.a, " }");
-    };
     hsl.prototype.torgb = function (args) {
         return Convert_1.default.hsl2rgb(this, args.round, args.bitDepth);
     };
@@ -1237,6 +1381,12 @@ var hsi = /** @class */ (function (_super) {
         if (a === void 0) { a = 100; }
         var _this = _super.call(this) || this;
         _this.type = 'hsi';
+        _this.toStringValues = function () { return ({
+            h: _this.h,
+            s: _this.s,
+            i: _this.i,
+            a: _this.a
+        }); };
         _this.valueRangeCheck(h, 0, 360);
         _this.valueRangeCheck(s, 0, 100);
         _this.valueRangeCheck(i, 0, 100);
@@ -1247,9 +1397,6 @@ var hsi = /** @class */ (function (_super) {
         _this.a = a;
         return _this;
     }
-    hsi.prototype.toString = function () {
-        return "hsi: { h: ".concat(this.h, ", s: ").concat(this.s, ", i: ").concat(this.i, ", a: ").concat(this.a, " }");
-    };
     hsi.prototype.torgb = function (args) {
         return Convert_1.default.hsi2rgb(this, args.round, args.bitDepth);
     };
@@ -1279,6 +1426,14 @@ var hsp = /** @class */ (function (_super) {
         if (pr === void 0) { pr = 0.299; }
         var _this = _super.call(this) || this;
         _this.type = 'hsp';
+        _this.toStringValues = function () { return ({
+            h: _this.h,
+            s: _this.s,
+            p: _this.p,
+            a: _this.a,
+            pb: _this.pb,
+            pr: _this.pr
+        }); };
         _this.valueRangeCheck(h, 0, 360);
         _this.valueRangeCheck(s, 0, 100);
         _this.valueRangeCheck(p, 0, 100);
@@ -1291,13 +1446,10 @@ var hsp = /** @class */ (function (_super) {
         _this.p = p;
         _this.a = a;
         _this.pr = pr;
-        _this.pg = 1 - pr - pb;
         _this.pb = pb;
+        _this.pg = 1 - pr - pb;
         return _this;
     }
-    hsp.prototype.toString = function () {
-        return "hsp: { h: ".concat(this.h, ", s: ").concat(this.s, ", p: ").concat(this.p, ", a: ").concat(this.a, ", pr: ").concat(this.pr, ", pg: ").concat(this.pg, ", pb: ").concat(this.pb, " }");
-    };
     hsp.prototype.torgb = function (args) {
         return Convert_1.default.hsp2rgb(this, args.round, args.bitDepth);
     };
@@ -1318,6 +1470,12 @@ var cmyk = /** @class */ (function (_super) {
     function cmyk(c, m, y, k) {
         var _this = _super.call(this) || this;
         _this.type = 'cmyk';
+        _this.toStringValues = function () { return ({
+            c: _this.c,
+            m: _this.m,
+            y: _this.y,
+            k: _this.k,
+        }); };
         _this.valueRangeCheck(c, 0, 100, 'CMYK values must be between 0 and 100');
         _this.valueRangeCheck(m, 0, 100, 'CMYK values must be between 0 and 100');
         _this.valueRangeCheck(y, 0, 100, 'CMYK values must be between 0 and 100');
@@ -1328,9 +1486,6 @@ var cmyk = /** @class */ (function (_super) {
         _this.k = k;
         return _this;
     }
-    cmyk.prototype.toString = function () {
-        return "cmyk: { c: ".concat(this.c, ", m: ").concat(this.m, ", y: ").concat(this.y, ", k: ").concat(this.k, " }");
-    };
     cmyk.prototype.torgb = function (args) {
         return Convert_1.default.cmyk2rgb(this, args.round, args.bitDepth);
     };
@@ -1360,6 +1515,12 @@ var yiq = /** @class */ (function (_super) {
         if (normalized === void 0) { normalized = true; }
         var _this = _super.call(this) || this;
         _this.type = 'yiq';
+        _this.toStringValues = function () { return ({
+            y: _this.y,
+            i: _this.i,
+            q: _this.q,
+            normalized: _this.normalized,
+        }); };
         if (normalized) {
             _this.valueRangeCheck(y, 0, 255, 'Normalized Y value must be between 0 and 255');
             _this.valueRangeCheck(i, -128, 128, 'Normalized I value must be between -128 and 128');
@@ -1376,9 +1537,6 @@ var yiq = /** @class */ (function (_super) {
         _this.normalized = normalized;
         return _this;
     }
-    yiq.prototype.toString = function () {
-        return "yiq: { y: ".concat(this.y, ", i: ").concat(this.i, ", q: ").concat(this.q, ", normalized: ").concat(this.normalized, " }");
-    };
     yiq.prototype.torgb = function (args) {
         return Convert_1.default.yiq2rgb(this, args.round, args.bitDepth);
     };
@@ -1398,6 +1556,11 @@ var xyz = /** @class */ (function (_super) {
     function xyz(x, y, z) {
         var _this = _super.call(this) || this;
         _this.type = 'xyz';
+        _this.toStringValues = function () { return ({
+            x: _this.x,
+            y: _this.y,
+            z: _this.z,
+        }); };
         // this.valueRangeCheck(x, 0, 1, 'XYZ values must be between 0 and 1')
         // this.valueRangeCheck(y, 0, 1, 'XYZ values must be between 0 and 1')
         // this.valueRangeCheck(z, 0, 1, 'XYZ values must be between 0 and 1')
@@ -1406,9 +1569,6 @@ var xyz = /** @class */ (function (_super) {
         _this.z = z;
         return _this;
     }
-    xyz.prototype.toString = function () {
-        return "xyz: { x: ".concat(this.x, ", y: ").concat(this.y, ", z: ").concat(this.z, " }");
-    };
     xyz.prototype.torgb = function (args) {
         return Convert_1.default.xyz2rgb(this, args.colorSpace, args.referenceWhite, args.round, args.bitDepth);
     };
@@ -1423,6 +1583,11 @@ var xyy = /** @class */ (function (_super) {
     function xyy(x, y, yy) {
         var _this = _super.call(this) || this;
         _this.type = 'xyy';
+        _this.toStringValues = function () { return ({
+            x: _this.x,
+            y: _this.y,
+            yy: _this.yy,
+        }); };
         _this.x = x;
         _this.y = y;
         _this.yy = yy;
@@ -1430,9 +1595,6 @@ var xyy = /** @class */ (function (_super) {
     }
     xyy.prototype.torgb = function (args) {
         return Convert_1.default.xyz2rgb(this.toxyz(args), args.colorSpace, args.referenceWhite, args.round, args.bitDepth);
-    };
-    xyy.prototype.toString = function () {
-        return "xyy: { x: ".concat(this.x, ", y: ").concat(this.y, ", yy: ").concat(this.yy, " }");
     };
     xyy.prototype.toxyz = function (args) {
         return Convert_1.default.xyy2xyz(this);
@@ -1454,6 +1616,11 @@ var lab = /** @class */ (function (_super) {
     function lab(l, a, b) {
         var _this = _super.call(this) || this;
         _this.type = 'lab';
+        _this.toStringValues = function () { return ({
+            l: _this.l,
+            a: _this.a,
+            b: _this.b,
+        }); };
         _this.valueRangeCheck(l, 0, 100);
         if (typeof a === 'undefined')
             throw new Error('a undefined');
@@ -1464,9 +1631,6 @@ var lab = /** @class */ (function (_super) {
         _this.b = b;
         return _this;
     }
-    lab.prototype.toString = function () {
-        return "lab: { l: ".concat(this.l, ", a: ").concat(this.a, ", b: ").concat(this.b, " }");
-    };
     lab.prototype.torgb = function (args) {
         return Convert_1.default.xyz2rgb(this.toxyz(args), args.colorSpace, args.referenceWhite, args.round, args.bitDepth);
     };
@@ -1495,6 +1659,11 @@ var luv = /** @class */ (function (_super) {
     function luv(l, u, v) {
         var _this = _super.call(this) || this;
         _this.type = 'luv';
+        _this.toStringValues = function () { return ({
+            l: _this.l,
+            u: _this.u,
+            v: _this.v,
+        }); };
         _this.valueRangeCheck(l, 0, 100);
         // this.valueRangeCheck(u, -100, 100)
         // this.valueRangeCheck(v, -100, 100)
@@ -1507,9 +1676,6 @@ var luv = /** @class */ (function (_super) {
         _this.v = v;
         return _this;
     }
-    luv.prototype.toString = function () {
-        return "luv: { l: ".concat(this.l, ", u: ").concat(this.u, ", v: ").concat(this.v, " }");
-    };
     luv.prototype.torgb = function (args) {
         return Convert_1.default.xyz2rgb(this.toxyz(args), args.colorSpace, args.referenceWhite, args.round, args.bitDepth);
     };
@@ -1532,6 +1698,13 @@ var ypbpr = /** @class */ (function (_super) {
     function ypbpr(y, pb, pr, kb, kr) {
         var _this = _super.call(this) || this;
         _this.type = 'ypbpr';
+        _this.toStringValues = function () { return ({
+            y: _this.y,
+            pb: _this.pb,
+            pr: _this.pr,
+            kb: _this.kb,
+            kr: _this.kr,
+        }); };
         _this.valueRangeCheck(y, 0, 1);
         _this.valueRangeCheck(pb, -0.5, 0.5);
         _this.valueRangeCheck(pr, -0.5, 0.5);
@@ -1542,9 +1715,6 @@ var ypbpr = /** @class */ (function (_super) {
         _this.kr = kr;
         return _this;
     }
-    ypbpr.prototype.toString = function () {
-        return "ypbpr: { y: ".concat(this.y, ", pb: ").concat(this.pb, ", pr: ").concat(this.pr, ", kb: ").concat(this.kb, ", kr: ").concat(this.kr, " }");
-    };
     ypbpr.prototype.torgb = function (args) {
         if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
             throw new Error('Missing arguments kb and kr');
@@ -1571,6 +1741,15 @@ var ycbcr = /** @class */ (function (_super) {
     function ycbcr(y, cb, cr, yLower, yUpper, cLower, cUpper) {
         var _this = _super.call(this) || this;
         _this.type = 'ycbcr';
+        _this.toStringValues = function () { return ({
+            y: _this.y,
+            cb: _this.cb,
+            cr: _this.cr,
+            yLower: _this.yLower,
+            yUpper: _this.yUpper,
+            cLower: _this.cLower,
+            cUpper: _this.cUpper,
+        }); };
         _this.y = y;
         _this.cb = cb;
         _this.cr = cr;
@@ -1588,9 +1767,6 @@ var ycbcr = /** @class */ (function (_super) {
         _this.cUpper = cUpper;
         return _this;
     }
-    ycbcr.prototype.toString = function () {
-        return "ycbcr: { y: ".concat(this.y, ", cb: ").concat(this.cb, ", cr: ").concat(this.cr, ", yLower: ").concat(this.yLower, ", yUpper: ").concat(this.yUpper, ", cLower: ").concat(this.cLower, ", cUpper: ").concat(this.cUpper, " }");
-    };
     ycbcr.prototype.torgb = function (args) {
         if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
             throw new Error('Missing arguments kb and kr');
@@ -1619,13 +1795,13 @@ var nm = /** @class */ (function (_super) {
     function nm(wavelength) {
         var _this = _super.call(this) || this;
         _this.type = 'nm';
+        _this.toStringValues = function () { return ({
+            wavelength: _this.wavelength,
+        }); };
         _this.valueRangeCheck(wavelength, 200, 800, 'Wavelength (in nm) must fall between 200 and 800');
         _this.wavelength = wavelength;
         return _this;
     }
-    nm.prototype.toString = function () {
-        return "nm: { wavelength: ".concat(this.wavelength, " }");
-    };
     nm.prototype.torgb = function (args) {
         return Convert_1.default.nm2rgb(this, args.gamma, args.round, args.bitDepth);
     };
@@ -1637,13 +1813,13 @@ var kelvin = /** @class */ (function (_super) {
     function kelvin(k) {
         var _this = _super.call(this) || this;
         _this.type = 'kelvin';
+        _this.toStringValues = function () { return ({
+            k: _this.k,
+        }); };
         _this.valueRangeCheck(k, 1000, 40000, 'Temperature must fall between 1000 and 40000');
         _this.k = k;
         return _this;
     }
-    kelvin.prototype.toString = function () {
-        return "kelvin: { k: ".concat(this.k, " }");
-    };
     kelvin.prototype.torgb = function (args) {
         return Convert_1.default.kelvin2rgb(this, args.round, args.bitDepth);
     };
@@ -4588,16 +4764,68 @@ var Modify = /** @class */ (function () {
     Modify.rgbLighten = function (rgb, amount, round) {
         if (amount === void 0) { amount = 0.5; }
         if (round === void 0) { round = true; }
-        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
-        var rl = rgb.r + (100 - rgb.r) * realAmount;
-        var gl = rgb.g + (100 - rgb.g) * realAmount;
-        var bl = rgb.b + (100 - rgb.b) * realAmount;
+        var realAmount = Math.min(Math.max(amount, 0), 1);
+        var rl = rgb.r + (rgb.max - rgb.r) * realAmount;
+        var gl = rgb.g + (rgb.max - rgb.g) * realAmount;
+        var bl = rgb.b + (rgb.max - rgb.b) * realAmount;
         if (round) {
             rl = Math.round(rl);
             gl = Math.round(gl);
             bl = Math.round(bl);
         }
         return new Colors.rgb(rl, gl, bl, rgb.a);
+    };
+    Modify.cmykDarken = function (cmyk, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = Math.min(Math.max(amount, 0), 1);
+        var c2 = cmyk.c + (100 - cmyk.c) * realAmount;
+        var m2 = cmyk.m + (100 - cmyk.m) * realAmount;
+        var y2 = cmyk.y + (100 - cmyk.y) * realAmount;
+        var k2 = cmyk.k + (100 - cmyk.k) * realAmount;
+        if (round) {
+            c2 = Math.round(c2);
+            m2 = Math.round(m2);
+            y2 = Math.round(y2);
+            k2 = Math.round(k2);
+        }
+        return new Colors.cmyk(c2, m2, y2, k2);
+    };
+    Modify.cmykLighten = function (cmyk, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
+        var c2 = cmyk.c * realAmount;
+        var m2 = cmyk.m * realAmount;
+        var y2 = cmyk.y * realAmount;
+        var k2 = cmyk.k * realAmount;
+        if (round) {
+            c2 = Math.round(c2);
+            m2 = Math.round(m2);
+            y2 = Math.round(y2);
+            k2 = Math.round(k2);
+        }
+        return new Colors.cmyk(c2, m2, y2, k2);
+    };
+    Modify.cmykBlackDarken = function (cmyk, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = Math.min(Math.max(amount, 0), 1);
+        var k2 = cmyk.k + (100 - cmyk.k) * realAmount;
+        if (round) {
+            k2 = Math.round(k2);
+        }
+        return new Colors.cmyk(cmyk.c, cmyk.m, cmyk.y, k2);
+    };
+    Modify.cmykBlackLighten = function (cmyk, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
+        var k2 = cmyk.k * realAmount;
+        if (round) {
+            k2 = Math.round(k2);
+        }
+        return new Colors.cmyk(cmyk.c, cmyk.m, cmyk.y, k2);
     };
     Modify.hslDarken = function (hsl, amount, round) {
         if (amount === void 0) { amount = 0.5; }
@@ -4617,6 +4845,48 @@ var Modify = /** @class */ (function () {
             vLighter = Math.round(vLighter);
         return new Colors.hsl(hsl.h, hsl.s, vLighter, hsl.a);
     };
+    Modify.hsvDarken = function (hsv, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
+        var vDarker = hsv.v * realAmount;
+        if (round)
+            vDarker = Math.round(vDarker);
+        return new Colors.hsv(hsv.h, hsv.s, vDarker, hsv.a);
+    };
+    Modify.hsvLighten = function (hsv, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = Math.min(Math.max(amount, 0), 1);
+        var vLighter = hsv.v + (100 - hsv.v) * realAmount;
+        var sLighter = (1 - realAmount) * 100;
+        if (round) {
+            vLighter = Math.round(vLighter);
+            sLighter = Math.round(sLighter);
+        }
+        return new Colors.hsv(hsv.h, sLighter, vLighter, hsv.a);
+    };
+    Modify.hsiDarken = function (hsi, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
+        var vDarker = hsi.i * realAmount;
+        if (round)
+            vDarker = Math.round(vDarker);
+        return new Colors.hsi(hsi.h, hsi.s, vDarker, hsi.a);
+    };
+    Modify.hsiLighten = function (hsi, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = Math.min(Math.max(amount, 0), 1);
+        var vLighter = hsi.i + (100 - hsi.i) * realAmount;
+        var sLighter = (1 - realAmount) * 100;
+        if (round) {
+            vLighter = Math.round(vLighter);
+            sLighter = Math.round(sLighter);
+        }
+        return new Colors.hsi(hsi.h, sLighter, vLighter, hsi.a);
+    };
     Modify.hspDarken = function (hsp, amount, round) {
         if (amount === void 0) { amount = 0.5; }
         if (round === void 0) { round = true; }
@@ -4631,9 +4901,12 @@ var Modify = /** @class */ (function () {
         if (round === void 0) { round = true; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
         var pLighter = hsp.p + (100 - hsp.p) * realAmount;
-        if (round)
+        var sLighter = (1 - realAmount) * 100;
+        if (round) {
             pLighter = Math.round(pLighter);
-        return new Colors.hsp(hsp.h, hsp.s, pLighter, hsp.a, hsp.pb, hsp.pr);
+            sLighter = Math.round(sLighter);
+        }
+        return new Colors.hsp(hsp.h, sLighter, pLighter, hsp.a, hsp.pb, hsp.pr);
     };
     Modify.hslDesaturate = function (hsl, amount, round) {
         if (amount === void 0) { amount = 0.5; }
@@ -4647,7 +4920,7 @@ var Modify = /** @class */ (function () {
     Modify.hslSaturate = function (hsl, amount, round) {
         if (amount === void 0) { amount = 0.5; }
         if (round === void 0) { round = true; }
-        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
+        var realAmount = Math.min(Math.max(amount, 0), 1);
         var sMore = hsl.s + (100 - hsl.s) * realAmount;
         if (round)
             sMore = Math.round(sMore);
@@ -4665,11 +4938,47 @@ var Modify = /** @class */ (function () {
     Modify.hsvSaturate = function (hsv, amount, round) {
         if (amount === void 0) { amount = 0.5; }
         if (round === void 0) { round = true; }
-        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
+        var realAmount = Math.min(Math.max(amount, 0), 1);
         var sMore = hsv.s + (100 - hsv.s) * realAmount;
         if (round)
             sMore = Math.round(sMore);
         return new Colors.hsv(hsv.h, sMore, hsv.v, hsv.a);
+    };
+    Modify.hsiDesaturate = function (hsi, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
+        var sLess = hsi.s * realAmount;
+        if (round)
+            sLess = Math.round(sLess);
+        return new Colors.hsi(hsi.h, sLess, hsi.i, hsi.a);
+    };
+    Modify.hsiSaturate = function (hsi, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = Math.min(Math.max(amount, 0), 1);
+        var sMore = hsi.s + (100 - hsi.s) * realAmount;
+        if (round)
+            sMore = Math.round(sMore);
+        return new Colors.hsi(hsi.h, sMore, hsi.i, hsi.a);
+    };
+    Modify.hspDesaturate = function (hsp, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
+        var sLess = hsp.s * realAmount;
+        if (round)
+            sLess = Math.round(sLess);
+        return new Colors.hsp(hsp.h, sLess, hsp.p, hsp.a);
+    };
+    Modify.hspSaturate = function (hsp, amount, round) {
+        if (amount === void 0) { amount = 0.5; }
+        if (round === void 0) { round = true; }
+        var realAmount = Math.min(Math.max(amount, 0), 1);
+        var sMore = hsp.s + (100 - hsp.s) * realAmount;
+        if (round)
+            sMore = Math.round(sMore);
+        return new Colors.hsp(hsp.h, sMore, hsp.p, hsp.a);
     };
     return Modify;
 }());

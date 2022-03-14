@@ -3197,6 +3197,8 @@ html[data-theme='dark'] {
   --ifm-color-primary-light: #db3232;
   --ifm-color-primary-lighter: #eb4242;
   --ifm-color-primary-lightest: #fb5262;
+
+  /* --ifm-container-width-xl: 90%; */
   --ifm-code-font-size: 95%;
 }
 
