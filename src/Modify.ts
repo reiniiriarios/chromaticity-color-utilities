@@ -174,7 +174,7 @@ class Modify {
     let s3 = hsp1.s + (hsp2.s - hsp1.s) * amount
     let p3 = hsp1.p + (hsp2.p - hsp1.p) * amount
     let a3 = hsp1.a + (hsp2.a - hsp1.a) * amount
-    
+
     return new Colors.hsp(h3, s3, p3, a3)
   }
 
@@ -234,6 +234,26 @@ class Modify {
     let rl = rgb.r + (rgb.max - rgb.r) * realAmount
     let gl = rgb.g + (rgb.max - rgb.g) * realAmount
     let bl = rgb.b + (rgb.max - rgb.b) * realAmount
+    return new Colors.rgb(rl, gl, bl, rgb.a)
+  }
+
+  static rgb2Darken(rgb: Colors.rgb, amount: number = 0.5): Colors.rgb {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let distanceLeft = Math.max(rgb.r, rgb.g, rgb.b)
+    let changeValue = distanceLeft * realAmount
+    let rd = Math.max(0, rgb.r - changeValue)
+    let gd = Math.max(0, rgb.g - changeValue)
+    let bd = Math.max(0, rgb.b - changeValue)
+    return new Colors.rgb(rd, gd, bd, rgb.a)
+  }
+
+  static rgb2Lighten(rgb: Colors.rgb, amount: number = 0.5): Colors.rgb {
+    let realAmount = Math.min(Math.max(amount, 0), 1)
+    let distanceLeft = rgb.max - Math.min(rgb.r, rgb.g, rgb.b)
+    let changeValue = distanceLeft * realAmount
+    let rl = Math.min(rgb.r + changeValue, rgb.max)
+    let gl = Math.min(rgb.g + changeValue, rgb.max)
+    let bl = Math.min(rgb.b + changeValue, rgb.max)
     return new Colors.rgb(rl, gl, bl, rgb.a)
   }
 

@@ -323,6 +323,14 @@ export abstract class colorType {
               args.amount
             )
             break
+          case 'rgb2':
+          case 'rgb2a':
+          case 'rgba2':
+            modified = Modify.rgb2Darken(
+              this.torgb({ round: false }),
+              args.amount
+            )
+            break
           case 'hsl':
           case 'hsla':
           case 'lightness':
@@ -413,6 +421,14 @@ export abstract class colorType {
           case 'rgb':
           case 'rgba':
             modified = Modify.rgbLighten(
+              this.torgb({ round: false }),
+              args.amount
+            )
+            break
+          case 'rgb2':
+          case 'rgb2a':
+          case 'rgba2':
+            modified = Modify.rgb2Lighten(
               this.torgb({ round: false }),
               args.amount
             )
@@ -678,8 +694,7 @@ export abstract class colorType {
           this,
           args.method ? args.method.toLowerCase() : 'hsl',
           args.colors,
-          distance ?? 1,
-          args.round ?? true
+          distance ?? 1
         )
         break
       case 'tint':
@@ -696,8 +711,7 @@ export abstract class colorType {
           this,
           args.method ? args.method.toLowerCase() : 'hsl',
           args.colors,
-          distance ?? 1,
-          args.round ?? true
+          distance ?? 1
         )
         break
       case 'tintshade':
