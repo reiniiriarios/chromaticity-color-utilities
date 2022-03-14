@@ -467,7 +467,12 @@ export abstract class colorType {
       case 'desaturate':
       case 'desat':
         if (typeof args.method === 'undefined') {
-          args.method = 'hsl'
+          if (['hsl','hsi','hsv','hsp'].includes(og)) {
+            args.method = og
+          }
+          else {
+            args.method = 'hsl'
+          }
         }
         switch (args.method) {
           case 'hsv':
@@ -516,7 +521,12 @@ export abstract class colorType {
       case 'saturate':
       case 'sat':
         if (typeof args.method === 'undefined') {
-          args.method = 'hsl'
+          if (['hsl','hsi','hsv','hsp'].includes(og)) {
+            args.method = og
+          }
+          else {
+            args.method = 'hsl'
+          }
         }
         switch (args.method) {
           case 'hsv':
