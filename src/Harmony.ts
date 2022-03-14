@@ -198,8 +198,8 @@ class Harmony {
           )
         }
         break
-      case 'rgb':
-      case 'rgba':
+      case 'rgb2':
+      case 'rgba2':
         let rgb: Colors.rgb = color.to('rgb', { round: false })
         start = Math.max(rgb.r, rgb.g, rgb.b)
         end = start * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
@@ -216,8 +216,8 @@ class Harmony {
           )
         }
         break
-      case 'rgb2':
-      case 'rgba2':
+      case 'rgb':
+      case 'rgba':
         let rgb2: Colors.rgb = color.to('rgb', { round: false })
         let rEnd = rgb2.r * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
         let gEnd = rgb2.g * (1 - Math.min(Math.max(distanceToBlack, 0), 1))
@@ -360,8 +360,8 @@ class Harmony {
           )
         }
         break
-      case 'rgb':
-      case 'rgba':
+      case 'rgb2':
+      case 'rgba2':
         let rgb: Colors.rgb = color.to('rgb', { round: false })
         start = Math.min(rgb.r, rgb.g, rgb.b)
         end =
@@ -379,8 +379,8 @@ class Harmony {
           )
         }
         break
-      case 'rgb2':
-      case 'rgba2':
+      case 'rgb':
+      case 'rgba':
         let rgb2: Colors.rgb = color.to('rgb', { round: false })
         let rEnd =
           rgb2.r +
@@ -670,8 +670,8 @@ class Harmony {
           )
         }
         break
-      case 'rgb':
-      case 'rgba':
+      case 'rgb2':
+      case 'rgba2':
         let rgb: Colors.rgb = color.to('rgb', { round: false })
         let maxVal = Math.max(rgb.r, rgb.g, rgb.b)
         let minVal = Math.min(rgb.r, rgb.g, rgb.b)
@@ -720,8 +720,8 @@ class Harmony {
           )
         }
         break
-      case 'rgb2':
-      case 'rgba2':
+      case 'rgb':
+      case 'rgba':
         let rgb2: Colors.rgb = color.to('rgb', { round: false })
         let tREnd: number,
           tGEnd: number,
