@@ -258,8 +258,6 @@ class Harmony {
           }
         }
 
-        console.log(color.to('hex').toString(), 'd:', distance, 'v:', hsv.v, 'v^-1:', 100 - hsv.v, 'dS:', distanceShade)
-
         for (let i = 0; i < colors; i++) {
           scheme.push(Modify.hsvDarken(hsv, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
         }
