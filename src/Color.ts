@@ -67,6 +67,7 @@ class Color {
         case 'kelvin':
         case 'k':
         case 'temperature':
+        case 'colortemperature':
         case 'temp':
           from = new Colors.kelvin(value)
           break
