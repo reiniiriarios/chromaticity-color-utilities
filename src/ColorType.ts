@@ -77,21 +77,19 @@ export abstract class colorType {
 
   protected type: string = 'colorType'
 
-  bitDepth?: number
-  normalized?: boolean
-  colorSpace?: string
-  referenceWhite?: string
-  kb?: number
-  kr?: number
-  pb?: number
-  pr?: number
-  yLower?: number
-  yUpper?: number
-  cLower?: number
-  cUpper?: number
-  gamma?: number
-
-  a?: number
+  // private bitDepth?: number
+  // private normalized?: boolean
+  // private colorSpace?: string
+  // private referenceWhite?: string
+  // private kb?: number
+  // private kr?: number
+  // private pb?: number
+  // private pr?: number
+  // private yLower?: number
+  // private yUpper?: number
+  // private cLower?: number
+  // private cUpper?: number
+  // private gamma?: number
 
   /**
    * Returns generic simplified object for toString()
@@ -100,6 +98,29 @@ export abstract class colorType {
    * @returns {object}
    */
   protected toStringValues = (): object => ({})
+
+  /**
+   * Returns any property of type boolean|number|string, otherwise returns undefined
+   * Useful for passing values as arguments back and forth
+   * 
+   * @param   {string} propertyName 
+   * @returns {any}
+   */
+  private get(propertyName: string): any {
+    if (['boolean', 'number', 'string'].includes(typeof this[propertyName as keyof object])) {
+      return this[propertyName as keyof object]
+    }
+    return undefined
+  }
+
+  /**
+   * Set alpha
+   * Extend on color types with an alpha value
+   * 
+   * @param   {number}  value 
+   * @returns {boolean}
+   */
+  protected setAlpha(value: number): boolean { return false }
 
   /**
    * Stringify object
@@ -212,21 +233,21 @@ export abstract class colorType {
     let og: string = this.getType()
     let ogargs: newColorArgs = {
       round: args.round,
-      bitDepth: this.bitDepth,
-      normalize: this.normalized,
-      colorSpace: this.colorSpace,
-      referenceWhite: this.referenceWhite,
-      kb: this.kb,
-      kr: this.kr,
-      pb: this.pb,
-      pr: this.pr,
-      yLower: this.yLower,
-      yUpper: this.yUpper,
-      cLower: this.cLower,
-      cUpper: this.cUpper,
-      gamma: this.gamma,
+      bitDepth: this.get('bitDepth'),
+      normalize: this.get('normalized'),
+      colorSpace: this.get('colorSpace'),
+      referenceWhite: this.get('referenceWhite'),
+      kb: this.get('kb'),
+      kr: this.get('kr'),
+      pb: this.get('pb'),
+      pr: this.get('pr'),
+      yLower: this.get('yLower'),
+      yUpper: this.get('yUpper'),
+      cLower: this.get('cLower'),
+      cUpper: this.get('cUpper'),
+      gamma: this.get('gamma'),
     }
-    let ogalpha: number | undefined = this.a
+    let ogalpha: number | undefined = this.get('a')
     let modified: any
     switch (modification) {
       case 'blend':
@@ -640,7 +661,7 @@ export abstract class colorType {
     }
 
     let ogModified: T = modified.to(og, ogargs)
-    if (typeof ogalpha !== 'undefined') ogModified.a = ogalpha // otherwise this gets lost on some modifications
+    if (typeof ogalpha !== 'undefined') ogModified.setAlpha(ogalpha) // otherwise this gets lost on some modifications
 
     return ogModified
   }
@@ -650,22 +671,22 @@ export abstract class colorType {
     let og = this.getType()
     let ogargs: newColorArgs = {
       round: args.round,
-      bitDepth: this.bitDepth,
-      normalize: this.normalized,
+      bitDepth: this.get('bitDepth'),
+      normalize: this.get('normalized'),
       // Don't pass the following or the color will shift
-      // colorSpace: this.colorSpace,
-      // referenceWhite: this.referenceWhite,
-      kb: this.kb,
-      kr: this.kr,
-      pb: this.pb,
-      pr: this.pr,
-      yLower: this.yLower,
-      yUpper: this.yUpper,
-      cLower: this.cLower,
-      cUpper: this.cUpper,
-      gamma: this.gamma,
+      // colorSpace: this.get('colorSpace'),
+      // referenceWhite: this.get('referenceWhite'),
+      kb: this.get('kb'),
+      kr: this.get('kr'),
+      pb: this.get('pb'),
+      pr: this.get('pr'),
+      yLower: this.get('yLower'),
+      yUpper: this.get('yUpper'),
+      cLower: this.get('cLower'),
+      cUpper: this.get('cUpper'),
+      gamma: this.get('gamma'),
     }
-    let ogalpha: number | undefined = this.a
+    let ogalpha: number | undefined = this.get('a')
     let intScheme: colorType[]
     let distance: number | undefined
     type = type.toLowerCase()
@@ -785,7 +806,7 @@ export abstract class colorType {
     let ogScheme: T[] = []
     intScheme.forEach((color) => {
       let ogColor: T = color.to(og, ogargs)
-      if (typeof ogalpha !== 'undefined') ogColor.a = ogalpha // otherwise this gets lost on some modifications
+      if (typeof ogalpha !== 'undefined') ogColor.setAlpha(ogalpha) // otherwise this gets lost on some modifications
       ogScheme.push(ogColor)
     })
     return ogScheme

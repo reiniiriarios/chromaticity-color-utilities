@@ -26,8 +26,8 @@ class Harmony {
    * @return {Colors.hsv[]}
    */
   static complement(hsv: Colors.hsv): Colors.hsv[] {
-    let hueComplement = Modify.hueShift(hsv.h, 180)
-    return [hsv, new Colors.hsv(hueComplement, hsv.s, hsv.v)]
+    let hueComplement = Modify.hueShift(hsv.getH(), 180)
+    return [hsv, new Colors.hsv(hueComplement, hsv.getS(), hsv.getV())]
   }
 
   /**
@@ -38,13 +38,13 @@ class Harmony {
    * @return {Array<Colors.hsv>}
    */
   static analogous(hsv: Colors.hsv, angle: number = 30): Array<Colors.hsv> {
-    let aHue1 = Modify.hueShift(hsv.h, angle)
-    let aHue2 = Modify.hueShift(hsv.h, angle * -1)
+    let aHue1 = Modify.hueShift(hsv.getH(), angle)
+    let aHue2 = Modify.hueShift(hsv.getH(), angle * -1)
 
     return [
       hsv,
-      new Colors.hsv(aHue1, hsv.s, hsv.v),
-      new Colors.hsv(aHue2, hsv.s, hsv.v),
+      new Colors.hsv(aHue1, hsv.getS(), hsv.getV()),
+      new Colors.hsv(aHue2, hsv.getS(), hsv.getV()),
     ]
   }
 
@@ -83,15 +83,15 @@ class Harmony {
    * @return {Array<Colors.hsv>}
    */
   static tetradic(hsv: Colors.hsv, angle: number = 45): Array<Colors.hsv> {
-    let hue2 = Modify.hueShift(hsv.h, angle)
-    let hue3 = Modify.hueShift(hsv.h, angle + 180)
-    let hue4 = Modify.hueShift(hsv.h, 180)
+    let hue2 = Modify.hueShift(hsv.getH(), angle)
+    let hue3 = Modify.hueShift(hsv.getH(), angle + 180)
+    let hue4 = Modify.hueShift(hsv.getH(), 180)
 
     return [
       hsv,
-      new Colors.hsv(hue2, hsv.s, hsv.v),
-      new Colors.hsv(hue3, hsv.s, hsv.v),
-      new Colors.hsv(hue4, hsv.s, hsv.v),
+      new Colors.hsv(hue2, hsv.getS(), hsv.getV()),
+      new Colors.hsv(hue3, hsv.getS(), hsv.getV()),
+      new Colors.hsv(hue4, hsv.getS(), hsv.getV()),
     ]
   }
 
@@ -230,11 +230,11 @@ class Harmony {
       case 'hsla':
         let hsl: Colors.hsl = color.to('hsl', { round: false })
         if (typeof distanceShade === 'undefined') {
-          if (100 - hsl.l < hsl.l) {
-            distanceShade = (100 - hsl.l) / 50 * distance
+          if (100 - hsl.getL() < hsl.getL()) {
+            distanceShade = (100 - hsl.getL()) / 50 * distance
           } else {
             distanceShade = distance
-            distance = hsl.l / 50 * distanceShade
+            distance = hsl.getL() / 50 * distanceShade
           }
         }
 
@@ -250,11 +250,11 @@ class Harmony {
       case 'hsva':
         let hsv: Colors.hsv = color.to('hsv', { round: false })
         if (typeof distanceShade === 'undefined') {
-          if (100 - hsv.v < hsv.v) {
-            distanceShade = (100 - hsv.v) / 50 * distance
+          if (100 - hsv.getV() < hsv.getV()) {
+            distanceShade = (100 - hsv.getV()) / 50 * distance
           } else {
             distanceShade = distance
-            distance = hsv.v / 50 * distanceShade
+            distance = hsv.getV() / 50 * distanceShade
           }
         }
 
@@ -270,11 +270,11 @@ class Harmony {
       case 'hsia':
         let hsi: Colors.hsi = color.to('hsi', { round: false })
         if (typeof distanceShade === 'undefined') {
-          if (100 - hsi.i < hsi.i) {
-            distanceShade = (100 - hsi.i) / 50 * distance
+          if (100 - hsi.getI() < hsi.getI()) {
+            distanceShade = (100 - hsi.getI()) / 50 * distance
           } else {
             distanceShade = distance
-            distance = hsi.i / 50 * distanceShade
+            distance = hsi.getI() / 50 * distanceShade
           }
         }
 
@@ -290,11 +290,11 @@ class Harmony {
       case 'hspa':
         let hsp: Colors.hsp = color.to('hsp', { round: false })
         if (typeof distanceShade === 'undefined') {
-          if (100 - hsp.p < hsp.p) {
-            distanceShade = (100 - hsp.p) / 50 * distance
+          if (100 - hsp.getP() < hsp.getP()) {
+            distanceShade = (100 - hsp.getP()) / 50 * distance
           } else {
             distanceShade = distance
-            distance = hsp.p / 50 * distanceShade
+            distance = hsp.getP() / 50 * distanceShade
           }
         }
 
@@ -310,12 +310,12 @@ class Harmony {
       case 'rgba2':
         let rgb2: Colors.rgb = color.to('rgb', { round: false })
         if (typeof distanceShade === 'undefined') {
-          let avg = (rgb2.r + rgb2.g + rgb2.b) / 3
-          if (rgb2.max - avg < avg) {
-            distanceShade = (rgb2.max - Math.min(rgb2.r, rgb2.g, rgb2.b)) / rgb2.max / 2 * distance
+          let avg = (rgb2.getR() + rgb2.getG() + rgb2.getB()) / 3
+          if (rgb2.getMax() - avg < avg) {
+            distanceShade = (rgb2.getMax() - Math.min(rgb2.getR(), rgb2.getG(), rgb2.getB())) / rgb2.getMax() / 2 * distance
           } else {
             distanceShade = distance
-            distance = Math.max(rgb2.r, rgb2.g, rgb2.b) / rgb2.max / 2 * distanceShade
+            distance = Math.max(rgb2.getR(), rgb2.getG(), rgb2.getB()) / rgb2.getMax() / 2 * distanceShade
           }
         }
 
@@ -331,12 +331,12 @@ class Harmony {
       case 'rgba':
         let rgb: Colors.rgb = color.to('rgb', { round: false })
         if (typeof distanceShade === 'undefined') {
-          let avg = (rgb.r + rgb.g + rgb.b) / 3
-          if (rgb.max - avg < avg) {
-            distanceShade = (rgb.max - Math.min(rgb.r, rgb.g, rgb.b)) / rgb.max / 2 * distance
+          let avg = (rgb.getR() + rgb.getG() + rgb.getB()) / 3
+          if (rgb.getMax() - avg < avg) {
+            distanceShade = (rgb.getMax() - Math.min(rgb.getR(), rgb.getG(), rgb.getB())) / rgb.getMax() / 2 * distance
           } else {
             distanceShade = distance
-            distance = Math.max(rgb.r, rgb.g, rgb.b) / rgb.max / 2 * distanceShade
+            distance = Math.max(rgb.getR(), rgb.getG(), rgb.getB()) / rgb.getMax() / 2 * distanceShade
           }
         }
 
@@ -351,11 +351,11 @@ class Harmony {
       case 'cmyk':
         let cmyk: Colors.cmyk = color.to('cmyk', { round: false })
         if (typeof distanceShade === 'undefined') {
-          if (cmyk.k < 50) {
-            distanceShade = cmyk.k / 50 * distance
+          if (cmyk.getK() < 50) {
+            distanceShade = cmyk.getK() / 50 * distance
           } else {
             distanceShade = distance
-            distance = (100 - cmyk.k) / 50 * distanceShade
+            distance = (100 - cmyk.getK()) / 50 * distanceShade
           }
         }
 

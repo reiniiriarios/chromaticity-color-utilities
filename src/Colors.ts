@@ -20,11 +20,11 @@ import { newColorArgs, colorType } from './ColorType'
 export class rgbNormalized extends colorType {
   protected type: string = 'rgbNormalized'
 
-  r: number
-  g: number
-  b: number
-  a: number
-  gamma?: number
+  private r: number
+  private g: number
+  private b: number
+  private a: number
+  private gamma?: number
 
   constructor(r: number, g: number, b: number, a: number = 1, gamma?: number) {
     super()
@@ -43,18 +43,43 @@ export class rgbNormalized extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      r: this.r,
-      g: this.g,
-      b: this.b,
-      a: this.a,
-      gamma: this.gamma
+    r: this.r,
+    g: this.g,
+    b: this.b,
+    a: this.a,
+    gamma: this.gamma,
   })
+  
+  public getR = (): number => {
+    return this.r
+  }
+  public getG = (): number => {
+    return this.g
+  }
+  public getB = (): number => {
+    return this.b
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+  public getGamma = (): number | undefined => {
+    return this.gamma
+  }
+  public gety = (): number | undefined => this.getGamma()
+  public getY = (): number | undefined => this.getGamma()
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, 1)
+    this.a = value
+    return true
+  }
 }
 
 export class hex extends colorType {
   protected type: string = 'hex'
 
-  hex: string
+  private hex: string
 
   constructor(hex: string | number) {
     super()
@@ -83,8 +108,12 @@ export class hex extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      hex: this.hex
+    hex: this.hex,
   })
+
+  public getHex = (): string => {
+    return this.hex
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hex2rgb(this, args.bitDepth)
@@ -98,12 +127,12 @@ export class hex extends colorType {
 export class rgb extends colorType {
   protected type: string = 'rgb'
 
-  r: number
-  g: number
-  b: number
-  a: number
-  bitDepth: number
-  max: number
+  private r: number
+  private g: number
+  private b: number
+  private a: number
+  private bitDepth: number
+  private max: number
 
   constructor(
     r: number,
@@ -134,12 +163,38 @@ export class rgb extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      r: this.r,
-      g: this.g,
-      b: this.b,
-      a: this.a,
-      bitDepth: this.bitDepth
+    r: this.r,
+    g: this.g,
+    b: this.b,
+    a: this.a,
+    bitDepth: this.bitDepth,
   })
+  
+  public getR = (): number => {
+    return this.r
+  }
+  public getG = (): number => {
+    return this.g
+  }
+  public getB = (): number => {
+    return this.b
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+  public getMax = (): number => {
+    return this.max
+  }
+  public getBitDepth = (): number => {
+    return this.bitDepth
+  }
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, this.max)
+    this.a = value
+    return true
+  }
 
   protected torgb(args: newColorArgs): rgb {
     if (args.round !== false) {
@@ -155,12 +210,12 @@ export class rgb extends colorType {
 export class rec709rgb extends colorType {
   protected type: string = 'rec709rgb'
 
-  r: number
-  g: number
-  b: number
-  a: number
-  bitDepth: number
-  max: number
+  private r: number
+  private g: number
+  private b: number
+  private a: number
+  private bitDepth: number
+  private max: number
 
   constructor(
     r: number,
@@ -191,12 +246,38 @@ export class rec709rgb extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      r: this.r,
-      g: this.g,
-      b: this.b,
-      a: this.a,
-      bitDepth: this.bitDepth
+    r: this.r,
+    g: this.g,
+    b: this.b,
+    a: this.a,
+    bitDepth: this.bitDepth,
   })
+  
+  public getR = (): number => {
+    return this.r
+  }
+  public getG = (): number => {
+    return this.g
+  }
+  public getB = (): number => {
+    return this.b
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+  public getMax = (): number => {
+    return this.max
+  }
+  public getBitDepth = (): number => {
+    return this.bitDepth
+  }
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, this.max)
+    this.a = value
+    return true
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.rec709rgb2rgb(this, args.round, args.bitDepth)
@@ -216,12 +297,12 @@ export class rec709rgb extends colorType {
 export class rec2020rgb extends colorType {
   protected type: string = 'rec2020rgb'
 
-  r: number
-  g: number
-  b: number
-  a: number
-  bitDepth: number
-  max: number
+  private r: number
+  private g: number
+  private b: number
+  private a: number
+  private bitDepth: number
+  private max: number
 
   constructor(
     r: number,
@@ -252,12 +333,38 @@ export class rec2020rgb extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      r: this.r,
-      g: this.g,
-      b: this.b,
-      a: this.a,
-      bitDepth: this.bitDepth
+    r: this.r,
+    g: this.g,
+    b: this.b,
+    a: this.a,
+    bitDepth: this.bitDepth,
   })
+  
+  public getR = (): number => {
+    return this.r
+  }
+  public getG = (): number => {
+    return this.g
+  }
+  public getB = (): number => {
+    return this.b
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+  public getMax = (): number => {
+    return this.max
+  }
+  public getBitDepth = (): number => {
+    return this.bitDepth
+  }
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, this.max)
+    this.a = value
+    return true
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.rec2020rgb2rgb(this, args.round, args.bitDepth)
@@ -277,10 +384,10 @@ export class rec2020rgb extends colorType {
 export class hsv extends colorType {
   protected type: string = 'hsv'
 
-  h: number
-  s: number
-  v: number
-  a: number
+  private h: number
+  private s: number
+  private v: number
+  private a: number
 
   constructor(h: number, s: number, v: number, a: number = 100) {
     super()
@@ -295,11 +402,31 @@ export class hsv extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      h: this.h,
-      s: this.s,
-      v: this.v,
-      a: this.a
+    h: this.h,
+    s: this.s,
+    v: this.v,
+    a: this.a,
   })
+  
+  public getH = (): number => {
+    return this.h
+  }
+  public getS = (): number => {
+    return this.s
+  }
+  public getV = (): number => {
+    return this.v
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, 100)
+    this.a = value
+    return true
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hsv2rgb(this, args.round, args.bitDepth)
@@ -327,10 +454,10 @@ export class hsv extends colorType {
 export class hsl extends colorType {
   protected type: string = 'hsl'
 
-  h: number
-  s: number
-  l: number
-  a: number
+  private h: number
+  private s: number
+  private l: number
+  private a: number
 
   constructor(h: number, s: number, l: number, a: number = 100) {
     super()
@@ -345,11 +472,31 @@ export class hsl extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      h: this.h,
-      s: this.s,
-      l: this.l,
-      a: this.a
+    h: this.h,
+    s: this.s,
+    l: this.l,
+    a: this.a,
   })
+  
+  public getH = (): number => {
+    return this.h
+  }
+  public getS = (): number => {
+    return this.s
+  }
+  public getL = (): number => {
+    return this.l
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, 100)
+    this.a = value
+    return true
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hsl2rgb(this, args.round, args.bitDepth)
@@ -377,10 +524,10 @@ export class hsl extends colorType {
 export class hsi extends colorType {
   protected type: string = 'hsi'
 
-  h: number
-  s: number
-  i: number
-  a: number
+  private h: number
+  private s: number
+  private i: number
+  private a: number
 
   constructor(h: number, s: number, i: number, a: number = 100) {
     super()
@@ -395,11 +542,31 @@ export class hsi extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      h: this.h,
-      s: this.s,
-      i: this.i,
-      a: this.a
+    h: this.h,
+    s: this.s,
+    i: this.i,
+    a: this.a,
   })
+  
+  public getH = (): number => {
+    return this.h
+  }
+  public getS = (): number => {
+    return this.s
+  }
+  public getI = (): number => {
+    return this.i
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, 100)
+    this.a = value
+    return true
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hsi2rgb(this, args.round, args.bitDepth)
@@ -427,13 +594,13 @@ export class hsi extends colorType {
 export class hsp extends colorType {
   protected type: string = 'hsp'
 
-  h: number
-  s: number
-  p: number
-  a: number
-  pr: number
-  pg: number
-  pb: number
+  private h: number
+  private s: number
+  private p: number
+  private a: number
+  private pr: number
+  private pg: number
+  private pb: number
 
   constructor(
     h: number,
@@ -461,13 +628,42 @@ export class hsp extends colorType {
   }
 
   protected toStringValues = (): object => ({
-      h: this.h,
-      s: this.s,
-      p: this.p,
-      a: this.a,
-      pb: this.pb,
-      pr: this.pr
+    h: this.h,
+    s: this.s,
+    p: this.p,
+    a: this.a,
+    pb: this.pb,
+    pr: this.pr,
   })
+  
+  public getH = (): number => {
+    return this.h
+  }
+  public getS = (): number => {
+    return this.s
+  }
+  public getP = (): number => {
+    return this.p
+  }
+  public getPb = (): number => {
+    return this.pb
+  }
+  public getPr = (): number => {
+    return this.pr
+  }
+  public getPg = (): number => {
+    return 1 - this.pr - this.pb
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, 100)
+    this.a = value
+    return true
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.hsp2rgb(this, args.round, args.bitDepth)
@@ -487,10 +683,10 @@ export class hsp extends colorType {
 export class cmyk extends colorType {
   protected type: string = 'cmyk'
 
-  c: number
-  m: number
-  y: number
-  k: number
+  private c: number
+  private m: number
+  private y: number
+  private k: number
 
   constructor(c: number, m: number, y: number, k: number) {
     super()
@@ -511,6 +707,19 @@ export class cmyk extends colorType {
     k: this.k,
   })
 
+  public getC = (): number => {
+    return this.c
+  }
+  public getM = (): number => {
+    return this.m
+  }
+  public getY = (): number => {
+    return this.y
+  }
+  public getK = (): number => {
+    return this.k
+  }
+
   protected torgb(args: newColorArgs): rgb {
     return Convert.cmyk2rgb(this, args.round, args.bitDepth)
   }
@@ -529,10 +738,10 @@ export class cmyk extends colorType {
 export class yiq extends colorType {
   protected type: string = 'yiq'
 
-  y: number
-  i: number
-  q: number
-  normalized: boolean
+  private y: number
+  private i: number
+  private q: number
+  private normalized: boolean
 
   /**
    * YIQ
@@ -596,6 +805,20 @@ export class yiq extends colorType {
     normalized: this.normalized,
   })
 
+  public getY = (): number => {
+    return this.y
+  }
+  public getI = (): number => {
+    return this.i
+  }
+  public getQ = (): number => {
+    return this.q
+  }
+  public isNormalized = (): boolean => {
+    return this.normalized
+  }
+  public getNormalized = (): boolean => this.isNormalized()
+
   protected torgb(args: newColorArgs): rgb {
     return Convert.yiq2rgb(this, args.round, args.bitDepth)
   }
@@ -613,9 +836,9 @@ export class yiq extends colorType {
 export class xyz extends colorType {
   protected type: string = 'xyz'
 
-  x: number
-  y: number
-  z: number
+  private x: number
+  private y: number
+  private z: number
 
   constructor(x: number, y: number, z: number) {
     super()
@@ -632,6 +855,16 @@ export class xyz extends colorType {
     y: this.y,
     z: this.z,
   })
+
+  public getX = (): number => {
+    return this.x
+  }
+  public getY = (): number => {
+    return this.y
+  }
+  public getZ = (): number => {
+    return this.z
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.xyz2rgb(
@@ -651,9 +884,9 @@ export class xyz extends colorType {
 export class xyy extends colorType {
   protected type: string = 'xyy'
 
-  x: number
-  y: number
-  yy: number
+  private x: number
+  private y: number
+  private yy: number
 
   constructor(x: number, y: number, yy: number) {
     super()
@@ -670,6 +903,19 @@ export class xyy extends colorType {
       args.round,
       args.bitDepth
     )
+  }
+
+  public getX = (): number => {
+    return this.x
+  }
+  public getY = (): number => {
+    return this.y
+  }
+  public gety = () => {
+    throw new Error('Use getY() and getYY() for the y and Y values of xyY')
+  }
+  public getYY = (): number => {
+    return this.yy
   }
 
   protected toStringValues = (): object => ({
@@ -690,9 +936,9 @@ export class xyy extends colorType {
 export class lab extends colorType {
   protected type: string = 'lab'
 
-  l: number
-  a: number
-  b: number
+  private l: number
+  private a: number
+  private b: number
 
   /**
    *
@@ -715,6 +961,16 @@ export class lab extends colorType {
     a: this.a,
     b: this.b,
   })
+
+  public getL = (): number => {
+    return this.l
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getB = (): number => {
+    return this.b
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.xyz2rgb(
@@ -743,9 +999,9 @@ export class lab extends colorType {
 export class luv extends colorType {
   protected type: string = 'luv'
 
-  l: number
-  u: number
-  v: number
+  private l: number
+  private u: number
+  private v: number
 
   /**
    *
@@ -770,6 +1026,16 @@ export class luv extends colorType {
     u: this.u,
     v: this.v,
   })
+
+  public getL = (): number => {
+    return this.l
+  }
+  public getU = (): number => {
+    return this.u
+  }
+  public getV = (): number => {
+    return this.v
+  }
 
   protected torgb(args: newColorArgs): rgb {
     return Convert.xyz2rgb(
@@ -798,11 +1064,11 @@ export class luv extends colorType {
 export class ypbpr extends colorType {
   protected type: string = 'ypbpr'
 
-  y: number
-  pb: number
-  pr: number
-  kb: number
-  kr: number
+  private y: number
+  private pb: number
+  private pr: number
+  private kb: number
+  private kr: number
 
   constructor(y: number, pb: number, pr: number, kb: number, kr: number) {
     super()
@@ -814,6 +1080,28 @@ export class ypbpr extends colorType {
     this.pr = pr
     this.kb = kb
     this.kr = kr
+  }
+
+  public getY = (): number => {
+    return this.y
+  }
+  public getPb = (): number => {
+    return this.pb
+  }
+  public getPr = (): number => {
+    return this.pr
+  }
+  public getPg = (): number => {
+    return 1 - this.pr - this.pb
+  }
+  public getKb = (): number => {
+    return this.kb
+  }
+  public getKr = (): number => {
+    return this.kr
+  }
+  public getKg = (): number => {
+    return 1 - this.kr - this.kb
   }
 
   protected toStringValues = (): object => ({
@@ -858,13 +1146,13 @@ export class ypbpr extends colorType {
 export class ycbcr extends colorType {
   protected type: string = 'ycbcr'
 
-  y: number
-  cb: number
-  cr: number
-  yLower: number
-  yUpper: number
-  cLower: number
-  cUpper: number
+  private y: number
+  private cb: number
+  private cr: number
+  private yLower: number
+  private yUpper: number
+  private cLower: number
+  private cUpper: number
 
   constructor(
     y: number,
@@ -912,6 +1200,28 @@ export class ycbcr extends colorType {
     )
   }
 
+  public getY = (): number => {
+    return this.y
+  }
+  public getCb = (): number => {
+    return this.cb
+  }
+  public getCr = (): number => {
+    return this.cr
+  }
+  public getYLower = (): number => {
+    return this.yLower
+  }
+  public getYUpper = (): number => {
+    return this.yUpper
+  }
+  public getCLower = (): number => {
+    return this.cLower
+  }
+  public getCUpper = (): number => {
+    return this.cUpper
+  }
+
   protected toypbpr(args: newColorArgs): ypbpr {
     if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {
       throw new Error('Missing arguments kb and kr')
@@ -932,7 +1242,7 @@ export class ycbcr extends colorType {
 export class nm extends colorType {
   protected type: string = 'nm'
 
-  wavelength: number
+  private wavelength: number
 
   constructor(wavelength: number) {
     super()
@@ -943,6 +1253,10 @@ export class nm extends colorType {
       'Wavelength (in nm) must fall between 200 and 800'
     )
     this.wavelength = wavelength
+  }
+
+  public getWavelength = (): number => {
+    return this.wavelength
   }
 
   protected toStringValues = (): object => ({
@@ -957,7 +1271,7 @@ export class nm extends colorType {
 export class kelvin extends colorType {
   protected type: string = 'kelvin'
 
-  k: number
+  private k: number
 
   constructor(k: number) {
     super()
@@ -969,6 +1283,11 @@ export class kelvin extends colorType {
     )
     this.k = k
   }
+
+  public getK = (): number => {
+    return this.k
+  }
+  public getKelvin = (): number => this.getK()
 
   protected toStringValues = (): object => ({
     k: this.k,

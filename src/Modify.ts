@@ -48,10 +48,10 @@ class Modify {
     amount: number = 0.5
   ): Colors.rgb {
     amount = Math.min(Math.max(amount, 0), 1)
-    let r3 = rgb1.r + (rgb2.r - rgb1.r) * amount
-    let g3 = rgb1.g + (rgb2.g - rgb1.g) * amount
-    let b3 = rgb1.b + (rgb2.b - rgb1.b) * amount
-    let a3 = rgb1.a + (rgb2.a - rgb1.a) * amount
+    let r3 = rgb1.getR() + (rgb2.getR() - rgb1.getR()) * amount
+    let g3 = rgb1.getG() + (rgb2.getG() - rgb1.getG()) * amount
+    let b3 = rgb1.getB() + (rgb2.getB() - rgb1.getB()) * amount
+    let a3 = rgb1.getA() + (rgb2.getA() - rgb1.getA()) * amount
 
     return new Colors.rgb(r3, g3, b3, a3)
   }
@@ -72,15 +72,15 @@ class Modify {
   ): Colors.hsv {
     amount = Math.min(Math.max(amount, 0), 1)
     let hueDiff: number
-    if (Math.abs(hsv2.h - hsv1.h) > 180) {
-      hueDiff = 360 - (hsv2.h - hsv1.h) * amount * -1
+    if (Math.abs(hsv2.getH() - hsv1.getH()) > 180) {
+      hueDiff = 360 - (hsv2.getH() - hsv1.getH()) * amount * -1
     } else {
-      hueDiff = (hsv2.h - hsv1.h) * amount
+      hueDiff = (hsv2.getH() - hsv1.getH()) * amount
     }
-    let h3 = this.hueShift(hsv1.h, hueDiff)
-    let s3 = hsv1.s + (hsv2.s - hsv1.s) * amount
-    let v3 = hsv1.v + (hsv2.v - hsv1.v) * amount
-    let a3 = hsv1.a + (hsv2.a - hsv1.a) * amount
+    let h3 = this.hueShift(hsv1.getH(), hueDiff)
+    let s3 = hsv1.getS() + (hsv2.getS() - hsv1.getS()) * amount
+    let v3 = hsv1.getV() + (hsv2.getV() - hsv1.getV()) * amount
+    let a3 = hsv1.getA() + (hsv2.getA() - hsv1.getA()) * amount
 
     return new Colors.hsv(h3, s3, v3, a3)
   }
@@ -102,16 +102,16 @@ class Modify {
     amount = Math.min(Math.max(amount, 0), 1)
     
     let hueDiff: number
-    if (Math.abs(hsl2.h - hsl1.h) > 180) {
-      hueDiff = 360 - (hsl2.h - hsl1.h) * amount * -1
+    if (Math.abs(hsl2.getH() - hsl1.getH()) > 180) {
+      hueDiff = 360 - (hsl2.getH() - hsl1.getH()) * amount * -1
     } else {
-      hueDiff = (hsl2.h - hsl1.h) * amount
+      hueDiff = (hsl2.getH() - hsl1.getH()) * amount
     }
 
-    let h3 = this.hueShift(hsl1.h, hueDiff)
-    let s3 = hsl1.s + (hsl2.s - hsl1.s) * amount
-    let l3 = hsl1.l + (hsl2.l - hsl1.l) * amount
-    let a3 = hsl1.a + (hsl2.a - hsl1.a) * amount
+    let h3 = this.hueShift(hsl1.getH(), hueDiff)
+    let s3 = hsl1.getS() + (hsl2.getS() - hsl1.getS()) * amount
+    let l3 = hsl1.getL() + (hsl2.getL() - hsl1.getL()) * amount
+    let a3 = hsl1.getA() + (hsl2.getA() - hsl1.getA()) * amount
 
     return new Colors.hsl(h3, s3, l3, a3)
   }
@@ -133,16 +133,16 @@ class Modify {
     amount = Math.min(Math.max(amount, 0), 1)
 
     let hueDiff: number
-    if (Math.abs(hsi2.h - hsi1.h) > 180) {
-      hueDiff = 360 - (hsi2.h - hsi1.h) * amount * -1
+    if (Math.abs(hsi2.getH() - hsi1.getH()) > 180) {
+      hueDiff = 360 - (hsi2.getH() - hsi1.getH()) * amount * -1
     } else {
-      hueDiff = (hsi2.h - hsi1.h) * amount
+      hueDiff = (hsi2.getH() - hsi1.getH()) * amount
     }
 
-    let h3 = this.hueShift(hsi1.h, hueDiff)
-    let s3 = hsi1.s + (hsi2.s - hsi1.s) * amount
-    let i3 = hsi1.i + (hsi2.i - hsi1.i) * amount
-    let a3 = hsi1.a + (hsi2.a - hsi1.a) * amount
+    let h3 = this.hueShift(hsi1.getH(), hueDiff)
+    let s3 = hsi1.getS() + (hsi2.getS() - hsi1.getS()) * amount
+    let i3 = hsi1.getI() + (hsi2.getI() - hsi1.getI()) * amount
+    let a3 = hsi1.getA() + (hsi2.getA() - hsi1.getA()) * amount
 
     return new Colors.hsi(h3, s3, i3, a3)
   }
@@ -164,16 +164,16 @@ class Modify {
     amount = Math.min(Math.max(amount, 0), 1)
 
     let hueDiff: number
-    if (Math.abs(hsp2.h - hsp1.h) > 180) {
-      hueDiff = 360 - (hsp2.h - hsp1.h) * amount * -1
+    if (Math.abs(hsp2.getH() - hsp1.getH()) > 180) {
+      hueDiff = 360 - (hsp2.getH() - hsp1.getH()) * amount * -1
     } else {
-      hueDiff = (hsp2.h - hsp1.h) * amount
+      hueDiff = (hsp2.getH() - hsp1.getH()) * amount
     }
 
-    let h3 = this.hueShift(hsp1.h, hueDiff)
-    let s3 = hsp1.s + (hsp2.s - hsp1.s) * amount
-    let p3 = hsp1.p + (hsp2.p - hsp1.p) * amount
-    let a3 = hsp1.a + (hsp2.a - hsp1.a) * amount
+    let h3 = this.hueShift(hsp1.getH(), hueDiff)
+    let s3 = hsp1.getS() + (hsp2.getS() - hsp1.getS()) * amount
+    let p3 = hsp1.getP() + (hsp2.getP() - hsp1.getP()) * amount
+    let a3 = hsp1.getA() + (hsp2.getA() - hsp1.getA()) * amount
 
     return new Colors.hsp(h3, s3, p3, a3)
   }
@@ -193,10 +193,10 @@ class Modify {
     amount: number = 0.5
   ): Colors.cmyk {
     amount = Math.min(Math.max(amount, 0), 1)
-    let c3 = cmyk1.c + (cmyk2.c - cmyk1.c) * amount
-    let m3 = cmyk1.m + (cmyk2.m - cmyk1.m) * amount
-    let y3 = cmyk1.y + (cmyk2.y - cmyk1.y) * amount
-    let k3 = cmyk1.k + (cmyk2.k - cmyk1.k) * amount
+    let c3 = cmyk1.getC() + (cmyk2.getC() - cmyk1.getC()) * amount
+    let m3 = cmyk1.getM() + (cmyk2.getM() - cmyk1.getM()) * amount
+    let y3 = cmyk1.getY() + (cmyk2.getY() - cmyk1.getY()) * amount
+    let k3 = cmyk1.getK() + (cmyk2.getK() - cmyk1.getK()) * amount
     return new Colors.cmyk(c3, m3, y3, k3)
   }
 
@@ -215,9 +215,9 @@ class Modify {
     amount: number = 0.5
   ): Colors.yiq {
     amount = Math.min(Math.max(amount, 0), 1)
-    let y = c1.y + (c2.y - c1.y) * amount
-    let i = c1.i + (c2.i - c1.i) * amount
-    let q = c1.q + (c2.q - c1.q) * amount
+    let y = c1.getY() + (c2.getY() - c1.getY()) * amount
+    let i = c1.getI() + (c2.getI() - c1.getI()) * amount
+    let q = c1.getQ() + (c2.getQ() - c1.getQ()) * amount
     return new Colors.yiq(y, i, q)
   }
 
@@ -227,9 +227,9 @@ class Modify {
     amount: number = 0.5
   ): Colors.lab {
     amount = Math.min(Math.max(amount, 0), 1)
-    let l = c1.l + (c2.l - c1.l) * amount
-    let a = c1.a + (c2.a - c1.a) * amount
-    let b = c1.b + (c2.b - c1.b) * amount
+    let l = c1.getL() + (c2.getL() - c1.getL()) * amount
+    let a = c1.getA() + (c2.getA() - c1.getA()) * amount
+    let b = c1.getB() + (c2.getB() - c1.getB()) * amount
     return new Colors.lab(l, a, b)
   }
 
@@ -239,234 +239,234 @@ class Modify {
     amount: number = 0.5
   ): Colors.luv {
     amount = Math.min(Math.max(amount, 0), 1)
-    let l = c1.l + (c2.l - c1.l) * amount
-    let u = c1.u + (c2.u - c1.u) * amount
-    let v = c1.v + (c2.v - c1.v) * amount
+    let l = c1.getL() + (c2.getL() - c1.getL()) * amount
+    let u = c1.getU() + (c2.getU() - c1.getU()) * amount
+    let v = c1.getV() + (c2.getV() - c1.getV()) * amount
     return new Colors.luv(l, u, v)
   }
 
   static rgbDarken(rgb: Colors.rgb, amount: number = 0.5): Colors.rgb {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let rd = rgb.r * realAmount
-    let gd = rgb.g * realAmount
-    let bd = rgb.b * realAmount
-    return new Colors.rgb(rd, gd, bd, rgb.a)
+    let rd = rgb.getR() * realAmount
+    let gd = rgb.getG() * realAmount
+    let bd = rgb.getB() * realAmount
+    return new Colors.rgb(rd, gd, bd, rgb.getA())
   }
 
   static rgbLighten(rgb: Colors.rgb, amount: number = 0.5): Colors.rgb {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let rl = rgb.r + (rgb.max - rgb.r) * realAmount
-    let gl = rgb.g + (rgb.max - rgb.g) * realAmount
-    let bl = rgb.b + (rgb.max - rgb.b) * realAmount
-    return new Colors.rgb(rl, gl, bl, rgb.a)
+    let rl = rgb.getR() + (rgb.getMax() - rgb.getR()) * realAmount
+    let gl = rgb.getG() + (rgb.getMax() - rgb.getG()) * realAmount
+    let bl = rgb.getB() + (rgb.getMax() - rgb.getB()) * realAmount
+    return new Colors.rgb(rl, gl, bl, rgb.getA())
   }
 
   static rgb2Darken(rgb: Colors.rgb, amount: number = 0.5): Colors.rgb {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let distanceLeft = Math.max(rgb.r, rgb.g, rgb.b)
+    let distanceLeft = Math.max(rgb.getR(), rgb.getG(), rgb.getB())
     let changeValue = distanceLeft * realAmount
-    let rd = Math.max(0, rgb.r - changeValue)
-    let gd = Math.max(0, rgb.g - changeValue)
-    let bd = Math.max(0, rgb.b - changeValue)
-    return new Colors.rgb(rd, gd, bd, rgb.a)
+    let rd = Math.max(0, rgb.getR() - changeValue)
+    let gd = Math.max(0, rgb.getG() - changeValue)
+    let bd = Math.max(0, rgb.getB() - changeValue)
+    return new Colors.rgb(rd, gd, bd, rgb.getA())
   }
 
   static rgb2Lighten(rgb: Colors.rgb, amount: number = 0.5): Colors.rgb {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let distanceLeft = rgb.max - Math.min(rgb.r, rgb.g, rgb.b)
+    let distanceLeft = rgb.getMax() - Math.min(rgb.getR(), rgb.getG(), rgb.getB())
     let changeValue = distanceLeft * realAmount
-    let rl = Math.min(rgb.r + changeValue, rgb.max)
-    let gl = Math.min(rgb.g + changeValue, rgb.max)
-    let bl = Math.min(rgb.b + changeValue, rgb.max)
-    return new Colors.rgb(rl, gl, bl, rgb.a)
+    let rl = Math.min(rgb.getR() + changeValue, rgb.getMax())
+    let gl = Math.min(rgb.getG() + changeValue, rgb.getMax())
+    let bl = Math.min(rgb.getB() + changeValue, rgb.getMax())
+    return new Colors.rgb(rl, gl, bl, rgb.getA())
   }
 
   static cmykDarken(cmyk: Colors.cmyk, amount: number = 0.5): Colors.cmyk {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let c2 = cmyk.c + (100 - cmyk.c) * realAmount
-    let m2 = cmyk.m + (100 - cmyk.m) * realAmount
-    let y2 = cmyk.y + (100 - cmyk.y) * realAmount
-    let k2 = cmyk.k + (100 - cmyk.k) * realAmount
+    let c2 = cmyk.getC() + (100 - cmyk.getC()) * realAmount
+    let m2 = cmyk.getM() + (100 - cmyk.getM()) * realAmount
+    let y2 = cmyk.getY() + (100 - cmyk.getY()) * realAmount
+    let k2 = cmyk.getK() + (100 - cmyk.getK()) * realAmount
     return new Colors.cmyk(c2, m2, y2, k2)
   }
 
   static cmykLighten(cmyk: Colors.cmyk, amount: number = 0.5): Colors.cmyk {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let c2 = cmyk.c * realAmount
-    let m2 = cmyk.m * realAmount
-    let y2 = cmyk.y * realAmount
-    let k2 = cmyk.k * realAmount
+    let c2 = cmyk.getC() * realAmount
+    let m2 = cmyk.getM() * realAmount
+    let y2 = cmyk.getY() * realAmount
+    let k2 = cmyk.getK() * realAmount
     return new Colors.cmyk(c2, m2, y2, k2)
   }
 
   static cmyk2Darken(cmyk: Colors.cmyk, amount: number = 0.5): Colors.cmyk {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let k2 = cmyk.k + (100 - cmyk.k) * realAmount
-    return new Colors.cmyk(cmyk.c, cmyk.m, cmyk.y, k2)
+    let k2 = cmyk.getK() + (100 - cmyk.getK()) * realAmount
+    return new Colors.cmyk(cmyk.getC(), cmyk.getM(), cmyk.getY(), k2)
   }
 
   static cmyk2Lighten(cmyk: Colors.cmyk, amount: number = 0.5): Colors.cmyk {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let k2 = cmyk.k * realAmount
-    return new Colors.cmyk(cmyk.c, cmyk.m, cmyk.y, k2)
+    let k2 = cmyk.getK() * realAmount
+    return new Colors.cmyk(cmyk.getC(), cmyk.getM(), cmyk.getY(), k2)
   }
 
   static hslDarken(hsl: Colors.hsl, amount: number = 0.5): Colors.hsl {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let vDarker = hsl.l * realAmount
-    return new Colors.hsl(hsl.h, hsl.s, vDarker, hsl.a)
+    let vDarker = hsl.getL() * realAmount
+    return new Colors.hsl(hsl.getH(), hsl.getS(), vDarker, hsl.getA())
   }
 
   static hslLighten(hsl: Colors.hsl, amount: number = 0.5): Colors.hsl {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let vLighter = hsl.l + (100 - hsl.l) * realAmount
-    return new Colors.hsl(hsl.h, hsl.s, vLighter, hsl.a)
+    let vLighter = hsl.getL() + (100 - hsl.getL()) * realAmount
+    return new Colors.hsl(hsl.getH(), hsl.getS(), vLighter, hsl.getA())
   }
 
   static hsvDarken(hsv: Colors.hsv, amount: number = 0.5): Colors.hsv {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let vDarker = hsv.v * realAmount
-    return new Colors.hsv(hsv.h, hsv.s, vDarker, hsv.a)
+    let vDarker = hsv.getV() * realAmount
+    return new Colors.hsv(hsv.getH(), hsv.getS(), vDarker, hsv.getA())
   }
 
   static hsvLighten(hsv: Colors.hsv, amount: number = 0.5): Colors.hsv {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let vLighter: number = hsv.v + (100 - hsv.v) * realAmount
-    let sLighter: number = hsv.s - realAmount * hsv.s
-    return new Colors.hsv(hsv.h, sLighter, vLighter, hsv.a)
+    let vLighter: number = hsv.getV() + (100 - hsv.getV()) * realAmount
+    let sLighter: number = hsv.getS() - realAmount * hsv.getS()
+    return new Colors.hsv(hsv.getH(), sLighter, vLighter, hsv.getA())
   }
 
   static hsiDarken(hsi: Colors.hsi, amount: number = 0.5): Colors.hsi {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let vDarker = hsi.i * realAmount
-    return new Colors.hsi(hsi.h, hsi.s, vDarker, hsi.a)
+    let vDarker = hsi.getI() * realAmount
+    return new Colors.hsi(hsi.getH(), hsi.getS(), vDarker, hsi.getA())
   }
 
   static hsiLighten(hsi: Colors.hsi, amount: number = 0.5): Colors.hsi {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let vLighter = hsi.i + (100 - hsi.i) * realAmount
-    let sLighter: number = hsi.s - realAmount * hsi.s
-    return new Colors.hsi(hsi.h, sLighter, vLighter, hsi.a)
+    let vLighter = hsi.getI() + (100 - hsi.getI()) * realAmount
+    let sLighter: number = hsi.getS() - realAmount * hsi.getS()
+    return new Colors.hsi(hsi.getH(), sLighter, vLighter, hsi.getA())
   }
 
   static hspDarken(hsp: Colors.hsp, amount: number = 0.5): Colors.hsp {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let pDarker = hsp.p * realAmount
-    return new Colors.hsp(hsp.h, hsp.s, pDarker, hsp.a, hsp.pb, hsp.pr)
+    let pDarker = hsp.getP() * realAmount
+    return new Colors.hsp(hsp.getH(), hsp.getS(), pDarker, hsp.getA(), hsp.getPb(), hsp.getPr())
   }
 
   static hspLighten(hsp: Colors.hsp, amount: number = 0.5): Colors.hsp {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let pLighter = hsp.p + (100 - hsp.p) * realAmount
-    let sLighter: number = hsp.s - realAmount * hsp.s
-    return new Colors.hsp(hsp.h, sLighter, pLighter, hsp.a, hsp.pb, hsp.pr)
+    let pLighter = hsp.getP() + (100 - hsp.getP()) * realAmount
+    let sLighter: number = hsp.getS() - realAmount * hsp.getS()
+    return new Colors.hsp(hsp.getH(), sLighter, pLighter, hsp.getA(), hsp.getPb(), hsp.getPr())
   }
 
   static labDarken(lab: Colors.lab, amount: number = 0.5): Colors.lab {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let lDarker = lab.l * realAmount
-    let aDarker = lab.a * realAmount
-    let bDarker = lab.b * realAmount
+    let lDarker = lab.getL() * realAmount
+    let aDarker = lab.getA() * realAmount
+    let bDarker = lab.getB() * realAmount
     return new Colors.lab(lDarker, aDarker, bDarker)
   }
 
   static labLighten(lab: Colors.lab, amount: number = 0.5): Colors.lab {
     let realAmount = Math.min(Math.max(amount, 0), 1)
     let realAmountAB = 1 - Math.min(Math.max(amount, 0), 1)
-    let lLighter = lab.l + (100 - lab.l) * realAmount
-    let aLighter = lab.a * realAmountAB
-    let bLighter = lab.b * realAmountAB
+    let lLighter = lab.getL() + (100 - lab.getL()) * realAmount
+    let aLighter = lab.getA() * realAmountAB
+    let bLighter = lab.getB() * realAmountAB
     return new Colors.lab(lLighter, aLighter, bLighter)
   }
 
   static lab2Darken(lab: Colors.lab, amount: number = 0.5): Colors.lab {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let lDarker = lab.l * realAmount
-    return new Colors.lab(lDarker, lab.a, lab.b)
+    let lDarker = lab.getL() * realAmount
+    return new Colors.lab(lDarker, lab.getA(), lab.getB())
   }
 
   static lab2Lighten(lab: Colors.lab, amount: number = 0.5): Colors.lab {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let lLighter = lab.l + (100 - lab.l) * realAmount
-    return new Colors.lab(lLighter, lab.a, lab.b)
+    let lLighter = lab.getL() + (100 - lab.getL()) * realAmount
+    return new Colors.lab(lLighter, lab.getA(), lab.getB())
   }
 
   static luvDarken(luv: Colors.luv, amount: number = 0.5): Colors.luv {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let lDarker = luv.l * realAmount
-    let uDarker = luv.u * realAmount
-    let vDarker = luv.v * realAmount
+    let lDarker = luv.getL() * realAmount
+    let uDarker = luv.getU() * realAmount
+    let vDarker = luv.getV() * realAmount
     return new Colors.luv(lDarker, uDarker, vDarker)
   }
 
   static luvLighten(luv: Colors.luv, amount: number = 0.5): Colors.luv {
     let realAmount = Math.min(Math.max(amount, 0), 1)
     let realAmountAB = 1 - Math.min(Math.max(amount, 0), 1)
-    let lLighter = luv.l + (100 - luv.l) * realAmount
-    let uLighter = luv.u * realAmountAB
-    let vLighter = luv.v * realAmountAB
+    let lLighter = luv.getL() + (100 - luv.getL()) * realAmount
+    let uLighter = luv.getU() * realAmountAB
+    let vLighter = luv.getV() * realAmountAB
     return new Colors.luv(lLighter, uLighter, vLighter)
   }
 
   // breaks as L* approaches 0
   static luv2Darken(luv: Colors.luv, amount: number = 0.5): Colors.luv {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let lDarker = luv.l * realAmount
-    return new Colors.luv(lDarker, luv.u, luv.v)
+    let lDarker = luv.getL() * realAmount
+    return new Colors.luv(lDarker, luv.getU(), luv.getV())
   }
 
   static luv2Lighten(luv: Colors.luv, amount: number = 0.5): Colors.luv {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let lLighter = luv.l + (100 - luv.l) * realAmount
-    return new Colors.luv(lLighter, luv.u, luv.v)
+    let lLighter = luv.getL() + (100 - luv.getL()) * realAmount
+    return new Colors.luv(lLighter, luv.getU(), luv.getV())
   }
 
   static hslDesaturate(hsl: Colors.hsl, amount: number = 0.5): Colors.hsl {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let sLess = hsl.s * realAmount
-    return new Colors.hsl(hsl.h, sLess, hsl.l, hsl.a)
+    let sLess = hsl.getS() * realAmount
+    return new Colors.hsl(hsl.getH(), sLess, hsl.getL(), hsl.getA())
   }
 
   static hslSaturate(hsl: Colors.hsl, amount: number = 0.5): Colors.hsl {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let sMore = hsl.s + (100 - hsl.s) * realAmount
-    return new Colors.hsl(hsl.h, sMore, hsl.l, hsl.a)
+    let sMore = hsl.getS() + (100 - hsl.getS()) * realAmount
+    return new Colors.hsl(hsl.getH(), sMore, hsl.getL(), hsl.getA())
   }
 
   static hsvDesaturate(hsv: Colors.hsv, amount: number = 0.5): Colors.hsv {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let sLess = hsv.s * realAmount
-    return new Colors.hsv(hsv.h, sLess, hsv.v, hsv.a)
+    let sLess = hsv.getS() * realAmount
+    return new Colors.hsv(hsv.getH(), sLess, hsv.getV(), hsv.getA())
   }
 
   static hsvSaturate(hsv: Colors.hsv, amount: number = 0.5): Colors.hsv {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let sMore = hsv.s + (100 - hsv.s) * realAmount
-    return new Colors.hsv(hsv.h, sMore, hsv.v, hsv.a)
+    let sMore = hsv.getS() + (100 - hsv.getS()) * realAmount
+    return new Colors.hsv(hsv.getH(), sMore, hsv.getV(), hsv.getA())
   }
 
   static hsiDesaturate(hsi: Colors.hsi, amount: number = 0.5): Colors.hsi {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let sLess = hsi.s * realAmount
-    return new Colors.hsi(hsi.h, sLess, hsi.i, hsi.a)
+    let sLess = hsi.getS() * realAmount
+    return new Colors.hsi(hsi.getH(), sLess, hsi.getI(), hsi.getA())
   }
 
   static hsiSaturate(hsi: Colors.hsi, amount: number = 0.5): Colors.hsi {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let sMore = hsi.s + (100 - hsi.s) * realAmount
-    return new Colors.hsi(hsi.h, sMore, hsi.i, hsi.a)
+    let sMore = hsi.getS() + (100 - hsi.getS()) * realAmount
+    return new Colors.hsi(hsi.getH(), sMore, hsi.getI(), hsi.getA())
   }
 
   static hspDesaturate(hsp: Colors.hsp, amount: number = 0.5): Colors.hsp {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
-    let sLess = hsp.s * realAmount
-    return new Colors.hsp(hsp.h, sLess, hsp.p, hsp.a)
+    let sLess = hsp.getS() * realAmount
+    return new Colors.hsp(hsp.getH(), sLess, hsp.getP(), hsp.getA())
   }
 
   static hspSaturate(hsp: Colors.hsp, amount: number = 0.5): Colors.hsp {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let sMore = hsp.s + (100 - hsp.s) * realAmount
-    return new Colors.hsp(hsp.h, sMore, hsp.p, hsp.a)
+    let sMore = hsp.getS() + (100 - hsp.getS()) * realAmount
+    return new Colors.hsp(hsp.getH(), sMore, hsp.getP(), hsp.getA())
   }
 }
 

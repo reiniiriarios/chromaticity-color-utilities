@@ -29,10 +29,10 @@ class Convert {
    */
   static rgbNormalize(rgb: Colors.rgb): Colors.rgbNormalized {
     return new Colors.rgbNormalized(
-      rgb.r / rgb.max,
-      rgb.g / rgb.max,
-      rgb.b / rgb.max,
-      rgb.a / rgb.max
+      rgb.getR() / rgb.getMax(),
+      rgb.getG() / rgb.getMax(),
+      rgb.getB() / rgb.getMax(),
+      rgb.getA() / rgb.getMax()
     )
   }
 
@@ -58,11 +58,11 @@ class Convert {
     } else {
       throw new Error('Gamma not found for specificed color space')
     }
-    let r = Math.pow(rgb.r, gammaN)
-    let g = Math.pow(rgb.g, gammaN)
-    let b = Math.pow(rgb.b, gammaN)
+    let r = Math.pow(rgb.getR(), gammaN)
+    let g = Math.pow(rgb.getG(), gammaN)
+    let b = Math.pow(rgb.getB(), gammaN)
 
-    return new Colors.rgbNormalized(r, g, b, rgb.a, gammaN)
+    return new Colors.rgbNormalized(r, g, b, rgb.getA(), gammaN)
   }
 
   /////////// HUE, SATURATION, VALUE/LIGHTNESS/BRIGHTNESS ///////////
@@ -76,9 +76,9 @@ class Convert {
    * @return {Colors.hsv}
    */
   static rgb2hsv(rgb: Colors.rgb, round: boolean = true): Colors.hsv {
-    let r = rgb.r / rgb.max
-    let g = rgb.g / rgb.max
-    let b = rgb.b / rgb.max
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     let max = Math.max(r, g, b)
     let min = Math.min(r, g, b)
@@ -98,7 +98,7 @@ class Convert {
     while (hue >= 360) hue -= 360
     while (hue < 0) hue += 360
 
-    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 100)
+    let a = Util.scaleValueRange(rgb.getA(), 0, rgb.getMax(), 0, 100)
 
     if (round) {
       hue = Math.round(hue)
@@ -119,9 +119,9 @@ class Convert {
    * @return {Colors.hsl}
    */
   static rgb2hsl(rgb: Colors.rgb, round: boolean = true): Colors.hsl {
-    let r = rgb.r / rgb.max
-    let g = rgb.g / rgb.max
-    let b = rgb.b / rgb.max
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     let max = Math.max(r, g, b)
     let min = Math.min(r, g, b)
@@ -142,7 +142,7 @@ class Convert {
     while (hue >= 360) hue -= 360
     while (hue < 0) hue += 360
 
-    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 100)
+    let a = Util.scaleValueRange(rgb.getA(), 0, rgb.getMax(), 0, 100)
 
     if (round) {
       hue = Math.round(hue)
@@ -163,9 +163,9 @@ class Convert {
    * @return {Colors.hsi}
    */
   static rgb2hsi(rgb: Colors.rgb, round: boolean = true): Colors.hsi {
-    let r = rgb.r / rgb.max
-    let g = rgb.g / rgb.max
-    let b = rgb.b / rgb.max
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     let i = (r + g + b) / 3
 
@@ -185,7 +185,7 @@ class Convert {
       i *= 100
     }
 
-    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 100, round)
+    let a = Util.scaleValueRange(rgb.getA(), 0, rgb.getMax(), 0, 100, round)
 
     if (round) {
       h = Math.round(h)
@@ -208,9 +208,9 @@ class Convert {
     rgb: Colors.rgb,
     round: boolean = true
   ): Colors.hsi {
-    let r = rgb.r / rgb.max
-    let g = rgb.g / rgb.max
-    let b = rgb.b / rgb.max
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     let max = Math.max(r, g, b)
     let min = Math.min(r, g, b)
@@ -236,7 +236,7 @@ class Convert {
     }
     int *= 100
 
-    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 100)
+    let a = Util.scaleValueRange(rgb.getA(), 0, rgb.getMax(), 0, 100)
 
     if (round) {
       hue = Math.round(hue)
@@ -264,15 +264,15 @@ class Convert {
   ): Colors.rgb {
     let r, g, b
     let max = 2 ** bitDepth - 1
-    if (hsv.s == 0) {
-      let all = hsv.v / 100
+    if (hsv.getS() == 0) {
+      let all = hsv.getV() / 100
       r = all
       g = all
       b = all
     } else {
-      let h = hsv.h / 60
-      let s = hsv.s / 100
-      let v = hsv.v / 100
+      let h = hsv.getH() / 60
+      let s = hsv.getS() / 100
+      let v = hsv.getV() / 100
       let i = Math.floor(h)
       let f = h - i
       let p = v * (1 - s)
@@ -319,7 +319,7 @@ class Convert {
     g *= max
     b *= max
 
-    let a = Util.scaleValueRange(hsv.a, 0, 100, 0, max, round)
+    let a = Util.scaleValueRange(hsv.getA(), 0, 100, 0, max, round)
 
     if (round) {
       r = Math.round(r)
@@ -341,8 +341,8 @@ class Convert {
    * @return {Colors.hsl}
    */
   static hsv2hsl(hsv: Colors.hsv, round: boolean = true): Colors.hsl {
-    let s = hsv.s / 100
-    let v = hsv.v / 100
+    let s = hsv.getS() / 100
+    let v = hsv.getV() / 100
 
     let lit = v * (1 - s / 2)
 
@@ -361,7 +361,7 @@ class Convert {
       sat = Math.round(sat)
     }
 
-    return new Colors.hsl(hsv.h, sat, lit, hsv.a)
+    return new Colors.hsl(hsv.getH(), sat, lit, hsv.getA())
   }
 
   /**
@@ -389,8 +389,8 @@ class Convert {
    * @return {Colors.hsv}
    */
   static hsl2hsv(hsl: Colors.hsl, round: boolean = true): Colors.hsv {
-    let s = hsl.s / 100
-    let l = hsl.l / 100
+    let s = hsl.getS() / 100
+    let l = hsl.getL() / 100
 
     let val = l + s * Math.min(l, 1 - l)
     let sat = val ? 2 * (1 - l / val) : 0
@@ -403,7 +403,7 @@ class Convert {
       sat = Math.round(sat)
     }
 
-    return new Colors.hsv(hsl.h, sat, val, hsl.a)
+    return new Colors.hsv(hsl.getH(), sat, val, hsl.getA())
   }
 
   /**
@@ -420,9 +420,9 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
-    let h = hsl.h / 60
-    let s = hsl.s / 100
-    let l = hsl.l / 100
+    let h = hsl.getH() / 60
+    let s = hsl.getS() / 100
+    let l = hsl.getL() / 100
     let r
     let g
     let b
@@ -484,7 +484,7 @@ class Convert {
     g *= max
     b *= max
 
-    let a = Util.scaleValueRange(hsl.a, 0, 100, 0, max, round)
+    let a = Util.scaleValueRange(hsl.getA(), 0, 100, 0, max, round)
 
     if (round) {
       r = Math.round(r)
@@ -525,9 +525,9 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
-    let h = hsi.h - 360 * Math.floor(hsi.h / 360)
-    let s = hsi.s / 100
-    let i = hsi.i / 100
+    let h = hsi.getH() - 360 * Math.floor(hsi.getH() / 360)
+    let s = hsi.getS() / 100
+    let i = hsi.getI() / 100
 
     let r, g, b
     if (h < 120) {
@@ -573,7 +573,7 @@ class Convert {
       b = Math.round(b)
     }
 
-    let a = Util.scaleValueRange(hsi.a, 0, 100, 0, 2 ** bitDepth - 1, round)
+    let a = Util.scaleValueRange(hsi.getA(), 0, 100, 0, 2 ** bitDepth - 1, round)
 
     return new Colors.rgb(r, g, b, a, bitDepth)
   }
@@ -592,9 +592,9 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
-    let h = hsi.h / 60
-    let s = hsi.s / 100
-    let i = hsi.i / 100
+    let h = hsi.getH() / 60
+    let s = hsi.getS() / 100
+    let i = hsi.getI() / 100
 
     let m = i * (1 - s)
 
@@ -657,7 +657,7 @@ class Convert {
     g *= max
     b *= max
 
-    let a = Util.scaleValueRange(hsi.a, 0, 100, 0, max, round)
+    let a = Util.scaleValueRange(hsi.getA(), 0, 100, 0, max, round)
 
     if (round) {
       r = Math.round(r)
@@ -689,10 +689,9 @@ class Convert {
 
     let Pg = 1 - Pr - Pb
 
-    let maxVal = 2 ** rgb.bitDepth - 1
-    let r = rgb.r / maxVal
-    let g = rgb.g / maxVal
-    let b = rgb.b / maxVal
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     let pb = Math.sqrt(
       Math.pow(r, 2) * Pr + Math.pow(g, 2) * Pg + Math.pow(b, 2) * Pb
@@ -717,7 +716,7 @@ class Convert {
     s *= 100
     pb *= 100
 
-    let a = Util.scaleValueRange(rgb.a, 0, maxVal, 0, 100, round)
+    let a = Util.scaleValueRange(rgb.getA(), 0, rgb.getMax(), 0, 100, round)
 
     if (round) {
       h = Math.round(h)
@@ -742,9 +741,9 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
-    let hp = hsp.h / 60
-    let s = hsp.s / 100
-    let pb = hsp.p / 100
+    let hp = hsp.getH() / 60
+    let s = hsp.getS() / 100
+    let pb = hsp.getP() / 100
 
     let s0 = 1 - s
 
@@ -760,9 +759,9 @@ class Convert {
           b =
             pb /
             Math.sqrt(
-              hsp.pr / Math.pow(s0, 2) +
-                hsp.pg * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
-                hsp.pb
+              hsp.getPr() / Math.pow(s0, 2) +
+                hsp.getPg() * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
+                hsp.getPb()
             )
           r = b / s0
           g = b + hpp * (r - b)
@@ -772,9 +771,9 @@ class Convert {
           b =
             pb /
             Math.sqrt(
-              hsp.pg / Math.pow(s0, 2) +
-                hsp.pr * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
-                hsp.pb
+              hsp.getPg() / Math.pow(s0, 2) +
+                hsp.getPr() * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
+                hsp.getPb()
             )
           g = b / s0
           r = b + hpp * (g - b)
@@ -784,9 +783,9 @@ class Convert {
           r =
             pb /
             Math.sqrt(
-              hsp.pg / Math.pow(s0, 2) +
-                hsp.pb * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
-                hsp.pr
+              hsp.getPg() / Math.pow(s0, 2) +
+                hsp.getPb() * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
+                hsp.getPr()
             )
           g = r / s0
           b = r + hpp * (g - r)
@@ -796,9 +795,9 @@ class Convert {
           r =
             pb /
             Math.sqrt(
-              hsp.pb / Math.pow(s0, 2) +
-                hsp.pg * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
-                hsp.pr
+              hsp.getPb() / Math.pow(s0, 2) +
+                hsp.getPg() * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
+                hsp.getPr()
             )
           b = r / s0
           g = r + hpp * (b - r)
@@ -808,9 +807,9 @@ class Convert {
           g =
             pb /
             Math.sqrt(
-              hsp.pb / Math.pow(s0, 2) +
-                hsp.pr * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
-                hsp.pg
+              hsp.getPb() / Math.pow(s0, 2) +
+                hsp.getPr() * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
+                hsp.getPg()
             )
           b = g / s0
           r = g + hpp * (b - g)
@@ -821,9 +820,9 @@ class Convert {
           g =
             pb /
             Math.sqrt(
-              hsp.pr / Math.pow(s0, 2) +
-                hsp.pb * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
-                hsp.pg
+              hsp.getPr() / Math.pow(s0, 2) +
+                hsp.getPb() * Math.pow(1 + hpp * (1 / s0 - 1), 2) +
+                hsp.getPg()
             )
           r = g / s0
           b = g + hpp * (r - g)
@@ -832,38 +831,38 @@ class Convert {
       switch (hpf) {
         case 0: //R>G>B
           hpp = hp
-          r = Math.sqrt(Math.pow(pb, 2) / (hsp.pr + hsp.pg * Math.pow(hpp, 2)))
+          r = Math.sqrt(Math.pow(pb, 2) / (hsp.getPr() + hsp.getPg() * Math.pow(hpp, 2)))
           g = r * hpp
           b = 0
           break
         case 1: //G>R>B
           hpp = -1 * hp + 2
-          g = Math.sqrt(Math.pow(pb, 2) / (hsp.pg + hsp.pr * Math.pow(hpp, 2)))
+          g = Math.sqrt(Math.pow(pb, 2) / (hsp.getPg() + hsp.getPr() * Math.pow(hpp, 2)))
           r = g * hpp
           b = 0
           break
         case 2: //G>B>R
           hpp = hp - 2
-          g = Math.sqrt(Math.pow(pb, 2) / (hsp.pg + hsp.pb * Math.pow(hpp, 2)))
+          g = Math.sqrt(Math.pow(pb, 2) / (hsp.getPg() + hsp.getPb() * Math.pow(hpp, 2)))
           b = g * hpp
           r = 0
           break
         case 3: //B>G>R
           hpp = -1 * hp + 4
-          b = Math.sqrt(Math.pow(pb, 2) / (hsp.pb + hsp.pg * Math.pow(hpp, 2)))
+          b = Math.sqrt(Math.pow(pb, 2) / (hsp.getPb() + hsp.getPg() * Math.pow(hpp, 2)))
           g = b * hpp
           r = 0
           break
         case 4: //B>R>G
           hpp = hp - 4
-          b = Math.sqrt(Math.pow(pb, 2) / (hsp.pb + hsp.pr * Math.pow(hpp, 2)))
+          b = Math.sqrt(Math.pow(pb, 2) / (hsp.getPb() + hsp.getPr() * Math.pow(hpp, 2)))
           r = b * hpp
           g = 0
           break
         case 5: //R>B>G
         default:
           hpp = -1 * hp + 6
-          r = Math.sqrt(Math.pow(pb, 2) / (hsp.pr + hsp.pb * Math.pow(hpp, 2)))
+          r = Math.sqrt(Math.pow(pb, 2) / (hsp.getPr() + hsp.getPb() * Math.pow(hpp, 2)))
           b = r * hpp
           g = 0
       }
@@ -878,7 +877,7 @@ class Convert {
     g *= max
     b *= max
 
-    let a = Util.scaleValueRange(hsp.a, 0, 100, 0, max, round)
+    let a = Util.scaleValueRange(hsp.getA(), 0, 100, 0, max, round)
 
     if (round) {
       r = Math.round(r)
@@ -902,9 +901,9 @@ class Convert {
    * @return {Colors.cmyk}
    */
   static rgb2cmyk(rgb: Colors.rgb, round: boolean = true): Colors.cmyk {
-    let r = rgb.r / rgb.max
-    let g = rgb.g / rgb.max
-    let b = rgb.b / rgb.max
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     //todo: if alpha, blend value with white
 
@@ -947,10 +946,10 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
-    let c = cmyk.c / 100
-    let m = cmyk.m / 100
-    let y = cmyk.y / 100
-    let k = cmyk.k / 100
+    let c = cmyk.getC() / 100
+    let m = cmyk.getM() / 100
+    let y = cmyk.getY() / 100
+    let k = cmyk.getK() / 100
 
     let max = 2 ** bitDepth - 1
 
@@ -983,9 +982,9 @@ class Convert {
     normalize: boolean = true,
     round: boolean = true
   ): Colors.yiq {
-    let r = rgb.r / rgb.max
-    let g = rgb.g / rgb.max
-    let b = rgb.b / rgb.max
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     let y = 0.299 * r + 0.587 * g + 0.114 * b
     let i = 0.5959 * r + -0.2746 * g + -0.3213 * b
@@ -1023,10 +1022,10 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
-    let y = yiq.y
-    let i = yiq.i
-    let q = yiq.q
-    if (yiq.normalized) {
+    let y = yiq.getY()
+    let i = yiq.getI()
+    let q = yiq.getQ()
+    if (yiq.isNormalized()) {
       y = Util.scaleValueRange(y, 0, 255, 0, 1, false)
       i = Util.scaleValueRange(i, -128, 128, -0.5957, 0.5957, false)
       q = Util.scaleValueRange(q, -128, 128, -0.5226, 0.5226, false)
@@ -1070,9 +1069,9 @@ class Convert {
     colorSpace: string = 'srgb',
     referenceWhite: string = 'd65'
   ): Colors.xyz {
-    let r = rgb.r / rgb.max
-    let g = rgb.g / rgb.max
-    let b = rgb.b / rgb.max
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     let space = Util.validColorSpace(colorSpace)
     referenceWhite = referenceWhite.toLowerCase()
@@ -1148,9 +1147,9 @@ class Convert {
     // [R]       [X]
     // [G] = [M]*[Y]  where [M] is [RGB to XYZ matrix]^-1
     // [B]       [Z]
-    let r = m[0][0] * xyz.x + m[0][1] * xyz.y + m[0][2] * xyz.z
-    let g = m[1][0] * xyz.x + m[1][1] * xyz.y + m[1][2] * xyz.z
-    let b = m[2][0] * xyz.x + m[2][1] * xyz.y + m[2][2] * xyz.z
+    let r = m[0][0] * xyz.getX() + m[0][1] * xyz.getY() + m[0][2] * xyz.getZ()
+    let g = m[1][0] * xyz.getX() + m[1][1] * xyz.getY() + m[1][2] * xyz.getZ()
+    let b = m[2][0] * xyz.getX() + m[2][1] * xyz.getY() + m[2][2] * xyz.getZ()
 
     if (colorSpace == 'srgb') {
       // sRGB
@@ -1197,16 +1196,16 @@ class Convert {
     let w = Util.validReferenceWhite(referenceWhite)
     let cx
     let cy
-    let sum = xyz.x + xyz.y + xyz.z
+    let sum = xyz.getX() + xyz.getY() + xyz.getZ()
     if (!sum) {
       cx = w.x
       cy = w.y
     } else {
-      cx = xyz.x / sum
-      cy = xyz.y / sum
+      cx = xyz.getX() / sum
+      cy = xyz.getY() / sum
     }
 
-    return new Colors.xyy(cx, cy, xyz.y)
+    return new Colors.xyy(cx, cy, xyz.getY())
   }
 
   /**
@@ -1217,15 +1216,15 @@ class Convert {
    */
   static xyy2xyz(xyy: Colors.xyy): Colors.xyz {
     let cx, cz
-    if (!xyy.yy) {
+    if (!xyy.getYY()) {
       cx = 0
       cz = 0
     } else {
-      cx = (xyy.x * xyy.yy) / xyy.y
-      cz = ((1 - xyy.x - xyy.y) * xyy.yy) / xyy.y
+      cx = (xyy.getX() * xyy.getYY()) / xyy.getY()
+      cz = ((1 - xyy.getX() - xyy.getY()) * xyy.getYY()) / xyy.getY()
     }
 
-    return new Colors.xyz(cx, xyy.yy, cz)
+    return new Colors.xyz(cx, xyy.getYY(), cz)
   }
 
   /////////// Lab ///////////
@@ -1245,9 +1244,9 @@ class Convert {
   ): Colors.lab {
     let w = Util.validReferenceWhite(referenceWhite)
 
-    let xr = xyz.x / w.x
-    let yr = xyz.y / w.y
-    let zr = xyz.z / w.z
+    let xr = xyz.getX() / w.x
+    let yr = xyz.getY() / w.y
+    let zr = xyz.getZ() / w.z
 
     let fx = xr > cieE ? Math.pow(xr, 1 / 3) : (cieK * xr + 16) / 116
     let fy = yr > cieE ? Math.pow(yr, 1 / 3) : (cieK * yr + 16) / 116
@@ -1277,13 +1276,13 @@ class Convert {
   static lab2xyz(lab: Colors.lab, referenceWhite: string = 'd65'): Colors.xyz {
     let w = Util.validReferenceWhite(referenceWhite)
 
-    let lr = (lab.l + 16) / 116 // y
-    let ar = lab.a / 500 + lr   // x
-    let br = lr - lab.b / 200   // z
+    let lr = (lab.getL() + 16) / 116 // y
+    let ar = lab.getA() / 500 + lr   // x
+    let br = lr - lab.getB() / 200   // z
 
     let xr = Math.pow(ar, 3) > cieE ? Math.pow(ar, 3) : (116 * ar - 16) / cieK
     // the following two y(r) formulae seem to be equivalent??? somehow???
-    // let yr = lab.l > cieK * cieE ? Math.pow(lr, 3) : lab.l / cieK
+    // let yr = lab.getL() > cieK * cieE ? Math.pow(lr, 3) : lab.getL() / cieK
     let yr = Math.pow(lr, 3) > cieE ? Math.pow(lr, 3) : (116 * lr - 16) / cieK
     let zr = Math.pow(br, 3) > cieE ? Math.pow(br, 3) : (116 * br - 16) / cieK
 
@@ -1311,16 +1310,16 @@ class Convert {
   ): Colors.luv {
     let w = Util.validReferenceWhite(referenceWhite)
 
-    let yr = xyz.y / w.y
+    let yr = xyz.getY() / w.y
 
-    let div = xyz.x + 15 * xyz.y + 3 * xyz.z
+    let div = xyz.getX() + 15 * xyz.getY() + 3 * xyz.getZ()
     let up, vp
     if (!div) {
       up = 0
       vp = 0
     } else {
-      up = (4 * xyz.x) / div
-      vp = (9 * xyz.y) / div
+      up = (4 * xyz.getX()) / div
+      vp = (9 * xyz.getY()) / div
     }
 
     let upr = (4 * w.x) / (w.x + 15 * w.y + 3 * w.z)
@@ -1354,15 +1353,15 @@ class Convert {
     let u0 = (4 * w.x) / (w.x + 15 * w.y + 3 * w.z)
     let v0 = (9 * w.y) / (w.x + 15 * w.y + 3 * w.z)
 
-    let y = luv.l > cieK * cieE ? Math.pow((luv.l + 16) / 116, 3) : luv.l / cieK
+    let y = luv.getL() > cieK * cieE ? Math.pow((luv.getL() + 16) / 116, 3) : luv.getL() / cieK
 
-    let ad = luv.u + 13 * luv.l * u0
-    let adf = ad ? (52 * luv.l) / ad : 0
+    let ad = luv.getU() + 13 * luv.getL() * u0
+    let adf = ad ? (52 * luv.getL()) / ad : 0
     let a = (1 / 3) * (adf - 1)
 
     let x =
       a + 1 / 3
-        ? (y * ((39 * luv.l) / (luv.v + 13 * luv.l * v0) - 5) + 5 * y) /
+        ? (y * ((39 * luv.getL()) / (luv.getV() + 13 * luv.getL() * v0) - 5) + 5 * y) /
           (a + 1 / 3)
         : 0
     let z = x * a - 5 * y
@@ -1398,10 +1397,10 @@ class Convert {
       throw new Error('Invalid bitrate for Rec709, must be 8 or 10')
     }
 
-    let r = Util.scaleValueRange(rgb.r, 0, rgb.max, rgbLower, rgbUpper, round)
-    let g = Util.scaleValueRange(rgb.g, 0, rgb.max, rgbLower, rgbUpper, round)
-    let b = Util.scaleValueRange(rgb.b, 0, rgb.max, rgbLower, rgbUpper, round)
-    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 2 ** bitRate - 1, round)
+    let r = Util.scaleValueRange(rgb.getR(), 0, rgb.getMax(), rgbLower, rgbUpper, round)
+    let g = Util.scaleValueRange(rgb.getG(), 0, rgb.getMax(), rgbLower, rgbUpper, round)
+    let b = Util.scaleValueRange(rgb.getB(), 0, rgb.getMax(), rgbLower, rgbUpper, round)
+    let a = Util.scaleValueRange(rgb.getA(), 0, rgb.getMax(), 0, 2 ** bitRate - 1, round)
 
     return new Colors.rec709rgb(r, g, b, a, bitRate)
   }
@@ -1422,10 +1421,10 @@ class Convert {
     bitDepth: number = 8
   ): Colors.rgb {
     let minFrom, maxFrom
-    if (rgb709.bitDepth == 8) {
+    if (rgb709.getBitDepth() == 8) {
       minFrom = 16
       maxFrom = 235
-    } else if (rgb709.bitDepth == 10) {
+    } else if (rgb709.getBitDepth() == 10) {
       minFrom = 64
       maxFrom = 940
     } else {
@@ -1433,16 +1432,16 @@ class Convert {
     }
 
     // Rather than require bounds, clamp values
-    let r709 = Math.min(Math.max(rgb709.r, minFrom), maxFrom)
-    let g709 = Math.min(Math.max(rgb709.g, minFrom), maxFrom)
-    let b709 = Math.min(Math.max(rgb709.b, minFrom), maxFrom)
-    let a709 = Math.min(Math.max(rgb709.a, minFrom), maxFrom)
+    let r709 = Math.min(Math.max(rgb709.getR(), minFrom), maxFrom)
+    let g709 = Math.min(Math.max(rgb709.getG(), minFrom), maxFrom)
+    let b709 = Math.min(Math.max(rgb709.getB(), minFrom), maxFrom)
+    let a709 = Math.min(Math.max(rgb709.getA(), minFrom), maxFrom)
 
     let max = 2 ** bitDepth - 1
     let r = Util.scaleValueRange(r709, minFrom, maxFrom, 0, max, round)
     let g = Util.scaleValueRange(g709, minFrom, maxFrom, 0, max, round)
     let b = Util.scaleValueRange(b709, minFrom, maxFrom, 0, max, round)
-    let a = Util.scaleValueRange(a709, 0, rgb709.max, 0, max, round)
+    let a = Util.scaleValueRange(a709, 0, rgb709.getMax(), 0, max, round)
 
     return new Colors.rgb(r, g, b, a, bitDepth)
   }
@@ -1473,10 +1472,10 @@ class Convert {
       throw new Error('Invalid bitrate for Rec2020, must be 10 or 12')
     }
 
-    let r = Util.scaleValueRange(rgb.r, 0, rgb.max, rgbLower, rgbUpper, round)
-    let g = Util.scaleValueRange(rgb.g, 0, rgb.max, rgbLower, rgbUpper, round)
-    let b = Util.scaleValueRange(rgb.b, 0, rgb.max, rgbLower, rgbUpper, round)
-    let a = Util.scaleValueRange(rgb.a, 0, rgb.max, 0, 2 ** bitRate - 1, round)
+    let r = Util.scaleValueRange(rgb.getR(), 0, rgb.getMax(), rgbLower, rgbUpper, round)
+    let g = Util.scaleValueRange(rgb.getG(), 0, rgb.getMax(), rgbLower, rgbUpper, round)
+    let b = Util.scaleValueRange(rgb.getB(), 0, rgb.getMax(), rgbLower, rgbUpper, round)
+    let a = Util.scaleValueRange(rgb.getA(), 0, rgb.getMax(), 0, 2 ** bitRate - 1, round)
 
     return new Colors.rec2020rgb(r, g, b, a, bitRate)
   }
@@ -1497,10 +1496,10 @@ class Convert {
     bitDepth: number = 8
   ): Colors.rgb {
     let minFrom, maxFrom
-    if (rgb2020.bitDepth == 10) {
+    if (rgb2020.getBitDepth() == 10) {
       minFrom = 64
       maxFrom = 940
-    } else if (rgb2020.bitDepth == 12) {
+    } else if (rgb2020.getBitDepth() == 12) {
       minFrom = 256
       maxFrom = 3760
     } else {
@@ -1508,16 +1507,16 @@ class Convert {
     }
 
     // Rather than require bounds, clamp values
-    let r2020 = Math.min(Math.max(rgb2020.r, minFrom), maxFrom)
-    let g2020 = Math.min(Math.max(rgb2020.g, minFrom), maxFrom)
-    let b2020 = Math.min(Math.max(rgb2020.b, minFrom), maxFrom)
-    let a2020 = Math.min(Math.max(rgb2020.a, minFrom), maxFrom)
+    let r2020 = Math.min(Math.max(rgb2020.getR(), minFrom), maxFrom)
+    let g2020 = Math.min(Math.max(rgb2020.getG(), minFrom), maxFrom)
+    let b2020 = Math.min(Math.max(rgb2020.getB(), minFrom), maxFrom)
+    let a2020 = Math.min(Math.max(rgb2020.getA(), minFrom), maxFrom)
 
     let max = 2 ** bitDepth - 1
     let r = Util.scaleValueRange(r2020, minFrom, maxFrom, 0, max, round)
     let g = Util.scaleValueRange(g2020, minFrom, maxFrom, 0, max, round)
     let b = Util.scaleValueRange(b2020, minFrom, maxFrom, 0, max, round)
-    let a = Util.scaleValueRange(a2020, 0, rgb2020.max, 0, max, round)
+    let a = Util.scaleValueRange(a2020, 0, rgb2020.getMax(), 0, max, round)
 
     return new Colors.rgb(r, g, b, a, bitDepth)
   }
@@ -1537,7 +1536,7 @@ class Convert {
     round: boolean = true
   ): Colors.ycbcr {
     let yppbpr = this.rgb2ypbpr(rgb, kb, kr)
-    let ycbcr = this.ypbpr2ycbcr(yppbpr, 0, rgb.max, 0, rgb.max, round)
+    let ycbcr = this.ypbpr2ycbcr(yppbpr, 0, rgb.getMax(), 0, rgb.getMax(), round)
 
     return ycbcr
   }
@@ -1552,9 +1551,9 @@ class Convert {
    * @return {Colors.ypbpr}
    */
   static rgb2ypbpr(rgb: Colors.rgb, kb: number, kr: number): Colors.ypbpr {
-    let r = rgb.r / rgb.max
-    let g = rgb.g / rgb.max
-    let b = rgb.b / rgb.max
+    let r = rgb.getR() / rgb.getMax()
+    let g = rgb.getG() / rgb.getMax()
+    let b = rgb.getB() / rgb.getMax()
 
     let kg = 1 - kb - kr
 
@@ -1591,12 +1590,12 @@ class Convert {
   ): Colors.rgb {
     let kg = 1 - kb - kr
 
-    let r = ypbpr.y + (2 - 2 * kr) * ypbpr.pr
+    let r = ypbpr.getY() + (2 - 2 * kr) * ypbpr.getPr()
     let g =
-      ypbpr.y +
-      -1 * (kb / kg) * (2 - 2 * kb) * ypbpr.pb +
-      -1 * (kr / kg) * (2 - 2 * kr) * ypbpr.pr
-    let b = ypbpr.y + (2 - 2 * kb) * ypbpr.pb
+      ypbpr.getY() +
+      -1 * (kb / kg) * (2 - 2 * kb) * ypbpr.getPb() +
+      -1 * (kr / kg) * (2 - 2 * kr) * ypbpr.getPr()
+    let b = ypbpr.getY() + (2 - 2 * kb) * ypbpr.getPb()
 
     let max = 2 ** bitDepth - 1
     r *= max
@@ -1638,9 +1637,9 @@ class Convert {
     cUpper: number = 240,
     round: boolean = true
   ): Colors.ycbcr {
-    let y2 = Util.scaleValueRange(ypbpr.y, 0, 1, yLower, yUpper, round)
-    let cb = Util.scaleValueRange(ypbpr.pb + 0.5, 0, 1, cLower, cUpper, round)
-    let cr = Util.scaleValueRange(ypbpr.pr + 0.5, 0, 1, cLower, cUpper, round)
+    let y2 = Util.scaleValueRange(ypbpr.getY(), 0, 1, yLower, yUpper, round)
+    let cb = Util.scaleValueRange(ypbpr.getPb() + 0.5, 0, 1, cLower, cUpper, round)
+    let cr = Util.scaleValueRange(ypbpr.getPr() + 0.5, 0, 1, cLower, cUpper, round)
 
     return new Colors.ycbcr(y2, cb, cr, yLower, yUpper, cLower, cUpper)
   }
@@ -1660,18 +1659,18 @@ class Convert {
     kr: number
   ): Colors.ypbpr {
     let y2 = Util.scaleValueRange(
-      ycbcr.y,
-      ycbcr.yLower,
-      ycbcr.yUpper,
+      ycbcr.getY(),
+      ycbcr.getYLower(),
+      ycbcr.getYUpper(),
       0,
       1,
       false
     )
     let pb =
-      Util.scaleValueRange(ycbcr.cb, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) -
+      Util.scaleValueRange(ycbcr.getCb(), ycbcr.getCLower(), ycbcr.getCUpper(), 0, 1, false) -
       0.5
     let pr =
-      Util.scaleValueRange(ycbcr.cr, ycbcr.cLower, ycbcr.cUpper, 0, 1, false) -
+      Util.scaleValueRange(ycbcr.getCr(), ycbcr.getCLower(), ycbcr.getCUpper(), 0, 1, false) -
       0.5
 
     return new Colors.ypbpr(y2, pb, pr, kb, kr)
@@ -1686,13 +1685,13 @@ class Convert {
    * @return {Colors.ycbcr}
    */
   static rgb2jpegycbcr(rgb: Colors.rgb, round: boolean = false): Colors.ycbcr {
-    let r = rgb.r
-    let g = rgb.g
-    let b = rgb.b
-    if (rgb.max != 255) {
-      r = (r / rgb.max) * 255
-      g = (g / rgb.max) * 255
-      b = (b / rgb.max) * 255
+    let r = rgb.getR()
+    let g = rgb.getG()
+    let b = rgb.getB()
+    if (rgb.getMax() != 255) {
+      r = (r / rgb.getMax()) * 255
+      g = (g / rgb.getMax()) * 255
+      b = (b / rgb.getMax()) * 255
     }
 
     let y = 0.299 * r + 0.587 * g + 0.114 * b
@@ -1722,9 +1721,9 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
-    let r = ycbcr.y + 1.402 * (ycbcr.cr - 128)
-    let g = ycbcr.y - 0.344136 * (ycbcr.cb - 128) - 0.714136 * (ycbcr.cr - 128)
-    let b = ycbcr.y + 1.772 * (ycbcr.cb - 128)
+    let r = ycbcr.getY() + 1.402 * (ycbcr.getCr() - 128)
+    let g = ycbcr.getY() - 0.344136 * (ycbcr.getCb() - 128) - 0.714136 * (ycbcr.getCr() - 128)
+    let b = ycbcr.getY() + 1.772 * (ycbcr.getCb() - 128)
 
     let max = 2 ** bitDepth - 1
     if (bitDepth != 255) {
@@ -1764,23 +1763,23 @@ class Convert {
     let g
     let b
 
-    if (nm.wavelength >= 380 && nm.wavelength < 440) {
-      r = ((nm.wavelength - 440) / (440 - 380)) * -1
+    if (nm.getWavelength() >= 380 && nm.getWavelength() < 440) {
+      r = ((nm.getWavelength() - 440) / (440 - 380)) * -1
       g = 0
       b = 1
-    } else if (nm.wavelength >= 440 && nm.wavelength < 490) {
+    } else if (nm.getWavelength() >= 440 && nm.getWavelength() < 490) {
       r = 0
-      g = (nm.wavelength - 440) / (490 - 440)
+      g = (nm.getWavelength() - 440) / (490 - 440)
       b = 1
-    } else if (nm.wavelength >= 510 && nm.wavelength < 580) {
-      r = (nm.wavelength - 510) / (580 - 510)
+    } else if (nm.getWavelength() >= 510 && nm.getWavelength() < 580) {
+      r = (nm.getWavelength() - 510) / (580 - 510)
       g = 1
       b = 0
-    } else if (nm.wavelength >= 580 && nm.wavelength < 645) {
+    } else if (nm.getWavelength() >= 580 && nm.getWavelength() < 645) {
       r = 1
-      g = ((nm.wavelength - 645) / (645 - 580)) * -1
+      g = ((nm.getWavelength() - 645) / (645 - 580)) * -1
       b = 0
-    } else if (nm.wavelength >= 645 && nm.wavelength < 781) {
+    } else if (nm.getWavelength() >= 645 && nm.getWavelength() < 781) {
       r = 1
       g = 0
       b = 0
@@ -1792,12 +1791,12 @@ class Convert {
 
     let factor
     // Let the intensity fall off near the vision limits
-    if (nm.wavelength >= 380 && nm.wavelength < 420) {
-      factor = 0.3 + (0.7 * (nm.wavelength - 380)) / (420 - 380)
-    } else if (nm.wavelength >= 420 && nm.wavelength < 701) {
+    if (nm.getWavelength() >= 380 && nm.getWavelength() < 420) {
+      factor = 0.3 + (0.7 * (nm.getWavelength() - 380)) / (420 - 380)
+    } else if (nm.getWavelength() >= 420 && nm.getWavelength() < 701) {
       factor = 1
-    } else if (nm.wavelength >= 701 && nm.wavelength < 781) {
-      factor = 0.3 + (0.7 * (780 - nm.wavelength)) / (780 - 700)
+    } else if (nm.getWavelength() >= 701 && nm.getWavelength() < 781) {
+      factor = 0.3 + (0.7 * (780 - nm.getWavelength())) / (780 - 700)
     } else {
       factor = 0
     }
@@ -1862,7 +1861,7 @@ class Convert {
       // generate a black body spectrum
       dis =
         (3.74183e-16 * (1 / Math.pow(wavelength, 5))) /
-        (Math.exp(con / (wavelength * kelvin.k)) - 1)
+        (Math.exp(con / (wavelength * kelvin.getK())) - 1)
 
       // simple integration over bands
       xx += weight * dis * xyzWavelengths.vectors[band][0]
@@ -1953,7 +1952,7 @@ class Convert {
     round: boolean = true,
     bitDepth: number = 8
   ): Colors.rgb {
-    let k = kelvin.k / 100
+    let k = kelvin.getK() / 100
     let max = 2 ** bitDepth - 1
     let scalar = max / 255
 
@@ -2003,9 +2002,9 @@ class Convert {
    * @return {Colors.rgb}
    */
   static hex2rgb(hex: Colors.hex, bitDepth: number = 8): Colors.rgb {
-    let r = parseInt(hex.hex.substr(0, 2), 16)
-    let g = parseInt(hex.hex.substr(2, 2), 16)
-    let b = parseInt(hex.hex.substr(4, 2), 16)
+    let r = parseInt(hex.getHex().substring(0, 2), 16)
+    let g = parseInt(hex.getHex().substring(2, 4), 16)
+    let b = parseInt(hex.getHex().substring(4, 6), 16)
 
     let max = 2 ** bitDepth - 1
     if (max != 255) {
@@ -2037,9 +2036,9 @@ class Convert {
    * @return {number}     0xRRGGBB
    */
   static rgb2hexint(rgb: Colors.rgb, bitDepth: number = 8): number {
-    let r = rgb.r
-    let g = rgb.g
-    let b = rgb.b
+    let r = rgb.getR()
+    let g = rgb.getG()
+    let b = rgb.getB()
     if (bitDepth != 8) {
       r = (r / (2 ** bitDepth - 1)) * 255
       g = (g / (2 ** bitDepth - 1)) * 255
