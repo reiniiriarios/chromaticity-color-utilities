@@ -1258,6 +1258,7 @@ export class nm extends colorType {
   public getWavelength = (): number => {
     return this.wavelength
   }
+  public getNm = (): number => this.getWavelength()
 
   protected toStringValues = (): object => ({
     wavelength: this.wavelength,
