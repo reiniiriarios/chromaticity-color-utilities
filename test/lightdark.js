@@ -30,7 +30,7 @@ describe('lighten', () => {
       method: 'hsv'
     })
     blend.h.should.equal(180)
-    blend.s.should.equal(50)
+    blend.s.should.equal(25)
     blend.v.should.equal(75)
     blend.a.should.equal(50)
   })
@@ -41,7 +41,7 @@ describe('lighten', () => {
       method: 'hsi'
     })
     blend.h.should.equal(180)
-    blend.s.should.equal(50)
+    blend.s.should.equal(25)
     blend.i.should.equal(75)
     blend.a.should.equal(50)
   })
@@ -52,7 +52,7 @@ describe('lighten', () => {
       method: 'hsp'
     })
     blend.h.should.equal(180)
-    blend.s.should.equal(50)
+    blend.s.should.equal(25)
     blend.p.should.equal(75)
     blend.a.should.equal(50)
   })
