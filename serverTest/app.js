@@ -40,12 +40,16 @@ grad('hsl', 'cc1111', '11aaaa')
 grad('hsi', 'cc1111', '11aaaa')
 grad('hsp', 'cc1111', '11aaaa')
 grad('cmyk', 'cc1111', '11aaaa')
+grad('lab', 'cc1111', '11aaaa')
+grad('luv', 'cc1111', '11aaaa')
 grad('rgb', 'aa22bb', '55aa00')
 grad('hsv', 'aa22bb', '55aa00')
 grad('hsl', 'aa22bb', '55aa00')
 grad('hsi', 'aa22bb', '55aa00')
 grad('hsp', 'aa22bb', '55aa00')
 grad('cmyk', 'aa22bb', '55aa00')
+grad('lab', 'aa22bb', '55aa00')
+grad('luv', 'aa22bb', '55aa00')
 content += '</div>'
 
 content += '<div class="container">'
@@ -55,12 +59,16 @@ grad('hsl', '11aaaa', 'cc1111')
 grad('hsi', '11aaaa', 'cc1111')
 grad('hsp', '11aaaa', 'cc1111')
 grad('cmyk', '11aaaa', 'cc1111')
+grad('lab', '11aaaa', 'cc1111')
+grad('luv', '11aaaa', 'cc1111')
 grad('rgb', '55aa00', 'aa22bb')
 grad('hsv', '55aa00', 'aa22bb')
 grad('hsl', '55aa00', 'aa22bb')
 grad('hsi', '55aa00', 'aa22bb')
 grad('hsp', '55aa00', 'aa22bb')
 grad('cmyk', '55aa00', 'aa22bb')
+grad('lab', '55aa00', 'aa22bb')
+grad('luv', '55aa00', 'aa22bb')
 content += '</div>'
 
 content += '<div class="container">'
@@ -70,12 +78,16 @@ grad('hsl', 'ee8822', '118844')
 grad('hsi', 'ee8822', '118844')
 grad('hsp', 'ee8822', '118844')
 grad('cmyk', 'ee8822', '118844')
+grad('lab', 'ee8822', '118844')
+grad('luv', 'ee8822', '118844')
 grad('rgb', 'ee2288', '114488')
 grad('hsv', 'ee2288', '114488')
 grad('hsl', 'ee2288', '114488')
 grad('hsi', 'ee2288', '114488')
 grad('hsp', 'ee2288', '114488')
 grad('cmyk', 'ee2288', '114488')
+grad('lab', 'ee2288', '114488')
+grad('luv', 'ee2288', '114488')
 content += '</div>'
 
 content += '<div class="container">'
@@ -85,12 +97,16 @@ grad('hsl', '118844', 'ee8822')
 grad('hsi', '118844', 'ee8822')
 grad('hsp', '118844', 'ee8822')
 grad('cmyk', '118844', 'ee8822')
+grad('lab', '118844', 'ee8822')
+grad('luv', '118844', 'ee8822')
 grad('rgb', '114488', 'ee2288')
 grad('hsv', '114488', 'ee2288')
 grad('hsl', '114488', 'ee2288')
 grad('hsi', '114488', 'ee2288')
 grad('hsp', '114488', 'ee2288')
 grad('cmyk', '114488', 'ee2288')
+grad('lab', '114488', 'ee2288')
+grad('luv', '114488', 'ee2288')
 content += '</div>'
 
 content += '<div class="container">'
@@ -100,12 +116,16 @@ grad('hsl', '445566', 'ff2255')
 grad('hsi', '445566', 'ff2255')
 grad('hsp', '445566', 'ff2255')
 grad('cmyk', '445566', 'ff2255')
+grad('lab', '445566', 'ff2255')
+grad('luv', '445566', 'ff2255')
 grad('rgb', 'eeccaa', '1133ff')
 grad('hsv', 'eeccaa', '1133ff')
 grad('hsl', 'eeccaa', '1133ff')
 grad('hsi', 'eeccaa', '1133ff')
 grad('hsp', 'eeccaa', '1133ff')
 grad('cmyk', 'eeccaa', '1133ff')
+grad('lab', 'eeccaa', '1133ff')
+grad('luv', 'eeccaa', '1133ff')
 content += '</div>'
 
 content += '<div class="container">'
@@ -115,12 +135,16 @@ grad('hsl', 'ff2255', '445566')
 grad('hsi', 'ff2255', '445566')
 grad('hsp', 'ff2255', '445566')
 grad('cmyk', 'ff2255', '445566')
+grad('lab', 'ff2255', '445566')
+grad('luv', 'ff2255', '445566')
 grad('rgb', '1133ff', 'eeccaa')
 grad('hsv', '1133ff', 'eeccaa')
 grad('hsl', '1133ff', 'eeccaa')
 grad('hsi', '1133ff', 'eeccaa')
 grad('hsp', '1133ff', 'eeccaa')
 grad('cmyk', '1133ff', 'eeccaa')
+grad('lab', '1133ff', 'eeccaa')
+grad('luv', '1133ff', 'eeccaa')
 content += '</div>'
 
 function shade(method, start, amount = 1) {
@@ -362,23 +386,16 @@ function lighten(method, start) {
   content += '<div><h2>lighten</h2><h3>' + method + '</h3>'
   let colors = []
   let cstart = Color.from('hex', start)
-  for (i = 0; i < 10; i++) {
-    colors.push(
-      cstart.modify('lighten', {
-        method: method,
-        amount: (i + 1) / 10,
-      })
-    )
+  for (i = 0; i <= 10; i++) {
+    let lighter = cstart.modify('lighten', {
+      method: method,
+      amount: i / 10,
+    })
+    colors.push(lighter)
   }
-  content += colorBlock(
-    start,
-    Color.from('hex', start).to(realMethod).toString(1),
-    highlight
-  )
   colors.forEach((color, i) => {
     highlight = color.hex == start
-    // tip = (i + 1) / 10
-    tip = color.to(realMethod).toString(1)
+    tip = i / 10 + ': ' + color.to(realMethod).toString(1)
     content += colorBlock(color.hex, tip, highlight)
   })
   content += '</div>'
@@ -390,6 +407,7 @@ lighten('hsv', '881155')
 lighten('hsi', '881155')
 lighten('hsp', '881155')
 lighten('rgb', '881155')
+lighten('rgb2', '881155')
 lighten('cmyk', '881155')
 lighten('cmyk2', '881155')
 lighten('lab', '881155')
@@ -403,6 +421,7 @@ lighten('hsv', '22aaee')
 lighten('hsi', '22aaee')
 lighten('hsp', '22aaee')
 lighten('rgb', '22aaee')
+lighten('rgb2', '22aaee')
 lighten('cmyk', '22aaee')
 lighten('cmyk2', '22aaee')
 lighten('lab', '22aaee')
@@ -417,22 +436,16 @@ function darken(method, start) {
   content += '<div><h2>darken</h2><h3>' + method + '</h3>'
   let colors = []
   let cstart = Color.from('hex', start)
-  for (i = 0; i < 10; i++) {
+  for (i = 0; i <= 10; i++) {
     let darker = cstart.modify('darken', {
       method: method,
-      amount: (i + 1) / 10,
+      amount: i / 10,
     })
     colors.push(darker)
   }
-  content += colorBlock(
-    start,
-    Color.from('hex', start).to(realMethod).toString(1),
-    highlight
-  )
   colors.forEach((color, i) => {
     highlight = color.hex == start
-    // tip = (i + 1) / 10
-    tip = color.to(realMethod).toString(1)
+    tip = i / 10 + ': ' + color.to(realMethod).toString(1)
     content += colorBlock(color.hex, tip, highlight)
   })
   content += '</div>'
@@ -444,6 +457,7 @@ darken('hsv', 'ee5588')
 darken('hsi', 'ee5588')
 darken('hsp', 'ee5588')
 darken('rgb', 'ee5588')
+darken('rgb2', 'ee5588')
 darken('cmyk', 'ee5588')
 darken('cmyk2', 'ee5588')
 darken('lab', 'ee5588')
@@ -457,6 +471,7 @@ darken('hsv', '22aaee')
 darken('hsi', '22aaee')
 darken('hsp', '22aaee')
 darken('rgb', '22aaee')
+darken('rgb2', '22aaee')
 darken('cmyk', '22aaee')
 darken('cmyk2', '22aaee')
 darken('lab', '22aaee')
@@ -469,7 +484,7 @@ function saturate(method, start) {
   content += '<div><h2>saturate</h2><h3>' + method + '</h3>'
   let colors = []
   let cstart = Color.from('hex', start)
-  for (i = 0; i < 9; i++) {
+  for (i = 0; i < 10; i++) {
     colors.push(
       cstart.modify('saturate', {
         method: method,
@@ -477,7 +492,7 @@ function saturate(method, start) {
       })
     )
   }
-  content += colorBlock(start, 'start', highlight)
+  content += colorBlock(start, 0, highlight)
   colors.forEach((color, i) => {
     highlight = color.hex == start
     tip = (i + 1) / 10
@@ -505,7 +520,7 @@ function desaturate(method, start) {
   content += '<div><h2>desaturate</h2><h3>' + method + '</h3>'
   let colors = []
   let cstart = Color.from('hex', start)
-  for (i = 0; i < 9; i++) {
+  for (i = 0; i < 10; i++) {
     colors.push(
       cstart.modify('desaturate', {
         method: method,
@@ -513,7 +528,7 @@ function desaturate(method, start) {
       })
     )
   }
-  content += colorBlock(start, 'start', highlight)
+  content += colorBlock(start, 0, highlight)
   colors.forEach((color, i) => {
     highlight = color.hex == start
     tip = (i + 1) / 10

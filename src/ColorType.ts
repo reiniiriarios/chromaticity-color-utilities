@@ -302,6 +302,33 @@ export abstract class colorType {
               args.amount
             )
             break
+          case 'yiq':
+            tmpColor1 = this.toyiq({ round: false })
+            tmpColor2 = args.with.toyiq({ round: false })
+            modified = Modify.yiqBlend(
+              tmpColor1,
+              tmpColor2,
+              args.amount
+            )
+            break
+          case 'lab':
+            tmpColor1 = this.tolab({ round: false })
+            tmpColor2 = args.with.tolab({ round: false })
+            modified = Modify.labBlend(
+              tmpColor1,
+              tmpColor2,
+              args.amount
+            )
+            break
+          case 'luv':
+            tmpColor1 = this.toluv({ round: false })
+            tmpColor2 = args.with.toluv({ round: false })
+            modified = Modify.luvBlend(
+              tmpColor1,
+              tmpColor2,
+              args.amount
+            )
+            break
           default:
             throw new Error('Unrecognized blending method: ' + args.method)
         }

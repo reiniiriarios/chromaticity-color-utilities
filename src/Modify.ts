@@ -221,6 +221,30 @@ class Modify {
     return new Colors.yiq(y, i, q)
   }
 
+  static labBlend(
+    c1: Colors.lab,
+    c2: Colors.lab,
+    amount: number = 0.5
+  ): Colors.lab {
+    amount = Math.min(Math.max(amount, 0), 1)
+    let l = c1.l + (c2.l - c1.l) * amount
+    let a = c1.a + (c2.a - c1.a) * amount
+    let b = c1.b + (c2.b - c1.b) * amount
+    return new Colors.lab(l, a, b)
+  }
+
+  static luvBlend(
+    c1: Colors.luv,
+    c2: Colors.luv,
+    amount: number = 0.5
+  ): Colors.luv {
+    amount = Math.min(Math.max(amount, 0), 1)
+    let l = c1.l + (c2.l - c1.l) * amount
+    let u = c1.u + (c2.u - c1.u) * amount
+    let v = c1.v + (c2.v - c1.v) * amount
+    return new Colors.luv(l, u, v)
+  }
+
   static rgbDarken(rgb: Colors.rgb, amount: number = 0.5): Colors.rgb {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
     let rd = rgb.r * realAmount

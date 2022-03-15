@@ -466,6 +466,24 @@ class Harmony {
             ).to(color1.getType(), { round: round })
           )
           break
+        case 'lab':
+          gradient.push(
+            Modify.labBlend(
+              color1.to('lab', { round: false }),
+              color2.to('lab', { round: false }),
+              amount
+            ).to(color1.getType(), { round: round })
+          )
+          break
+        case 'luv':
+          gradient.push(
+            Modify.luvBlend(
+              color1.to('luv', { round: false }),
+              color2.to('luv', { round: false }),
+              amount
+            ).to(color1.getType(), { round: round })
+          )
+          break
       }
     }
     gradient.push(color2)
