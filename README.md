@@ -12,7 +12,9 @@ Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL
 
 [**📖 Read Full Documentation**](https://reiniiriarios.github.io/chromaticity-color-utilities)
 
-### Example Usage - JavaScript
+## Example Usage
+
+### JavaScript
 
 ```js
 const Color = require('chromaticity-color-utilities')
@@ -31,7 +33,7 @@ const scheme1 = Color.from('hex', 0x9a237f)
   })
 ```
 
-### Example Usage - TypeScript
+### TypeScript
 
 ```ts
 import Color, { colorTypes } from 'chromaticity-color-utilities'
