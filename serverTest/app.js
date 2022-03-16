@@ -556,9 +556,7 @@ function nm(start, end) {
   content += '<div><h2>wavelength</h2><h3>nm</h3>'
   let colors = []
   for (i = start; i <= end; i += 5) {
-    colors.push(
-      Color.from('nm',i)
-    )
+    colors.push(Color.from('nm', i))
   }
   colors.forEach((color, i) => {
     tip = color.wavelength + 'nm'
@@ -575,6 +573,32 @@ nm(520, 590)
 nm(590, 660)
 nm(660, 730)
 nm(730, 800)
+content += '</div>'
+
+function anal(start, angle, name) {
+  let actualName = name.replace(/[^a-z]/,'')
+  content += '<div><h2>' + name + '</h2><h3>' + angle + '°</h3>'
+  let colors = Color.from('hex', start).scheme(actualName, {
+    angle: angle,
+  })
+  colors.forEach((color, i) => {
+    tip = color.to('hsv').toString(1, false)
+    let hex = color.to('hex')
+    content += colorBlock(hex.hex, tip)
+  })
+  content += '</div>'
+}
+
+content += '<div class="container">'
+anal('ff4400', 30, 'analogous')
+anal('ff4400', 10, 'analogous')
+anal('ff4400', 50, 'analogous')
+anal('ff4400', 120, 'triadic')
+anal('ff4400', 90, 'triadic')
+anal('ff4400', 135, 'triadic')
+anal('ff4400', 150, 'split complement')
+anal('ff4400', 170, 'split complement')
+anal('ff4400', 160, 'split complement')
 content += '</div>'
 
 const fullContent = template(content)
