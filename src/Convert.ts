@@ -1860,7 +1860,9 @@ class Convert {
 
   /**
    * Convert a wavelength in nm to RGB
-   * This is hugely perceptual and approximate
+   * This is hugely perceptual and approximate.
+   * Adapted from http://www.physics.sfasu.edu/astro/color/spectra.html,
+   * but with better visual falloff at edges.
    *
    * @param  {Colors.nm}  nm            Wavelength of light in nanometers (positive number)
    * @param  {number}     [gamma=0.8]   Gamma adjustment
