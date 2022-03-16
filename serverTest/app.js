@@ -552,6 +552,31 @@ desaturate('hsp', '0033ff')
 // desaturate('cmyk', '22aaee')
 content += '</div>'
 
+function nm(start, end) {
+  content += '<div><h2>wavelength</h2><h3>nm</h3>'
+  let colors = []
+  for (i = start; i < end; i += 5) {
+    colors.push(
+      Color.from('nm',i)
+    )
+  }
+  colors.forEach((color, i) => {
+    tip = color.wavelength + 'nm'
+    let hex = color.to('hex')
+    content += colorBlock(hex.hex, tip)
+  })
+  content += '</div>'
+}
+
+content += '<div class="container">'
+nm(380, 450)
+nm(450, 520)
+nm(520, 590)
+nm(590, 660)
+nm(660, 730)
+nm(730, 800)
+content += '</div>'
+
 const fullContent = template(content)
 let app = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/html' })
