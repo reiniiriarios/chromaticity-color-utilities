@@ -68,8 +68,6 @@ Please [read the full documentation](https://reiniiriarios.github.io/chromaticit
 ## Known Issues
 
 - YCbCr validates only with a high tolerance. Not sure if floating point issue.
-- shadetint(cmyk) seems to be reading distanceToWhite and distanceToBlack incorrectly
-- shadetint(cmyk) oversaturates toward black when auto and closest bound is white
 
 ## Compiling from Source
 
