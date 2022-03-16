@@ -1912,18 +1912,20 @@ class Convert {
       b = 0
     }
 
-    let factor
     // Let the intensity fall off near the vision limits
+    // The falloff at 380 and 800nm is such that the rgb values are
+    // roughly [8, 0, 8] and [16, 0, 0], or equivalently very close to black
+    let factor
     if (nm.getWavelength() >= 380 && nm.getWavelength() < 400) {
-      factor = (0.1 * (nm.getWavelength() - 380)) / (400 - 380)
+      factor = 0.014 + (0.1 * (nm.getWavelength() - 380)) / (400 - 380)
     } else if (nm.getWavelength() >= 400 && nm.getWavelength() < 420) {
       factor = 0.2 + (0.7 * (nm.getWavelength() - 400)) / (420 - 400)
     } else if (nm.getWavelength() >= 420 && nm.getWavelength() < 701) {
       factor = 1
     } else if (nm.getWavelength() >= 701 && nm.getWavelength() < 781) {
       factor = 0.3 + (0.7 * (780 - nm.getWavelength())) / (780 - 700)
-    } else if (nm.getWavelength() >= 781 && nm.getWavelength() < 800) {
-      factor = (0.2 * (800 - nm.getWavelength())) / (800 - 781)
+    } else if (nm.getWavelength() >= 781 && nm.getWavelength() <= 800) {
+      factor = 0.031 + (0.2 * (800 - nm.getWavelength())) / (800 - 781)
     } else {
       factor = 0
     }

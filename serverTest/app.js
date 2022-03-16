@@ -555,7 +555,7 @@ content += '</div>'
 function nm(start, end) {
   content += '<div><h2>wavelength</h2><h3>nm</h3>'
   let colors = []
-  for (i = start; i < end; i += 5) {
+  for (i = start; i <= end; i += 5) {
     colors.push(
       Color.from('nm',i)
     )

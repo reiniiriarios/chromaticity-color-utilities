@@ -1248,9 +1248,9 @@ export class nm extends colorType {
     super()
     this.valueRangeCheck(
       wavelength,
-      200,
-      800,
-      'Wavelength (in nm) must fall between 200 and 800'
+      360,
+      820,
+      'Wavelength (in nm) must fall between 360 and 820'
     )
     this.wavelength = wavelength
   }
