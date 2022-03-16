@@ -229,9 +229,6 @@ export class rec709rgb extends colorType {
       throw new Error('Invalid bitrate for Rec709, must be 8 or 10')
     }
     let max = 2 ** bitDepth - 1
-    // this.valueRangeCheck(r, 0, max)
-    // this.valueRangeCheck(g, 0, max)
-    // this.valueRangeCheck(b, 0, max)
     if (typeof r == 'undefined') throw new Error('r undefined')
     if (typeof g == 'undefined') throw new Error('g undefined')
     if (typeof b == 'undefined') throw new Error('b undefined')
@@ -316,9 +313,6 @@ export class rec2020rgb extends colorType {
       throw new Error('Invalid bitrate for Rec2020, must be 10 or 12')
     }
     let max = 2 ** bitDepth - 1
-    // this.valueRangeCheck(r, 0, max)
-    // this.valueRangeCheck(g, 0, max)
-    // this.valueRangeCheck(b, 0, max)
     if (typeof r == 'undefined') throw new Error('r undefined')
     if (typeof g == 'undefined') throw new Error('g undefined')
     if (typeof b == 'undefined') throw new Error('b undefined')
