@@ -5,16 +5,556 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="generator" content="Docusaurus v2.0.0-beta.17">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css" integrity="sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM" crossorigin="anonymous"><title data-rh="true">Wavelengths of Light | Chromaticity Color Utilities</title><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://reiniiriarios.github.io//chromaticity-color-utilities/docs/color-types/nm"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Wavelengths of Light | Chromaticity Color Utilities"><meta data-rh="true" name="description" content="Nanometers"><meta data-rh="true" property="og:description" content="Nanometers"><link data-rh="true" rel="icon" href="/chromaticity-color-utilities/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://reiniiriarios.github.io//chromaticity-color-utilities/docs/color-types/nm"><link data-rh="true" rel="alternate" href="https://reiniiriarios.github.io//chromaticity-color-utilities/docs/color-types/nm" hreflang="en"><link data-rh="true" rel="alternate" href="https://reiniiriarios.github.io//chromaticity-color-utilities/docs/color-types/nm" hreflang="x-default"><link rel="stylesheet" href="/chromaticity-color-utilities/assets/css/styles.4b8cb88e.css">
-<link rel="preload" href="/chromaticity-color-utilities/assets/js/runtime~main.0df51969.js" as="script">
-<link rel="preload" href="/chromaticity-color-utilities/assets/js/main.b4ed53e3.js" as="script">
+<link rel="preload" href="/chromaticity-color-utilities/assets/js/runtime~main.ef4374bb.js" as="script">
+<link rel="preload" href="/chromaticity-color-utilities/assets/js/main.24b68cae.js" as="script">
 </head>
 <body class="navigation-with-keyboard">
 <script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):window.matchMedia("(prefers-color-scheme: light)").matches?e("light"):e("dark")}()</script><div id="__docusaurus">
-<div role="region"><a href="#" class="skipToContent_ZgBM">Skip to main content</a></div><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Navigation bar toggle" class="navbar__toggle clean-btn" type="button" tabindex="0"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/chromaticity-color-utilities/"><div class="navbar__logo"><img src="/chromaticity-color-utilities/img/chromaticity-icon-01.png" alt="*" class="themedImage_W2Cr themedImage--light_TfLj"><img src="/chromaticity-color-utilities/img/chromaticity-icon-01.png" alt="*" class="themedImage_W2Cr themedImage--dark_oUvU"></div><b class="navbar__title">Chromaticity Color Utilities</b></a><a class="navbar__item navbar__link navbar__link--active" href="/chromaticity-color-utilities/docs/getting-started">Documentation</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/reiniiriarios/chromaticity-color-utilities" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_I5OW"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><a href="https://www.npmjs.com/package/chromaticity-color-utilities" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>npm<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_I5OW"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><div class="toggle_S7eR toggle_TdHA toggleDisabled_f9M3"><div class="toggleButton_rCf9" role="button" tabindex="-1"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_v35p"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_nQuB"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></div><input type="checkbox" checked="" class="toggleScreenReader_g2nN" aria-label="Switch between dark and light mode (currently dark mode)"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div class="main-wrapper docs-wrapper docs-doc-page"><div class="docPage_P2Lg"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_RiI4" type="button"></button><aside class="theme-doc-sidebar-container docSidebarContainer_rKC_"><div class="sidebar_CW9Y"><nav class="menu thin-scrollbar menu_SkdO"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/getting-started">Getting Started</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--active" href="/chromaticity-color-utilities/docs/color-types">Color Types</a><button aria-label="Toggle the collapsible sidebar category &#x27;Color Types&#x27;" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/rgb">RGB</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hex">Hexidecimal</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/rec709">Rec. 709 RGB</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/rec2020">Rec. 2020 RGB</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hsv">HSV</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hsl">HSL</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hsi">HSI</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hsp">HSP</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/cmyk">CMYK</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/yiq">YIQ</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/xyz">CIE XYZ</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/xxy">CIE xyY</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/lab">CIE L*a*b*</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/luv">CIE L*u*v*</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/ypbpr">YPbPr</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/ycbcr">YCbCr</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/nm">Wavelengths of Light</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/kelvin">Kelvin: Color Temperature</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link" href="/chromaticity-color-utilities/docs/color-schemes">Color Schemes</a><button aria-label="Toggle the collapsible sidebar category &#x27;Color Schemes&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link" href="/chromaticity-color-utilities/docs/modifying-colors">Modifying Colors</a><button aria-label="Toggle the collapsible sidebar category &#x27;Modifying Colors&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/color-spaces-standard-illuminants">Spaces and Std Illuminants</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link" href="/chromaticity-color-utilities/docs/mathematics">Mathematics</a><button aria-label="Toggle the collapsible sidebar category &#x27;Mathematics&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/misc-methods">Miscellaneous Methods</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/compiling-from-source">Compiling from Source</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/references">References</a></li></ul></nav></div></aside><main class="docMainContainer_TCnq"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_DM6M"><div class="docItemContainer_vinB"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Xlws" aria-label="breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a class="breadcrumbs__link breadcrumbsItemLink_e5ie" href="/chromaticity-color-utilities/">🏠</a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link breadcrumbsItemLink_e5ie" href="/chromaticity-color-utilities/docs/color-types">Color Types</a></li><li class="breadcrumbs__item breadcrumbs__item--active"><a class="breadcrumbs__link breadcrumbsItemLink_e5ie" href="/chromaticity-color-utilities/docs/color-types/nm">Wavelengths of Light</a></li></ul></nav><div class="tocCollapsible_jdIR theme-doc-toc-mobile tocMobile_TmEX"><button type="button" class="clean-btn tocCollapsibleButton_Fzxq">On this page</button></div><div class="theme-doc-markdown markdown"><h1>Wavelengths of Light</h1><div class="subheader">Nanometers</div><p>This is a one-way approximation and is hugely perceptual. There is no <code>.to(&#x27;nm&#x27;)</code> method option.</p><div class="codeBlockContainer_I0IT language-ts theme-code-block"><div class="codeBlockContent_wNvx ts"><pre tabindex="0" class="prism-code language-ts codeBlock_jd64 thin-scrollbar" style="color:#9CDCFE;background-color:#1E1E1E"><code class="codeBlockLines_mRuA"><span class="token-line" style="color:#9CDCFE"><span class="token maybe-class-name">Color</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;nm&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token plain"> wavelength</span><span class="token operator" style="color:rgb(212, 212, 212)">:</span><span class="token plain"> </span><span class="token builtin" style="color:rgb(86, 156, 214)">number</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><br></span></code></pre><button type="button" aria-label="Copy code to clipboard" class="copyButton_wuS7 clean-btn">Copy</button></div></div><h2 class="anchor anchorWithStickyNavbar_mojV" id="javascript">JavaScript<a class="hash-link" href="#javascript" title="Direct link to heading">​</a></h2><div class="codeBlockContainer_I0IT language-js theme-code-block"><div class="codeBlockContent_wNvx js"><pre tabindex="0" class="prism-code language-js codeBlock_jd64 thin-scrollbar" style="color:#9CDCFE;background-color:#1E1E1E"><code class="codeBlockLines_mRuA"><span class="token-line" style="color:#9CDCFE"><span class="token keyword" style="color:rgb(86, 156, 214)">const</span><span class="token plain"> </span><span class="token maybe-class-name">Color</span><span class="token plain"> </span><span class="token operator" style="color:rgb(212, 212, 212)">=</span><span class="token plain"> </span><span class="token function" style="color:rgb(220, 220, 170)">require</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;chromaticity-color-utilities&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token keyword" style="color:rgb(86, 156, 214)">const</span><span class="token plain"> color1 </span><span class="token operator" style="color:rgb(212, 212, 212)">=</span><span class="token plain"> </span><span class="token maybe-class-name">Color</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;nm&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token number" style="color:rgb(181, 206, 168)">600</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token method function property-access" style="color:rgb(220, 220, 170)">to</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;rgb&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token comment" style="color:rgb(106, 153, 85)">// rgb { r: 255, g: 190, b: 0, a: 255, bitDepth: 8, max: 255 }</span><br></span></code></pre><button type="button" aria-label="Copy code to clipboard" class="copyButton_wuS7 clean-btn">Copy</button></div></div><h2 class="anchor anchorWithStickyNavbar_mojV" id="typescript">TypeScript<a class="hash-link" href="#typescript" title="Direct link to heading">​</a></h2><div class="codeBlockContainer_I0IT language-ts theme-code-block"><div class="codeBlockContent_wNvx ts"><pre tabindex="0" class="prism-code language-ts codeBlock_jd64 thin-scrollbar" style="color:#9CDCFE;background-color:#1E1E1E"><code class="codeBlockLines_mRuA"><span class="token-line" style="color:#9CDCFE"><span class="token keyword module" style="color:rgb(86, 156, 214)">import</span><span class="token plain"> </span><span class="token imports maybe-class-name">Color</span><span class="token imports punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token imports"> </span><span class="token imports punctuation" style="color:rgb(212, 212, 212)">{</span><span class="token imports"> colorTypes </span><span class="token imports punctuation" style="color:rgb(212, 212, 212)">}</span><span class="token plain"> </span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token plain"> </span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;chromaticity-color-utilities&#x27;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token keyword" style="color:rgb(86, 156, 214)">const</span><span class="token plain"> c</span><span class="token operator" style="color:rgb(212, 212, 212)">:</span><span class="token plain"> colorTypes</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token property-access">nm</span><span class="token plain"> </span><span class="token operator" style="color:rgb(212, 212, 212)">=</span><span class="token plain"> </span><span class="token maybe-class-name">Color</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;nm&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token number" style="color:rgb(181, 206, 168)">600</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><br></span></code></pre><button type="button" aria-label="Copy code to clipboard" class="copyButton_wuS7 clean-btn">Copy</button></div></div></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/chromaticity-color-utilities/docs/color-types/ycbcr"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">YCbCr</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/chromaticity-color-utilities/docs/color-types/kelvin"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Kelvin: Color Temperature</div></a></div></nav></div></div><div class="col col--3"><div class="tableOfContents_cNA8 thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#javascript" class="table-of-contents__link toc-highlight">JavaScript</a></li><li><a href="#typescript" class="table-of-contents__link toc-highlight">TypeScript</a></li></ul></div></div></div></div></main></div></div><footer class="footer"><div class="container container-fluid"><div class="footer__links text--center"><div class="footer__links"><a href="https://github.com/sponsors/reiniiriarios" target="_blank" rel="noopener noreferrer" class="footer__link-item"><span>💜 Fund on GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_I5OW"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><span class="footer__link-separator">·</span><a href="https://ko-fi.com/reinii" target="_blank" rel="noopener noreferrer" class="footer__link-item"><span>☕ Fund on Kofi<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_I5OW"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a></div></div><div class="footer__bottom text--center"><div class="footer__copyright">
+<div role="region"><a href="#" class="skipToContent_ZgBM">Skip to main content</a></div><nav class="navbar navbar--fixed-top"><div class="navbar__inner"><div class="navbar__items"><button aria-label="Navigation bar toggle" class="navbar__toggle clean-btn" type="button" tabindex="0"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/chromaticity-color-utilities/"><div class="navbar__logo"><img src="/chromaticity-color-utilities/img/chromaticity-icon-01.png" alt="*" class="themedImage_W2Cr themedImage--light_TfLj"><img src="/chromaticity-color-utilities/img/chromaticity-icon-01.png" alt="*" class="themedImage_W2Cr themedImage--dark_oUvU"></div><b class="navbar__title">Chromaticity Color Utilities</b></a><a class="navbar__item navbar__link navbar__link--active" href="/chromaticity-color-utilities/docs/getting-started">Documentation</a></div><div class="navbar__items navbar__items--right"><a href="https://github.com/reiniiriarios/chromaticity-color-utilities" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_I5OW"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><a href="https://www.npmjs.com/package/chromaticity-color-utilities" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link"><span>npm<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_I5OW"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><div class="toggle_S7eR toggle_TdHA toggleDisabled_f9M3"><div class="toggleButton_rCf9" role="button" tabindex="-1"><svg viewBox="0 0 24 24" width="24" height="24" class="lightToggleIcon_v35p"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" class="darkToggleIcon_nQuB"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg></div><input type="checkbox" checked="" class="toggleScreenReader_g2nN" aria-label="Switch between dark and light mode (currently dark mode)"></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div class="main-wrapper docs-wrapper docs-doc-page"><div class="docPage_P2Lg"><button aria-label="Scroll back to top" class="clean-btn theme-back-to-top-button backToTopButton_RiI4" type="button"></button><aside class="theme-doc-sidebar-container docSidebarContainer_rKC_"><div class="sidebar_CW9Y"><nav class="menu thin-scrollbar menu_SkdO"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/getting-started">Getting Started</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="menu__link menu__link--active" href="/chromaticity-color-utilities/docs/color-types">Color Types</a><button aria-label="Toggle the collapsible sidebar category &#x27;Color Types&#x27;" type="button" class="clean-btn menu__caret"></button></div><ul style="display:block;overflow:visible;height:auto" class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/rgb">RGB</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hex">Hexidecimal</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/rec709">Rec. 709 RGB</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/rec2020">Rec. 2020 RGB</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hsv">HSV</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hsl">HSL</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hsi">HSI</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/hsp">HSP</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/cmyk">CMYK</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/yiq">YIQ</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/xyz">CIE XYZ</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/xxy">CIE xyY</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/lab">CIE L*a*b*</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/luv">CIE L*u*v*</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/ypbpr">YPbPr</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/ycbcr">YCbCr</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/nm">Wavelengths of Light</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/chromaticity-color-utilities/docs/color-types/kelvin">Kelvin: Color Temperature</a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link" href="/chromaticity-color-utilities/docs/color-schemes">Color Schemes</a><button aria-label="Toggle the collapsible sidebar category &#x27;Color Schemes&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link" href="/chromaticity-color-utilities/docs/modifying-colors">Modifying Colors</a><button aria-label="Toggle the collapsible sidebar category &#x27;Modifying Colors&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/color-spaces-standard-illuminants">Spaces and Std Illuminants</a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="menu__link" href="/chromaticity-color-utilities/docs/mathematics">Mathematics</a><button aria-label="Toggle the collapsible sidebar category &#x27;Mathematics&#x27;" type="button" class="clean-btn menu__caret"></button></div></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/misc-methods">Miscellaneous Methods</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/compiling-from-source">Compiling from Source</a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-1 menu__list-item"><a class="menu__link" href="/chromaticity-color-utilities/docs/references">References</a></li></ul></nav></div></aside><main class="docMainContainer_TCnq"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_DM6M"><div class="docItemContainer_vinB"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Xlws" aria-label="breadcrumbs"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a class="breadcrumbs__link breadcrumbsItemLink_e5ie" href="/chromaticity-color-utilities/">🏠</a></li><li class="breadcrumbs__item"><a class="breadcrumbs__link breadcrumbsItemLink_e5ie" href="/chromaticity-color-utilities/docs/color-types">Color Types</a></li><li class="breadcrumbs__item breadcrumbs__item--active"><a class="breadcrumbs__link breadcrumbsItemLink_e5ie" href="/chromaticity-color-utilities/docs/color-types/nm">Wavelengths of Light</a></li></ul></nav><div class="tocCollapsible_jdIR theme-doc-toc-mobile tocMobile_TmEX"><button type="button" class="clean-btn tocCollapsibleButton_Fzxq">On this page</button></div><div class="theme-doc-markdown markdown"><h1>Wavelengths of Light</h1><div class="subheader">Nanometers</div><p>This is a one-way approximation and is hugely perceptual. There is no <code>.to(&#x27;nm&#x27;)</code> method option. Wavelength ∈ <!-- -->[380, 800]<!-- --> nm.</p><h2 class="anchor anchorWithStickyNavbar_mojV" id="new-color">New Color<a class="hash-link" href="#new-color" title="Direct link to heading">​</a></h2><div class="codeBlockContainer_I0IT language-ts theme-code-block"><div class="codeBlockContent_wNvx ts"><pre tabindex="0" class="prism-code language-ts codeBlock_jd64 thin-scrollbar" style="color:#9CDCFE;background-color:#1E1E1E"><code class="codeBlockLines_mRuA"><span class="token-line" style="color:#9CDCFE"><span class="token maybe-class-name">Color</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;nm&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token plain"> wavelength</span><span class="token operator" style="color:rgb(212, 212, 212)">:</span><span class="token plain"> </span><span class="token builtin" style="color:rgb(86, 156, 214)">number</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token maybe-class-name">Color</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;wavelength&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token plain"> wavelength</span><span class="token operator" style="color:rgb(212, 212, 212)">:</span><span class="token plain"> </span><span class="token builtin" style="color:rgb(86, 156, 214)">number</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token maybe-class-name">Color</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;nanometers&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token plain"> wavelength</span><span class="token operator" style="color:rgb(212, 212, 212)">:</span><span class="token plain"> </span><span class="token builtin" style="color:rgb(86, 156, 214)">number</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><br></span></code></pre><button type="button" aria-label="Copy code to clipboard" class="copyButton_wuS7 clean-btn">Copy</button></div></div><h2 class="anchor anchorWithStickyNavbar_mojV" id="get-methods">Get methods<a class="hash-link" href="#get-methods" title="Direct link to heading">​</a></h2><div class="codeBlockContainer_I0IT language-ts theme-code-block"><div class="codeBlockContent_wNvx ts"><pre tabindex="0" class="prism-code language-ts codeBlock_jd64 thin-scrollbar" style="color:#9CDCFE;background-color:#1E1E1E"><code class="codeBlockLines_mRuA"><span class="token-line" style="color:#9CDCFE"><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token method function property-access" style="color:rgb(220, 220, 170)">getWavelength</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token operator" style="color:rgb(212, 212, 212)">:</span><span class="token plain"> </span><span class="token builtin" style="color:rgb(86, 156, 214)">number</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token method function property-access" style="color:rgb(220, 220, 170)">getNm</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token operator" style="color:rgb(212, 212, 212)">:</span><span class="token plain"> </span><span class="token builtin" style="color:rgb(86, 156, 214)">number</span><span class="token plain"> </span><span class="token comment" style="color:rgb(106, 153, 85)">// alias</span><br></span></code></pre><button type="button" aria-label="Copy code to clipboard" class="copyButton_wuS7 clean-btn">Copy</button></div></div><h2 class="anchor anchorWithStickyNavbar_mojV" id="example-output">Example Output<a class="hash-link" href="#example-output" title="Direct link to heading">​</a></h2><div class="ColorBlocks"><div class="colorScheme"><span class="color-block"><span class="color" style="background-color:#080008"><span class="tip">rgb: {
+ r: 8,
+ g: 0,
+ b: 8,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>380nm</label></span><span class="color-block"><span class="color" style="background-color:#120013"><span class="tip">rgb: {
+ r: 18,
+ g: 0,
+ b: 19,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>385nm</label></span><span class="color-block"><span class="color" style="background-color:#18001c"><span class="tip">rgb: {
+ r: 24,
+ g: 0,
+ b: 28,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>390nm</label></span><span class="color-block"><span class="color" style="background-color:#1d0025"><span class="tip">rgb: {
+ r: 29,
+ g: 0,
+ b: 37,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>395nm</label></span><span class="color-block"><span class="color" style="background-color:#330046"><span class="tip">rgb: {
+ r: 51,
+ g: 0,
+ b: 70,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>400nm</label></span><span class="color-block"><span class="color" style="background-color:#4c0074"><span class="tip">rgb: {
+ r: 76,
+ g: 0,
+ b: 116,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>405nm</label></span><span class="color-block"><span class="color" style="background-color:#5b009e"><span class="tip">rgb: {
+ r: 91,
+ g: 0,
+ b: 158,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>410nm</label></span><span class="color-block"><span class="color" style="background-color:#6200c5"><span class="tip">rgb: {
+ r: 98,
+ g: 0,
+ b: 197,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>415nm</label></span><span class="color-block"><span class="color" style="background-color:#6a00ff"><span class="tip">rgb: {
+ r: 106,
+ g: 0,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>420nm</label></span><span class="color-block"><span class="color" style="background-color:#5400ff"><span class="tip">rgb: {
+ r: 84,
+ g: 0,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>425nm</label></span><span class="color-block"><span class="color" style="background-color:#3d00ff"><span class="tip">rgb: {
+ r: 61,
+ g: 0,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>430nm</label></span><span class="color-block"><span class="color" style="background-color:#2300ff"><span class="tip">rgb: {
+ r: 35,
+ g: 0,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>435nm</label></span><span class="color-block"><span class="color" style="background-color:#0000ff"><span class="tip">rgb: {
+ r: 0,
+ g: 0,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>440nm</label></span><span class="color-block"><span class="color" style="background-color:#0028ff"><span class="tip">rgb: {
+ r: 0,
+ g: 40,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>445nm</label></span><span class="color-block"><span class="color" style="background-color:#0046ff"><span class="tip">rgb: {
+ r: 0,
+ g: 70,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>450nm</label></span></div><div class="colorScheme"><span class="color-block"><span class="color" style="background-color:#0046ff"><span class="tip">rgb: {
+ r: 0,
+ g: 70,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>450nm</label></span><span class="color-block"><span class="color" style="background-color:#0061ff"><span class="tip">rgb: {
+ r: 0,
+ g: 97,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>455nm</label></span><span class="color-block"><span class="color" style="background-color:#007bff"><span class="tip">rgb: {
+ r: 0,
+ g: 123,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>460nm</label></span><span class="color-block"><span class="color" style="background-color:#0092ff"><span class="tip">rgb: {
+ r: 0,
+ g: 146,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>465nm</label></span><span class="color-block"><span class="color" style="background-color:#00a9ff"><span class="tip">rgb: {
+ r: 0,
+ g: 169,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>470nm</label></span><span class="color-block"><span class="color" style="background-color:#00c0ff"><span class="tip">rgb: {
+ r: 0,
+ g: 192,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>475nm</label></span><span class="color-block"><span class="color" style="background-color:#00d5ff"><span class="tip">rgb: {
+ r: 0,
+ g: 213,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>480nm</label></span><span class="color-block"><span class="color" style="background-color:#00eaff"><span class="tip">rgb: {
+ r: 0,
+ g: 234,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>485nm</label></span><span class="color-block"><span class="color" style="background-color:#00ffff"><span class="tip">rgb: {
+ r: 0,
+ g: 255,
+ b: 255,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>490nm</label></span><span class="color-block"><span class="color" style="background-color:#00ffcb"><span class="tip">rgb: {
+ r: 0,
+ g: 255,
+ b: 203,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>495nm</label></span><span class="color-block"><span class="color" style="background-color:#00ff92"><span class="tip">rgb: {
+ r: 0,
+ g: 255,
+ b: 146,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>500nm</label></span><span class="color-block"><span class="color" style="background-color:#00ff54"><span class="tip">rgb: {
+ r: 0,
+ g: 255,
+ b: 84,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>505nm</label></span><span class="color-block"><span class="color" style="background-color:#00ff00"><span class="tip">rgb: {
+ r: 0,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>510nm</label></span><span class="color-block"><span class="color" style="background-color:#1fff00"><span class="tip">rgb: {
+ r: 31,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>515nm</label></span><span class="color-block"><span class="color" style="background-color:#36ff00"><span class="tip">rgb: {
+ r: 54,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>520nm</label></span></div><div class="colorScheme"><span class="color-block"><span class="color" style="background-color:#36ff00"><span class="tip">rgb: {
+ r: 54,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>520nm</label></span><span class="color-block"><span class="color" style="background-color:#4aff00"><span class="tip">rgb: {
+ r: 74,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>525nm</label></span><span class="color-block"><span class="color" style="background-color:#5eff00"><span class="tip">rgb: {
+ r: 94,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>530nm</label></span><span class="color-block"><span class="color" style="background-color:#70ff00"><span class="tip">rgb: {
+ r: 112,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>535nm</label></span><span class="color-block"><span class="color" style="background-color:#81ff00"><span class="tip">rgb: {
+ r: 129,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>540nm</label></span><span class="color-block"><span class="color" style="background-color:#92ff00"><span class="tip">rgb: {
+ r: 146,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>545nm</label></span><span class="color-block"><span class="color" style="background-color:#a3ff00"><span class="tip">rgb: {
+ r: 163,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>550nm</label></span><span class="color-block"><span class="color" style="background-color:#b3ff00"><span class="tip">rgb: {
+ r: 179,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>555nm</label></span><span class="color-block"><span class="color" style="background-color:#c3ff00"><span class="tip">rgb: {
+ r: 195,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>560nm</label></span><span class="color-block"><span class="color" style="background-color:#d2ff00"><span class="tip">rgb: {
+ r: 210,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>565nm</label></span><span class="color-block"><span class="color" style="background-color:#e1ff00"><span class="tip">rgb: {
+ r: 225,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>570nm</label></span><span class="color-block"><span class="color" style="background-color:#f0ff00"><span class="tip">rgb: {
+ r: 240,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>575nm</label></span><span class="color-block"><span class="color" style="background-color:#ffff00"><span class="tip">rgb: {
+ r: 255,
+ g: 255,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>580nm</label></span><span class="color-block"><span class="color" style="background-color:#ffef00"><span class="tip">rgb: {
+ r: 255,
+ g: 239,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>585nm</label></span><span class="color-block"><span class="color" style="background-color:#ffdf00"><span class="tip">rgb: {
+ r: 255,
+ g: 223,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>590nm</label></span></div><div class="colorScheme"><span class="color-block"><span class="color" style="background-color:#ffdf00"><span class="tip">rgb: {
+ r: 255,
+ g: 223,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>590nm</label></span><span class="color-block"><span class="color" style="background-color:#ffcf00"><span class="tip">rgb: {
+ r: 255,
+ g: 207,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>595nm</label></span><span class="color-block"><span class="color" style="background-color:#ffbe00"><span class="tip">rgb: {
+ r: 255,
+ g: 190,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>600nm</label></span><span class="color-block"><span class="color" style="background-color:#ffad00"><span class="tip">rgb: {
+ r: 255,
+ g: 173,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>605nm</label></span><span class="color-block"><span class="color" style="background-color:#ff9b00"><span class="tip">rgb: {
+ r: 255,
+ g: 155,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>610nm</label></span><span class="color-block"><span class="color" style="background-color:#ff8900"><span class="tip">rgb: {
+ r: 255,
+ g: 137,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>615nm</label></span><span class="color-block"><span class="color" style="background-color:#ff7700"><span class="tip">rgb: {
+ r: 255,
+ g: 119,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>620nm</label></span><span class="color-block"><span class="color" style="background-color:#ff6300"><span class="tip">rgb: {
+ r: 255,
+ g: 99,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>625nm</label></span><span class="color-block"><span class="color" style="background-color:#ff4f00"><span class="tip">rgb: {
+ r: 255,
+ g: 79,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>630nm</label></span><span class="color-block"><span class="color" style="background-color:#ff3900"><span class="tip">rgb: {
+ r: 255,
+ g: 57,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>635nm</label></span><span class="color-block"><span class="color" style="background-color:#ff2100"><span class="tip">rgb: {
+ r: 255,
+ g: 33,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>640nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>645nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>650nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>655nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>660nm</label></span></div><div class="colorScheme"><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>660nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>665nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>670nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>675nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>680nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>685nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>690nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>695nm</label></span><span class="color-block"><span class="color" style="background-color:#ff0000"><span class="tip">rgb: {
+ r: 255,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>700nm</label></span><span class="color-block"><span class="color" style="background-color:#f60000"><span class="tip">rgb: {
+ r: 246,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>705nm</label></span><span class="color-block"><span class="color" style="background-color:#ed0000"><span class="tip">rgb: {
+ r: 237,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>710nm</label></span><span class="color-block"><span class="color" style="background-color:#e40000"><span class="tip">rgb: {
+ r: 228,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>715nm</label></span><span class="color-block"><span class="color" style="background-color:#db0000"><span class="tip">rgb: {
+ r: 219,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>720nm</label></span><span class="color-block"><span class="color" style="background-color:#d10000"><span class="tip">rgb: {
+ r: 209,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>725nm</label></span><span class="color-block"><span class="color" style="background-color:#c80000"><span class="tip">rgb: {
+ r: 200,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>730nm</label></span></div><div class="colorScheme"><span class="color-block"><span class="color" style="background-color:#c80000"><span class="tip">rgb: {
+ r: 200,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>730nm</label></span><span class="color-block"><span class="color" style="background-color:#be0000"><span class="tip">rgb: {
+ r: 190,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>735nm</label></span><span class="color-block"><span class="color" style="background-color:#b50000"><span class="tip">rgb: {
+ r: 181,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>740nm</label></span><span class="color-block"><span class="color" style="background-color:#ab0000"><span class="tip">rgb: {
+ r: 171,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>745nm</label></span><span class="color-block"><span class="color" style="background-color:#a10000"><span class="tip">rgb: {
+ r: 161,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>750nm</label></span><span class="color-block"><span class="color" style="background-color:#970000"><span class="tip">rgb: {
+ r: 151,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>755nm</label></span><span class="color-block"><span class="color" style="background-color:#8d0000"><span class="tip">rgb: {
+ r: 141,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>760nm</label></span><span class="color-block"><span class="color" style="background-color:#820000"><span class="tip">rgb: {
+ r: 130,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>765nm</label></span><span class="color-block"><span class="color" style="background-color:#770000"><span class="tip">rgb: {
+ r: 119,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>770nm</label></span><span class="color-block"><span class="color" style="background-color:#6d0000"><span class="tip">rgb: {
+ r: 109,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>775nm</label></span><span class="color-block"><span class="color" style="background-color:#610000"><span class="tip">rgb: {
+ r: 97,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>780nm</label></span><span class="color-block"><span class="color" style="background-color:#430000"><span class="tip">rgb: {
+ r: 67,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>785nm</label></span><span class="color-block"><span class="color" style="background-color:#340000"><span class="tip">rgb: {
+ r: 52,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>790nm</label></span><span class="color-block"><span class="color" style="background-color:#230000"><span class="tip">rgb: {
+ r: 35,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>795nm</label></span><span class="color-block"><span class="color" style="background-color:#100000"><span class="tip">rgb: {
+ r: 16,
+ g: 0,
+ b: 0,
+ a: 255,
+ bitDepth: 8
+}</span></span><label>800nm</label></span></div></div><h2 class="anchor anchorWithStickyNavbar_mojV" id="javascript">JavaScript<a class="hash-link" href="#javascript" title="Direct link to heading">​</a></h2><div class="codeBlockContainer_I0IT language-js theme-code-block"><div class="codeBlockContent_wNvx js"><pre tabindex="0" class="prism-code language-js codeBlock_jd64 thin-scrollbar" style="color:#9CDCFE;background-color:#1E1E1E"><code class="codeBlockLines_mRuA"><span class="token-line" style="color:#9CDCFE"><span class="token keyword" style="color:rgb(86, 156, 214)">const</span><span class="token plain"> </span><span class="token maybe-class-name">Color</span><span class="token plain"> </span><span class="token operator" style="color:rgb(212, 212, 212)">=</span><span class="token plain"> </span><span class="token function" style="color:rgb(220, 220, 170)">require</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;chromaticity-color-utilities&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token keyword" style="color:rgb(86, 156, 214)">const</span><span class="token plain"> color1 </span><span class="token operator" style="color:rgb(212, 212, 212)">=</span><span class="token plain"> </span><span class="token maybe-class-name">Color</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;nm&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token plain"> </span><span class="token number" style="color:rgb(181, 206, 168)">600</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token method function property-access" style="color:rgb(220, 220, 170)">to</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;rgb&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token comment" style="color:rgb(106, 153, 85)">// rgb { r: 255, g: 190, b: 0, a: 255, bitDepth: 8, max: 255 }</span><br></span></code></pre><button type="button" aria-label="Copy code to clipboard" class="copyButton_wuS7 clean-btn">Copy</button></div></div><h2 class="anchor anchorWithStickyNavbar_mojV" id="typescript">TypeScript<a class="hash-link" href="#typescript" title="Direct link to heading">​</a></h2><div class="codeBlockContainer_I0IT language-ts theme-code-block"><div class="codeBlockContent_wNvx ts"><pre tabindex="0" class="prism-code language-ts codeBlock_jd64 thin-scrollbar" style="color:#9CDCFE;background-color:#1E1E1E"><code class="codeBlockLines_mRuA"><span class="token-line" style="color:#9CDCFE"><span class="token keyword module" style="color:rgb(86, 156, 214)">import</span><span class="token plain"> </span><span class="token imports maybe-class-name">Color</span><span class="token imports punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token imports"> </span><span class="token imports punctuation" style="color:rgb(212, 212, 212)">{</span><span class="token imports"> colorTypes </span><span class="token imports punctuation" style="color:rgb(212, 212, 212)">}</span><span class="token plain"> </span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token plain"> </span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;chromaticity-color-utilities&#x27;</span><span class="token plain"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#9CDCFE"><span class="token plain"></span><span class="token keyword" style="color:rgb(86, 156, 214)">const</span><span class="token plain"> c</span><span class="token operator" style="color:rgb(212, 212, 212)">:</span><span class="token plain"> colorTypes</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token property-access">nm</span><span class="token plain"> </span><span class="token operator" style="color:rgb(212, 212, 212)">=</span><span class="token plain"> </span><span class="token maybe-class-name">Color</span><span class="token punctuation" style="color:rgb(212, 212, 212)">.</span><span class="token keyword module" style="color:rgb(86, 156, 214)">from</span><span class="token punctuation" style="color:rgb(212, 212, 212)">(</span><span class="token string" style="color:rgb(206, 145, 120)">&#x27;nm&#x27;</span><span class="token punctuation" style="color:rgb(212, 212, 212)">,</span><span class="token plain"> </span><span class="token number" style="color:rgb(181, 206, 168)">600</span><span class="token punctuation" style="color:rgb(212, 212, 212)">)</span><br></span></code></pre><button type="button" aria-label="Copy code to clipboard" class="copyButton_wuS7 clean-btn">Copy</button></div></div></div></article><nav class="pagination-nav docusaurus-mt-lg" aria-label="Docs pages navigation"><div class="pagination-nav__item"><a class="pagination-nav__link" href="/chromaticity-color-utilities/docs/color-types/ycbcr"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">YCbCr</div></a></div><div class="pagination-nav__item pagination-nav__item--next"><a class="pagination-nav__link" href="/chromaticity-color-utilities/docs/color-types/kelvin"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Kelvin: Color Temperature</div></a></div></nav></div></div><div class="col col--3"><div class="tableOfContents_cNA8 thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#new-color" class="table-of-contents__link toc-highlight">New Color</a></li><li><a href="#get-methods" class="table-of-contents__link toc-highlight">Get methods</a></li><li><a href="#example-output" class="table-of-contents__link toc-highlight">Example Output</a></li><li><a href="#javascript" class="table-of-contents__link toc-highlight">JavaScript</a></li><li><a href="#typescript" class="table-of-contents__link toc-highlight">TypeScript</a></li></ul></div></div></div></div></main></div></div><footer class="footer"><div class="container container-fluid"><div class="footer__links text--center"><div class="footer__links"><a href="https://github.com/sponsors/reiniiriarios" target="_blank" rel="noopener noreferrer" class="footer__link-item"><span>💜 Fund on GitHub<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_I5OW"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a><span class="footer__link-separator">·</span><a href="https://ko-fi.com/reinii" target="_blank" rel="noopener noreferrer" class="footer__link-item"><span>☕ Fund on Kofi<svg width="13.5" height="13.5" aria-hidden="true" viewBox="0 0 24 24" class="iconExternalLink_I5OW"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"></path></svg></span></a></div></div><div class="footer__bottom text--center"><div class="footer__copyright">
           Copyright © 2022 <a href="https://emmalitwavulcu.com/" target="_blank">Emma Litwa-Vulcu</a>.
           Distributed under a <a href="https://github.com/reiniiriarios/chromaticity-color-utilities/blob/main/LICENSE" target="_blank">GNU GPL-V3 license</a>.
         </div></div></div></footer></div>
-<script src="/chromaticity-color-utilities/assets/js/runtime~main.0df51969.js"></script>
-<script src="/chromaticity-color-utilities/assets/js/main.b4ed53e3.js"></script>
+<script src="/chromaticity-color-utilities/assets/js/runtime~main.ef4374bb.js"></script>
+<script src="/chromaticity-color-utilities/assets/js/main.24b68cae.js"></script>
 </body>
 </html>
