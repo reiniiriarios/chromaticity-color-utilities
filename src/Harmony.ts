@@ -136,6 +136,8 @@ class Harmony {
         'rgb',
         'rgb2',
         'cmyk',
+        'lab',
+        'luv',
       ].includes(method)
     ) {
       let type = method.replace(/[0-9]/, '').replace(/a$/, '')
@@ -185,6 +187,8 @@ class Harmony {
         'rgb',
         'rgb2',
         'cmyk',
+        'lab',
+        'luv',
       ].includes(method)
     ) {
       let type = method.replace(/[0-9]/, '').replace(/a$/, '')
@@ -224,7 +228,6 @@ class Harmony {
     distanceShade?: number
   ): T[] {
     let scheme: T[] = []
-    let tEnd: number, sEnd: number, tSeparation: number, sSeparation: number
     switch (method) {
       case 'hsl':
       case 'hsla':
@@ -365,6 +368,44 @@ class Harmony {
         scheme.push(cmyk.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
           scheme.push(Modify.cmykLighten(cmyk, i / colors * distance).to(color.getType(), { round: round }))
+        }
+        break
+      case 'lab':
+        let lab: Colors.lab = color.to('lab', { round: false })
+        if (typeof distanceShade === 'undefined') {
+          if (lab.getL() < 50) {
+            distanceShade = lab.getL() / 50 * distance
+          } else {
+            distanceShade = distance
+            distance = (100 - lab.getL()) / 50 * distanceShade
+          }
+        }
+
+        for (let i = 0; i < colors; i++) {
+          scheme.push(Modify.labDarken(lab, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+        }
+        scheme.push(lab.to(color.getType(), { round: round }))
+        for (let i = 1; i <= colors; i++) {
+          scheme.push(Modify.labLighten(lab, i / colors * distance).to(color.getType(), { round: round }))
+        }
+        break
+      case 'luv':
+        let luv: Colors.luv = color.to('luv', { round: false })
+        if (typeof distanceShade === 'undefined') {
+          if (luv.getL() < 50) {
+            distanceShade = luv.getL() / 50 * distance
+          } else {
+            distanceShade = distance
+            distance = (100 - luv.getL()) / 50 * distanceShade
+          }
+        }
+
+        for (let i = 0; i < colors; i++) {
+          scheme.push(Modify.luvDarken(luv, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+        }
+        scheme.push(luv.to(color.getType(), { round: round }))
+        for (let i = 1; i <= colors; i++) {
+          scheme.push(Modify.luvLighten(luv, i / colors * distance).to(color.getType(), { round: round }))
         }
         break
       default:

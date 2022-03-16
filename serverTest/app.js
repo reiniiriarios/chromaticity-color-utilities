@@ -176,6 +176,10 @@ shade('hsp', 'ee5588')
 shade('rgb', 'ee5588')
 shade('rgb2', 'ee5588')
 shade('cmyk', 'ee5588')
+shade('lab', 'ee5588')
+shade('luv', 'ee5588')
+content += '</div>'
+content += '<div class="container">'
 shade('hsl', '22aaee')
 shade('hsv', '22aaee')
 shade('hsi', '22aaee')
@@ -183,6 +187,8 @@ shade('hsp', '22aaee')
 shade('rgb', '22aaee')
 shade('rgb2', '22aaee')
 shade('cmyk', '22aaee')
+shade('lab', '22aaee')
+shade('luv', '22aaee')
 content += '</div>'
 
 content += '<div class="container">'
@@ -193,6 +199,10 @@ shade('hsp', 'ee5588', 0.5)
 shade('rgb', 'ee5588', 0.5)
 shade('rgb2', 'ee5588', 0.5)
 shade('cmyk', 'ee5588', 0.5)
+shade('lab', 'ee5588', 0.5)
+shade('luv', 'ee5588', 0.5)
+content += '</div>'
+content += '<div class="container">'
 shade('hsl', '22aaee', 0.5)
 shade('hsv', '22aaee', 0.5)
 shade('hsi', '22aaee', 0.5)
@@ -200,6 +210,8 @@ shade('hsp', '22aaee', 0.5)
 shade('rgb', '22aaee', 0.5)
 shade('rgb2', '22aaee', 0.5)
 shade('cmyk', '22aaee', 0.5)
+shade('lab', '22aaee', 0.5)
+shade('luv', '22aaee', 0.5)
 content += '</div>'
 
 function tint(method, start, amount = 1) {
@@ -231,6 +243,10 @@ tint('hsp', '881155')
 tint('rgb', '881155')
 tint('rgb2', '881155')
 tint('cmyk', '881155')
+tint('lab', '881155')
+tint('luv', '881155')
+content += '</div>'
+content += '<div class="container">'
 tint('hsl', '22aaee')
 tint('hsv', '22aaee')
 tint('hsi', '22aaee')
@@ -238,6 +254,8 @@ tint('hsp', '22aaee')
 tint('rgb', '22aaee')
 tint('rgb2', '22aaee')
 tint('cmyk', '22aaee')
+tint('lab', '22aaee')
+tint('luv', '22aaee')
 content += '</div>'
 
 content += '<div class="container">'
@@ -248,6 +266,10 @@ tint('hsp', '881155', 0.5)
 tint('rgb', '881155', 0.5)
 tint('rgb2', '881155', 0.5)
 tint('cmyk', '881155', 0.5)
+tint('lab', '881155', 0.5)
+tint('luv', '881155', 0.5)
+content += '</div>'
+content += '<div class="container">'
 tint('hsl', '22aaee', 0.5)
 tint('hsv', '22aaee', 0.5)
 tint('hsi', '22aaee', 0.5)
@@ -255,6 +277,8 @@ tint('hsp', '22aaee', 0.5)
 tint('rgb', '22aaee', 0.5)
 tint('rgb2', '22aaee', 0.5)
 tint('cmyk', '22aaee', 0.5)
+tint('lab', '22aaee', 0.5)
+tint('luv', '22aaee', 0.5)
 content += '</div>'
 
 function shadetint(method, start, amountT = 1, amountS = undefined) {
@@ -287,6 +311,10 @@ shadetint('hsp', 'eeaa44')
 shadetint('rgb', 'eeaa44')
 shadetint('rgb2', 'eeaa44')
 shadetint('cmyk', 'eeaa44')
+shadetint('lab', 'eeaa44')
+shadetint('luv', 'eeaa44')
+content += '</div>'
+content += '<div class="container">'
 shadetint('hsl', '44ddee')
 shadetint('hsv', '44ddee')
 shadetint('hsi', '44ddee')
@@ -294,6 +322,8 @@ shadetint('hsp', '44ddee')
 shadetint('rgb', '44ddee')
 shadetint('rgb2', '44ddee')
 shadetint('cmyk', '44ddee')
+shadetint('lab', '44ddee')
+shadetint('luv', '44ddee')
 content += '</div>'
 
 content += '<div class="container">'
@@ -304,6 +334,10 @@ shadetint('hsp', 'eeaa44', 0.5)
 shadetint('rgb', 'eeaa44', 0.5)
 shadetint('rgb2', 'eeaa44', 0.5)
 shadetint('cmyk', 'eeaa44', 0.5)
+shadetint('lab', 'eeaa44', 0.5)
+shadetint('luv', 'eeaa44', 0.5)
+content += '</div>'
+content += '<div class="container">'
 shadetint('hsl', '44ddee', 0.5)
 shadetint('hsv', '44ddee', 0.5)
 shadetint('hsi', '44ddee', 0.5)
@@ -311,6 +345,8 @@ shadetint('hsp', '44ddee', 0.5)
 shadetint('rgb', '44ddee', 0.5)
 shadetint('rgb2', '44ddee', 0.5)
 shadetint('cmyk', '44ddee', 0.5)
+shadetint('lab', '44ddee', 0.5)
+shadetint('luv', '44ddee', 0.5)
 content += '</div>'
 
 content += '<div class="container">'
@@ -321,6 +357,10 @@ shadetint('hsp', '882211')
 shadetint('rgb', '882211')
 shadetint('rgb2', '882211')
 shadetint('cmyk', '882211')
+shadetint('lab', '882211')
+shadetint('luv', '882211')
+content += '</div>'
+content += '<div class="container">'
 shadetint('hsl', '117766')
 shadetint('hsv', '117766')
 shadetint('hsi', '117766')
@@ -328,6 +368,8 @@ shadetint('hsp', '117766')
 shadetint('rgb', '117766')
 shadetint('rgb2', '117766')
 shadetint('cmyk', '117766')
+shadetint('lab', '117766')
+shadetint('luv', '117766')
 content += '</div>'
 
 content += '<div class="container">'
@@ -338,6 +380,10 @@ shadetint('hsp', '882211', 0.5)
 shadetint('rgb', '882211', 0.5)
 shadetint('rgb2', '882211', 0.5)
 shadetint('cmyk', '882211', 0.5)
+shadetint('lab', '882211', 0.5)
+shadetint('luv', '882211', 0.5)
+content += '</div>'
+content += '<div class="container">'
 shadetint('hsl', '117766', 0.5)
 shadetint('hsv', '117766', 0.5)
 shadetint('hsi', '117766', 0.5)
@@ -345,6 +391,8 @@ shadetint('hsp', '117766', 0.5)
 shadetint('rgb', '117766', 0.5)
 shadetint('rgb2', '117766', 0.5)
 shadetint('cmyk', '117766', 0.5)
+shadetint('lab', '117766', 0.5)
+shadetint('luv', '117766', 0.5)
 content += '</div>'
 
 content += '<div class="container">'
@@ -355,6 +403,10 @@ shadetint('hsp', 'ee2266', 1, 1)
 shadetint('rgb', 'ee2266', 1, 1)
 shadetint('rgb2', 'ee2266', 1, 1)
 shadetint('cmyk', 'ee2266', 1, 1)
+shadetint('lab', 'ee2266', 1, 1)
+shadetint('luv', 'ee2266', 1, 1)
+content += '</div>'
+content += '<div class="container">'
 shadetint('hsl', '55aa11', 1, 1)
 shadetint('hsv', '55aa11', 1, 1)
 shadetint('hsi', '55aa11', 1, 1)
@@ -362,6 +414,8 @@ shadetint('hsp', '55aa11', 1, 1)
 shadetint('rgb', '55aa11', 1, 1)
 shadetint('rgb2', '55aa11', 1, 1)
 shadetint('cmyk', '55aa11', 1, 1)
+shadetint('lab', '55aa11', 1, 1)
+shadetint('luv', '55aa11', 1, 1)
 content += '</div>'
 
 content += '<div class="container">'
@@ -372,6 +426,10 @@ shadetint('hsp', 'ee2266', 0.5, 0.5)
 shadetint('rgb', 'ee2266', 0.5, 0.5)
 shadetint('rgb2', 'ee2266', 0.5, 0.5)
 shadetint('cmyk', 'ee2266', 0.5, 0.5)
+shadetint('lab', 'ee2266', 0.5, 0.5)
+shadetint('luv', 'ee2266', 0.5, 0.5)
+content += '</div>'
+content += '<div class="container">'
 shadetint('hsl', '55aa11', 0.5, 0.5)
 shadetint('hsv', '55aa11', 0.5, 0.5)
 shadetint('hsi', '55aa11', 0.5, 0.5)
@@ -379,6 +437,8 @@ shadetint('hsp', '55aa11', 0.5, 0.5)
 shadetint('rgb', '55aa11', 0.5, 0.5)
 shadetint('rgb2', '55aa11', 0.5, 0.5)
 shadetint('cmyk', '55aa11', 0.5, 0.5)
+shadetint('lab', '55aa11', 0.5, 0.5)
+shadetint('luv', '55aa11', 0.5, 0.5)
 content += '</div>'
 
 function lighten(method, start) {
