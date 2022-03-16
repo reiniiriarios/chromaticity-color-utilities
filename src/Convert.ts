@@ -1704,8 +1704,9 @@ class Convert {
 
   /**
    * Convert YPbPr to YCbCr
-   * Y must be in range 0 to 1; Pb and Pr must be in range -0.5 to 0.5
-   *  16 for black and the value of 235 for white when using an 8-bit representation. The standard has 8-bit digitized versions of CB and CR scaled to a different range of 16 to 240
+   * Y must be in range 0 to 1; Pb and Pr must be in range -0.5 to 0.5.
+   * Y' defaults to 16 for black and 235 for white when using an 8-bit representation.
+   * The standard has 8-bit digitized versions of CB and CR scaled to a different range of 16 to 240.
    *
    * @param  {Colors.ypbpr} ypbpr
    * @param  {number}       [yLower=16]  Lower bounds of Y
