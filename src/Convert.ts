@@ -1881,11 +1881,7 @@ class Convert {
     let g
     let b
 
-    if (nm.getWavelength() >= 360 && nm.getWavelength() < 380) {
-      r = Math.max((nm.getWavelength() - 360) / (380 - 360), 0)
-      g = 0
-      b = 1
-    } else if (nm.getWavelength() >= 380 && nm.getWavelength() < 440) {
+    if (nm.getWavelength() >= 380 && nm.getWavelength() < 440) {
       r = ((nm.getWavelength() - 440) / (440 - 380)) * -1
       g = 0
       b = 1
@@ -1920,15 +1916,15 @@ class Convert {
     // roughly [8, 0, 8] and [16, 0, 0], or equivalently very close to black
     let factor
     if (nm.getWavelength() >= 380 && nm.getWavelength() < 400) {
-      factor = 0.014 + (0.1 * (nm.getWavelength() - 380)) / (400 - 380)
+      factor = 1/71 + (1/10 * (nm.getWavelength() - 380)) / (400 - 380)
     } else if (nm.getWavelength() >= 400 && nm.getWavelength() < 420) {
-      factor = 0.2 + (0.7 * (nm.getWavelength() - 400)) / (420 - 400)
+      factor = 1/5 + (5/7 * (nm.getWavelength() - 400)) / (420 - 400)
     } else if (nm.getWavelength() >= 420 && nm.getWavelength() < 701) {
       factor = 1
     } else if (nm.getWavelength() >= 701 && nm.getWavelength() < 781) {
-      factor = 0.3 + (0.7 * (780 - nm.getWavelength())) / (780 - 700)
+      factor = 1/3 + (5/7 * (780 - nm.getWavelength())) / (780 - 700)
     } else if (nm.getWavelength() >= 781 && nm.getWavelength() <= 800) {
-      factor = 0.031 + (0.2 * (800 - nm.getWavelength())) / (800 - 781)
+      factor = 1/32 + (1/5 * (800 - nm.getWavelength())) / (800 - 781)
     } else {
       factor = 0
     }
@@ -1936,13 +1932,13 @@ class Convert {
     let max = 2 ** bitDepth - 1
 
     if (r > 0) {
-      r = max * Math.pow(r * factor, gamma)
+      r = Math.max(0, Math.min(max, max * Math.pow(r * factor, gamma)))
     }
     if (g > 0) {
-      g = max * Math.pow(g * factor, gamma)
+      g = Math.max(0, Math.min(max, max * Math.pow(g * factor, gamma)))
     }
     if (b > 0) {
-      b = max * Math.pow(b * factor, gamma)
+      b = Math.max(0, Math.min(max, max * Math.pow(b * factor, gamma)))
     }
 
     if (round) {

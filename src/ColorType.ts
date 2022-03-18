@@ -72,6 +72,10 @@ export interface schemeArgs {
   with?: colorType
 }
 
+export interface cssArgs {
+  method?: string
+}
+
 export abstract class colorType {
   constructor() {}
 
@@ -812,8 +816,48 @@ export abstract class colorType {
     return ogScheme
   }
 
-  public css(): string {
-    return 'not yet implemented'
+  public css(args?: cssArgs): string {
+    if (typeof args === 'undefined') {
+      args = {
+        method: 'hex'
+      }
+    }
+    else if (typeof args.method === 'undefined') {
+      args.method = 'hex'
+    }
+    let colorString: string
+    switch (args.method) {
+      case 'hex':
+        let hex: Colors.hex = this.to('hex')
+        colorString = `#${hex.getHex()}`
+        break
+      // case 'hexa':
+      //   break
+      case 'rgb':
+        let rgb: Colors.rgb = this.to('rgb')
+        colorString = `rgb(${rgb.getR()}, ${rgb.getG()}, ${rgb.getB()})`
+        break
+      case 'rgba':
+        let rgba: Colors.rgb = this.to('rgb')
+        // precision of alpha is ~1/256, or ~0.004 at best
+        let rgbaAlpha: string = (rgba.getA() / rgba.getMax()).toPrecision(4).replace(/\.?0+$/,'')
+        colorString = `rgba(${rgba.getR()}, ${rgba.getG()}, ${rgba.getB()}, ${rgbaAlpha})`
+        break
+      case 'hsl':
+        let hsl: Colors.hsl = this.to('hsl')
+        colorString = `hsl(${hsl.getH()}, ${hsl.getS()}%, ${hsl.getL()}%)`
+        break
+      case 'hsla':
+        let hsla: Colors.hsl = this.to('hsl')
+        // precision of alpha is ~1/256, or ~0.004 at best
+        let hslaAlpha: string = (hsla.getA() / 100).toPrecision(4).replace(/\.?0+$/,'')
+        colorString = `hsla(${hsla.getH()}, ${hsla.getS()}%, ${hsla.getL()}%, ${hslaAlpha})`
+        break
+      default:
+        throw new Error(`Unrecognized css method '${args.method}'.`)
+    }
+    
+    return colorString
   }
 
   protected torgb(args: newColorArgs): Colors.rgb {
