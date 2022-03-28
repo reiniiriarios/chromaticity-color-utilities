@@ -356,6 +356,46 @@ export abstract class colorType {
               args.amount
             )
             break
+          case 'multiply':
+          case 'rgbmultiply':
+            tmpColor1 = this.torgb({ round: false })
+            tmpColor2 = args.with.torgb({ round: false })
+            modified = Blend.rgbMultiply(
+              tmpColor1,
+              tmpColor2,
+              args.amount
+            )
+            break
+          case 'screen':
+          case 'rgbscreen':
+            tmpColor1 = this.torgb({ round: false })
+            tmpColor2 = args.with.torgb({ round: false })
+            modified = Blend.rgbScreen(
+              tmpColor1,
+              tmpColor2,
+              args.amount
+            )
+            break
+          case 'overlay':
+          case 'rgboverlay':
+            tmpColor1 = this.torgb({ round: false })
+            tmpColor2 = args.with.torgb({ round: false })
+            modified = Blend.rgbOverlay(
+              tmpColor1,
+              tmpColor2,
+              args.amount
+            )
+            break
+          case 'softlight':
+          case 'rgbsoftlight':
+            tmpColor1 = this.torgb({ round: false })
+            tmpColor2 = args.with.torgb({ round: false })
+            modified = Blend.rgbSoftLight(
+              tmpColor1,
+              tmpColor2,
+              args.amount
+            )
+            break
           default:
             throw new Error('Unrecognized blending method: ' + args.method)
         }

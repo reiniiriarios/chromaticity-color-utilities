@@ -147,6 +147,203 @@ grad('lab', '1133ff', 'eeccaa')
 grad('luv', '1133ff', 'eeccaa')
 content += '</div>'
 
+
+function blend(method, start, end) {
+  let realMethod = method.replace(/[^a-z]/, '')
+  if (realMethod == 'screen' || realMethod == 'multiply' || realMethod == 'overlay' || realMethod == 'softlight') realMethod = 'rgb'
+  content += '<div><h2>blend</h2><h3>' + method + '</h3>'
+  let colors = []
+  let cstart = Color.from('hex', start)
+  for (i = 0; i <= 10; i++) {
+    let lighter = cstart.modify('blend', {
+      with: Color.from('hex', end),
+      method: method,
+      amount: i / 10,
+    })
+    colors.push(lighter)
+  }
+  colors.forEach((color, i) => {
+    highlight = color.hex == start || color.hex == end
+    tip = i / 10 + ': ' + color.to(realMethod).toString(1)
+    content += colorBlock(color.hex, tip, highlight)
+  })
+  content += '</div>'
+}
+
+content += '<div class="container">'
+blend('rgb', 'cc1111', '11aaaa')
+blend('hsv', 'cc1111', '11aaaa')
+blend('hsl', 'cc1111', '11aaaa')
+blend('hsi', 'cc1111', '11aaaa')
+blend('hsp', 'cc1111', '11aaaa')
+blend('cmyk', 'cc1111', '11aaaa')
+blend('lab', 'cc1111', '11aaaa')
+blend('luv', 'cc1111', '11aaaa')
+blend('rgb', 'aa22bb', '55aa00')
+blend('hsv', 'aa22bb', '55aa00')
+blend('hsl', 'aa22bb', '55aa00')
+blend('hsi', 'aa22bb', '55aa00')
+blend('hsp', 'aa22bb', '55aa00')
+blend('cmyk', 'aa22bb', '55aa00')
+blend('lab', 'aa22bb', '55aa00')
+blend('luv', 'aa22bb', '55aa00')
+content += '</div>'
+
+content += '<div class="container">'
+blend('rgb', '11aaaa', 'cc1111')
+blend('hsv', '11aaaa', 'cc1111')
+blend('hsl', '11aaaa', 'cc1111')
+blend('hsi', '11aaaa', 'cc1111')
+blend('hsp', '11aaaa', 'cc1111')
+blend('cmyk', '11aaaa', 'cc1111')
+blend('lab', '11aaaa', 'cc1111')
+blend('luv', '11aaaa', 'cc1111')
+blend('rgb', '55aa00', 'aa22bb')
+blend('hsv', '55aa00', 'aa22bb')
+blend('hsl', '55aa00', 'aa22bb')
+blend('hsi', '55aa00', 'aa22bb')
+blend('hsp', '55aa00', 'aa22bb')
+blend('cmyk', '55aa00', 'aa22bb')
+blend('lab', '55aa00', 'aa22bb')
+blend('luv', '55aa00', 'aa22bb')
+content += '</div>'
+
+content += '<div class="container">'
+blend('rgb', 'ee8822', '118844')
+blend('hsv', 'ee8822', '118844')
+blend('hsl', 'ee8822', '118844')
+blend('hsi', 'ee8822', '118844')
+blend('hsp', 'ee8822', '118844')
+blend('cmyk', 'ee8822', '118844')
+blend('lab', 'ee8822', '118844')
+blend('luv', 'ee8822', '118844')
+blend('rgb', 'ee2288', '114488')
+blend('hsv', 'ee2288', '114488')
+blend('hsl', 'ee2288', '114488')
+blend('hsi', 'ee2288', '114488')
+blend('hsp', 'ee2288', '114488')
+blend('cmyk', 'ee2288', '114488')
+blend('lab', 'ee2288', '114488')
+blend('luv', 'ee2288', '114488')
+content += '</div>'
+
+content += '<div class="container">'
+blend('rgb', '118844', 'ee8822')
+blend('hsv', '118844', 'ee8822')
+blend('hsl', '118844', 'ee8822')
+blend('hsi', '118844', 'ee8822')
+blend('hsp', '118844', 'ee8822')
+blend('cmyk', '118844', 'ee8822')
+blend('lab', '118844', 'ee8822')
+blend('luv', '118844', 'ee8822')
+blend('rgb', '114488', 'ee2288')
+blend('hsv', '114488', 'ee2288')
+blend('hsl', '114488', 'ee2288')
+blend('hsi', '114488', 'ee2288')
+blend('hsp', '114488', 'ee2288')
+blend('cmyk', '114488', 'ee2288')
+blend('lab', '114488', 'ee2288')
+blend('luv', '114488', 'ee2288')
+content += '</div>'
+
+content += '<div class="container">'
+blend('rgb', '445566', 'ff2255')
+blend('hsv', '445566', 'ff2255')
+blend('hsl', '445566', 'ff2255')
+blend('hsi', '445566', 'ff2255')
+blend('hsp', '445566', 'ff2255')
+blend('cmyk', '445566', 'ff2255')
+blend('lab', '445566', 'ff2255')
+blend('luv', '445566', 'ff2255')
+blend('rgb', 'eeccaa', '1133ff')
+blend('hsv', 'eeccaa', '1133ff')
+blend('hsl', 'eeccaa', '1133ff')
+blend('hsi', 'eeccaa', '1133ff')
+blend('hsp', 'eeccaa', '1133ff')
+blend('cmyk', 'eeccaa', '1133ff')
+blend('lab', 'eeccaa', '1133ff')
+blend('luv', 'eeccaa', '1133ff')
+content += '</div>'
+
+content += '<div class="container">'
+blend('rgb', 'ff2255', '445566')
+blend('hsv', 'ff2255', '445566')
+blend('hsl', 'ff2255', '445566')
+blend('hsi', 'ff2255', '445566')
+blend('hsp', 'ff2255', '445566')
+blend('cmyk', 'ff2255', '445566')
+blend('lab', 'ff2255', '445566')
+blend('luv', 'ff2255', '445566')
+blend('rgb', '1133ff', 'eeccaa')
+blend('hsv', '1133ff', 'eeccaa')
+blend('hsl', '1133ff', 'eeccaa')
+blend('hsi', '1133ff', 'eeccaa')
+blend('hsp', '1133ff', 'eeccaa')
+blend('cmyk', '1133ff', 'eeccaa')
+blend('lab', '1133ff', 'eeccaa')
+blend('luv', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('screen', 'cc1111', '11aaaa')
+blend('screen', 'aa22bb', '55aa00')
+blend('screen', '11aaaa', 'cc1111')
+blend('screen', '55aa00', 'aa22bb')
+blend('screen', 'ee8822', '118844')
+blend('screen', 'ee2288', '114488')
+blend('screen', '118844', 'ee8822')
+blend('screen', '114488', 'ee2288')
+blend('screen', '445566', 'ff2255')
+blend('screen', 'eeccaa', '1133ff')
+blend('screen', 'ff2255', '445566')
+blend('screen', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('multiply', 'cc1111', '11aaaa')
+blend('multiply', 'aa22bb', '55aa00')
+blend('multiply', '11aaaa', 'cc1111')
+blend('multiply', '55aa00', 'aa22bb')
+blend('multiply', 'ee8822', '118844')
+blend('multiply', 'ee2288', '114488')
+blend('multiply', '118844', 'ee8822')
+blend('multiply', '114488', 'ee2288')
+blend('multiply', '445566', 'ff2255')
+blend('multiply', 'eeccaa', '1133ff')
+blend('multiply', 'ff2255', '445566')
+blend('multiply', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('overlay', 'cc1111', '11aaaa')
+blend('overlay', 'aa22bb', '55aa00')
+blend('overlay', '11aaaa', 'cc1111')
+blend('overlay', '55aa00', 'aa22bb')
+blend('overlay', 'ee8822', '118844')
+blend('overlay', 'ee2288', '114488')
+blend('overlay', '118844', 'ee8822')
+blend('overlay', '114488', 'ee2288')
+blend('overlay', '445566', 'ff2255')
+blend('overlay', 'eeccaa', '1133ff')
+blend('overlay', 'ff2255', '445566')
+blend('overlay', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('softlight', 'cc1111', '11aaaa')
+blend('softlight', 'aa22bb', '55aa00')
+blend('softlight', '11aaaa', 'cc1111')
+blend('softlight', '55aa00', 'aa22bb')
+blend('softlight', 'ee8822', '118844')
+blend('softlight', 'ee2288', '114488')
+blend('softlight', '118844', 'ee8822')
+blend('softlight', '114488', 'ee2288')
+blend('softlight', '445566', 'ff2255')
+blend('softlight', 'eeccaa', '1133ff')
+blend('softlight', 'ff2255', '445566')
+blend('softlight', '1133ff', 'eeccaa')
+content += '</div>'
+
 function shade(method, start, amount = 1) {
   content += '<div><h2>shade</h2><h3>' + method + '</h3>'
   Color.from('hex', start)

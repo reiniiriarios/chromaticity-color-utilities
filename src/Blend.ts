@@ -15,9 +15,222 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import * as Colors from './Colors'
+import Convert from './Convert'
 import Modify from './Modify'
+import Util from './Util'
 
 class Blend {
+  /**
+   * Multiply one RGB color onto another
+   *
+   * @param  {Colors.rgb} rgb1
+   * @param  {Colors.rgb} rgb2
+   * @param  {number}     amount amount to blend, 0-1
+   * @return {Colors.rgb}
+   */
+  static rgbMultiply(
+    rgb1: Colors.rgb,
+    rgb2: Colors.rgb,
+    amount: number = 0.5
+  ): Colors.rgb {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    // normalize to [0,1]
+    let c1 = Convert.rgbNormalize(rgb1)
+    let c2 = Convert.rgbNormalize(rgb2)
+
+    // multiply
+    let r3 = c1.getR() * c2.getR()
+    let g3 = c1.getG() * c2.getG()
+    let b3 = c1.getB() * c2.getB()
+
+    // clamp
+    r3 = Math.min(Math.max(r3, 0), rgb1.getMax())
+    g3 = Math.min(Math.max(g3, 0), rgb1.getMax())
+    b3 = Math.min(Math.max(b3, 0), rgb1.getMax())
+
+    // scale to bitdepth
+    r3 = Util.scaleValueRange(r3, 0, 1, 0, rgb1.getMax(), false)
+    g3 = Util.scaleValueRange(g3, 0, 1, 0, rgb1.getMax(), false)
+    b3 = Util.scaleValueRange(b3, 0, 1, 0, rgb1.getMax(), false)
+
+    // blend as much as opacity of color 2
+    let realAmount = (rgb1.getA() / rgb1.getMax()) * amount
+
+    // blend
+    let c4 = this.rgbBlend(
+      rgb1,
+      new Colors.rgb(r3, g3, b3, rgb1.getA()),
+      realAmount
+    )
+
+    return c4
+  }
+
+  /**
+   * Screen one RGB color onto another
+   *
+   * @param  {Colors.rgb} rgb1
+   * @param  {Colors.rgb} rgb2
+   * @param  {number}     amount amount to blend, 0-1
+   * @return {Colors.rgb}
+   */
+  static rgbScreen(
+    rgb1: Colors.rgb,
+    rgb2: Colors.rgb,
+    amount: number = 0.5
+  ): Colors.rgb {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    // normalize to [0,1]
+    let c1 = Convert.rgbNormalize(rgb1)
+    let c2 = Convert.rgbNormalize(rgb2)
+
+    // screen
+    let r3 = 1 - (1 - c1.getR()) * (1 - c2.getR())
+    let g3 = 1 - (1 - c1.getG()) * (1 - c2.getG())
+    let b3 = 1 - (1 - c1.getB()) * (1 - c2.getB())
+
+    // clamp
+    r3 = Math.min(Math.max(r3, 0), rgb1.getMax())
+    g3 = Math.min(Math.max(g3, 0), rgb1.getMax())
+    b3 = Math.min(Math.max(b3, 0), rgb1.getMax())
+
+    // scale to bitdepth
+    r3 = Util.scaleValueRange(r3, 0, 1, 0, rgb1.getMax(), false)
+    g3 = Util.scaleValueRange(g3, 0, 1, 0, rgb1.getMax(), false)
+    b3 = Util.scaleValueRange(b3, 0, 1, 0, rgb1.getMax(), false)
+
+    // blend as much as opacity of color 2
+    let realAmount = (rgb1.getA() / rgb1.getMax()) * amount
+
+    // blend
+    let c4 = this.rgbBlend(
+      rgb1,
+      new Colors.rgb(r3, g3, b3, rgb1.getA()),
+      realAmount
+    )
+
+    return c4
+  }
+
+  /**
+   * Overlay one RGB color onto another
+   *
+   * @param  {Colors.rgb} rgb1
+   * @param  {Colors.rgb} rgb2
+   * @param  {number}     amount amount to blend, 0-1
+   * @return {Colors.rgb}
+   */
+  static rgbOverlay(
+    rgb1: Colors.rgb,
+    rgb2: Colors.rgb,
+    amount: number = 0.5
+  ): Colors.rgb {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    // normalize to [0,1]
+    let c1 = Convert.rgbNormalize(rgb1)
+    let c2 = Convert.rgbNormalize(rgb2)
+
+    // overlay
+    let r3 =
+      c1.getR() < 0.5
+        ? 2 * c1.getR() * c2.getR()
+        : 1 - 2 * (1 - c1.getR()) * (1 - c2.getR())
+    let g3 =
+      c1.getG() < 0.5
+        ? 2 * c1.getG() * c2.getG()
+        : 1 - 2 * (1 - c1.getG()) * (1 - c2.getG())
+    let b3 =
+      c1.getB() < 0.5
+        ? 2 * c1.getB() * c2.getB()
+        : 1 - 2 * (1 - c1.getB()) * (1 - c2.getB())
+
+    // clamp
+    r3 = Math.min(Math.max(r3, 0), rgb1.getMax())
+    g3 = Math.min(Math.max(g3, 0), rgb1.getMax())
+    b3 = Math.min(Math.max(b3, 0), rgb1.getMax())
+
+    // scale to bitdepth
+    r3 = Util.scaleValueRange(r3, 0, 1, 0, rgb1.getMax(), false)
+    g3 = Util.scaleValueRange(g3, 0, 1, 0, rgb1.getMax(), false)
+    b3 = Util.scaleValueRange(b3, 0, 1, 0, rgb1.getMax(), false)
+
+    // blend as much as opacity of color 2
+    let realAmount = (rgb1.getA() / rgb1.getMax()) * amount
+
+    // blend
+    let c4 = this.rgbBlend(
+      rgb1,
+      new Colors.rgb(r3, g3, b3, rgb1.getA()),
+      realAmount
+    )
+
+    return c4
+  }
+
+  /**
+   * Soft light blend of one RGB color onto another
+   *
+   * @param  {Colors.rgb} rgb1
+   * @param  {Colors.rgb} rgb2
+   * @param  {number}     amount amount to blend, 0-1
+   * @return {Colors.rgb}
+   */
+  static rgbSoftLight(
+    rgb1: Colors.rgb,
+    rgb2: Colors.rgb,
+    amount: number = 0.5
+  ): Colors.rgb {
+    amount = Math.min(Math.max(amount, 0), 1)
+
+    // normalize to [0,1]
+    let c1 = Convert.rgbNormalize(rgb1)
+    let c2 = Convert.rgbNormalize(rgb2)
+
+    // soft light
+    let softVals: number[] = []
+    let vals = [
+      { a: c1.getR(), b: c2.getR() },
+      { a: c1.getG(), b: c2.getG() },
+      { a: c1.getB(), b: c2.getB() },
+    ]
+    vals.forEach((c) => {
+      let soft
+      if (c.b <= 0.5) {
+        soft = c.a - (1 - 2 * c.b) * c.a * (1 - c.a)
+      } else {
+        let gR =
+          c.a <= 0.25 ? ((16 * c.a - 12) * c.a + 4) * c.a : Math.sqrt(c.a)
+        soft = c.a + (2 * c.b - 1) * (gR - c.a)
+      }
+      softVals.push(soft)
+    })
+
+    // clamp
+    let r3 = Math.min(Math.max(softVals[0], 0), rgb1.getMax())
+    let g3 = Math.min(Math.max(softVals[1], 0), rgb1.getMax())
+    let b3 = Math.min(Math.max(softVals[2], 0), rgb1.getMax())
+
+    // scale to bitdepth
+    r3 = Util.scaleValueRange(r3, 0, 1, 0, rgb1.getMax(), false)
+    g3 = Util.scaleValueRange(g3, 0, 1, 0, rgb1.getMax(), false)
+    b3 = Util.scaleValueRange(b3, 0, 1, 0, rgb1.getMax(), false)
+
+    // blend as much as opacity of color 2
+    let realAmount = (rgb1.getA() / rgb1.getMax()) * amount
+
+    // blend
+    let c4 = this.rgbBlend(
+      rgb1,
+      new Colors.rgb(r3, g3, b3, rgb1.getA()),
+      realAmount
+    )
+
+    return c4
+  }
+
   /**
    * Blend one RGB color with another
    *
