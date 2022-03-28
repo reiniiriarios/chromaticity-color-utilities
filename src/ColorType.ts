@@ -266,6 +266,7 @@ export abstract class colorType {
             args.method = 'rgb'
           }
         }
+        args.method = args.method.toLowerCase()
         let tmpColor1, tmpColor2
         switch (args.method) {
           case 'rgb':
