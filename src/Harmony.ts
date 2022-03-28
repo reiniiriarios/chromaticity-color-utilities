@@ -235,19 +235,29 @@ class Harmony {
         let hsl: Colors.hsl = color.to('hsl', { round: false })
         if (typeof distanceShade === 'undefined') {
           if (100 - hsl.getL() < hsl.getL()) {
-            distanceShade = (100 - hsl.getL()) / 50 * distance
+            distanceShade = ((100 - hsl.getL()) / 50) * distance
           } else {
             distanceShade = distance
-            distance = hsl.getL() / 50 * distanceShade
+            distance = (hsl.getL() / 50) * distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.hslDarken(hsl, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.hslDarken(hsl, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(hsl.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.hslLighten(hsl, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.hslLighten(hsl, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       case 'hsv':
@@ -255,19 +265,29 @@ class Harmony {
         let hsv: Colors.hsv = color.to('hsv', { round: false })
         if (typeof distanceShade === 'undefined') {
           if (100 - hsv.getV() < hsv.getV()) {
-            distanceShade = (100 - hsv.getV()) / 50 * distance
+            distanceShade = ((100 - hsv.getV()) / 50) * distance
           } else {
             distanceShade = distance
-            distance = hsv.getV() / 50 * distanceShade
+            distance = (hsv.getV() / 50) * distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.hsvDarken(hsv, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.hsvDarken(hsv, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(hsv.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.hsvLighten(hsv, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.hsvLighten(hsv, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       case 'hsi':
@@ -275,19 +295,29 @@ class Harmony {
         let hsi: Colors.hsi = color.to('hsi', { round: false })
         if (typeof distanceShade === 'undefined') {
           if (100 - hsi.getI() < hsi.getI()) {
-            distanceShade = (100 - hsi.getI()) / 50 * distance
+            distanceShade = ((100 - hsi.getI()) / 50) * distance
           } else {
             distanceShade = distance
-            distance = hsi.getI() / 50 * distanceShade
+            distance = (hsi.getI() / 50) * distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.hsiDarken(hsi, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.hsiDarken(hsi, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(hsi.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.hsiLighten(hsi, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.hsiLighten(hsi, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       case 'hsp':
@@ -295,19 +325,29 @@ class Harmony {
         let hsp: Colors.hsp = color.to('hsp', { round: false })
         if (typeof distanceShade === 'undefined') {
           if (100 - hsp.getP() < hsp.getP()) {
-            distanceShade = (100 - hsp.getP()) / 50 * distance
+            distanceShade = ((100 - hsp.getP()) / 50) * distance
           } else {
             distanceShade = distance
-            distance = hsp.getP() / 50 * distanceShade
+            distance = (hsp.getP() / 50) * distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.hspDarken(hsp, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.hspDarken(hsp, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(hsp.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.hspLighten(hsp, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.hspLighten(hsp, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       case 'rgb2':
@@ -316,19 +356,38 @@ class Harmony {
         if (typeof distanceShade === 'undefined') {
           let avg = (rgb2.getR() + rgb2.getG() + rgb2.getB()) / 3
           if (rgb2.getMax() - avg < avg) {
-            distanceShade = (rgb2.getMax() - Math.min(rgb2.getR(), rgb2.getG(), rgb2.getB())) / rgb2.getMax() / 2 * distance
+            distanceShade =
+              ((rgb2.getMax() -
+                Math.min(rgb2.getR(), rgb2.getG(), rgb2.getB())) /
+                rgb2.getMax() /
+                2) *
+              distance
           } else {
             distanceShade = distance
-            distance = Math.max(rgb2.getR(), rgb2.getG(), rgb2.getB()) / rgb2.getMax() / 2 * distanceShade
+            distance =
+              (Math.max(rgb2.getR(), rgb2.getG(), rgb2.getB()) /
+                rgb2.getMax() /
+                2) *
+              distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.rgb2Darken(rgb2, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.rgb2Darken(rgb2, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(rgb2.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.rgb2Lighten(rgb2, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.rgb2Lighten(rgb2, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       case 'rgb':
@@ -337,76 +396,124 @@ class Harmony {
         if (typeof distanceShade === 'undefined') {
           let avg = (rgb.getR() + rgb.getG() + rgb.getB()) / 3
           if (rgb.getMax() - avg < avg) {
-            distanceShade = (rgb.getMax() - Math.min(rgb.getR(), rgb.getG(), rgb.getB())) / rgb.getMax() / 2 * distance
+            distanceShade =
+              ((rgb.getMax() - Math.min(rgb.getR(), rgb.getG(), rgb.getB())) /
+                rgb.getMax() /
+                2) *
+              distance
           } else {
             distanceShade = distance
-            distance = Math.max(rgb.getR(), rgb.getG(), rgb.getB()) / rgb.getMax() / 2 * distanceShade
+            distance =
+              (Math.max(rgb.getR(), rgb.getG(), rgb.getB()) /
+                rgb.getMax() /
+                2) *
+              distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.rgbDarken(rgb, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.rgbDarken(rgb, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(rgb.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.rgbLighten(rgb, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.rgbLighten(rgb, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       case 'cmyk':
         let cmyk: Colors.cmyk = color.to('cmyk', { round: false })
         if (typeof distanceShade === 'undefined') {
           if (cmyk.getK() < 50) {
-            distanceShade = cmyk.getK() / 50 * distance
+            distanceShade = (cmyk.getK() / 50) * distance
           } else {
             distanceShade = distance
-            distance = (100 - cmyk.getK()) / 50 * distanceShade
+            distance = ((100 - cmyk.getK()) / 50) * distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.cmykDarken(cmyk, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.cmykDarken(cmyk, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(cmyk.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.cmykLighten(cmyk, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.cmykLighten(cmyk, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       case 'lab':
         let lab: Colors.lab = color.to('lab', { round: false })
         if (typeof distanceShade === 'undefined') {
           if (lab.getL() < 50) {
-            distanceShade = lab.getL() / 50 * distance
+            distanceShade = (lab.getL() / 50) * distance
           } else {
             distanceShade = distance
-            distance = (100 - lab.getL()) / 50 * distanceShade
+            distance = ((100 - lab.getL()) / 50) * distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.labDarken(lab, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.labDarken(lab, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(lab.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.labLighten(lab, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.labLighten(lab, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       case 'luv':
         let luv: Colors.luv = color.to('luv', { round: false })
         if (typeof distanceShade === 'undefined') {
           if (luv.getL() < 50) {
-            distanceShade = luv.getL() / 50 * distance
+            distanceShade = (luv.getL() / 50) * distance
           } else {
             distanceShade = distance
-            distance = (100 - luv.getL()) / 50 * distanceShade
+            distance = ((100 - luv.getL()) / 50) * distanceShade
           }
         }
 
         for (let i = 0; i < colors; i++) {
-          scheme.push(Modify.luvDarken(luv, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.luvDarken(luv, ((colors - i) / colors) * distanceShade).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         scheme.push(luv.to(color.getType(), { round: round }))
         for (let i = 1; i <= colors; i++) {
-          scheme.push(Modify.luvLighten(luv, i / colors * distance).to(color.getType(), { round: round }))
+          scheme.push(
+            Modify.luvLighten(luv, (i / colors) * distance).to(
+              color.getType(),
+              { round: round }
+            )
+          )
         }
         break
       default:
@@ -434,7 +541,21 @@ class Harmony {
     if (colors < 2) {
       throw new Error('Unable to generate gradient with less than two colors')
     }
-    let inBetweenColors = colors - 2
+    type = type.toLowerCase()
+
+    let reachesColor2 = ![
+      'multiply',
+      'rgbmultiply',
+      'screen',
+      'rgbscreen',
+      'overlay',
+      'rgboverlay',
+      'softlight',
+      'rgbsoftlight',
+    ].includes(type)
+
+    let inBetweenColors = reachesColor2 ? colors - 2 : colors - 1
+
     let gradient: T[] = []
     gradient.push(color1)
     for (let i = 0; i < inBetweenColors; i++) {
@@ -526,9 +647,50 @@ class Harmony {
             ).to(color1.getType(), { round: round })
           )
           break
+        case 'multiply':
+        case 'rgbmultiply':
+          gradient.push(
+            Blend.rgbMultiply(
+              color1.to('rgb', { round: false }),
+              color2.to('rgb', { round: false }),
+              amount
+            ).to(color1.getType(), { round: round })
+          )
+          break
+        case 'screen':
+        case 'rgbscreen':
+          gradient.push(
+            Blend.rgbScreen(
+              color1.to('rgb', { round: false }),
+              color2.to('rgb', { round: false }),
+              amount
+            ).to(color1.getType(), { round: round })
+          )
+          break
+        case 'overlay':
+        case 'rgboverlay':
+          gradient.push(
+            Blend.rgbOverlay(
+              color1.to('rgb', { round: false }),
+              color2.to('rgb', { round: false }),
+              amount
+            ).to(color1.getType(), { round: round })
+          )
+          break
+        case 'softlight':
+        case 'rgbsoftlight':
+          gradient.push(
+            Blend.rgbSoftLight(
+              color1.to('rgb', { round: false }),
+              color2.to('rgb', { round: false }),
+              amount
+            ).to(color1.getType(), { round: round })
+          )
+          break
       }
     }
-    gradient.push(color2)
+
+    if (reachesColor2) gradient.push(color2)
 
     return gradient
   }

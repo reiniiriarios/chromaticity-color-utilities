@@ -20,6 +20,8 @@ function colorBlock(hex, tip, highlight) {
 
 function grad(method, start, end) {
   content += '<div><h2>gradient</h2><h3>' + method + '</h3>'
+  let realMethod = method.replace(/[^a-z]/, '')
+  if (realMethod == 'screen' || realMethod == 'multiply' || realMethod == 'overlay' || realMethod == 'softlight') realMethod = 'rgb'
   Color.from('hex', start)
     .scheme('gradient', {
       with: Color.from('hex', end),
@@ -28,7 +30,7 @@ function grad(method, start, end) {
     })
     .forEach((color) => {
       highlight = color.hex == start || color.hex == end
-      content += colorBlock(color.hex, color.to(method).toString(), highlight)
+      content += colorBlock(color.hex, color.to(realMethod).toString(), highlight)
     })
   content += '</div>'
 }
@@ -145,6 +147,66 @@ grad('hsp', '1133ff', 'eeccaa')
 grad('cmyk', '1133ff', 'eeccaa')
 grad('lab', '1133ff', 'eeccaa')
 grad('luv', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('screen', 'cc1111', '11aaaa')
+grad('screen', 'aa22bb', '55aa00')
+grad('screen', '11aaaa', 'cc1111')
+grad('screen', '55aa00', 'aa22bb')
+grad('screen', 'ee8822', '118844')
+grad('screen', 'ee2288', '114488')
+grad('screen', '118844', 'ee8822')
+grad('screen', '114488', 'ee2288')
+grad('screen', '445566', 'ff2255')
+grad('screen', 'eeccaa', '1133ff')
+grad('screen', 'ff2255', '445566')
+grad('screen', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('multiply', 'cc1111', '11aaaa')
+grad('multiply', 'aa22bb', '55aa00')
+grad('multiply', '11aaaa', 'cc1111')
+grad('multiply', '55aa00', 'aa22bb')
+grad('multiply', 'ee8822', '118844')
+grad('multiply', 'ee2288', '114488')
+grad('multiply', '118844', 'ee8822')
+grad('multiply', '114488', 'ee2288')
+grad('multiply', '445566', 'ff2255')
+grad('multiply', 'eeccaa', '1133ff')
+grad('multiply', 'ff2255', '445566')
+grad('multiply', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('overlay', 'cc1111', '11aaaa')
+grad('overlay', 'aa22bb', '55aa00')
+grad('overlay', '11aaaa', 'cc1111')
+grad('overlay', '55aa00', 'aa22bb')
+grad('overlay', 'ee8822', '118844')
+grad('overlay', 'ee2288', '114488')
+grad('overlay', '118844', 'ee8822')
+grad('overlay', '114488', 'ee2288')
+grad('overlay', '445566', 'ff2255')
+grad('overlay', 'eeccaa', '1133ff')
+grad('overlay', 'ff2255', '445566')
+grad('overlay', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('softlight', 'cc1111', '11aaaa')
+grad('softlight', 'aa22bb', '55aa00')
+grad('softlight', '11aaaa', 'cc1111')
+grad('softlight', '55aa00', 'aa22bb')
+grad('softlight', 'ee8822', '118844')
+grad('softlight', 'ee2288', '114488')
+grad('softlight', '118844', 'ee8822')
+grad('softlight', '114488', 'ee2288')
+grad('softlight', '445566', 'ff2255')
+grad('softlight', 'eeccaa', '1133ff')
+grad('softlight', 'ff2255', '445566')
+grad('softlight', '1133ff', 'eeccaa')
 content += '</div>'
 
 
