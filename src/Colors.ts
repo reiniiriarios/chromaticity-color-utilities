@@ -1244,7 +1244,7 @@ export class nm extends colorType {
       wavelength,
       380,
       800,
-      'Wavelength (in nm) must fall between 360 and 820'
+      'Wavelength (in nm) must fall between 380 and 800'
     )
     this.wavelength = wavelength
   }
