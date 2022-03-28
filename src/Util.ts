@@ -248,6 +248,13 @@ class Util {
     return w
   }
 
+  /**
+   * Validates color space from string and returns object with relevant data,
+   * including name, gamma, xyz2rgb conversion matrices...
+   *
+   * @param   {string} colorSpace
+   * @returns {object}
+   */
   static validColorSpace(colorSpace: string): object {
     // make lowercase, include common nomenclature differences, ignore spaces, etc
     colorSpace = colorSpace.toLowerCase().replace(/[^a-z0-9]/, '')
