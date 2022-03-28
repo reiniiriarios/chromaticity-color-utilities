@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import Modify from './Modify'
+import Blend from './Blend'
 import * as Colors from './Colors'
 import { colorType } from './ColorType'
 
@@ -442,7 +443,7 @@ class Harmony {
         case 'rgb':
         case 'rgba':
           gradient.push(
-            Modify.rgbBlend(
+            Blend.rgbBlend(
               color1.to('rgb', { round: false }),
               color2.to('rgb', { round: false }),
               amount
@@ -452,7 +453,7 @@ class Harmony {
         case 'hsv':
         case 'hsva':
           gradient.push(
-            Modify.hsvBlend(
+            Blend.hsvBlend(
               color1.to('hsv', { round: false }),
               color2.to('hsv', { round: false }),
               amount
@@ -462,7 +463,7 @@ class Harmony {
         case 'hsl':
         case 'hsla':
           gradient.push(
-            Modify.hslBlend(
+            Blend.hslBlend(
               color1.to('hsl', { round: false }),
               color2.to('hsl', { round: false }),
               amount
@@ -472,7 +473,7 @@ class Harmony {
         case 'hsi':
         case 'hsia':
           gradient.push(
-            Modify.hsiBlend(
+            Blend.hsiBlend(
               color1.to('hsi', { round: false }),
               color2.to('hsi', { round: false }),
               amount
@@ -482,7 +483,7 @@ class Harmony {
         case 'hsp':
         case 'hspa':
           gradient.push(
-            Modify.hspBlend(
+            Blend.hspBlend(
               color1.to('hsp', { round: false }),
               color2.to('hsp', { round: false }),
               amount
@@ -491,7 +492,7 @@ class Harmony {
           break
         case 'cmyk':
           gradient.push(
-            Modify.cmykBlend(
+            Blend.cmykBlend(
               color1.to('cmyk', { round: false }),
               color2.to('cmyk', { round: false }),
               amount
@@ -500,7 +501,7 @@ class Harmony {
           break
         case 'yiq':
           gradient.push(
-            Modify.yiqBlend(
+            Blend.yiqBlend(
               color1.to('yiq', { round: false }),
               color2.to('yiq', { round: false }),
               amount
@@ -509,7 +510,7 @@ class Harmony {
           break
         case 'lab':
           gradient.push(
-            Modify.labBlend(
+            Blend.labBlend(
               color1.to('lab', { round: false }),
               color2.to('lab', { round: false }),
               amount
@@ -518,7 +519,7 @@ class Harmony {
           break
         case 'luv':
           gradient.push(
-            Modify.luvBlend(
+            Blend.luvBlend(
               color1.to('luv', { round: false }),
               color2.to('luv', { round: false }),
               amount

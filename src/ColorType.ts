@@ -16,6 +16,7 @@
 
 import Convert from './Convert'
 import Modify from './Modify'
+import Blend from './Blend'
 import Harmony from './Harmony'
 import * as Colors from './Colors'
 
@@ -272,7 +273,7 @@ export abstract class colorType {
           case 'hex':
             tmpColor1 = this.torgb({ round: false })
             tmpColor2 = args.with.torgb({ round: false })
-            modified = Modify.rgbBlend(
+            modified = Blend.rgbBlend(
               tmpColor1,
               tmpColor2,
               args.amount
@@ -282,7 +283,7 @@ export abstract class colorType {
           case 'hsva':
             tmpColor1 = this.tohsv({ round: false })
             tmpColor2 = args.with.tohsv({ round: false })
-            modified = Modify.hsvBlend(
+            modified = Blend.hsvBlend(
               tmpColor1,
               tmpColor2,
               args.amount
@@ -292,7 +293,7 @@ export abstract class colorType {
           case 'hsla':
             tmpColor1 = this.tohsl({ round: false })
             tmpColor2 = args.with.tohsl({ round: false })
-            modified = Modify.hslBlend(
+            modified = Blend.hslBlend(
               tmpColor1,
               tmpColor2,
               args.amount
@@ -302,7 +303,7 @@ export abstract class colorType {
           case 'hsia':
             tmpColor1 = this.tohsi({ round: false })
             tmpColor2 = args.with.tohsi({ round: false })
-            modified = Modify.hsiBlend(
+            modified = Blend.hsiBlend(
               tmpColor1,
               tmpColor2,
               args.amount
@@ -312,7 +313,7 @@ export abstract class colorType {
           case 'hspa':
             tmpColor1 = this.tohsp({ round: false })
             tmpColor2 = args.with.tohsp({ round: false })
-            modified = Modify.hspBlend(
+            modified = Blend.hspBlend(
               tmpColor1,
               tmpColor2,
               args.amount
@@ -321,7 +322,7 @@ export abstract class colorType {
           case 'cmyk':
             tmpColor1 = this.tocmyk({ round: false })
             tmpColor2 = args.with.tocmyk({ round: false })
-            modified = Modify.cmykBlend(
+            modified = Blend.cmykBlend(
               tmpColor1,
               tmpColor2,
               args.amount
@@ -330,7 +331,7 @@ export abstract class colorType {
           case 'yiq':
             tmpColor1 = this.toyiq({ round: false })
             tmpColor2 = args.with.toyiq({ round: false })
-            modified = Modify.yiqBlend(
+            modified = Blend.yiqBlend(
               tmpColor1,
               tmpColor2,
               args.amount
@@ -339,7 +340,7 @@ export abstract class colorType {
           case 'lab':
             tmpColor1 = this.tolab({ round: false })
             tmpColor2 = args.with.tolab({ round: false })
-            modified = Modify.labBlend(
+            modified = Blend.labBlend(
               tmpColor1,
               tmpColor2,
               args.amount
@@ -348,7 +349,7 @@ export abstract class colorType {
           case 'luv':
             tmpColor1 = this.toluv({ round: false })
             tmpColor2 = args.with.toluv({ round: false })
-            modified = Modify.luvBlend(
+            modified = Blend.luvBlend(
               tmpColor1,
               tmpColor2,
               args.amount
