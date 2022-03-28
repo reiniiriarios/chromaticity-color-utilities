@@ -18,7 +18,6 @@ import * as Colors from './Colors'
 import Modify from './Modify'
 
 class Blend {
-
   /**
    * Blend one RGB color with another
    *
@@ -83,7 +82,7 @@ class Blend {
     amount: number = 0.5
   ): Colors.hsl {
     amount = Math.min(Math.max(amount, 0), 1)
-    
+
     let hueDiff: number
     if (Math.abs(hsl2.getH() - hsl1.getH()) > 180) {
       hueDiff = 360 - (hsl2.getH() - hsl1.getH()) * amount * -1

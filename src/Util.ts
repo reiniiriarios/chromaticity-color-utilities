@@ -231,7 +231,8 @@ class Util {
       referenceWhite = referenceWhite.toLowerCase()
       if (
         typeof stdIlluminants[referenceWhite as keyof object] == 'undefined' ||
-        typeof stdIlluminants[referenceWhite as keyof object]['vector'] == 'undefined'
+        typeof stdIlluminants[referenceWhite as keyof object]['vector'] ==
+          'undefined'
       ) {
         throw new Error('Invalid reference white')
       }
@@ -293,7 +294,7 @@ class Util {
    * @return {number}
    */
   static fmod(x: number, y: number): number {
-    return Number((x - (Math.floor(x / y) * y)).toPrecision(8))
+    return Number((x - Math.floor(x / y) * y).toPrecision(8))
   }
 }
 

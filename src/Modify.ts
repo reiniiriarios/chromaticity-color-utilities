@@ -89,7 +89,8 @@ class Modify {
    */
   static rgb2Lighten(rgb: Colors.rgb, amount: number = 0.5): Colors.rgb {
     let realAmount = Math.min(Math.max(amount, 0), 1)
-    let distanceLeft = rgb.getMax() - Math.min(rgb.getR(), rgb.getG(), rgb.getB())
+    let distanceLeft =
+      rgb.getMax() - Math.min(rgb.getR(), rgb.getG(), rgb.getB())
     let changeValue = distanceLeft * realAmount
     let rl = Math.min(rgb.getR() + changeValue, rgb.getMax())
     let gl = Math.min(rgb.getG() + changeValue, rgb.getMax())
@@ -245,7 +246,14 @@ class Modify {
   static hspDarken(hsp: Colors.hsp, amount: number = 0.5): Colors.hsp {
     let realAmount = 1 - Math.min(Math.max(amount, 0), 1)
     let pDarker = hsp.getP() * realAmount
-    return new Colors.hsp(hsp.getH(), hsp.getS(), pDarker, hsp.getA(), hsp.getPb(), hsp.getPr())
+    return new Colors.hsp(
+      hsp.getH(),
+      hsp.getS(),
+      pDarker,
+      hsp.getA(),
+      hsp.getPb(),
+      hsp.getPr()
+    )
   }
 
   /**
@@ -259,7 +267,14 @@ class Modify {
     let realAmount = Math.min(Math.max(amount, 0), 1)
     let pLighter = hsp.getP() + (100 - hsp.getP()) * realAmount
     let sLighter: number = hsp.getS() - realAmount * hsp.getS()
-    return new Colors.hsp(hsp.getH(), sLighter, pLighter, hsp.getA(), hsp.getPb(), hsp.getPr())
+    return new Colors.hsp(
+      hsp.getH(),
+      sLighter,
+      pLighter,
+      hsp.getA(),
+      hsp.getPb(),
+      hsp.getPr()
+    )
   }
 
   /**
