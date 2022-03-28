@@ -172,6 +172,7 @@ class Blend {
 
   /**
    * Soft light blend of one RGB color onto another
+   * W3C formula used; very similar to Photoshop formula
    *
    * @param  {Colors.rgb} rgb1
    * @param  {Colors.rgb} rgb2
