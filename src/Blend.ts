@@ -202,9 +202,8 @@ class Blend {
       if (c.b <= 0.5) {
         soft = c.a - (1 - 2 * c.b) * c.a * (1 - c.a)
       } else {
-        let gR =
-          c.a <= 0.25 ? ((16 * c.a - 12) * c.a + 4) * c.a : Math.sqrt(c.a)
-        soft = c.a + (2 * c.b - 1) * (gR - c.a)
+        let g = c.a <= 0.25 ? ((16 * c.a - 12) * c.a + 4) * c.a : Math.sqrt(c.a)
+        soft = c.a + (2 * c.b - 1) * (g - c.a)
       }
       softVals.push(soft)
     })
