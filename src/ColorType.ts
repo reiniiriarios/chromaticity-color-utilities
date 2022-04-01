@@ -107,12 +107,16 @@ export abstract class colorType {
   /**
    * Returns any property of type boolean|number|string, otherwise returns undefined
    * Useful for passing values as arguments back and forth
-   * 
-   * @param   {string} propertyName 
+   *
+   * @param   {string} propertyName
    * @returns {any}
    */
   private get(propertyName: string): any {
-    if (['boolean', 'number', 'string'].includes(typeof this[propertyName as keyof object])) {
+    if (
+      ['boolean', 'number', 'string'].includes(
+        typeof this[propertyName as keyof object]
+      )
+    ) {
       return this[propertyName as keyof object]
     }
     return undefined
@@ -121,11 +125,13 @@ export abstract class colorType {
   /**
    * Set alpha
    * Extend on color types with an alpha value
-   * 
-   * @param   {number}  value 
+   *
+   * @param   {number}  value
    * @returns {boolean}
    */
-  protected setAlpha(value: number): boolean { return false }
+  protected setAlpha(value: number): boolean {
+    return false
+  }
 
   /**
    * Stringify object
@@ -266,138 +272,86 @@ export abstract class colorType {
             args.method = 'rgb'
           }
         }
-        args.method = args.method.toLowerCase()
+        args.method = args.method.toLowerCase().replace(' ','')
         let tmpColor1, tmpColor2
-        switch (args.method) {
-          case 'rgb':
-          case 'rgba':
-          case 'hex':
-            tmpColor1 = this.torgb({ round: false })
-            tmpColor2 = args.with.torgb({ round: false })
-            modified = Blend.rgbBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'hsv':
-          case 'hsva':
-            tmpColor1 = this.tohsv({ round: false })
-            tmpColor2 = args.with.tohsv({ round: false })
-            modified = Blend.hsvBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'hsl':
-          case 'hsla':
-            tmpColor1 = this.tohsl({ round: false })
-            tmpColor2 = args.with.tohsl({ round: false })
-            modified = Blend.hslBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'hsi':
-          case 'hsia':
-            tmpColor1 = this.tohsi({ round: false })
-            tmpColor2 = args.with.tohsi({ round: false })
-            modified = Blend.hsiBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'hsp':
-          case 'hspa':
-            tmpColor1 = this.tohsp({ round: false })
-            tmpColor2 = args.with.tohsp({ round: false })
-            modified = Blend.hspBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'cmyk':
-            tmpColor1 = this.tocmyk({ round: false })
-            tmpColor2 = args.with.tocmyk({ round: false })
-            modified = Blend.cmykBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'yiq':
-            tmpColor1 = this.toyiq({ round: false })
-            tmpColor2 = args.with.toyiq({ round: false })
-            modified = Blend.yiqBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'lab':
-            tmpColor1 = this.tolab({ round: false })
-            tmpColor2 = args.with.tolab({ round: false })
-            modified = Blend.labBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'luv':
-            tmpColor1 = this.toluv({ round: false })
-            tmpColor2 = args.with.toluv({ round: false })
-            modified = Blend.luvBlend(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'multiply':
-          case 'rgbmultiply':
-            tmpColor1 = this.torgb({ round: false })
-            tmpColor2 = args.with.torgb({ round: false })
-            modified = Blend.rgbMultiply(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'screen':
-          case 'rgbscreen':
-            tmpColor1 = this.torgb({ round: false })
-            tmpColor2 = args.with.torgb({ round: false })
-            modified = Blend.rgbScreen(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'overlay':
-          case 'rgboverlay':
-            tmpColor1 = this.torgb({ round: false })
-            tmpColor2 = args.with.torgb({ round: false })
-            modified = Blend.rgbOverlay(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          case 'softlight':
-          case 'rgbsoftlight':
-            tmpColor1 = this.torgb({ round: false })
-            tmpColor2 = args.with.torgb({ round: false })
-            modified = Blend.rgbSoftLight(
-              tmpColor1,
-              tmpColor2,
-              args.amount
-            )
-            break
-          default:
-            throw new Error('Unrecognized blending method: ' + args.method)
+        if (
+          [
+            'multiply',
+            'screen',
+            'overlay',
+            'softlight',
+            'colordodge',
+            'colorburn',
+            'vividlight',
+            'lineardodge',
+            'linearburn',
+            'linearlight',
+          ].includes(args.method)
+        ) {
+          tmpColor1 = this.torgb({ round: false })
+          tmpColor2 = args.with.torgb({ round: false })
+          modified = Blend.rgbBlendMode(
+            tmpColor1,
+            tmpColor2,
+            args.amount,
+            args.method
+          )
+        } else {
+          switch (args.method) {
+            case 'rgb':
+            case 'rgba':
+            case 'hex':
+              tmpColor1 = this.torgb({ round: false })
+              tmpColor2 = args.with.torgb({ round: false })
+              modified = Blend.rgbBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'hsv':
+            case 'hsva':
+              tmpColor1 = this.tohsv({ round: false })
+              tmpColor2 = args.with.tohsv({ round: false })
+              modified = Blend.hsvBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'hsl':
+            case 'hsla':
+              tmpColor1 = this.tohsl({ round: false })
+              tmpColor2 = args.with.tohsl({ round: false })
+              modified = Blend.hslBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'hsi':
+            case 'hsia':
+              tmpColor1 = this.tohsi({ round: false })
+              tmpColor2 = args.with.tohsi({ round: false })
+              modified = Blend.hsiBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'hsp':
+            case 'hspa':
+              tmpColor1 = this.tohsp({ round: false })
+              tmpColor2 = args.with.tohsp({ round: false })
+              modified = Blend.hspBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'cmyk':
+              tmpColor1 = this.tocmyk({ round: false })
+              tmpColor2 = args.with.tocmyk({ round: false })
+              modified = Blend.cmykBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'yiq':
+              tmpColor1 = this.toyiq({ round: false })
+              tmpColor2 = args.with.toyiq({ round: false })
+              modified = Blend.yiqBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'lab':
+              tmpColor1 = this.tolab({ round: false })
+              tmpColor2 = args.with.tolab({ round: false })
+              modified = Blend.labBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'luv':
+              tmpColor1 = this.toluv({ round: false })
+              tmpColor2 = args.with.toluv({ round: false })
+              modified = Blend.luvBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            default:
+              throw new Error('Unrecognized blending method: ' + args.method)
+          }
         }
         break
       case 'darken':
@@ -861,10 +815,9 @@ export abstract class colorType {
   public css(args?: cssArgs): string {
     if (typeof args === 'undefined') {
       args = {
-        method: 'hex'
+        method: 'hex',
       }
-    }
-    else if (typeof args.method === 'undefined') {
+    } else if (typeof args.method === 'undefined') {
       args.method = 'hex'
     }
     let colorString: string
@@ -882,7 +835,9 @@ export abstract class colorType {
       case 'rgba':
         let rgba: Colors.rgb = this.to('rgb')
         // precision of alpha is ~1/256, or ~0.004 at best
-        let rgbaAlpha: string = (rgba.getA() / rgba.getMax()).toPrecision(4).replace(/\.?0+$/,'')
+        let rgbaAlpha: string = (rgba.getA() / rgba.getMax())
+          .toPrecision(4)
+          .replace(/\.?0+$/, '')
         colorString = `rgba(${rgba.getR()}, ${rgba.getG()}, ${rgba.getB()}, ${rgbaAlpha})`
         break
       case 'hsl':
@@ -892,13 +847,15 @@ export abstract class colorType {
       case 'hsla':
         let hsla: Colors.hsl = this.to('hsl')
         // precision of alpha is ~1/256, or ~0.004 at best
-        let hslaAlpha: string = (hsla.getA() / 100).toPrecision(4).replace(/\.?0+$/,'')
+        let hslaAlpha: string = (hsla.getA() / 100)
+          .toPrecision(4)
+          .replace(/\.?0+$/, '')
         colorString = `hsla(${hsla.getH()}, ${hsla.getS()}%, ${hsla.getL()}%, ${hslaAlpha})`
         break
       default:
         throw new Error(`Unrecognized css method '${args.method}'.`)
     }
-    
+
     return colorString
   }
 

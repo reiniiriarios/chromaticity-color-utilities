@@ -545,13 +545,15 @@ class Harmony {
 
     let reachesColor2 = ![
       'multiply',
-      'rgbmultiply',
       'screen',
-      'rgbscreen',
       'overlay',
-      'rgboverlay',
       'softlight',
-      'rgbsoftlight',
+      'colorburn',
+      'colordodge',
+      'vividlight',
+      'linearburn',
+      'lineardodge',
+      'linearlight',
     ].includes(type)
 
     let inBetweenColors = reachesColor2 ? colors - 2 : colors - 1
@@ -560,133 +562,119 @@ class Harmony {
     gradient.push(color1)
     for (let i = 0; i < inBetweenColors; i++) {
       let amount = (i + 1) / (inBetweenColors + 1)
-      switch (type) {
-        case 'rgb':
-        case 'rgba':
-          gradient.push(
-            Blend.rgbBlend(
-              color1.to('rgb', { round: false }),
-              color2.to('rgb', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'hsv':
-        case 'hsva':
-          gradient.push(
-            Blend.hsvBlend(
-              color1.to('hsv', { round: false }),
-              color2.to('hsv', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'hsl':
-        case 'hsla':
-          gradient.push(
-            Blend.hslBlend(
-              color1.to('hsl', { round: false }),
-              color2.to('hsl', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'hsi':
-        case 'hsia':
-          gradient.push(
-            Blend.hsiBlend(
-              color1.to('hsi', { round: false }),
-              color2.to('hsi', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'hsp':
-        case 'hspa':
-          gradient.push(
-            Blend.hspBlend(
-              color1.to('hsp', { round: false }),
-              color2.to('hsp', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'cmyk':
-          gradient.push(
-            Blend.cmykBlend(
-              color1.to('cmyk', { round: false }),
-              color2.to('cmyk', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'yiq':
-          gradient.push(
-            Blend.yiqBlend(
-              color1.to('yiq', { round: false }),
-              color2.to('yiq', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'lab':
-          gradient.push(
-            Blend.labBlend(
-              color1.to('lab', { round: false }),
-              color2.to('lab', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'luv':
-          gradient.push(
-            Blend.luvBlend(
-              color1.to('luv', { round: false }),
-              color2.to('luv', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'multiply':
-        case 'rgbmultiply':
-          gradient.push(
-            Blend.rgbMultiply(
-              color1.to('rgb', { round: false }),
-              color2.to('rgb', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'screen':
-        case 'rgbscreen':
-          gradient.push(
-            Blend.rgbScreen(
-              color1.to('rgb', { round: false }),
-              color2.to('rgb', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'overlay':
-        case 'rgboverlay':
-          gradient.push(
-            Blend.rgbOverlay(
-              color1.to('rgb', { round: false }),
-              color2.to('rgb', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
-        case 'softlight':
-        case 'rgbsoftlight':
-          gradient.push(
-            Blend.rgbSoftLight(
-              color1.to('rgb', { round: false }),
-              color2.to('rgb', { round: false }),
-              amount
-            ).to(color1.getType(), { round: round })
-          )
-          break
+      if (
+        [
+          'multiply',
+          'screen',
+          'overlay',
+          'softlight',
+          'colordodge',
+          'colorburn',
+          'vividlight',
+          'lineardodge',
+          'linearburn',
+          'linearlight',
+        ].includes(type)
+      ) {
+        gradient.push(
+          Blend.rgbBlendMode(
+            color1.to('rgb', { round: false }),
+            color2.to('rgb', { round: false }),
+            amount,
+            type
+          ).to(color1.getType(), { round: round })
+        )
+      } else {
+        switch (type) {
+          case 'rgb':
+          case 'rgba':
+            gradient.push(
+              Blend.rgbBlend(
+                color1.to('rgb', { round: false }),
+                color2.to('rgb', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'hsv':
+          case 'hsva':
+            gradient.push(
+              Blend.hsvBlend(
+                color1.to('hsv', { round: false }),
+                color2.to('hsv', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'hsl':
+          case 'hsla':
+            gradient.push(
+              Blend.hslBlend(
+                color1.to('hsl', { round: false }),
+                color2.to('hsl', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'hsi':
+          case 'hsia':
+            gradient.push(
+              Blend.hsiBlend(
+                color1.to('hsi', { round: false }),
+                color2.to('hsi', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'hsp':
+          case 'hspa':
+            gradient.push(
+              Blend.hspBlend(
+                color1.to('hsp', { round: false }),
+                color2.to('hsp', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'cmyk':
+            gradient.push(
+              Blend.cmykBlend(
+                color1.to('cmyk', { round: false }),
+                color2.to('cmyk', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'yiq':
+            gradient.push(
+              Blend.yiqBlend(
+                color1.to('yiq', { round: false }),
+                color2.to('yiq', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'lab':
+            gradient.push(
+              Blend.labBlend(
+                color1.to('lab', { round: false }),
+                color2.to('lab', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'luv':
+            gradient.push(
+              Blend.luvBlend(
+                color1.to('luv', { round: false }),
+                color2.to('luv', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          default:
+            throw new Error('Unrecognized gradient method')
+        }
       }
     }
 

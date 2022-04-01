@@ -19,7 +19,7 @@ module.exports = function template(content) {
   }
   .container > div {
     padding: 1rem;
-    width: 7rem;
+    width: 8rem;
     display: inline-block;
   }
   h1, h2, h3, h4 { margin: 0; padding: 0; }

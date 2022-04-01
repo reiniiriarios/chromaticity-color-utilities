@@ -21,7 +21,20 @@ function colorBlock(hex, tip, highlight) {
 function grad(method, start, end) {
   content += '<div><h2>gradient</h2><h3>' + method + '</h3>'
   let realMethod = method.replace(/[^a-z]/, '')
-  if (realMethod == 'screen' || realMethod == 'multiply' || realMethod == 'overlay' || realMethod == 'softlight') realMethod = 'rgb'
+  if (
+    [
+      'screen',
+      'multiply',
+      'overlay',
+      'softlight',
+      'colordodge',
+      'colorburn',
+      'lineardodge',
+      'linearburn',
+      'linearlight',
+    ].includes(realMethod)
+  )
+    realMethod = 'rgb'
   Color.from('hex', start)
     .scheme('gradient', {
       with: Color.from('hex', end),
@@ -30,7 +43,11 @@ function grad(method, start, end) {
     })
     .forEach((color) => {
       highlight = color.hex == start || color.hex == end
-      content += colorBlock(color.hex, color.to(realMethod).toString(), highlight)
+      content += colorBlock(
+        color.hex,
+        color.to(realMethod).toString(),
+        highlight
+      )
     })
   content += '</div>'
 }
@@ -44,6 +61,9 @@ grad('hsp', 'cc1111', '11aaaa')
 grad('cmyk', 'cc1111', '11aaaa')
 grad('lab', 'cc1111', '11aaaa')
 grad('luv', 'cc1111', '11aaaa')
+content += '</div>'
+
+content += '<div class="container">'
 grad('rgb', 'aa22bb', '55aa00')
 grad('hsv', 'aa22bb', '55aa00')
 grad('hsl', 'aa22bb', '55aa00')
@@ -63,6 +83,9 @@ grad('hsp', '11aaaa', 'cc1111')
 grad('cmyk', '11aaaa', 'cc1111')
 grad('lab', '11aaaa', 'cc1111')
 grad('luv', '11aaaa', 'cc1111')
+content += '</div>'
+
+content += '<div class="container">'
 grad('rgb', '55aa00', 'aa22bb')
 grad('hsv', '55aa00', 'aa22bb')
 grad('hsl', '55aa00', 'aa22bb')
@@ -82,6 +105,9 @@ grad('hsp', 'ee8822', '118844')
 grad('cmyk', 'ee8822', '118844')
 grad('lab', 'ee8822', '118844')
 grad('luv', 'ee8822', '118844')
+content += '</div>'
+
+content += '<div class="container">'
 grad('rgb', 'ee2288', '114488')
 grad('hsv', 'ee2288', '114488')
 grad('hsl', 'ee2288', '114488')
@@ -101,6 +127,9 @@ grad('hsp', '118844', 'ee8822')
 grad('cmyk', '118844', 'ee8822')
 grad('lab', '118844', 'ee8822')
 grad('luv', '118844', 'ee8822')
+content += '</div>'
+
+content += '<div class="container">'
 grad('rgb', '114488', 'ee2288')
 grad('hsv', '114488', 'ee2288')
 grad('hsl', '114488', 'ee2288')
@@ -120,6 +149,9 @@ grad('hsp', '445566', 'ff2255')
 grad('cmyk', '445566', 'ff2255')
 grad('lab', '445566', 'ff2255')
 grad('luv', '445566', 'ff2255')
+content += '</div>'
+
+content += '<div class="container">'
 grad('rgb', 'eeccaa', '1133ff')
 grad('hsv', 'eeccaa', '1133ff')
 grad('hsl', 'eeccaa', '1133ff')
@@ -139,6 +171,9 @@ grad('hsp', 'ff2255', '445566')
 grad('cmyk', 'ff2255', '445566')
 grad('lab', 'ff2255', '445566')
 grad('luv', 'ff2255', '445566')
+content += '</div>'
+
+content += '<div class="container">'
 grad('rgb', '1133ff', 'eeccaa')
 grad('hsv', '1133ff', 'eeccaa')
 grad('hsl', '1133ff', 'eeccaa')
@@ -209,10 +244,98 @@ grad('softlight', 'ff2255', '445566')
 grad('softlight', '1133ff', 'eeccaa')
 content += '</div>'
 
+content += '<div class="container">'
+grad('colorburn', 'cc1111', '11aaaa')
+grad('colorburn', 'aa22bb', '55aa00')
+grad('colorburn', '11aaaa', 'cc1111')
+grad('colorburn', '55aa00', 'aa22bb')
+grad('colorburn', 'ee8822', '118844')
+grad('colorburn', 'ee2288', '114488')
+grad('colorburn', '118844', 'ee8822')
+grad('colorburn', '114488', 'ee2288')
+grad('colorburn', '445566', 'ff2255')
+grad('colorburn', 'eeccaa', '1133ff')
+grad('colorburn', 'ff2255', '445566')
+grad('colorburn', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('colordodge', 'cc1111', '11aaaa')
+grad('colordodge', 'aa22bb', '55aa00')
+grad('colordodge', '11aaaa', 'cc1111')
+grad('colordodge', '55aa00', 'aa22bb')
+grad('colordodge', 'ee8822', '118844')
+grad('colordodge', 'ee2288', '114488')
+grad('colordodge', '118844', 'ee8822')
+grad('colordodge', '114488', 'ee2288')
+grad('colordodge', '445566', 'ff2255')
+grad('colordodge', 'eeccaa', '1133ff')
+grad('colordodge', 'ff2255', '445566')
+grad('colordodge', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('linearburn', 'cc1111', '11aaaa')
+grad('linearburn', 'aa22bb', '55aa00')
+grad('linearburn', '11aaaa', 'cc1111')
+grad('linearburn', '55aa00', 'aa22bb')
+grad('linearburn', 'ee8822', '118844')
+grad('linearburn', 'ee2288', '114488')
+grad('linearburn', '118844', 'ee8822')
+grad('linearburn', '114488', 'ee2288')
+grad('linearburn', '445566', 'ff2255')
+grad('linearburn', 'eeccaa', '1133ff')
+grad('linearburn', 'ff2255', '445566')
+grad('linearburn', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('lineardodge', 'cc1111', '11aaaa')
+grad('lineardodge', 'aa22bb', '55aa00')
+grad('lineardodge', '11aaaa', 'cc1111')
+grad('lineardodge', '55aa00', 'aa22bb')
+grad('lineardodge', 'ee8822', '118844')
+grad('lineardodge', 'ee2288', '114488')
+grad('lineardodge', '118844', 'ee8822')
+grad('lineardodge', '114488', 'ee2288')
+grad('lineardodge', '445566', 'ff2255')
+grad('lineardodge', 'eeccaa', '1133ff')
+grad('lineardodge', 'ff2255', '445566')
+grad('lineardodge', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('linearlight', 'cc1111', '11aaaa')
+grad('linearlight', 'aa22bb', '55aa00')
+grad('linearlight', '11aaaa', 'cc1111')
+grad('linearlight', '55aa00', 'aa22bb')
+grad('linearlight', 'ee8822', '118844')
+grad('linearlight', 'ee2288', '114488')
+grad('linearlight', '118844', 'ee8822')
+grad('linearlight', '114488', 'ee2288')
+grad('linearlight', '445566', 'ff2255')
+grad('linearlight', 'eeccaa', '1133ff')
+grad('linearlight', 'ff2255', '445566')
+grad('linearlight', '1133ff', 'eeccaa')
+content += '</div>'
 
 function blend(method, start, end) {
   let realMethod = method.replace(/[^a-z]/, '')
-  if (realMethod == 'screen' || realMethod == 'multiply' || realMethod == 'overlay' || realMethod == 'softlight') realMethod = 'rgb'
+  if (
+    [
+      'screen',
+      'multiply',
+      'overlay',
+      'softlight',
+      'colordodge',
+      'colorburn',
+      'lineardodge',
+      'linearburn',
+      'vividlight',
+      'linearlight',
+    ].includes(realMethod)
+  )
+    realMethod = 'rgb'
   content += '<div><h2>blend</h2><h3>' + method + '</h3>'
   let colors = []
   let cstart = Color.from('hex', start)
@@ -241,6 +364,9 @@ blend('hsp', 'cc1111', '11aaaa')
 blend('cmyk', 'cc1111', '11aaaa')
 blend('lab', 'cc1111', '11aaaa')
 blend('luv', 'cc1111', '11aaaa')
+content += '</div>'
+
+content += '<div class="container">'
 blend('rgb', 'aa22bb', '55aa00')
 blend('hsv', 'aa22bb', '55aa00')
 blend('hsl', 'aa22bb', '55aa00')
@@ -260,6 +386,9 @@ blend('hsp', '11aaaa', 'cc1111')
 blend('cmyk', '11aaaa', 'cc1111')
 blend('lab', '11aaaa', 'cc1111')
 blend('luv', '11aaaa', 'cc1111')
+content += '</div>'
+
+content += '<div class="container">'
 blend('rgb', '55aa00', 'aa22bb')
 blend('hsv', '55aa00', 'aa22bb')
 blend('hsl', '55aa00', 'aa22bb')
@@ -279,6 +408,9 @@ blend('hsp', 'ee8822', '118844')
 blend('cmyk', 'ee8822', '118844')
 blend('lab', 'ee8822', '118844')
 blend('luv', 'ee8822', '118844')
+content += '</div>'
+
+content += '<div class="container">'
 blend('rgb', 'ee2288', '114488')
 blend('hsv', 'ee2288', '114488')
 blend('hsl', 'ee2288', '114488')
@@ -298,6 +430,9 @@ blend('hsp', '118844', 'ee8822')
 blend('cmyk', '118844', 'ee8822')
 blend('lab', '118844', 'ee8822')
 blend('luv', '118844', 'ee8822')
+content += '</div>'
+
+content += '<div class="container">'
 blend('rgb', '114488', 'ee2288')
 blend('hsv', '114488', 'ee2288')
 blend('hsl', '114488', 'ee2288')
@@ -317,6 +452,9 @@ blend('hsp', '445566', 'ff2255')
 blend('cmyk', '445566', 'ff2255')
 blend('lab', '445566', 'ff2255')
 blend('luv', '445566', 'ff2255')
+content += '</div>'
+
+content += '<div class="container">'
 blend('rgb', 'eeccaa', '1133ff')
 blend('hsv', 'eeccaa', '1133ff')
 blend('hsl', 'eeccaa', '1133ff')
@@ -336,6 +474,9 @@ blend('hsp', 'ff2255', '445566')
 blend('cmyk', 'ff2255', '445566')
 blend('lab', 'ff2255', '445566')
 blend('luv', 'ff2255', '445566')
+content += '</div>'
+
+content += '<div class="container">'
 blend('rgb', '1133ff', 'eeccaa')
 blend('hsv', '1133ff', 'eeccaa')
 blend('hsl', '1133ff', 'eeccaa')
@@ -404,6 +545,96 @@ blend('softlight', '445566', 'ff2255')
 blend('softlight', 'eeccaa', '1133ff')
 blend('softlight', 'ff2255', '445566')
 blend('softlight', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('colorburn', 'cc1111', '11aaaa')
+blend('colorburn', 'aa22bb', '55aa00')
+blend('colorburn', '11aaaa', 'cc1111')
+blend('colorburn', '55aa00', 'aa22bb')
+blend('colorburn', 'ee8822', '118844')
+blend('colorburn', 'ee2288', '114488')
+blend('colorburn', '118844', 'ee8822')
+blend('colorburn', '114488', 'ee2288')
+blend('colorburn', '445566', 'ff2255')
+blend('colorburn', 'eeccaa', '1133ff')
+blend('colorburn', 'ff2255', '445566')
+blend('colorburn', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('colordodge', 'cc1111', '11aaaa')
+blend('colordodge', 'aa22bb', '55aa00')
+blend('colordodge', '11aaaa', 'cc1111')
+blend('colordodge', '55aa00', 'aa22bb')
+blend('colordodge', 'ee8822', '118844')
+blend('colordodge', 'ee2288', '114488')
+blend('colordodge', '118844', 'ee8822')
+blend('colordodge', '114488', 'ee2288')
+blend('colordodge', '445566', 'ff2255')
+blend('colordodge', 'eeccaa', '1133ff')
+blend('colordodge', 'ff2255', '445566')
+blend('colordodge', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('vividlight', 'cc1111', '11aaaa')
+blend('vividlight', 'aa22bb', '55aa00')
+blend('vividlight', '11aaaa', 'cc1111')
+blend('vividlight', '55aa00', 'aa22bb')
+blend('vividlight', 'ee8822', '118844')
+blend('vividlight', 'ee2288', '114488')
+blend('vividlight', '118844', 'ee8822')
+blend('vividlight', '114488', 'ee2288')
+blend('vividlight', '445566', 'ff2255')
+blend('vividlight', 'eeccaa', '1133ff')
+blend('vividlight', 'ff2255', '445566')
+blend('vividlight', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('linearburn', 'cc1111', '11aaaa')
+blend('linearburn', 'aa22bb', '55aa00')
+blend('linearburn', '11aaaa', 'cc1111')
+blend('linearburn', '55aa00', 'aa22bb')
+blend('linearburn', 'ee8822', '118844')
+blend('linearburn', 'ee2288', '114488')
+blend('linearburn', '118844', 'ee8822')
+blend('linearburn', '114488', 'ee2288')
+blend('linearburn', '445566', 'ff2255')
+blend('linearburn', 'eeccaa', '1133ff')
+blend('linearburn', 'ff2255', '445566')
+blend('linearburn', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('lineardodge', 'cc1111', '11aaaa')
+blend('lineardodge', 'aa22bb', '55aa00')
+blend('lineardodge', '11aaaa', 'cc1111')
+blend('lineardodge', '55aa00', 'aa22bb')
+blend('lineardodge', 'ee8822', '118844')
+blend('lineardodge', 'ee2288', '114488')
+blend('lineardodge', '118844', 'ee8822')
+blend('lineardodge', '114488', 'ee2288')
+blend('lineardodge', '445566', 'ff2255')
+blend('lineardodge', 'eeccaa', '1133ff')
+blend('lineardodge', 'ff2255', '445566')
+blend('lineardodge', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('linearlight', 'cc1111', '11aaaa')
+blend('linearlight', 'aa22bb', '55aa00')
+blend('linearlight', '11aaaa', 'cc1111')
+blend('linearlight', '55aa00', 'aa22bb')
+blend('linearlight', 'ee8822', '118844')
+blend('linearlight', 'ee2288', '114488')
+blend('linearlight', '118844', 'ee8822')
+blend('linearlight', '114488', 'ee2288')
+blend('linearlight', '445566', 'ff2255')
+blend('linearlight', 'eeccaa', '1133ff')
+blend('linearlight', 'ff2255', '445566')
+blend('linearlight', '1133ff', 'eeccaa')
 content += '</div>'
 
 function shade(method, start, amount = 1) {
@@ -895,7 +1126,7 @@ nm(730, 800)
 content += '</div>'
 
 function anal(start, angle, name) {
-  let actualName = name.replace(/[^a-z]/,'')
+  let actualName = name.replace(/[^a-z]/, '')
   content += '<div><h2>' + name + '</h2><h3>' + angle + '°</h3>'
   let colors = Color.from('hex', start).scheme(actualName, {
     angle: angle,
