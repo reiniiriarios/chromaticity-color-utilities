@@ -32,6 +32,10 @@ function grad(method, start, end) {
       'lineardodge',
       'linearburn',
       'linearlight',
+      'divide',
+      'addition',
+      'subtraction',
+      'difference',
     ].includes(realMethod)
   )
     realMethod = 'rgb'
@@ -319,6 +323,51 @@ grad('linearlight', 'ff2255', '445566')
 grad('linearlight', '1133ff', 'eeccaa')
 content += '</div>'
 
+content += '<div class="container">'
+grad('divide', 'cc1111', '11aaaa')
+grad('divide', 'aa22bb', '55aa00')
+grad('divide', '11aaaa', 'cc1111')
+grad('divide', '55aa00', 'aa22bb')
+grad('divide', 'ee8822', '118844')
+grad('divide', 'ee2288', '114488')
+grad('divide', '118844', 'ee8822')
+grad('divide', '114488', 'ee2288')
+grad('divide', '445566', 'ff2255')
+grad('divide', 'eeccaa', '1133ff')
+grad('divide', 'ff2255', '445566')
+grad('divide', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('subtraction', 'cc1111', '11aaaa')
+grad('subtraction', 'aa22bb', '55aa00')
+grad('subtraction', '11aaaa', 'cc1111')
+grad('subtraction', '55aa00', 'aa22bb')
+grad('subtraction', 'ee8822', '118844')
+grad('subtraction', 'ee2288', '114488')
+grad('subtraction', '118844', 'ee8822')
+grad('subtraction', '114488', 'ee2288')
+grad('subtraction', '445566', 'ff2255')
+grad('subtraction', 'eeccaa', '1133ff')
+grad('subtraction', 'ff2255', '445566')
+grad('subtraction', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('difference', 'cc1111', '11aaaa')
+grad('difference', 'aa22bb', '55aa00')
+grad('difference', '11aaaa', 'cc1111')
+grad('difference', '55aa00', 'aa22bb')
+grad('difference', 'ee8822', '118844')
+grad('difference', 'ee2288', '114488')
+grad('difference', '118844', 'ee8822')
+grad('difference', '114488', 'ee2288')
+grad('difference', '445566', 'ff2255')
+grad('difference', 'eeccaa', '1133ff')
+grad('difference', 'ff2255', '445566')
+grad('difference', '1133ff', 'eeccaa')
+content += '</div>'
+
 function blend(method, start, end) {
   let realMethod = method.replace(/[^a-z]/, '')
   if (
@@ -333,6 +382,10 @@ function blend(method, start, end) {
       'linearburn',
       'vividlight',
       'linearlight',
+      'divide',
+      'addition',
+      'subtraction',
+      'difference',
     ].includes(realMethod)
   )
     realMethod = 'rgb'
@@ -635,6 +688,51 @@ blend('linearlight', '445566', 'ff2255')
 blend('linearlight', 'eeccaa', '1133ff')
 blend('linearlight', 'ff2255', '445566')
 blend('linearlight', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('divide', 'cc1111', '11aaaa')
+blend('divide', 'aa22bb', '55aa00')
+blend('divide', '11aaaa', 'cc1111')
+blend('divide', '55aa00', 'aa22bb')
+blend('divide', 'ee8822', '118844')
+blend('divide', 'ee2288', '114488')
+blend('divide', '118844', 'ee8822')
+blend('divide', '114488', 'ee2288')
+blend('divide', '445566', 'ff2255')
+blend('divide', 'eeccaa', '1133ff')
+blend('divide', 'ff2255', '445566')
+blend('divide', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('subtraction', 'cc1111', '11aaaa')
+blend('subtraction', 'aa22bb', '55aa00')
+blend('subtraction', '11aaaa', 'cc1111')
+blend('subtraction', '55aa00', 'aa22bb')
+blend('subtraction', 'ee8822', '118844')
+blend('subtraction', 'ee2288', '114488')
+blend('subtraction', '118844', 'ee8822')
+blend('subtraction', '114488', 'ee2288')
+blend('subtraction', '445566', 'ff2255')
+blend('subtraction', 'eeccaa', '1133ff')
+blend('subtraction', 'ff2255', '445566')
+blend('subtraction', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('difference', 'cc1111', '11aaaa')
+blend('difference', 'aa22bb', '55aa00')
+blend('difference', '11aaaa', 'cc1111')
+blend('difference', '55aa00', 'aa22bb')
+blend('difference', 'ee8822', '118844')
+blend('difference', 'ee2288', '114488')
+blend('difference', '118844', 'ee8822')
+blend('difference', '114488', 'ee2288')
+blend('difference', '445566', 'ff2255')
+blend('difference', 'eeccaa', '1133ff')
+blend('difference', 'ff2255', '445566')
+blend('difference', '1133ff', 'eeccaa')
 content += '</div>'
 
 function shade(method, start, amount = 1) {

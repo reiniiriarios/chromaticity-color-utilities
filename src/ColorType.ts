@@ -286,6 +286,10 @@ export abstract class colorType {
             'lineardodge',
             'linearburn',
             'linearlight',
+            'divide',
+            'addition',
+            'subtraction',
+            'difference',
           ].includes(args.method)
         ) {
           tmpColor1 = this.torgb({ round: false })

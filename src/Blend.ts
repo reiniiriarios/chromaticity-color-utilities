@@ -56,10 +56,14 @@ class Blend {
         case 'multiply':
           newValue = a * b
           break
+        case 'divide':
+          newValue = a / b
+          break
         case 'overlay':
           newValue = a < 0.5 ? 2 * a * b : 1 - 2 * (1 - a) * (1 - b)
           break
         case 'softlight':
+          // W3C method, similar to Photoshop
           if (b <= 0.5) {
             newValue = a - (1 - 2 * b) * a * (1 - a)
           } else {
@@ -76,7 +80,11 @@ class Blend {
         case 'vividlight':
           newValue = b > 0.5 ? (b == 1 ? 0 : a / (1 - b)) : a > 0 ? 1 - b / a : 0
           break
+        case 'subtraction':
+          newValue = a - b
+          break
         case 'lineardodge':
+        case 'addition':
           newValue = a + b
           break
         case 'linearburn':
@@ -84,6 +92,9 @@ class Blend {
           break
         case 'linearlight':
           newValue = b > 0.5 ? a + b : a + b - 1
+          break
+        case 'difference':
+          newValue = Math.abs(a - b)
           break
         default:
           newValue = b

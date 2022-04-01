@@ -554,6 +554,10 @@ class Harmony {
       'linearburn',
       'lineardodge',
       'linearlight',
+      'divide',
+      'addition',
+      'subtraction',
+      'difference',
     ].includes(type)
 
     let inBetweenColors = reachesColor2 ? colors - 2 : colors - 1
@@ -574,6 +578,10 @@ class Harmony {
           'lineardodge',
           'linearburn',
           'linearlight',
+          'divide',
+          'addition',
+          'subtraction',
+          'difference',
         ].includes(type)
       ) {
         gradient.push(
