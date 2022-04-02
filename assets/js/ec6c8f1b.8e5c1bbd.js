@@ -13,7 +13,7 @@ var ColorBlocks=function ColorBlocks(_ref){var children=_ref.children;return/*#_
 
 /***/ }),
 
-/***/ 3323:
+/***/ 2806:
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 // ESM COMPAT FLAG
