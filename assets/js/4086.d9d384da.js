@@ -212,6 +212,417 @@ function createElement (type, props) {
 
 /***/ }),
 
+/***/ 5772:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+
+// chromaticity-color-utilities
+// Copyright (C) 2022 Emma Litwa-Vulcu
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+var Colors = __importStar(__webpack_require__(4269));
+var Convert_1 = __importDefault(__webpack_require__(6627));
+var Modify_1 = __importDefault(__webpack_require__(3315));
+var Util_1 = __importDefault(__webpack_require__(7298));
+var Blend = /** @class */ (function () {
+    function Blend() {
+    }
+    /**
+     * Blend of one RGB color onto another
+     *
+     * @param  {Colors.rgb} rgb1
+     * @param  {Colors.rgb} rgb2
+     * @param  {number}     amount amount to blend, 0-1
+     * @return {Colors.rgb}
+     */
+    Blend.rgbBlendMode = function (rgb1, rgb2, amount, method) {
+        if (amount === void 0) { amount = 0.5; }
+        // clamp amount of blend to 0-100%
+        amount = Math.min(Math.max(amount, 0), 1);
+        // normalize to [0,1]
+        var c1 = Convert_1.default.rgbNormalize(rgb1);
+        var c2 = Convert_1.default.rgbNormalize(rgb2);
+        // blending mode
+        var c = [
+            { a: c1.getR(), b: c2.getR() },
+            { a: c1.getG(), b: c2.getG() },
+            { a: c1.getB(), b: c2.getB() },
+        ];
+        var cb = [];
+        c.forEach(function (_a) {
+            var a = _a.a, b = _a.b;
+            var newValue;
+            switch (method) {
+                case 'screen':
+                    newValue = 1 - (1 - a) * (1 - b);
+                    break;
+                case 'multiply':
+                    newValue = a * b;
+                    break;
+                case 'divide':
+                    newValue = a / b;
+                    break;
+                case 'overlay':
+                    newValue = a < 0.5 ? 2 * a * b : 1 - 2 * (1 - a) * (1 - b);
+                    break;
+                case 'softlight':
+                    // W3C method, similar to Photoshop
+                    if (b <= 0.5) {
+                        newValue = a - (1 - 2 * b) * a * (1 - a);
+                    }
+                    else {
+                        var g = a <= 0.25 ? ((16 * a - 12) * a + 4) * a : Math.sqrt(a);
+                        newValue = a + (2 * b - 1) * (g - a);
+                    }
+                    break;
+                case 'colordodge':
+                    newValue = b == 1 ? 1 : a / (1 - b);
+                    break;
+                case 'colorburn':
+                    newValue = a > 0 ? 1 - ((1 - b) / a) : 0;
+                    break;
+                case 'vividlight':
+                    if (b > 0.5) {
+                        newValue = b == 1 ? 1 : a / (1 - b);
+                    }
+                    else {
+                        newValue = a > 0 ? 1 - ((1 - b) / a) : 0;
+                    }
+                    break;
+                case 'subtraction':
+                    newValue = a - b;
+                    break;
+                case 'lineardodge':
+                case 'addition':
+                    newValue = a + b;
+                    break;
+                case 'linearburn':
+                    newValue = a + b - 1;
+                    break;
+                case 'linearlight':
+                    newValue = b > 0.5 ? a + b : a + b - 1;
+                    break;
+                case 'difference':
+                    newValue = Math.abs(a - b);
+                    break;
+                default:
+                    newValue = b;
+            }
+            cb.push(newValue);
+        });
+        // clamp
+        var r3 = Math.min(Math.max(cb[0], 0), rgb1.getMax());
+        var g3 = Math.min(Math.max(cb[1], 0), rgb1.getMax());
+        var b3 = Math.min(Math.max(cb[2], 0), rgb1.getMax());
+        // scale to bitdepth
+        r3 = Util_1.default.scaleValueRange(r3, 0, 1, 0, rgb1.getMax(), false);
+        g3 = Util_1.default.scaleValueRange(g3, 0, 1, 0, rgb1.getMax(), false);
+        b3 = Util_1.default.scaleValueRange(b3, 0, 1, 0, rgb1.getMax(), false);
+        // blend as much as opacity of color 2
+        var realAmount = (rgb1.getA() / rgb1.getMax()) * amount;
+        // blend
+        var c4 = this.rgbBlend(rgb1, new Colors.rgb(r3, g3, b3, rgb1.getA()), realAmount);
+        return c4;
+    };
+    /**
+     * Blend one RGB color with another
+     *
+     * @param  {Colors.rgb} rgb1
+     * @param  {Colors.rgb} rgb2
+     * @param  {number}     amount amount to blend, 0-1
+     * @return {Colors.rgb}
+     */
+    Blend.rgbBlend = function (rgb1, rgb2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var r3 = rgb1.getR() + (rgb2.getR() - rgb1.getR()) * amount;
+        var g3 = rgb1.getG() + (rgb2.getG() - rgb1.getG()) * amount;
+        var b3 = rgb1.getB() + (rgb2.getB() - rgb1.getB()) * amount;
+        var a3 = rgb1.getA() + (rgb2.getA() - rgb1.getA()) * amount;
+        return new Colors.rgb(r3, g3, b3, a3);
+    };
+    /**
+     * Blend the hue of one HSV color with another
+     *
+     * @param  {Colors.hsv} hsv1
+     * @param  {Colors.hsv} hsv2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsv}
+     */
+    Blend.hueBlend = function (hsv1, hsv2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var hueDiff;
+        if (Math.abs(hsv2.getH() - hsv1.getH()) > 180) {
+            hueDiff = 360 - (hsv2.getH() - hsv1.getH()) * amount * -1;
+        }
+        else {
+            hueDiff = (hsv2.getH() - hsv1.getH()) * amount;
+        }
+        var h3 = Modify_1.default.hueShift(hsv1.getH(), hueDiff);
+        return new Colors.hsv(h3, hsv1.getS(), hsv1.getV(), hsv1.getA());
+    };
+    /**
+     * Blend one HSV color with another
+     *
+     * @param  {Colors.hsv} hsv1
+     * @param  {Colors.hsv} hsv2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsv}
+     */
+    Blend.hsvBlend = function (hsv1, hsv2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var hueDiff;
+        if (Math.abs(hsv2.getH() - hsv1.getH()) > 180) {
+            hueDiff = 360 - (hsv2.getH() - hsv1.getH()) * amount * -1;
+        }
+        else {
+            hueDiff = (hsv2.getH() - hsv1.getH()) * amount;
+        }
+        var h3 = Modify_1.default.hueShift(hsv1.getH(), hueDiff);
+        var s3 = hsv1.getS() + (hsv2.getS() - hsv1.getS()) * amount;
+        var v3 = hsv1.getV() + (hsv2.getV() - hsv1.getV()) * amount;
+        var a3 = hsv1.getA() + (hsv2.getA() - hsv1.getA()) * amount;
+        return new Colors.hsv(h3, s3, v3, a3);
+    };
+    /**
+     * Blend the value of one HSV color with another
+     *
+     * @param  {Colors.hsv} hsv1
+     * @param  {Colors.hsv} hsv2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsv}
+     */
+    Blend.valueBlend = function (hsv1, hsv2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var v3 = hsv1.getV() + (hsv2.getV() - hsv1.getV()) * amount;
+        return new Colors.hsv(hsv1.getH(), hsv1.getS(), v3, hsv1.getA());
+    };
+    /**
+     * Blend one HSL color with another
+     *
+     * @param  {Colors.hsl} hsl1
+     * @param  {Colors.hsl} hsl2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsl}
+     */
+    Blend.hslBlend = function (hsl1, hsl2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var hueDiff;
+        if (Math.abs(hsl2.getH() - hsl1.getH()) > 180) {
+            hueDiff = 360 - (hsl2.getH() - hsl1.getH()) * amount * -1;
+        }
+        else {
+            hueDiff = (hsl2.getH() - hsl1.getH()) * amount;
+        }
+        var h3 = Modify_1.default.hueShift(hsl1.getH(), hueDiff);
+        var s3 = hsl1.getS() + (hsl2.getS() - hsl1.getS()) * amount;
+        var l3 = hsl1.getL() + (hsl2.getL() - hsl1.getL()) * amount;
+        var a3 = hsl1.getA() + (hsl2.getA() - hsl1.getA()) * amount;
+        return new Colors.hsl(h3, s3, l3, a3);
+    };
+    /**
+     * Blend the lightness of one HSV color with another
+     *
+     * @param  {Colors.hsl} hsl1
+     * @param  {Colors.hsl} hsl2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsl}
+     */
+    Blend.lightnessBlend = function (hsl1, hsl2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var l3 = hsl1.getL() + (hsl2.getL() - hsl1.getL()) * amount;
+        return new Colors.hsl(hsl1.getH(), hsl1.getS(), l3, hsl1.getA());
+    };
+    /**
+     * Blend one HSI color with another
+     *
+     * @param  {Colors.hsi} hsi1
+     * @param  {Colors.hsi} hsi2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsi}
+     */
+    Blend.hsiBlend = function (hsi1, hsi2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var hueDiff;
+        if (Math.abs(hsi2.getH() - hsi1.getH()) > 180) {
+            hueDiff = 360 - (hsi2.getH() - hsi1.getH()) * amount * -1;
+        }
+        else {
+            hueDiff = (hsi2.getH() - hsi1.getH()) * amount;
+        }
+        var h3 = Modify_1.default.hueShift(hsi1.getH(), hueDiff);
+        var s3 = hsi1.getS() + (hsi2.getS() - hsi1.getS()) * amount;
+        var i3 = hsi1.getI() + (hsi2.getI() - hsi1.getI()) * amount;
+        var a3 = hsi1.getA() + (hsi2.getA() - hsi1.getA()) * amount;
+        return new Colors.hsi(h3, s3, i3, a3);
+    };
+    /**
+     * Blend the intensity of one HSI color with another
+     *
+     * @param  {Colors.hsi} hsi1
+     * @param  {Colors.hsi} hsi2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsi}
+     */
+    Blend.intensityBlend = function (hsi1, hsi2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var i3 = hsi1.getI() + (hsi2.getI() - hsi1.getI()) * amount;
+        return new Colors.hsi(hsi1.getH(), hsi1.getS(), i3, hsi1.getA());
+    };
+    /**
+     * Blend one HSP color with another
+     *
+     * @param  {Colors.hsp} hsp1
+     * @param  {Colors.hsp} hsp2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsp}
+     */
+    Blend.hspBlend = function (hsp1, hsp2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var hueDiff;
+        if (Math.abs(hsp2.getH() - hsp1.getH()) > 180) {
+            hueDiff = 360 - (hsp2.getH() - hsp1.getH()) * amount * -1;
+        }
+        else {
+            hueDiff = (hsp2.getH() - hsp1.getH()) * amount;
+        }
+        var h3 = Modify_1.default.hueShift(hsp1.getH(), hueDiff);
+        var s3 = hsp1.getS() + (hsp2.getS() - hsp1.getS()) * amount;
+        var p3 = hsp1.getP() + (hsp2.getP() - hsp1.getP()) * amount;
+        var a3 = hsp1.getA() + (hsp2.getA() - hsp1.getA()) * amount;
+        return new Colors.hsp(h3, s3, p3, a3);
+    };
+    /**
+     * Blend the perceived brightness of one HSP color with another
+     *
+     * @param  {Colors.hsp} hsp1
+     * @param  {Colors.hsp} hsp2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.hsp}
+     */
+    Blend.perceivedBrightnessBlend = function (hsp1, hsp2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var p3 = hsp1.getP() + (hsp2.getP() - hsp1.getP()) * amount;
+        return new Colors.hsp(hsp1.getH(), hsp1.getS(), p3, hsp1.getA());
+    };
+    /**
+     * Blend one CMYK color with another
+     *
+     * @param  {Colors.cmyk} cmyk1
+     * @param  {Colors.cmyk} cmyk2
+     * @param  {number}      amount amount to blend (0-1)
+     * @return {Colors.cmyk}
+     */
+    Blend.cmykBlend = function (cmyk1, cmyk2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var c3 = cmyk1.getC() + (cmyk2.getC() - cmyk1.getC()) * amount;
+        var m3 = cmyk1.getM() + (cmyk2.getM() - cmyk1.getM()) * amount;
+        var y3 = cmyk1.getY() + (cmyk2.getY() - cmyk1.getY()) * amount;
+        var k3 = cmyk1.getK() + (cmyk2.getK() - cmyk1.getK()) * amount;
+        return new Colors.cmyk(c3, m3, y3, k3);
+    };
+    /**
+     * Blend one YIQ color with another
+     *
+     * @param  {Colors.yiq} c1
+     * @param  {Colors.yiq} c2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.yiq}
+     */
+    Blend.yiqBlend = function (c1, c2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var y = c1.getY() + (c2.getY() - c1.getY()) * amount;
+        var i = c1.getI() + (c2.getI() - c1.getI()) * amount;
+        var q = c1.getQ() + (c2.getQ() - c1.getQ()) * amount;
+        return new Colors.yiq(y, i, q);
+    };
+    /**
+     * Blend one Lab color with another
+     *
+     * @param  {Colors.lab} c1
+     * @param  {Colors.lab} c2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.lab}
+     */
+    Blend.labBlend = function (c1, c2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var l = c1.getL() + (c2.getL() - c1.getL()) * amount;
+        var a = c1.getA() + (c2.getA() - c1.getA()) * amount;
+        var b = c1.getB() + (c2.getB() - c1.getB()) * amount;
+        return new Colors.lab(l, a, b);
+    };
+    /**
+     * Blend one Luv color with another
+     *
+     * @param  {Colors.luv} c1
+     * @param  {Colors.luv} c2
+     * @param  {number}     amount amount to blend (0-1)
+     * @return {Colors.luv}
+     */
+    Blend.luvBlend = function (c1, c2, amount) {
+        if (amount === void 0) { amount = 0.5; }
+        amount = Math.min(Math.max(amount, 0), 1);
+        var l = c1.getL() + (c2.getL() - c1.getL()) * amount;
+        var u = c1.getU() + (c2.getU() - c1.getU()) * amount;
+        var v = c1.getV() + (c2.getV() - c1.getV()) * amount;
+        return new Colors.luv(l, u, v);
+    };
+    return Blend;
+}());
+module.exports = Blend;
+
+
+/***/ }),
+
 /***/ 5835:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -440,6 +851,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.colorType = void 0;
 var Convert_1 = __importDefault(__webpack_require__(6627));
 var Modify_1 = __importDefault(__webpack_require__(3315));
+var Blend_1 = __importDefault(__webpack_require__(5772));
 var Harmony_1 = __importDefault(__webpack_require__(3714));
 var Colors = __importStar(__webpack_require__(4269));
 var colorType = /** @class */ (function () {
@@ -486,7 +898,9 @@ var colorType = /** @class */ (function () {
      * @param   {number}  value
      * @returns {boolean}
      */
-    colorType.prototype.setAlpha = function (value) { return false; };
+    colorType.prototype.setAlpha = function (value) {
+        return false;
+    };
     /**
      * Stringify object
      *
@@ -619,61 +1033,110 @@ var colorType = /** @class */ (function () {
                         args.method = 'rgb';
                     }
                 }
+                args.method = args.method.toLowerCase().replace(' ', '');
                 var tmpColor1 = void 0, tmpColor2 = void 0;
-                switch (args.method) {
-                    case 'rgb':
-                    case 'rgba':
-                    case 'hex':
-                        tmpColor1 = this.torgb({ round: false });
-                        tmpColor2 = args.with.torgb({ round: false });
-                        modified = Modify_1.default.rgbBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    case 'hsv':
-                    case 'hsva':
-                        tmpColor1 = this.tohsv({ round: false });
-                        tmpColor2 = args.with.tohsv({ round: false });
-                        modified = Modify_1.default.hsvBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    case 'hsl':
-                    case 'hsla':
-                        tmpColor1 = this.tohsl({ round: false });
-                        tmpColor2 = args.with.tohsl({ round: false });
-                        modified = Modify_1.default.hslBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    case 'hsi':
-                    case 'hsia':
-                        tmpColor1 = this.tohsi({ round: false });
-                        tmpColor2 = args.with.tohsi({ round: false });
-                        modified = Modify_1.default.hsiBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    case 'hsp':
-                    case 'hspa':
-                        tmpColor1 = this.tohsp({ round: false });
-                        tmpColor2 = args.with.tohsp({ round: false });
-                        modified = Modify_1.default.hspBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    case 'cmyk':
-                        tmpColor1 = this.tocmyk({ round: false });
-                        tmpColor2 = args.with.tocmyk({ round: false });
-                        modified = Modify_1.default.cmykBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    case 'yiq':
-                        tmpColor1 = this.toyiq({ round: false });
-                        tmpColor2 = args.with.toyiq({ round: false });
-                        modified = Modify_1.default.yiqBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    case 'lab':
-                        tmpColor1 = this.tolab({ round: false });
-                        tmpColor2 = args.with.tolab({ round: false });
-                        modified = Modify_1.default.labBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    case 'luv':
-                        tmpColor1 = this.toluv({ round: false });
-                        tmpColor2 = args.with.toluv({ round: false });
-                        modified = Modify_1.default.luvBlend(tmpColor1, tmpColor2, args.amount);
-                        break;
-                    default:
-                        throw new Error('Unrecognized blending method: ' + args.method);
+                if ([
+                    'multiply',
+                    'screen',
+                    'overlay',
+                    'softlight',
+                    'colordodge',
+                    'colorburn',
+                    'vividlight',
+                    'lineardodge',
+                    'linearburn',
+                    'linearlight',
+                    'divide',
+                    'addition',
+                    'subtraction',
+                    'difference',
+                ].includes(args.method)) {
+                    tmpColor1 = this.torgb({ round: false });
+                    tmpColor2 = args.with.torgb({ round: false });
+                    modified = Blend_1.default.rgbBlendMode(tmpColor1, tmpColor2, args.amount, args.method);
+                }
+                else {
+                    switch (args.method) {
+                        case 'rgb':
+                        case 'rgba':
+                        case 'hex':
+                            tmpColor1 = this.torgb({ round: false });
+                            tmpColor2 = args.with.torgb({ round: false });
+                            modified = Blend_1.default.rgbBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'hue':
+                            tmpColor1 = this.tohsv({ round: false });
+                            tmpColor2 = args.with.tohsv({ round: false });
+                            modified = Blend_1.default.hueBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'hsv':
+                        case 'hsva':
+                            tmpColor1 = this.tohsv({ round: false });
+                            tmpColor2 = args.with.tohsv({ round: false });
+                            modified = Blend_1.default.hsvBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'value':
+                            tmpColor1 = this.tohsv({ round: false });
+                            tmpColor2 = args.with.tohsv({ round: false });
+                            modified = Blend_1.default.valueBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'hsl':
+                        case 'hsla':
+                            tmpColor1 = this.tohsl({ round: false });
+                            tmpColor2 = args.with.tohsl({ round: false });
+                            modified = Blend_1.default.hslBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'lightness':
+                            tmpColor1 = this.tohsl({ round: false });
+                            tmpColor2 = args.with.tohsl({ round: false });
+                            modified = Blend_1.default.lightnessBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'hsi':
+                        case 'hsia':
+                            tmpColor1 = this.tohsi({ round: false });
+                            tmpColor2 = args.with.tohsi({ round: false });
+                            modified = Blend_1.default.hsiBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'intensity':
+                            tmpColor1 = this.tohsi({ round: false });
+                            tmpColor2 = args.with.tohsi({ round: false });
+                            modified = Blend_1.default.intensityBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'hsp':
+                        case 'hspa':
+                            tmpColor1 = this.tohsp({ round: false });
+                            tmpColor2 = args.with.tohsp({ round: false });
+                            modified = Blend_1.default.hspBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'perceived':
+                        case 'perceivedbrightness':
+                            tmpColor1 = this.tohsp({ round: false });
+                            tmpColor2 = args.with.tohsp({ round: false });
+                            modified = Blend_1.default.perceivedBrightnessBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'cmyk':
+                            tmpColor1 = this.tocmyk({ round: false });
+                            tmpColor2 = args.with.tocmyk({ round: false });
+                            modified = Blend_1.default.cmykBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'yiq':
+                            tmpColor1 = this.toyiq({ round: false });
+                            tmpColor2 = args.with.toyiq({ round: false });
+                            modified = Blend_1.default.yiqBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'lab':
+                            tmpColor1 = this.tolab({ round: false });
+                            tmpColor2 = args.with.tolab({ round: false });
+                            modified = Blend_1.default.labBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        case 'luv':
+                            tmpColor1 = this.toluv({ round: false });
+                            tmpColor2 = args.with.toluv({ round: false });
+                            modified = Blend_1.default.luvBlend(tmpColor1, tmpColor2, args.amount);
+                            break;
+                        default:
+                            throw new Error('Unrecognized blending method: ' + args.method);
+                    }
                 }
                 break;
             case 'darken':
@@ -1007,8 +1470,51 @@ var colorType = /** @class */ (function () {
         });
         return ogScheme;
     };
-    colorType.prototype.css = function () {
-        return 'not yet implemented';
+    colorType.prototype.css = function (args) {
+        if (typeof args === 'undefined') {
+            args = {
+                method: 'hex',
+            };
+        }
+        else if (typeof args.method === 'undefined') {
+            args.method = 'hex';
+        }
+        var colorString;
+        switch (args.method) {
+            case 'hex':
+                var hex = this.to('hex');
+                colorString = "#".concat(hex.getHex());
+                break;
+            // case 'hexa':
+            //   break
+            case 'rgb':
+                var rgb = this.to('rgb');
+                colorString = "rgb(".concat(rgb.getR(), ", ").concat(rgb.getG(), ", ").concat(rgb.getB(), ")");
+                break;
+            case 'rgba':
+                var rgba = this.to('rgb');
+                // precision of alpha is ~1/256, or ~0.004 at best
+                var rgbaAlpha = (rgba.getA() / rgba.getMax())
+                    .toPrecision(4)
+                    .replace(/\.?0+$/, '');
+                colorString = "rgba(".concat(rgba.getR(), ", ").concat(rgba.getG(), ", ").concat(rgba.getB(), ", ").concat(rgbaAlpha, ")");
+                break;
+            case 'hsl':
+                var hsl = this.to('hsl');
+                colorString = "hsl(".concat(hsl.getH(), ", ").concat(hsl.getS(), "%, ").concat(hsl.getL(), "%)");
+                break;
+            case 'hsla':
+                var hsla = this.to('hsl');
+                // precision of alpha is ~1/256, or ~0.004 at best
+                var hslaAlpha = (hsla.getA() / 100)
+                    .toPrecision(4)
+                    .replace(/\.?0+$/, '');
+                colorString = "hsla(".concat(hsla.getH(), ", ").concat(hsla.getS(), "%, ").concat(hsla.getL(), "%, ").concat(hslaAlpha, ")");
+                break;
+            default:
+                throw new Error("Unrecognized css method '".concat(args.method, "'."));
+        }
+        return colorString;
     };
     colorType.prototype.torgb = function (args) {
         // always override
@@ -1373,9 +1879,6 @@ var rec709rgb = /** @class */ (function (_super) {
             throw new Error('Invalid bitrate for Rec709, must be 8 or 10');
         }
         var max = Math.pow(2, bitDepth) - 1;
-        // this.valueRangeCheck(r, 0, max)
-        // this.valueRangeCheck(g, 0, max)
-        // this.valueRangeCheck(b, 0, max)
         if (typeof r == 'undefined')
             throw new Error('r undefined');
         if (typeof g == 'undefined')
@@ -1450,9 +1953,6 @@ var rec2020rgb = /** @class */ (function (_super) {
             throw new Error('Invalid bitrate for Rec2020, must be 10 or 12');
         }
         var max = Math.pow(2, bitDepth) - 1;
-        // this.valueRangeCheck(r, 0, max)
-        // this.valueRangeCheck(g, 0, max)
-        // this.valueRangeCheck(b, 0, max)
         if (typeof r == 'undefined')
             throw new Error('r undefined');
         if (typeof g == 'undefined')
@@ -2185,7 +2685,7 @@ var nm = /** @class */ (function (_super) {
         _this.toStringValues = function () { return ({
             wavelength: _this.wavelength,
         }); };
-        _this.valueRangeCheck(wavelength, 360, 820, 'Wavelength (in nm) must fall between 360 and 820');
+        _this.valueRangeCheck(wavelength, 380, 800, 'Wavelength (in nm) must fall between 380 and 800');
         _this.wavelength = wavelength;
         return _this;
     }
@@ -3665,8 +4165,9 @@ var Convert = /** @class */ (function () {
     };
     /**
      * Convert YPbPr to YCbCr
-     * Y must be in range 0 to 1; Pb and Pr must be in range -0.5 to 0.5
-     *  16 for black and the value of 235 for white when using an 8-bit representation. The standard has 8-bit digitized versions of CB and CR scaled to a different range of 16 to 240
+     * Y must be in range 0 to 1; Pb and Pr must be in range -0.5 to 0.5.
+     * Y' defaults to 16 for black and 235 for white when using an 8-bit representation.
+     * The standard has 8-bit digitized versions of CB and CR scaled to a different range of 16 to 240.
      *
      * @param  {Colors.ypbpr} ypbpr
      * @param  {number}       [yLower=16]  Lower bounds of Y
@@ -3780,12 +4281,7 @@ var Convert = /** @class */ (function () {
         var r;
         var g;
         var b;
-        if (nm.getWavelength() >= 360 && nm.getWavelength() < 380) {
-            r = Math.max((nm.getWavelength() - 360) / (380 - 360), 0);
-            g = 0;
-            b = 1;
-        }
-        else if (nm.getWavelength() >= 380 && nm.getWavelength() < 440) {
+        if (nm.getWavelength() >= 380 && nm.getWavelength() < 440) {
             r = ((nm.getWavelength() - 440) / (440 - 380)) * -1;
             g = 0;
             b = 1;
@@ -3825,32 +4321,32 @@ var Convert = /** @class */ (function () {
         // roughly [8, 0, 8] and [16, 0, 0], or equivalently very close to black
         var factor;
         if (nm.getWavelength() >= 380 && nm.getWavelength() < 400) {
-            factor = 0.014 + (0.1 * (nm.getWavelength() - 380)) / (400 - 380);
+            factor = 1 / 71 + (1 / 10 * (nm.getWavelength() - 380)) / (400 - 380);
         }
         else if (nm.getWavelength() >= 400 && nm.getWavelength() < 420) {
-            factor = 0.2 + (0.7 * (nm.getWavelength() - 400)) / (420 - 400);
+            factor = 1 / 5 + (5 / 7 * (nm.getWavelength() - 400)) / (420 - 400);
         }
         else if (nm.getWavelength() >= 420 && nm.getWavelength() < 701) {
             factor = 1;
         }
         else if (nm.getWavelength() >= 701 && nm.getWavelength() < 781) {
-            factor = 0.3 + (0.7 * (780 - nm.getWavelength())) / (780 - 700);
+            factor = 1 / 3 + (5 / 7 * (780 - nm.getWavelength())) / (780 - 700);
         }
         else if (nm.getWavelength() >= 781 && nm.getWavelength() <= 800) {
-            factor = 0.031 + (0.2 * (800 - nm.getWavelength())) / (800 - 781);
+            factor = 1 / 32 + (1 / 5 * (800 - nm.getWavelength())) / (800 - 781);
         }
         else {
             factor = 0;
         }
         var max = Math.pow(2, bitDepth) - 1;
         if (r > 0) {
-            r = max * Math.pow(r * factor, gamma);
+            r = Math.max(0, Math.min(max, max * Math.pow(r * factor, gamma)));
         }
         if (g > 0) {
-            g = max * Math.pow(g * factor, gamma);
+            g = Math.max(0, Math.min(max, max * Math.pow(g * factor, gamma)));
         }
         if (b > 0) {
-            b = max * Math.pow(b * factor, gamma);
+            b = Math.max(0, Math.min(max, max * Math.pow(b * factor, gamma)));
         }
         if (round) {
             r = Math.round(r);
@@ -4108,6 +4604,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 var Modify_1 = __importDefault(__webpack_require__(3315));
+var Blend_1 = __importDefault(__webpack_require__(5772));
 var Colors = __importStar(__webpack_require__(4269));
 var Harmony = /** @class */ (function () {
     function Harmony() {
@@ -4301,19 +4798,19 @@ var Harmony = /** @class */ (function () {
                 var hsl = color.to('hsl', { round: false });
                 if (typeof distanceShade === 'undefined') {
                     if (100 - hsl.getL() < hsl.getL()) {
-                        distanceShade = (100 - hsl.getL()) / 50 * distance;
+                        distanceShade = ((100 - hsl.getL()) / 50) * distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = hsl.getL() / 50 * distanceShade;
+                        distance = (hsl.getL() / 50) * distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.hslDarken(hsl, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.hslDarken(hsl, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(hsl.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.hslLighten(hsl, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.hslLighten(hsl, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             case 'hsv':
@@ -4321,19 +4818,19 @@ var Harmony = /** @class */ (function () {
                 var hsv = color.to('hsv', { round: false });
                 if (typeof distanceShade === 'undefined') {
                     if (100 - hsv.getV() < hsv.getV()) {
-                        distanceShade = (100 - hsv.getV()) / 50 * distance;
+                        distanceShade = ((100 - hsv.getV()) / 50) * distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = hsv.getV() / 50 * distanceShade;
+                        distance = (hsv.getV() / 50) * distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.hsvDarken(hsv, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.hsvDarken(hsv, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(hsv.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.hsvLighten(hsv, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.hsvLighten(hsv, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             case 'hsi':
@@ -4341,19 +4838,19 @@ var Harmony = /** @class */ (function () {
                 var hsi = color.to('hsi', { round: false });
                 if (typeof distanceShade === 'undefined') {
                     if (100 - hsi.getI() < hsi.getI()) {
-                        distanceShade = (100 - hsi.getI()) / 50 * distance;
+                        distanceShade = ((100 - hsi.getI()) / 50) * distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = hsi.getI() / 50 * distanceShade;
+                        distance = (hsi.getI() / 50) * distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.hsiDarken(hsi, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.hsiDarken(hsi, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(hsi.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.hsiLighten(hsi, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.hsiLighten(hsi, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             case 'hsp':
@@ -4361,19 +4858,19 @@ var Harmony = /** @class */ (function () {
                 var hsp = color.to('hsp', { round: false });
                 if (typeof distanceShade === 'undefined') {
                     if (100 - hsp.getP() < hsp.getP()) {
-                        distanceShade = (100 - hsp.getP()) / 50 * distance;
+                        distanceShade = ((100 - hsp.getP()) / 50) * distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = hsp.getP() / 50 * distanceShade;
+                        distance = (hsp.getP() / 50) * distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.hspDarken(hsp, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.hspDarken(hsp, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(hsp.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.hspLighten(hsp, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.hspLighten(hsp, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             case 'rgb2':
@@ -4382,19 +4879,28 @@ var Harmony = /** @class */ (function () {
                 if (typeof distanceShade === 'undefined') {
                     var avg = (rgb2.getR() + rgb2.getG() + rgb2.getB()) / 3;
                     if (rgb2.getMax() - avg < avg) {
-                        distanceShade = (rgb2.getMax() - Math.min(rgb2.getR(), rgb2.getG(), rgb2.getB())) / rgb2.getMax() / 2 * distance;
+                        distanceShade =
+                            ((rgb2.getMax() -
+                                Math.min(rgb2.getR(), rgb2.getG(), rgb2.getB())) /
+                                rgb2.getMax() /
+                                2) *
+                                distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = Math.max(rgb2.getR(), rgb2.getG(), rgb2.getB()) / rgb2.getMax() / 2 * distanceShade;
+                        distance =
+                            (Math.max(rgb2.getR(), rgb2.getG(), rgb2.getB()) /
+                                rgb2.getMax() /
+                                2) *
+                                distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.rgb2Darken(rgb2, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.rgb2Darken(rgb2, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(rgb2.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.rgb2Lighten(rgb2, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.rgb2Lighten(rgb2, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             case 'rgb':
@@ -4403,76 +4909,84 @@ var Harmony = /** @class */ (function () {
                 if (typeof distanceShade === 'undefined') {
                     var avg = (rgb.getR() + rgb.getG() + rgb.getB()) / 3;
                     if (rgb.getMax() - avg < avg) {
-                        distanceShade = (rgb.getMax() - Math.min(rgb.getR(), rgb.getG(), rgb.getB())) / rgb.getMax() / 2 * distance;
+                        distanceShade =
+                            ((rgb.getMax() - Math.min(rgb.getR(), rgb.getG(), rgb.getB())) /
+                                rgb.getMax() /
+                                2) *
+                                distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = Math.max(rgb.getR(), rgb.getG(), rgb.getB()) / rgb.getMax() / 2 * distanceShade;
+                        distance =
+                            (Math.max(rgb.getR(), rgb.getG(), rgb.getB()) /
+                                rgb.getMax() /
+                                2) *
+                                distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.rgbDarken(rgb, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.rgbDarken(rgb, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(rgb.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.rgbLighten(rgb, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.rgbLighten(rgb, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             case 'cmyk':
                 var cmyk = color.to('cmyk', { round: false });
                 if (typeof distanceShade === 'undefined') {
                     if (cmyk.getK() < 50) {
-                        distanceShade = cmyk.getK() / 50 * distance;
+                        distanceShade = (cmyk.getK() / 50) * distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = (100 - cmyk.getK()) / 50 * distanceShade;
+                        distance = ((100 - cmyk.getK()) / 50) * distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.cmykDarken(cmyk, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.cmykDarken(cmyk, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(cmyk.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.cmykLighten(cmyk, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.cmykLighten(cmyk, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             case 'lab':
                 var lab = color.to('lab', { round: false });
                 if (typeof distanceShade === 'undefined') {
                     if (lab.getL() < 50) {
-                        distanceShade = lab.getL() / 50 * distance;
+                        distanceShade = (lab.getL() / 50) * distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = (100 - lab.getL()) / 50 * distanceShade;
+                        distance = ((100 - lab.getL()) / 50) * distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.labDarken(lab, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.labDarken(lab, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(lab.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.labLighten(lab, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.labLighten(lab, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             case 'luv':
                 var luv = color.to('luv', { round: false });
                 if (typeof distanceShade === 'undefined') {
                     if (luv.getL() < 50) {
-                        distanceShade = luv.getL() / 50 * distance;
+                        distanceShade = (luv.getL() / 50) * distance;
                     }
                     else {
                         distanceShade = distance;
-                        distance = (100 - luv.getL()) / 50 * distanceShade;
+                        distance = ((100 - luv.getL()) / 50) * distanceShade;
                     }
                 }
                 for (var i = 0; i < colors; i++) {
-                    scheme.push(Modify_1.default.luvDarken(luv, (colors - i) / colors * distanceShade).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.luvDarken(luv, ((colors - i) / colors) * distanceShade).to(color.getType(), { round: round }));
                 }
                 scheme.push(luv.to(color.getType(), { round: round }));
                 for (var i = 1; i <= colors; i++) {
-                    scheme.push(Modify_1.default.luvLighten(luv, i / colors * distance).to(color.getType(), { round: round }));
+                    scheme.push(Modify_1.default.luvLighten(luv, (i / colors) * distance).to(color.getType(), { round: round }));
                 }
                 break;
             default:
@@ -4493,47 +5007,109 @@ var Harmony = /** @class */ (function () {
         if (colors < 2) {
             throw new Error('Unable to generate gradient with less than two colors');
         }
-        var inBetweenColors = colors - 2;
+        type = type.toLowerCase();
+        var reachesColor2 = ![
+            'multiply',
+            'screen',
+            'overlay',
+            'softlight',
+            'colorburn',
+            'colordodge',
+            'vividlight',
+            'linearburn',
+            'lineardodge',
+            'linearlight',
+            'divide',
+            'addition',
+            'subtraction',
+            'difference',
+            'hue',
+            'value',
+            'lightness',
+            'intensity',
+            'perceivedbrightness',
+            'perceived',
+        ].includes(type);
+        var inBetweenColors = reachesColor2 ? colors - 2 : colors - 1;
         var gradient = [];
         gradient.push(color1);
         for (var i = 0; i < inBetweenColors; i++) {
             var amount = (i + 1) / (inBetweenColors + 1);
-            switch (type) {
-                case 'rgb':
-                case 'rgba':
-                    gradient.push(Modify_1.default.rgbBlend(color1.to('rgb', { round: false }), color2.to('rgb', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
-                case 'hsv':
-                case 'hsva':
-                    gradient.push(Modify_1.default.hsvBlend(color1.to('hsv', { round: false }), color2.to('hsv', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
-                case 'hsl':
-                case 'hsla':
-                    gradient.push(Modify_1.default.hslBlend(color1.to('hsl', { round: false }), color2.to('hsl', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
-                case 'hsi':
-                case 'hsia':
-                    gradient.push(Modify_1.default.hsiBlend(color1.to('hsi', { round: false }), color2.to('hsi', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
-                case 'hsp':
-                case 'hspa':
-                    gradient.push(Modify_1.default.hspBlend(color1.to('hsp', { round: false }), color2.to('hsp', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
-                case 'cmyk':
-                    gradient.push(Modify_1.default.cmykBlend(color1.to('cmyk', { round: false }), color2.to('cmyk', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
-                case 'yiq':
-                    gradient.push(Modify_1.default.yiqBlend(color1.to('yiq', { round: false }), color2.to('yiq', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
-                case 'lab':
-                    gradient.push(Modify_1.default.labBlend(color1.to('lab', { round: false }), color2.to('lab', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
-                case 'luv':
-                    gradient.push(Modify_1.default.luvBlend(color1.to('luv', { round: false }), color2.to('luv', { round: false }), amount).to(color1.getType(), { round: round }));
-                    break;
+            if ([
+                'multiply',
+                'screen',
+                'overlay',
+                'softlight',
+                'colordodge',
+                'colorburn',
+                'vividlight',
+                'lineardodge',
+                'linearburn',
+                'linearlight',
+                'divide',
+                'addition',
+                'subtraction',
+                'difference',
+            ].includes(type)) {
+                gradient.push(Blend_1.default.rgbBlendMode(color1.to('rgb', { round: false }), color2.to('rgb', { round: false }), amount, type).to(color1.getType(), { round: round }));
+            }
+            else {
+                switch (type) {
+                    case 'rgb':
+                    case 'rgba':
+                        gradient.push(Blend_1.default.rgbBlend(color1.to('rgb', { round: false }), color2.to('rgb', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'hue':
+                        gradient.push(Blend_1.default.hueBlend(color1.to('hsv', { round: false }), color2.to('hsv', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'hsv':
+                    case 'hsva':
+                        gradient.push(Blend_1.default.hsvBlend(color1.to('hsv', { round: false }), color2.to('hsv', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'value':
+                        gradient.push(Blend_1.default.valueBlend(color1.to('hsv', { round: false }), color2.to('hsv', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'hsl':
+                    case 'hsla':
+                        gradient.push(Blend_1.default.hslBlend(color1.to('hsl', { round: false }), color2.to('hsl', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'lightness':
+                        gradient.push(Blend_1.default.lightnessBlend(color1.to('hsl', { round: false }), color2.to('hsl', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'hsi':
+                    case 'hsia':
+                        gradient.push(Blend_1.default.hsiBlend(color1.to('hsi', { round: false }), color2.to('hsi', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'intensity':
+                        gradient.push(Blend_1.default.intensityBlend(color1.to('hsi', { round: false }), color2.to('hsi', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'hsp':
+                    case 'hspa':
+                        gradient.push(Blend_1.default.hspBlend(color1.to('hsp', { round: false }), color2.to('hsp', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'perceivedbrightness':
+                    case 'perceived':
+                        gradient.push(Blend_1.default.perceivedBrightnessBlend(color1.to('hsp', { round: false }), color2.to('hsp', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'cmyk':
+                        gradient.push(Blend_1.default.cmykBlend(color1.to('cmyk', { round: false }), color2.to('cmyk', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'yiq':
+                        gradient.push(Blend_1.default.yiqBlend(color1.to('yiq', { round: false }), color2.to('yiq', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'lab':
+                        gradient.push(Blend_1.default.labBlend(color1.to('lab', { round: false }), color2.to('lab', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    case 'luv':
+                        gradient.push(Blend_1.default.luvBlend(color1.to('luv', { round: false }), color2.to('luv', { round: false }), amount).to(color1.getType(), { round: round }));
+                        break;
+                    default:
+                        throw new Error('Unrecognized gradient method');
+                }
             }
         }
-        gradient.push(color2);
+        if (reachesColor2)
+            gradient.push(color2);
         return gradient;
     };
     return Harmony;
@@ -4606,174 +5182,12 @@ var Modify = /** @class */ (function () {
         return hue;
     };
     /**
-     * Blend one RGB color with another
+     * Darken RGB color by amount
      *
-     * @param  {Colors.rgb} rgb1
-     * @param  {Colors.rgb} rgb2
-     * @param  {number}     amount amount to blend, 0-1
-     * @param  {boolean}    [round=true]
+     * @param  {Colors.rgb} rgb
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
      * @return {Colors.rgb}
      */
-    Modify.rgbBlend = function (rgb1, rgb2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var r3 = rgb1.getR() + (rgb2.getR() - rgb1.getR()) * amount;
-        var g3 = rgb1.getG() + (rgb2.getG() - rgb1.getG()) * amount;
-        var b3 = rgb1.getB() + (rgb2.getB() - rgb1.getB()) * amount;
-        var a3 = rgb1.getA() + (rgb2.getA() - rgb1.getA()) * amount;
-        return new Colors.rgb(r3, g3, b3, a3);
-    };
-    /**
-     * Blend one HSV color with another
-     *
-     * @param  {Colors.hsv} hsv1
-     * @param  {Colors.hsv} hsv2
-     * @param  {number}     amount amount to blend (0-1)
-     * @param  {boolean}    [round=true]
-     * @return {Colors.hsv}
-     */
-    Modify.hsvBlend = function (hsv1, hsv2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var hueDiff;
-        if (Math.abs(hsv2.getH() - hsv1.getH()) > 180) {
-            hueDiff = 360 - (hsv2.getH() - hsv1.getH()) * amount * -1;
-        }
-        else {
-            hueDiff = (hsv2.getH() - hsv1.getH()) * amount;
-        }
-        var h3 = this.hueShift(hsv1.getH(), hueDiff);
-        var s3 = hsv1.getS() + (hsv2.getS() - hsv1.getS()) * amount;
-        var v3 = hsv1.getV() + (hsv2.getV() - hsv1.getV()) * amount;
-        var a3 = hsv1.getA() + (hsv2.getA() - hsv1.getA()) * amount;
-        return new Colors.hsv(h3, s3, v3, a3);
-    };
-    /**
-     * Blend one HSL color with another
-     *
-     * @param  {Colors.hsl} hsl1
-     * @param  {Colors.hsl} hsl2
-     * @param  {number}     amount amount to blend (0-1)
-     * @param  {boolean}    [round=true]
-     * @return {Colors.hsl}
-     */
-    Modify.hslBlend = function (hsl1, hsl2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var hueDiff;
-        if (Math.abs(hsl2.getH() - hsl1.getH()) > 180) {
-            hueDiff = 360 - (hsl2.getH() - hsl1.getH()) * amount * -1;
-        }
-        else {
-            hueDiff = (hsl2.getH() - hsl1.getH()) * amount;
-        }
-        var h3 = this.hueShift(hsl1.getH(), hueDiff);
-        var s3 = hsl1.getS() + (hsl2.getS() - hsl1.getS()) * amount;
-        var l3 = hsl1.getL() + (hsl2.getL() - hsl1.getL()) * amount;
-        var a3 = hsl1.getA() + (hsl2.getA() - hsl1.getA()) * amount;
-        return new Colors.hsl(h3, s3, l3, a3);
-    };
-    /**
-     * Blend one HSI color with another
-     *
-     * @param  {Colors.hsi} hsi1
-     * @param  {Colors.hsi} hsi2
-     * @param  {number}     amount amount to blend (0-1)
-     * @param  {boolean}    [round=true]
-     * @return {Colors.hsi}
-     */
-    Modify.hsiBlend = function (hsi1, hsi2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var hueDiff;
-        if (Math.abs(hsi2.getH() - hsi1.getH()) > 180) {
-            hueDiff = 360 - (hsi2.getH() - hsi1.getH()) * amount * -1;
-        }
-        else {
-            hueDiff = (hsi2.getH() - hsi1.getH()) * amount;
-        }
-        var h3 = this.hueShift(hsi1.getH(), hueDiff);
-        var s3 = hsi1.getS() + (hsi2.getS() - hsi1.getS()) * amount;
-        var i3 = hsi1.getI() + (hsi2.getI() - hsi1.getI()) * amount;
-        var a3 = hsi1.getA() + (hsi2.getA() - hsi1.getA()) * amount;
-        return new Colors.hsi(h3, s3, i3, a3);
-    };
-    /**
-     * Blend one HSP color with another
-     *
-     * @param  {Colors.hsp} hsp1
-     * @param  {Colors.hsp} hsp2
-     * @param  {number}     amount amount to blend (0-1)
-     * @param  {boolean}    [round=true]
-     * @return {Colors.hsp}
-     */
-    Modify.hspBlend = function (hsp1, hsp2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var hueDiff;
-        if (Math.abs(hsp2.getH() - hsp1.getH()) > 180) {
-            hueDiff = 360 - (hsp2.getH() - hsp1.getH()) * amount * -1;
-        }
-        else {
-            hueDiff = (hsp2.getH() - hsp1.getH()) * amount;
-        }
-        var h3 = this.hueShift(hsp1.getH(), hueDiff);
-        var s3 = hsp1.getS() + (hsp2.getS() - hsp1.getS()) * amount;
-        var p3 = hsp1.getP() + (hsp2.getP() - hsp1.getP()) * amount;
-        var a3 = hsp1.getA() + (hsp2.getA() - hsp1.getA()) * amount;
-        return new Colors.hsp(h3, s3, p3, a3);
-    };
-    /**
-     * Blend one CMYK color with another
-     *
-     * @param  {Colors.cmyk} cmyk1
-     * @param  {Colors.cmyk} cmyk2
-     * @param  {number}      amount amount to blend (0-1)
-     * @param  {boolean}     [round=true]
-     * @return {Colors.cmyk}
-     */
-    Modify.cmykBlend = function (cmyk1, cmyk2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var c3 = cmyk1.getC() + (cmyk2.getC() - cmyk1.getC()) * amount;
-        var m3 = cmyk1.getM() + (cmyk2.getM() - cmyk1.getM()) * amount;
-        var y3 = cmyk1.getY() + (cmyk2.getY() - cmyk1.getY()) * amount;
-        var k3 = cmyk1.getK() + (cmyk2.getK() - cmyk1.getK()) * amount;
-        return new Colors.cmyk(c3, m3, y3, k3);
-    };
-    /**
-     * Blend one YIQ color with another
-     *
-     * @param  {Colors.yiq} c1
-     * @param  {Colors.yiq} c2
-     * @param  {number}     amount amount to blend (0-1)
-     * @param  {boolean}    [round=true]
-     * @return {Colors.yiq}
-     */
-    Modify.yiqBlend = function (c1, c2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var y = c1.getY() + (c2.getY() - c1.getY()) * amount;
-        var i = c1.getI() + (c2.getI() - c1.getI()) * amount;
-        var q = c1.getQ() + (c2.getQ() - c1.getQ()) * amount;
-        return new Colors.yiq(y, i, q);
-    };
-    Modify.labBlend = function (c1, c2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var l = c1.getL() + (c2.getL() - c1.getL()) * amount;
-        var a = c1.getA() + (c2.getA() - c1.getA()) * amount;
-        var b = c1.getB() + (c2.getB() - c1.getB()) * amount;
-        return new Colors.lab(l, a, b);
-    };
-    Modify.luvBlend = function (c1, c2, amount) {
-        if (amount === void 0) { amount = 0.5; }
-        amount = Math.min(Math.max(amount, 0), 1);
-        var l = c1.getL() + (c2.getL() - c1.getL()) * amount;
-        var u = c1.getU() + (c2.getU() - c1.getU()) * amount;
-        var v = c1.getV() + (c2.getV() - c1.getV()) * amount;
-        return new Colors.luv(l, u, v);
-    };
     Modify.rgbDarken = function (rgb, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
@@ -4782,6 +5196,13 @@ var Modify = /** @class */ (function () {
         var bd = rgb.getB() * realAmount;
         return new Colors.rgb(rd, gd, bd, rgb.getA());
     };
+    /**
+     * Lighten RGB color by amount
+     *
+     * @param  {Colors.rgb} rgb
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.rgb}
+     */
     Modify.rgbLighten = function (rgb, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4790,6 +5211,13 @@ var Modify = /** @class */ (function () {
         var bl = rgb.getB() + (rgb.getMax() - rgb.getB()) * realAmount;
         return new Colors.rgb(rl, gl, bl, rgb.getA());
     };
+    /**
+     * Darken RGB color by amount (alt method)
+     *
+     * @param  {Colors.rgb} rgb
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.rgb}
+     */
     Modify.rgb2Darken = function (rgb, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4800,6 +5228,13 @@ var Modify = /** @class */ (function () {
         var bd = Math.max(0, rgb.getB() - changeValue);
         return new Colors.rgb(rd, gd, bd, rgb.getA());
     };
+    /**
+     * Lighten RGB color by amount (alt method)
+     *
+     * @param  {Colors.rgb} rgb
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.rgb}
+     */
     Modify.rgb2Lighten = function (rgb, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4810,6 +5245,13 @@ var Modify = /** @class */ (function () {
         var bl = Math.min(rgb.getB() + changeValue, rgb.getMax());
         return new Colors.rgb(rl, gl, bl, rgb.getA());
     };
+    /**
+     * Darken CMYK color by amount
+     *
+     * @param  {Colors.cmyk} cmyk
+     * @param  {number}      [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.cmyk}
+     */
     Modify.cmykDarken = function (cmyk, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4819,6 +5261,13 @@ var Modify = /** @class */ (function () {
         var k2 = cmyk.getK() + (100 - cmyk.getK()) * realAmount;
         return new Colors.cmyk(c2, m2, y2, k2);
     };
+    /**
+     * Lighten CMYK color by amount
+     *
+     * @param  {Colors.cmyk} cmyk
+     * @param  {number}      [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.cmyk}
+     */
     Modify.cmykLighten = function (cmyk, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
@@ -4828,36 +5277,78 @@ var Modify = /** @class */ (function () {
         var k2 = cmyk.getK() * realAmount;
         return new Colors.cmyk(c2, m2, y2, k2);
     };
+    /**
+     * Darken CMYK color by amount (alt method)
+     *
+     * @param  {Colors.cmyk} cmyk
+     * @param  {number}      [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.cmyk}
+     */
     Modify.cmyk2Darken = function (cmyk, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
         var k2 = cmyk.getK() + (100 - cmyk.getK()) * realAmount;
         return new Colors.cmyk(cmyk.getC(), cmyk.getM(), cmyk.getY(), k2);
     };
+    /**
+     * Lighten CMYK color by amount (alt method)
+     *
+     * @param  {Colors.cmyk} cmyk
+     * @param  {number}      [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.cmyk}
+     */
     Modify.cmyk2Lighten = function (cmyk, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var k2 = cmyk.getK() * realAmount;
         return new Colors.cmyk(cmyk.getC(), cmyk.getM(), cmyk.getY(), k2);
     };
+    /**
+     * Darken HSL color by amount
+     *
+     * @param  {Colors.hsl} hsl
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.hsl}
+     */
     Modify.hslDarken = function (hsl, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var vDarker = hsl.getL() * realAmount;
         return new Colors.hsl(hsl.getH(), hsl.getS(), vDarker, hsl.getA());
     };
+    /**
+     * Lighten HSL color by amount
+     *
+     * @param  {Colors.hsl} hsl
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsl}
+     */
     Modify.hslLighten = function (hsl, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
         var vLighter = hsl.getL() + (100 - hsl.getL()) * realAmount;
         return new Colors.hsl(hsl.getH(), hsl.getS(), vLighter, hsl.getA());
     };
+    /**
+     * Darken HSV color by amount
+     *
+     * @param  {Colors.hsv} hsv
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.hsv}
+     */
     Modify.hsvDarken = function (hsv, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var vDarker = hsv.getV() * realAmount;
         return new Colors.hsv(hsv.getH(), hsv.getS(), vDarker, hsv.getA());
     };
+    /**
+     * Lighten HSV color by amount
+     *
+     * @param  {Colors.hsv} hsv
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsv}
+     */
     Modify.hsvLighten = function (hsv, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4865,12 +5356,26 @@ var Modify = /** @class */ (function () {
         var sLighter = hsv.getS() - realAmount * hsv.getS();
         return new Colors.hsv(hsv.getH(), sLighter, vLighter, hsv.getA());
     };
+    /**
+     * Darken HSI color by amount
+     *
+     * @param  {Colors.hsi} hsi
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.hsi}
+     */
     Modify.hsiDarken = function (hsi, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var vDarker = hsi.getI() * realAmount;
         return new Colors.hsi(hsi.getH(), hsi.getS(), vDarker, hsi.getA());
     };
+    /**
+     * Lighten HSI color by amount
+     *
+     * @param  {Colors.hsi} hsi
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsi}
+     */
     Modify.hsiLighten = function (hsi, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4878,12 +5383,26 @@ var Modify = /** @class */ (function () {
         var sLighter = hsi.getS() - realAmount * hsi.getS();
         return new Colors.hsi(hsi.getH(), sLighter, vLighter, hsi.getA());
     };
+    /**
+     * Darken HSP color by amount
+     *
+     * @param  {Colors.hsp} hsp
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.hsp}
+     */
     Modify.hspDarken = function (hsp, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var pDarker = hsp.getP() * realAmount;
         return new Colors.hsp(hsp.getH(), hsp.getS(), pDarker, hsp.getA(), hsp.getPb(), hsp.getPr());
     };
+    /**
+     * Lighten HSP color by amount
+     *
+     * @param  {Colors.hsp} hsp
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsp}
+     */
     Modify.hspLighten = function (hsp, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4891,6 +5410,13 @@ var Modify = /** @class */ (function () {
         var sLighter = hsp.getS() - realAmount * hsp.getS();
         return new Colors.hsp(hsp.getH(), sLighter, pLighter, hsp.getA(), hsp.getPb(), hsp.getPr());
     };
+    /**
+     * Darken Lab color by amount
+     *
+     * @param  {Colors.lab} lab
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.lab}
+     */
     Modify.labDarken = function (lab, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
@@ -4899,6 +5425,13 @@ var Modify = /** @class */ (function () {
         var bDarker = lab.getB() * realAmount;
         return new Colors.lab(lDarker, aDarker, bDarker);
     };
+    /**
+     * Lighten Lab color by amount
+     *
+     * @param  {Colors.lab} lab
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.lab}
+     */
     Modify.labLighten = function (lab, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4908,18 +5441,39 @@ var Modify = /** @class */ (function () {
         var bLighter = lab.getB() * realAmountAB;
         return new Colors.lab(lLighter, aLighter, bLighter);
     };
+    /**
+     * Darken Lab color by amount (alt method)
+     *
+     * @param  {Colors.lab} lab
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.lab}
+     */
     Modify.lab2Darken = function (lab, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var lDarker = lab.getL() * realAmount;
         return new Colors.lab(lDarker, lab.getA(), lab.getB());
     };
+    /**
+     * Lighten Lab color by amount (alt method)
+     *
+     * @param  {Colors.lab} lab
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.lab}
+     */
     Modify.lab2Lighten = function (lab, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
         var lLighter = lab.getL() + (100 - lab.getL()) * realAmount;
         return new Colors.lab(lLighter, lab.getA(), lab.getB());
     };
+    /**
+     * Darken Luv color by amount
+     *
+     * @param  {Colors.luv} luv
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.luv}
+     */
     Modify.luvDarken = function (luv, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
@@ -4928,6 +5482,13 @@ var Modify = /** @class */ (function () {
         var vDarker = luv.getV() * realAmount;
         return new Colors.luv(lDarker, uDarker, vDarker);
     };
+    /**
+     * Lighten Luv color by amount
+     *
+     * @param  {Colors.luv} luv
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.luv}
+     */
     Modify.luvLighten = function (luv, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -4937,61 +5498,131 @@ var Modify = /** @class */ (function () {
         var vLighter = luv.getV() * realAmountAB;
         return new Colors.luv(lLighter, uLighter, vLighter);
     };
-    // breaks as L* approaches 0
+    /**
+     * Darken Luv color by amount (alt method)
+     * Breaks as L* approaches 0
+     *
+     * @param  {Colors.luv} luv
+     * @param  {number}     [amount=0.5]  amount to darken, 0-1
+     * @return {Colors.luv}
+     */
     Modify.luv2Darken = function (luv, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var lDarker = luv.getL() * realAmount;
         return new Colors.luv(lDarker, luv.getU(), luv.getV());
     };
+    /**
+     * Lighten Luv color by amount (alt method)
+     *
+     * @param  {Colors.luv} luv
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.luv}
+     */
     Modify.luv2Lighten = function (luv, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
         var lLighter = luv.getL() + (100 - luv.getL()) * realAmount;
         return new Colors.luv(lLighter, luv.getU(), luv.getV());
     };
+    /**
+     * Desaturate HSL color by amount
+     *
+     * @param  {Colors.hsl} hsl
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsl}
+     */
     Modify.hslDesaturate = function (hsl, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var sLess = hsl.getS() * realAmount;
         return new Colors.hsl(hsl.getH(), sLess, hsl.getL(), hsl.getA());
     };
+    /**
+     * Saturate HSL color by amount
+     *
+     * @param  {Colors.hsl} hsl
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsl}
+     */
     Modify.hslSaturate = function (hsl, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
         var sMore = hsl.getS() + (100 - hsl.getS()) * realAmount;
         return new Colors.hsl(hsl.getH(), sMore, hsl.getL(), hsl.getA());
     };
+    /**
+     * Desaturate HSV color by amount
+     *
+     * @param  {Colors.hsv} hsv
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsv}
+     */
     Modify.hsvDesaturate = function (hsv, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var sLess = hsv.getS() * realAmount;
         return new Colors.hsv(hsv.getH(), sLess, hsv.getV(), hsv.getA());
     };
+    /**
+     * Saturate HSV color by amount
+     *
+     * @param  {Colors.hsv} hsv
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsv}
+     */
     Modify.hsvSaturate = function (hsv, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
         var sMore = hsv.getS() + (100 - hsv.getS()) * realAmount;
         return new Colors.hsv(hsv.getH(), sMore, hsv.getV(), hsv.getA());
     };
+    /**
+     * Desaturate HSI color by amount
+     *
+     * @param  {Colors.hsi} hsi
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsi}
+     */
     Modify.hsiDesaturate = function (hsi, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var sLess = hsi.getS() * realAmount;
         return new Colors.hsi(hsi.getH(), sLess, hsi.getI(), hsi.getA());
     };
+    /**
+     * Saturate HSI color by amount
+     *
+     * @param  {Colors.hsi} hsi
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsi}
+     */
     Modify.hsiSaturate = function (hsi, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
         var sMore = hsi.getS() + (100 - hsi.getS()) * realAmount;
         return new Colors.hsi(hsi.getH(), sMore, hsi.getI(), hsi.getA());
     };
+    /**
+     * Desaturate HSP color by amount
+     *
+     * @param  {Colors.hsp} hsp
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsp}
+     */
     Modify.hspDesaturate = function (hsp, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = 1 - Math.min(Math.max(amount, 0), 1);
         var sLess = hsp.getS() * realAmount;
         return new Colors.hsp(hsp.getH(), sLess, hsp.getP(), hsp.getA());
     };
+    /**
+     * Saturate HSP color by amount
+     *
+     * @param  {Colors.hsp} hsp
+     * @param  {number}     [amount=0.5]  amount to lighten, 0-1
+     * @return {Colors.hsp}
+     */
     Modify.hspSaturate = function (hsp, amount) {
         if (amount === void 0) { amount = 0.5; }
         var realAmount = Math.min(Math.max(amount, 0), 1);
@@ -6052,7 +6683,8 @@ var Util = /** @class */ (function () {
         if (typeof referenceWhite == 'string') {
             referenceWhite = referenceWhite.toLowerCase();
             if (typeof Reference_1.stdIlluminants[referenceWhite] == 'undefined' ||
-                typeof Reference_1.stdIlluminants[referenceWhite]['vector'] == 'undefined') {
+                typeof Reference_1.stdIlluminants[referenceWhite]['vector'] ==
+                    'undefined') {
                 throw new Error('Invalid reference white');
             }
             var v = Reference_1.stdIlluminants[referenceWhite]['vector'];
@@ -6067,6 +6699,13 @@ var Util = /** @class */ (function () {
         }
         return w;
     };
+    /**
+     * Validates color space from string and returns object with relevant data,
+     * including name, gamma, xyz2rgb conversion matrices...
+     *
+     * @param   {string} colorSpace
+     * @returns {object}
+     */
     Util.validColorSpace = function (colorSpace) {
         // make lowercase, include common nomenclature differences, ignore spaces, etc
         colorSpace = colorSpace.toLowerCase().replace(/[^a-z0-9]/, '');
@@ -6104,7 +6743,7 @@ var Util = /** @class */ (function () {
      * @return {number}
      */
     Util.fmod = function (x, y) {
-        return Number((x - (Math.floor(x / y) * y)).toPrecision(8));
+        return Number((x - Math.floor(x / y) * y).toPrecision(8));
     };
     return Util;
 }());
