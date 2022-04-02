@@ -76,7 +76,7 @@ class Blend {
           newValue = b == 1 ? 0 : a / (1 - b)
           break
         case 'colorburn':
-          newValue = a > 0 ? (1 - b) / a : 0
+          newValue = a > 0 ? 1 - ((1 - b) / a) : 0
           break
         case 'vividlight':
           newValue = b > 0.5 ? (b == 1 ? 0 : a / (1 - b)) : a > 0 ? 1 - b / a : 0
