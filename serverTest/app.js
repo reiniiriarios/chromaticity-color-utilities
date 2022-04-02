@@ -18,6 +18,21 @@ function colorBlock(hex, tip, highlight) {
   )
 }
 
+let colorSets = [
+  ['cc1111','11aaaa'],
+  ['aa22bb','55aa00'],
+  ['11aaaa','cc1111'],
+  ['55aa00','aa22bb'],
+  ['ee8822','118844'],
+  ['ee2288','114488'],
+  ['118844','ee8822'],
+  ['114488','ee2288'],
+  ['445566','ff2255'],
+  ['eeccaa','1133ff'],
+  ['ff2255','445566'],
+  ['1133ff','eeccaa'],
+]
+
 function grad(method, start, end) {
   content += '<div><h2>gradient</h2><h3>' + method + '</h3>'
   let realMethod = method.replace(/[^a-z]/, '')
@@ -29,6 +44,7 @@ function grad(method, start, end) {
       'softlight',
       'colordodge',
       'colorburn',
+      'vividlight',
       'lineardodge',
       'linearburn',
       'linearlight',
@@ -61,392 +77,41 @@ function grad(method, start, end) {
   content += '</div>'
 }
 
-content += '<div class="container">'
-grad('rgb', 'cc1111', '11aaaa')
-grad('hsv', 'cc1111', '11aaaa')
-grad('hsl', 'cc1111', '11aaaa')
-grad('hsi', 'cc1111', '11aaaa')
-grad('hsp', 'cc1111', '11aaaa')
-grad('cmyk', 'cc1111', '11aaaa')
-grad('lab', 'cc1111', '11aaaa')
-grad('luv', 'cc1111', '11aaaa')
-content += '</div>'
+colorSets.forEach(pair => {
+  content += '<div class="container">'
+  grad('rgb', pair[0], pair[1])
+  grad('hsv', pair[0], pair[1])
+  grad('hsl', pair[0], pair[1])
+  grad('hsi', pair[0], pair[1])
+  grad('hsp', pair[0], pair[1])
+  grad('cmyk', pair[0], pair[1])
+  grad('lab', pair[0], pair[1])
+  grad('luv', pair[0], pair[1])
+  
+  grad('hue', pair[0], pair[1])
+  grad('value', pair[0], pair[1])
+  grad('lightness', pair[0], pair[1])
+  grad('intensity', pair[0], pair[1])
+  grad('perceived', pair[0], pair[1])
+  content += '</div>'
 
-content += '<div class="container">'
-grad('rgb', 'aa22bb', '55aa00')
-grad('hsv', 'aa22bb', '55aa00')
-grad('hsl', 'aa22bb', '55aa00')
-grad('hsi', 'aa22bb', '55aa00')
-grad('hsp', 'aa22bb', '55aa00')
-grad('cmyk', 'aa22bb', '55aa00')
-grad('lab', 'aa22bb', '55aa00')
-grad('luv', 'aa22bb', '55aa00')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', '11aaaa', 'cc1111')
-grad('hsv', '11aaaa', 'cc1111')
-grad('hsl', '11aaaa', 'cc1111')
-grad('hsi', '11aaaa', 'cc1111')
-grad('hsp', '11aaaa', 'cc1111')
-grad('cmyk', '11aaaa', 'cc1111')
-grad('lab', '11aaaa', 'cc1111')
-grad('luv', '11aaaa', 'cc1111')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', '55aa00', 'aa22bb')
-grad('hsv', '55aa00', 'aa22bb')
-grad('hsl', '55aa00', 'aa22bb')
-grad('hsi', '55aa00', 'aa22bb')
-grad('hsp', '55aa00', 'aa22bb')
-grad('cmyk', '55aa00', 'aa22bb')
-grad('lab', '55aa00', 'aa22bb')
-grad('luv', '55aa00', 'aa22bb')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', 'ee8822', '118844')
-grad('hsv', 'ee8822', '118844')
-grad('hsl', 'ee8822', '118844')
-grad('hsi', 'ee8822', '118844')
-grad('hsp', 'ee8822', '118844')
-grad('cmyk', 'ee8822', '118844')
-grad('lab', 'ee8822', '118844')
-grad('luv', 'ee8822', '118844')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', 'ee2288', '114488')
-grad('hsv', 'ee2288', '114488')
-grad('hsl', 'ee2288', '114488')
-grad('hsi', 'ee2288', '114488')
-grad('hsp', 'ee2288', '114488')
-grad('cmyk', 'ee2288', '114488')
-grad('lab', 'ee2288', '114488')
-grad('luv', 'ee2288', '114488')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', '118844', 'ee8822')
-grad('hsv', '118844', 'ee8822')
-grad('hsl', '118844', 'ee8822')
-grad('hsi', '118844', 'ee8822')
-grad('hsp', '118844', 'ee8822')
-grad('cmyk', '118844', 'ee8822')
-grad('lab', '118844', 'ee8822')
-grad('luv', '118844', 'ee8822')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', '114488', 'ee2288')
-grad('hsv', '114488', 'ee2288')
-grad('hsl', '114488', 'ee2288')
-grad('hsi', '114488', 'ee2288')
-grad('hsp', '114488', 'ee2288')
-grad('cmyk', '114488', 'ee2288')
-grad('lab', '114488', 'ee2288')
-grad('luv', '114488', 'ee2288')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', '445566', 'ff2255')
-grad('hsv', '445566', 'ff2255')
-grad('hsl', '445566', 'ff2255')
-grad('hsi', '445566', 'ff2255')
-grad('hsp', '445566', 'ff2255')
-grad('cmyk', '445566', 'ff2255')
-grad('lab', '445566', 'ff2255')
-grad('luv', '445566', 'ff2255')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', 'eeccaa', '1133ff')
-grad('hsv', 'eeccaa', '1133ff')
-grad('hsl', 'eeccaa', '1133ff')
-grad('hsi', 'eeccaa', '1133ff')
-grad('hsp', 'eeccaa', '1133ff')
-grad('cmyk', 'eeccaa', '1133ff')
-grad('lab', 'eeccaa', '1133ff')
-grad('luv', 'eeccaa', '1133ff')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', 'ff2255', '445566')
-grad('hsv', 'ff2255', '445566')
-grad('hsl', 'ff2255', '445566')
-grad('hsi', 'ff2255', '445566')
-grad('hsp', 'ff2255', '445566')
-grad('cmyk', 'ff2255', '445566')
-grad('lab', 'ff2255', '445566')
-grad('luv', 'ff2255', '445566')
-content += '</div>'
-
-content += '<div class="container">'
-grad('rgb', '1133ff', 'eeccaa')
-grad('hsv', '1133ff', 'eeccaa')
-grad('hsl', '1133ff', 'eeccaa')
-grad('hsi', '1133ff', 'eeccaa')
-grad('hsp', '1133ff', 'eeccaa')
-grad('cmyk', '1133ff', 'eeccaa')
-grad('lab', '1133ff', 'eeccaa')
-grad('luv', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('hue', 'cc1111', '11aaaa')
-grad('hue', 'aa22bb', '55aa00')
-grad('hue', '11aaaa', 'cc1111')
-grad('hue', '55aa00', 'aa22bb')
-grad('hue', 'ee8822', '118844')
-grad('hue', 'ee2288', '114488')
-grad('hue', '118844', 'ee8822')
-grad('hue', '114488', 'ee2288')
-grad('hue', '445566', 'ff2255')
-grad('hue', 'eeccaa', '1133ff')
-grad('hue', 'ff2255', '445566')
-grad('hue', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('value', 'cc1111', '11aaaa')
-grad('value', 'aa22bb', '55aa00')
-grad('value', '11aaaa', 'cc1111')
-grad('value', '55aa00', 'aa22bb')
-grad('value', 'ee8822', '118844')
-grad('value', 'ee2288', '114488')
-grad('value', '118844', 'ee8822')
-grad('value', '114488', 'ee2288')
-grad('value', '445566', 'ff2255')
-grad('value', 'eeccaa', '1133ff')
-grad('value', 'ff2255', '445566')
-grad('value', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('lightness', 'cc1111', '11aaaa')
-grad('lightness', 'aa22bb', '55aa00')
-grad('lightness', '11aaaa', 'cc1111')
-grad('lightness', '55aa00', 'aa22bb')
-grad('lightness', 'ee8822', '118844')
-grad('lightness', 'ee2288', '114488')
-grad('lightness', '118844', 'ee8822')
-grad('lightness', '114488', 'ee2288')
-grad('lightness', '445566', 'ff2255')
-grad('lightness', 'eeccaa', '1133ff')
-grad('lightness', 'ff2255', '445566')
-grad('lightness', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('intensity', 'cc1111', '11aaaa')
-grad('intensity', 'aa22bb', '55aa00')
-grad('intensity', '11aaaa', 'cc1111')
-grad('intensity', '55aa00', 'aa22bb')
-grad('intensity', 'ee8822', '118844')
-grad('intensity', 'ee2288', '114488')
-grad('intensity', '118844', 'ee8822')
-grad('intensity', '114488', 'ee2288')
-grad('intensity', '445566', 'ff2255')
-grad('intensity', 'eeccaa', '1133ff')
-grad('intensity', 'ff2255', '445566')
-grad('intensity', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('perceived', 'cc1111', '11aaaa')
-grad('perceived', 'aa22bb', '55aa00')
-grad('perceived', '11aaaa', 'cc1111')
-grad('perceived', '55aa00', 'aa22bb')
-grad('perceived', 'ee8822', '118844')
-grad('perceived', 'ee2288', '114488')
-grad('perceived', '118844', 'ee8822')
-grad('perceived', '114488', 'ee2288')
-grad('perceived', '445566', 'ff2255')
-grad('perceived', 'eeccaa', '1133ff')
-grad('perceived', 'ff2255', '445566')
-grad('perceived', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('screen', 'cc1111', '11aaaa')
-grad('screen', 'aa22bb', '55aa00')
-grad('screen', '11aaaa', 'cc1111')
-grad('screen', '55aa00', 'aa22bb')
-grad('screen', 'ee8822', '118844')
-grad('screen', 'ee2288', '114488')
-grad('screen', '118844', 'ee8822')
-grad('screen', '114488', 'ee2288')
-grad('screen', '445566', 'ff2255')
-grad('screen', 'eeccaa', '1133ff')
-grad('screen', 'ff2255', '445566')
-grad('screen', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('multiply', 'cc1111', '11aaaa')
-grad('multiply', 'aa22bb', '55aa00')
-grad('multiply', '11aaaa', 'cc1111')
-grad('multiply', '55aa00', 'aa22bb')
-grad('multiply', 'ee8822', '118844')
-grad('multiply', 'ee2288', '114488')
-grad('multiply', '118844', 'ee8822')
-grad('multiply', '114488', 'ee2288')
-grad('multiply', '445566', 'ff2255')
-grad('multiply', 'eeccaa', '1133ff')
-grad('multiply', 'ff2255', '445566')
-grad('multiply', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('overlay', 'cc1111', '11aaaa')
-grad('overlay', 'aa22bb', '55aa00')
-grad('overlay', '11aaaa', 'cc1111')
-grad('overlay', '55aa00', 'aa22bb')
-grad('overlay', 'ee8822', '118844')
-grad('overlay', 'ee2288', '114488')
-grad('overlay', '118844', 'ee8822')
-grad('overlay', '114488', 'ee2288')
-grad('overlay', '445566', 'ff2255')
-grad('overlay', 'eeccaa', '1133ff')
-grad('overlay', 'ff2255', '445566')
-grad('overlay', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('softlight', 'cc1111', '11aaaa')
-grad('softlight', 'aa22bb', '55aa00')
-grad('softlight', '11aaaa', 'cc1111')
-grad('softlight', '55aa00', 'aa22bb')
-grad('softlight', 'ee8822', '118844')
-grad('softlight', 'ee2288', '114488')
-grad('softlight', '118844', 'ee8822')
-grad('softlight', '114488', 'ee2288')
-grad('softlight', '445566', 'ff2255')
-grad('softlight', 'eeccaa', '1133ff')
-grad('softlight', 'ff2255', '445566')
-grad('softlight', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('colorburn', 'cc1111', '11aaaa')
-grad('colorburn', 'aa22bb', '55aa00')
-grad('colorburn', '11aaaa', 'cc1111')
-grad('colorburn', '55aa00', 'aa22bb')
-grad('colorburn', 'ee8822', '118844')
-grad('colorburn', 'ee2288', '114488')
-grad('colorburn', '118844', 'ee8822')
-grad('colorburn', '114488', 'ee2288')
-grad('colorburn', '445566', 'ff2255')
-grad('colorburn', 'eeccaa', '1133ff')
-grad('colorburn', 'ff2255', '445566')
-grad('colorburn', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('colordodge', 'cc1111', '11aaaa')
-grad('colordodge', 'aa22bb', '55aa00')
-grad('colordodge', '11aaaa', 'cc1111')
-grad('colordodge', '55aa00', 'aa22bb')
-grad('colordodge', 'ee8822', '118844')
-grad('colordodge', 'ee2288', '114488')
-grad('colordodge', '118844', 'ee8822')
-grad('colordodge', '114488', 'ee2288')
-grad('colordodge', '445566', 'ff2255')
-grad('colordodge', 'eeccaa', '1133ff')
-grad('colordodge', 'ff2255', '445566')
-grad('colordodge', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('linearburn', 'cc1111', '11aaaa')
-grad('linearburn', 'aa22bb', '55aa00')
-grad('linearburn', '11aaaa', 'cc1111')
-grad('linearburn', '55aa00', 'aa22bb')
-grad('linearburn', 'ee8822', '118844')
-grad('linearburn', 'ee2288', '114488')
-grad('linearburn', '118844', 'ee8822')
-grad('linearburn', '114488', 'ee2288')
-grad('linearburn', '445566', 'ff2255')
-grad('linearburn', 'eeccaa', '1133ff')
-grad('linearburn', 'ff2255', '445566')
-grad('linearburn', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('lineardodge', 'cc1111', '11aaaa')
-grad('lineardodge', 'aa22bb', '55aa00')
-grad('lineardodge', '11aaaa', 'cc1111')
-grad('lineardodge', '55aa00', 'aa22bb')
-grad('lineardodge', 'ee8822', '118844')
-grad('lineardodge', 'ee2288', '114488')
-grad('lineardodge', '118844', 'ee8822')
-grad('lineardodge', '114488', 'ee2288')
-grad('lineardodge', '445566', 'ff2255')
-grad('lineardodge', 'eeccaa', '1133ff')
-grad('lineardodge', 'ff2255', '445566')
-grad('lineardodge', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('linearlight', 'cc1111', '11aaaa')
-grad('linearlight', 'aa22bb', '55aa00')
-grad('linearlight', '11aaaa', 'cc1111')
-grad('linearlight', '55aa00', 'aa22bb')
-grad('linearlight', 'ee8822', '118844')
-grad('linearlight', 'ee2288', '114488')
-grad('linearlight', '118844', 'ee8822')
-grad('linearlight', '114488', 'ee2288')
-grad('linearlight', '445566', 'ff2255')
-grad('linearlight', 'eeccaa', '1133ff')
-grad('linearlight', 'ff2255', '445566')
-grad('linearlight', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('divide', 'cc1111', '11aaaa')
-grad('divide', 'aa22bb', '55aa00')
-grad('divide', '11aaaa', 'cc1111')
-grad('divide', '55aa00', 'aa22bb')
-grad('divide', 'ee8822', '118844')
-grad('divide', 'ee2288', '114488')
-grad('divide', '118844', 'ee8822')
-grad('divide', '114488', 'ee2288')
-grad('divide', '445566', 'ff2255')
-grad('divide', 'eeccaa', '1133ff')
-grad('divide', 'ff2255', '445566')
-grad('divide', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('subtraction', 'cc1111', '11aaaa')
-grad('subtraction', 'aa22bb', '55aa00')
-grad('subtraction', '11aaaa', 'cc1111')
-grad('subtraction', '55aa00', 'aa22bb')
-grad('subtraction', 'ee8822', '118844')
-grad('subtraction', 'ee2288', '114488')
-grad('subtraction', '118844', 'ee8822')
-grad('subtraction', '114488', 'ee2288')
-grad('subtraction', '445566', 'ff2255')
-grad('subtraction', 'eeccaa', '1133ff')
-grad('subtraction', 'ff2255', '445566')
-grad('subtraction', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-grad('difference', 'cc1111', '11aaaa')
-grad('difference', 'aa22bb', '55aa00')
-grad('difference', '11aaaa', 'cc1111')
-grad('difference', '55aa00', 'aa22bb')
-grad('difference', 'ee8822', '118844')
-grad('difference', 'ee2288', '114488')
-grad('difference', '118844', 'ee8822')
-grad('difference', '114488', 'ee2288')
-grad('difference', '445566', 'ff2255')
-grad('difference', 'eeccaa', '1133ff')
-grad('difference', 'ff2255', '445566')
-grad('difference', '1133ff', 'eeccaa')
-content += '</div>'
+  content += '<div class="container">'
+  grad('screen', pair[0], pair[1])
+  grad('multiply', pair[0], pair[1])
+  grad('overlay', pair[0], pair[1])
+  grad('softlight', pair[0], pair[1])
+  grad('divide', pair[0], pair[1])
+  grad('subtraction', pair[0], pair[1])
+  grad('difference', pair[0], pair[1])
+  
+  grad('colorburn', pair[0], pair[1])
+  grad('colordodge', pair[0], pair[1])
+  grad('vividlight', pair[0], pair[1])
+  grad('linearburn', pair[0], pair[1])
+  grad('lineardodge', pair[0], pair[1])
+  grad('linearlight', pair[0], pair[1])
+  content += '</div>'
+})
 
 function blend(method, start, end) {
   let realMethod = method.replace(/[^a-z]/, '')
@@ -493,407 +158,41 @@ function blend(method, start, end) {
   content += '</div>'
 }
 
-content += '<div class="container">'
-blend('rgb', 'cc1111', '11aaaa')
-blend('hsv', 'cc1111', '11aaaa')
-blend('hsl', 'cc1111', '11aaaa')
-blend('hsi', 'cc1111', '11aaaa')
-blend('hsp', 'cc1111', '11aaaa')
-blend('cmyk', 'cc1111', '11aaaa')
-blend('lab', 'cc1111', '11aaaa')
-blend('luv', 'cc1111', '11aaaa')
-content += '</div>'
+colorSets.forEach(pair => {
+  content += '<div class="container">'
+  blend('rgb', pair[0], pair[1])
+  blend('hsv', pair[0], pair[1])
+  blend('hsl', pair[0], pair[1])
+  blend('hsi', pair[0], pair[1])
+  blend('hsp', pair[0], pair[1])
+  blend('cmyk', pair[0], pair[1])
+  blend('lab', pair[0], pair[1])
+  blend('luv', pair[0], pair[1])
+  
+  blend('hue', pair[0], pair[1])
+  blend('value', pair[0], pair[1])
+  blend('lightness', pair[0], pair[1])
+  blend('intensity', pair[0], pair[1])
+  blend('perceived', pair[0], pair[1])
+  content += '</div>'
 
-content += '<div class="container">'
-blend('rgb', 'aa22bb', '55aa00')
-blend('hsv', 'aa22bb', '55aa00')
-blend('hsl', 'aa22bb', '55aa00')
-blend('hsi', 'aa22bb', '55aa00')
-blend('hsp', 'aa22bb', '55aa00')
-blend('cmyk', 'aa22bb', '55aa00')
-blend('lab', 'aa22bb', '55aa00')
-blend('luv', 'aa22bb', '55aa00')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', '11aaaa', 'cc1111')
-blend('hsv', '11aaaa', 'cc1111')
-blend('hsl', '11aaaa', 'cc1111')
-blend('hsi', '11aaaa', 'cc1111')
-blend('hsp', '11aaaa', 'cc1111')
-blend('cmyk', '11aaaa', 'cc1111')
-blend('lab', '11aaaa', 'cc1111')
-blend('luv', '11aaaa', 'cc1111')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', '55aa00', 'aa22bb')
-blend('hsv', '55aa00', 'aa22bb')
-blend('hsl', '55aa00', 'aa22bb')
-blend('hsi', '55aa00', 'aa22bb')
-blend('hsp', '55aa00', 'aa22bb')
-blend('cmyk', '55aa00', 'aa22bb')
-blend('lab', '55aa00', 'aa22bb')
-blend('luv', '55aa00', 'aa22bb')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', 'ee8822', '118844')
-blend('hsv', 'ee8822', '118844')
-blend('hsl', 'ee8822', '118844')
-blend('hsi', 'ee8822', '118844')
-blend('hsp', 'ee8822', '118844')
-blend('cmyk', 'ee8822', '118844')
-blend('lab', 'ee8822', '118844')
-blend('luv', 'ee8822', '118844')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', 'ee2288', '114488')
-blend('hsv', 'ee2288', '114488')
-blend('hsl', 'ee2288', '114488')
-blend('hsi', 'ee2288', '114488')
-blend('hsp', 'ee2288', '114488')
-blend('cmyk', 'ee2288', '114488')
-blend('lab', 'ee2288', '114488')
-blend('luv', 'ee2288', '114488')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', '118844', 'ee8822')
-blend('hsv', '118844', 'ee8822')
-blend('hsl', '118844', 'ee8822')
-blend('hsi', '118844', 'ee8822')
-blend('hsp', '118844', 'ee8822')
-blend('cmyk', '118844', 'ee8822')
-blend('lab', '118844', 'ee8822')
-blend('luv', '118844', 'ee8822')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', '114488', 'ee2288')
-blend('hsv', '114488', 'ee2288')
-blend('hsl', '114488', 'ee2288')
-blend('hsi', '114488', 'ee2288')
-blend('hsp', '114488', 'ee2288')
-blend('cmyk', '114488', 'ee2288')
-blend('lab', '114488', 'ee2288')
-blend('luv', '114488', 'ee2288')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', '445566', 'ff2255')
-blend('hsv', '445566', 'ff2255')
-blend('hsl', '445566', 'ff2255')
-blend('hsi', '445566', 'ff2255')
-blend('hsp', '445566', 'ff2255')
-blend('cmyk', '445566', 'ff2255')
-blend('lab', '445566', 'ff2255')
-blend('luv', '445566', 'ff2255')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', 'eeccaa', '1133ff')
-blend('hsv', 'eeccaa', '1133ff')
-blend('hsl', 'eeccaa', '1133ff')
-blend('hsi', 'eeccaa', '1133ff')
-blend('hsp', 'eeccaa', '1133ff')
-blend('cmyk', 'eeccaa', '1133ff')
-blend('lab', 'eeccaa', '1133ff')
-blend('luv', 'eeccaa', '1133ff')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', 'ff2255', '445566')
-blend('hsv', 'ff2255', '445566')
-blend('hsl', 'ff2255', '445566')
-blend('hsi', 'ff2255', '445566')
-blend('hsp', 'ff2255', '445566')
-blend('cmyk', 'ff2255', '445566')
-blend('lab', 'ff2255', '445566')
-blend('luv', 'ff2255', '445566')
-content += '</div>'
-
-content += '<div class="container">'
-blend('rgb', '1133ff', 'eeccaa')
-blend('hsv', '1133ff', 'eeccaa')
-blend('hsl', '1133ff', 'eeccaa')
-blend('hsi', '1133ff', 'eeccaa')
-blend('hsp', '1133ff', 'eeccaa')
-blend('cmyk', '1133ff', 'eeccaa')
-blend('lab', '1133ff', 'eeccaa')
-blend('luv', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('hue', 'cc1111', '11aaaa')
-blend('hue', 'aa22bb', '55aa00')
-blend('hue', '11aaaa', 'cc1111')
-blend('hue', '55aa00', 'aa22bb')
-blend('hue', 'ee8822', '118844')
-blend('hue', 'ee2288', '114488')
-blend('hue', '118844', 'ee8822')
-blend('hue', '114488', 'ee2288')
-blend('hue', '445566', 'ff2255')
-blend('hue', 'eeccaa', '1133ff')
-blend('hue', 'ff2255', '445566')
-blend('hue', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('value', 'cc1111', '11aaaa')
-blend('value', 'aa22bb', '55aa00')
-blend('value', '11aaaa', 'cc1111')
-blend('value', '55aa00', 'aa22bb')
-blend('value', 'ee8822', '118844')
-blend('value', 'ee2288', '114488')
-blend('value', '118844', 'ee8822')
-blend('value', '114488', 'ee2288')
-blend('value', '445566', 'ff2255')
-blend('value', 'eeccaa', '1133ff')
-blend('value', 'ff2255', '445566')
-blend('value', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('lightness', 'cc1111', '11aaaa')
-blend('lightness', 'aa22bb', '55aa00')
-blend('lightness', '11aaaa', 'cc1111')
-blend('lightness', '55aa00', 'aa22bb')
-blend('lightness', 'ee8822', '118844')
-blend('lightness', 'ee2288', '114488')
-blend('lightness', '118844', 'ee8822')
-blend('lightness', '114488', 'ee2288')
-blend('lightness', '445566', 'ff2255')
-blend('lightness', 'eeccaa', '1133ff')
-blend('lightness', 'ff2255', '445566')
-blend('lightness', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('intensity', 'cc1111', '11aaaa')
-blend('intensity', 'aa22bb', '55aa00')
-blend('intensity', '11aaaa', 'cc1111')
-blend('intensity', '55aa00', 'aa22bb')
-blend('intensity', 'ee8822', '118844')
-blend('intensity', 'ee2288', '114488')
-blend('intensity', '118844', 'ee8822')
-blend('intensity', '114488', 'ee2288')
-blend('intensity', '445566', 'ff2255')
-blend('intensity', 'eeccaa', '1133ff')
-blend('intensity', 'ff2255', '445566')
-blend('intensity', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('perceived', 'cc1111', '11aaaa')
-blend('perceived', 'aa22bb', '55aa00')
-blend('perceived', '11aaaa', 'cc1111')
-blend('perceived', '55aa00', 'aa22bb')
-blend('perceived', 'ee8822', '118844')
-blend('perceived', 'ee2288', '114488')
-blend('perceived', '118844', 'ee8822')
-blend('perceived', '114488', 'ee2288')
-blend('perceived', '445566', 'ff2255')
-blend('perceived', 'eeccaa', '1133ff')
-blend('perceived', 'ff2255', '445566')
-blend('perceived', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('screen', 'cc1111', '11aaaa')
-blend('screen', 'aa22bb', '55aa00')
-blend('screen', '11aaaa', 'cc1111')
-blend('screen', '55aa00', 'aa22bb')
-blend('screen', 'ee8822', '118844')
-blend('screen', 'ee2288', '114488')
-blend('screen', '118844', 'ee8822')
-blend('screen', '114488', 'ee2288')
-blend('screen', '445566', 'ff2255')
-blend('screen', 'eeccaa', '1133ff')
-blend('screen', 'ff2255', '445566')
-blend('screen', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('multiply', 'cc1111', '11aaaa')
-blend('multiply', 'aa22bb', '55aa00')
-blend('multiply', '11aaaa', 'cc1111')
-blend('multiply', '55aa00', 'aa22bb')
-blend('multiply', 'ee8822', '118844')
-blend('multiply', 'ee2288', '114488')
-blend('multiply', '118844', 'ee8822')
-blend('multiply', '114488', 'ee2288')
-blend('multiply', '445566', 'ff2255')
-blend('multiply', 'eeccaa', '1133ff')
-blend('multiply', 'ff2255', '445566')
-blend('multiply', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('overlay', 'cc1111', '11aaaa')
-blend('overlay', 'aa22bb', '55aa00')
-blend('overlay', '11aaaa', 'cc1111')
-blend('overlay', '55aa00', 'aa22bb')
-blend('overlay', 'ee8822', '118844')
-blend('overlay', 'ee2288', '114488')
-blend('overlay', '118844', 'ee8822')
-blend('overlay', '114488', 'ee2288')
-blend('overlay', '445566', 'ff2255')
-blend('overlay', 'eeccaa', '1133ff')
-blend('overlay', 'ff2255', '445566')
-blend('overlay', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('softlight', 'cc1111', '11aaaa')
-blend('softlight', 'aa22bb', '55aa00')
-blend('softlight', '11aaaa', 'cc1111')
-blend('softlight', '55aa00', 'aa22bb')
-blend('softlight', 'ee8822', '118844')
-blend('softlight', 'ee2288', '114488')
-blend('softlight', '118844', 'ee8822')
-blend('softlight', '114488', 'ee2288')
-blend('softlight', '445566', 'ff2255')
-blend('softlight', 'eeccaa', '1133ff')
-blend('softlight', 'ff2255', '445566')
-blend('softlight', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('colorburn', 'cc1111', '11aaaa')
-blend('colorburn', 'aa22bb', '55aa00')
-blend('colorburn', '11aaaa', 'cc1111')
-blend('colorburn', '55aa00', 'aa22bb')
-blend('colorburn', 'ee8822', '118844')
-blend('colorburn', 'ee2288', '114488')
-blend('colorburn', '118844', 'ee8822')
-blend('colorburn', '114488', 'ee2288')
-blend('colorburn', '445566', 'ff2255')
-blend('colorburn', 'eeccaa', '1133ff')
-blend('colorburn', 'ff2255', '445566')
-blend('colorburn', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('colordodge', 'cc1111', '11aaaa')
-blend('colordodge', 'aa22bb', '55aa00')
-blend('colordodge', '11aaaa', 'cc1111')
-blend('colordodge', '55aa00', 'aa22bb')
-blend('colordodge', 'ee8822', '118844')
-blend('colordodge', 'ee2288', '114488')
-blend('colordodge', '118844', 'ee8822')
-blend('colordodge', '114488', 'ee2288')
-blend('colordodge', '445566', 'ff2255')
-blend('colordodge', 'eeccaa', '1133ff')
-blend('colordodge', 'ff2255', '445566')
-blend('colordodge', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('vividlight', 'cc1111', '11aaaa')
-blend('vividlight', 'aa22bb', '55aa00')
-blend('vividlight', '11aaaa', 'cc1111')
-blend('vividlight', '55aa00', 'aa22bb')
-blend('vividlight', 'ee8822', '118844')
-blend('vividlight', 'ee2288', '114488')
-blend('vividlight', '118844', 'ee8822')
-blend('vividlight', '114488', 'ee2288')
-blend('vividlight', '445566', 'ff2255')
-blend('vividlight', 'eeccaa', '1133ff')
-blend('vividlight', 'ff2255', '445566')
-blend('vividlight', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('linearburn', 'cc1111', '11aaaa')
-blend('linearburn', 'aa22bb', '55aa00')
-blend('linearburn', '11aaaa', 'cc1111')
-blend('linearburn', '55aa00', 'aa22bb')
-blend('linearburn', 'ee8822', '118844')
-blend('linearburn', 'ee2288', '114488')
-blend('linearburn', '118844', 'ee8822')
-blend('linearburn', '114488', 'ee2288')
-blend('linearburn', '445566', 'ff2255')
-blend('linearburn', 'eeccaa', '1133ff')
-blend('linearburn', 'ff2255', '445566')
-blend('linearburn', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('lineardodge', 'cc1111', '11aaaa')
-blend('lineardodge', 'aa22bb', '55aa00')
-blend('lineardodge', '11aaaa', 'cc1111')
-blend('lineardodge', '55aa00', 'aa22bb')
-blend('lineardodge', 'ee8822', '118844')
-blend('lineardodge', 'ee2288', '114488')
-blend('lineardodge', '118844', 'ee8822')
-blend('lineardodge', '114488', 'ee2288')
-blend('lineardodge', '445566', 'ff2255')
-blend('lineardodge', 'eeccaa', '1133ff')
-blend('lineardodge', 'ff2255', '445566')
-blend('lineardodge', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('linearlight', 'cc1111', '11aaaa')
-blend('linearlight', 'aa22bb', '55aa00')
-blend('linearlight', '11aaaa', 'cc1111')
-blend('linearlight', '55aa00', 'aa22bb')
-blend('linearlight', 'ee8822', '118844')
-blend('linearlight', 'ee2288', '114488')
-blend('linearlight', '118844', 'ee8822')
-blend('linearlight', '114488', 'ee2288')
-blend('linearlight', '445566', 'ff2255')
-blend('linearlight', 'eeccaa', '1133ff')
-blend('linearlight', 'ff2255', '445566')
-blend('linearlight', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('divide', 'cc1111', '11aaaa')
-blend('divide', 'aa22bb', '55aa00')
-blend('divide', '11aaaa', 'cc1111')
-blend('divide', '55aa00', 'aa22bb')
-blend('divide', 'ee8822', '118844')
-blend('divide', 'ee2288', '114488')
-blend('divide', '118844', 'ee8822')
-blend('divide', '114488', 'ee2288')
-blend('divide', '445566', 'ff2255')
-blend('divide', 'eeccaa', '1133ff')
-blend('divide', 'ff2255', '445566')
-blend('divide', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('subtraction', 'cc1111', '11aaaa')
-blend('subtraction', 'aa22bb', '55aa00')
-blend('subtraction', '11aaaa', 'cc1111')
-blend('subtraction', '55aa00', 'aa22bb')
-blend('subtraction', 'ee8822', '118844')
-blend('subtraction', 'ee2288', '114488')
-blend('subtraction', '118844', 'ee8822')
-blend('subtraction', '114488', 'ee2288')
-blend('subtraction', '445566', 'ff2255')
-blend('subtraction', 'eeccaa', '1133ff')
-blend('subtraction', 'ff2255', '445566')
-blend('subtraction', '1133ff', 'eeccaa')
-content += '</div>'
-
-content += '<div class="container">'
-blend('difference', 'cc1111', '11aaaa')
-blend('difference', 'aa22bb', '55aa00')
-blend('difference', '11aaaa', 'cc1111')
-blend('difference', '55aa00', 'aa22bb')
-blend('difference', 'ee8822', '118844')
-blend('difference', 'ee2288', '114488')
-blend('difference', '118844', 'ee8822')
-blend('difference', '114488', 'ee2288')
-blend('difference', '445566', 'ff2255')
-blend('difference', 'eeccaa', '1133ff')
-blend('difference', 'ff2255', '445566')
-blend('difference', '1133ff', 'eeccaa')
-content += '</div>'
+  content += '<div class="container">'
+  blend('screen', pair[0], pair[1])
+  blend('multiply', pair[0], pair[1])
+  blend('overlay', pair[0], pair[1])
+  blend('softlight', pair[0], pair[1])
+  blend('divide', pair[0], pair[1])
+  blend('subtraction', pair[0], pair[1])
+  blend('difference', pair[0], pair[1])
+  
+  blend('colorburn', pair[0], pair[1])
+  blend('colordodge', pair[0], pair[1])
+  blend('vividlight', pair[0], pair[1])
+  blend('linearburn', pair[0], pair[1])
+  blend('lineardodge', pair[0], pair[1])
+  blend('linearlight', pair[0], pair[1])
+  content += '</div>'
+})
 
 function shade(method, start, amount = 1) {
   content += '<div><h2>shade</h2><h3>' + method + '</h3>'
