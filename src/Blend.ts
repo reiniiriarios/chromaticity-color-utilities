@@ -34,11 +34,12 @@ class Blend {
     amount: number = 0.5,
     method: string
   ): Colors.rgb {
+    // clamp amount of blend to 0-100%
     amount = Math.min(Math.max(amount, 0), 1)
 
     // normalize to [0,1]
-    let c1 = Convert.rgbNormalize(rgb1)
-    let c2 = Convert.rgbNormalize(rgb2)
+    let c1: Colors.rgbNormalized = Convert.rgbNormalize(rgb1)
+    let c2: Colors.rgbNormalized = Convert.rgbNormalize(rgb2)
 
     // blending mode
     let c: { a: number; b: number }[] = [
@@ -67,7 +68,7 @@ class Blend {
           if (b <= 0.5) {
             newValue = a - (1 - 2 * b) * a * (1 - a)
           } else {
-            let g = a <= 0.25 ? ((16 * a - 12) * a + 4) * a : Math.sqrt(a)
+            let g: number = a <= 0.25 ? ((16 * a - 12) * a + 4) * a : Math.sqrt(a)
             newValue = a + (2 * b - 1) * (g - a)
           }
           break
@@ -103,9 +104,9 @@ class Blend {
     })
 
     // clamp
-    let r3 = Math.min(Math.max(cb[0], 0), rgb1.getMax())
-    let g3 = Math.min(Math.max(cb[1], 0), rgb1.getMax())
-    let b3 = Math.min(Math.max(cb[2], 0), rgb1.getMax())
+    let r3: number = Math.min(Math.max(cb[0], 0), rgb1.getMax())
+    let g3: number = Math.min(Math.max(cb[1], 0), rgb1.getMax())
+    let b3: number = Math.min(Math.max(cb[2], 0), rgb1.getMax())
 
     // scale to bitdepth
     r3 = Util.scaleValueRange(r3, 0, 1, 0, rgb1.getMax(), false)
@@ -113,7 +114,7 @@ class Blend {
     b3 = Util.scaleValueRange(b3, 0, 1, 0, rgb1.getMax(), false)
 
     // blend as much as opacity of color 2
-    let realAmount = (rgb1.getA() / rgb1.getMax()) * amount
+    let realAmount: number = (rgb1.getA() / rgb1.getMax()) * amount
 
     // blend
     let c4 = this.rgbBlend(
@@ -139,10 +140,10 @@ class Blend {
     amount: number = 0.5
   ): Colors.rgb {
     amount = Math.min(Math.max(amount, 0), 1)
-    let r3 = rgb1.getR() + (rgb2.getR() - rgb1.getR()) * amount
-    let g3 = rgb1.getG() + (rgb2.getG() - rgb1.getG()) * amount
-    let b3 = rgb1.getB() + (rgb2.getB() - rgb1.getB()) * amount
-    let a3 = rgb1.getA() + (rgb2.getA() - rgb1.getA()) * amount
+    let r3: number = rgb1.getR() + (rgb2.getR() - rgb1.getR()) * amount
+    let g3: number = rgb1.getG() + (rgb2.getG() - rgb1.getG()) * amount
+    let b3: number = rgb1.getB() + (rgb2.getB() - rgb1.getB()) * amount
+    let a3: number = rgb1.getA() + (rgb2.getA() - rgb1.getA()) * amount
 
     return new Colors.rgb(r3, g3, b3, a3)
   }
@@ -167,10 +168,10 @@ class Blend {
     } else {
       hueDiff = (hsv2.getH() - hsv1.getH()) * amount
     }
-    let h3 = Modify.hueShift(hsv1.getH(), hueDiff)
-    let s3 = hsv1.getS() + (hsv2.getS() - hsv1.getS()) * amount
-    let v3 = hsv1.getV() + (hsv2.getV() - hsv1.getV()) * amount
-    let a3 = hsv1.getA() + (hsv2.getA() - hsv1.getA()) * amount
+    let h3: number = Modify.hueShift(hsv1.getH(), hueDiff)
+    let s3: number = hsv1.getS() + (hsv2.getS() - hsv1.getS()) * amount
+    let v3: number = hsv1.getV() + (hsv2.getV() - hsv1.getV()) * amount
+    let a3: number = hsv1.getA() + (hsv2.getA() - hsv1.getA()) * amount
 
     return new Colors.hsv(h3, s3, v3, a3)
   }
@@ -197,10 +198,10 @@ class Blend {
       hueDiff = (hsl2.getH() - hsl1.getH()) * amount
     }
 
-    let h3 = Modify.hueShift(hsl1.getH(), hueDiff)
-    let s3 = hsl1.getS() + (hsl2.getS() - hsl1.getS()) * amount
-    let l3 = hsl1.getL() + (hsl2.getL() - hsl1.getL()) * amount
-    let a3 = hsl1.getA() + (hsl2.getA() - hsl1.getA()) * amount
+    let h3: number = Modify.hueShift(hsl1.getH(), hueDiff)
+    let s3: number = hsl1.getS() + (hsl2.getS() - hsl1.getS()) * amount
+    let l3: number = hsl1.getL() + (hsl2.getL() - hsl1.getL()) * amount
+    let a3: number = hsl1.getA() + (hsl2.getA() - hsl1.getA()) * amount
 
     return new Colors.hsl(h3, s3, l3, a3)
   }
@@ -227,10 +228,10 @@ class Blend {
       hueDiff = (hsi2.getH() - hsi1.getH()) * amount
     }
 
-    let h3 = Modify.hueShift(hsi1.getH(), hueDiff)
-    let s3 = hsi1.getS() + (hsi2.getS() - hsi1.getS()) * amount
-    let i3 = hsi1.getI() + (hsi2.getI() - hsi1.getI()) * amount
-    let a3 = hsi1.getA() + (hsi2.getA() - hsi1.getA()) * amount
+    let h3: number = Modify.hueShift(hsi1.getH(), hueDiff)
+    let s3: number = hsi1.getS() + (hsi2.getS() - hsi1.getS()) * amount
+    let i3: number = hsi1.getI() + (hsi2.getI() - hsi1.getI()) * amount
+    let a3: number = hsi1.getA() + (hsi2.getA() - hsi1.getA()) * amount
 
     return new Colors.hsi(h3, s3, i3, a3)
   }
@@ -257,10 +258,10 @@ class Blend {
       hueDiff = (hsp2.getH() - hsp1.getH()) * amount
     }
 
-    let h3 = Modify.hueShift(hsp1.getH(), hueDiff)
-    let s3 = hsp1.getS() + (hsp2.getS() - hsp1.getS()) * amount
-    let p3 = hsp1.getP() + (hsp2.getP() - hsp1.getP()) * amount
-    let a3 = hsp1.getA() + (hsp2.getA() - hsp1.getA()) * amount
+    let h3: number = Modify.hueShift(hsp1.getH(), hueDiff)
+    let s3: number = hsp1.getS() + (hsp2.getS() - hsp1.getS()) * amount
+    let p3: number = hsp1.getP() + (hsp2.getP() - hsp1.getP()) * amount
+    let a3: number = hsp1.getA() + (hsp2.getA() - hsp1.getA()) * amount
 
     return new Colors.hsp(h3, s3, p3, a3)
   }
@@ -279,10 +280,10 @@ class Blend {
     amount: number = 0.5
   ): Colors.cmyk {
     amount = Math.min(Math.max(amount, 0), 1)
-    let c3 = cmyk1.getC() + (cmyk2.getC() - cmyk1.getC()) * amount
-    let m3 = cmyk1.getM() + (cmyk2.getM() - cmyk1.getM()) * amount
-    let y3 = cmyk1.getY() + (cmyk2.getY() - cmyk1.getY()) * amount
-    let k3 = cmyk1.getK() + (cmyk2.getK() - cmyk1.getK()) * amount
+    let c3: number = cmyk1.getC() + (cmyk2.getC() - cmyk1.getC()) * amount
+    let m3: number = cmyk1.getM() + (cmyk2.getM() - cmyk1.getM()) * amount
+    let y3: number = cmyk1.getY() + (cmyk2.getY() - cmyk1.getY()) * amount
+    let k3: number = cmyk1.getK() + (cmyk2.getK() - cmyk1.getK()) * amount
     return new Colors.cmyk(c3, m3, y3, k3)
   }
 
@@ -300,9 +301,9 @@ class Blend {
     amount: number = 0.5
   ): Colors.yiq {
     amount = Math.min(Math.max(amount, 0), 1)
-    let y = c1.getY() + (c2.getY() - c1.getY()) * amount
-    let i = c1.getI() + (c2.getI() - c1.getI()) * amount
-    let q = c1.getQ() + (c2.getQ() - c1.getQ()) * amount
+    let y: number = c1.getY() + (c2.getY() - c1.getY()) * amount
+    let i: number = c1.getI() + (c2.getI() - c1.getI()) * amount
+    let q: number = c1.getQ() + (c2.getQ() - c1.getQ()) * amount
     return new Colors.yiq(y, i, q)
   }
 
@@ -320,9 +321,9 @@ class Blend {
     amount: number = 0.5
   ): Colors.lab {
     amount = Math.min(Math.max(amount, 0), 1)
-    let l = c1.getL() + (c2.getL() - c1.getL()) * amount
-    let a = c1.getA() + (c2.getA() - c1.getA()) * amount
-    let b = c1.getB() + (c2.getB() - c1.getB()) * amount
+    let l: number = c1.getL() + (c2.getL() - c1.getL()) * amount
+    let a: number = c1.getA() + (c2.getA() - c1.getA()) * amount
+    let b: number = c1.getB() + (c2.getB() - c1.getB()) * amount
     return new Colors.lab(l, a, b)
   }
 
@@ -340,9 +341,9 @@ class Blend {
     amount: number = 0.5
   ): Colors.luv {
     amount = Math.min(Math.max(amount, 0), 1)
-    let l = c1.getL() + (c2.getL() - c1.getL()) * amount
-    let u = c1.getU() + (c2.getU() - c1.getU()) * amount
-    let v = c1.getV() + (c2.getV() - c1.getV()) * amount
+    let l: number = c1.getL() + (c2.getL() - c1.getL()) * amount
+    let u: number = c1.getU() + (c2.getU() - c1.getU()) * amount
+    let v: number = c1.getV() + (c2.getV() - c1.getV()) * amount
     return new Colors.luv(l, u, v)
   }
 }
