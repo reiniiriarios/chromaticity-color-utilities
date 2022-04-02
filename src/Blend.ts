@@ -149,6 +149,31 @@ class Blend {
   }
 
   /**
+   * Blend the hue of one HSV color with another
+   *
+   * @param  {Colors.hsv} hsv1
+   * @param  {Colors.hsv} hsv2
+   * @param  {number}     amount amount to blend (0-1)
+   * @return {Colors.hsv}
+   */
+   static hueBlend(
+    hsv1: Colors.hsv,
+    hsv2: Colors.hsv,
+    amount: number = 0.5
+  ): Colors.hsv {
+    amount = Math.min(Math.max(amount, 0), 1)
+    let hueDiff: number
+    if (Math.abs(hsv2.getH() - hsv1.getH()) > 180) {
+      hueDiff = 360 - (hsv2.getH() - hsv1.getH()) * amount * -1
+    } else {
+      hueDiff = (hsv2.getH() - hsv1.getH()) * amount
+    }
+    let h3: number = Modify.hueShift(hsv1.getH(), hueDiff)
+
+    return new Colors.hsv(h3, hsv1.getS(), hsv1.getV(), hsv1.getA())
+  }
+
+  /**
    * Blend one HSV color with another
    *
    * @param  {Colors.hsv} hsv1
@@ -174,6 +199,25 @@ class Blend {
     let a3: number = hsv1.getA() + (hsv2.getA() - hsv1.getA()) * amount
 
     return new Colors.hsv(h3, s3, v3, a3)
+  }
+
+  /**
+   * Blend the value of one HSV color with another
+   *
+   * @param  {Colors.hsv} hsv1
+   * @param  {Colors.hsv} hsv2
+   * @param  {number}     amount amount to blend (0-1)
+   * @return {Colors.hsv}
+   */
+   static valueBlend(
+    hsv1: Colors.hsv,
+    hsv2: Colors.hsv,
+    amount: number = 0.5
+  ): Colors.hsv {
+    amount = Math.min(Math.max(amount, 0), 1)
+    let v3: number = hsv1.getV() + (hsv2.getV() - hsv1.getV()) * amount
+
+    return new Colors.hsv(hsv1.getH(), hsv1.getS(), v3, hsv1.getA())
   }
 
   /**
@@ -207,6 +251,25 @@ class Blend {
   }
 
   /**
+   * Blend the lightness of one HSV color with another
+   *
+   * @param  {Colors.hsl} hsl1
+   * @param  {Colors.hsl} hsl2
+   * @param  {number}     amount amount to blend (0-1)
+   * @return {Colors.hsl}
+   */
+   static lightnessBlend(
+    hsl1: Colors.hsl,
+    hsl2: Colors.hsl,
+    amount: number = 0.5
+  ): Colors.hsl {
+    amount = Math.min(Math.max(amount, 0), 1)
+    let l3: number = hsl1.getL() + (hsl2.getL() - hsl1.getL()) * amount
+
+    return new Colors.hsl(hsl1.getH(), hsl1.getS(), l3, hsl1.getA())
+  }
+
+  /**
    * Blend one HSI color with another
    *
    * @param  {Colors.hsi} hsi1
@@ -237,6 +300,25 @@ class Blend {
   }
 
   /**
+   * Blend the intensity of one HSI color with another
+   *
+   * @param  {Colors.hsi} hsi1
+   * @param  {Colors.hsi} hsi2
+   * @param  {number}     amount amount to blend (0-1)
+   * @return {Colors.hsi}
+   */
+  static intensityBlend(
+    hsi1: Colors.hsi,
+    hsi2: Colors.hsi,
+    amount: number = 0.5
+  ): Colors.hsi {
+    amount = Math.min(Math.max(amount, 0), 1)
+    let i3: number = hsi1.getI() + (hsi2.getI() - hsi1.getI()) * amount
+
+    return new Colors.hsi(hsi1.getH(), hsi1.getS(), i3, hsi1.getA())
+  }
+
+  /**
    * Blend one HSP color with another
    *
    * @param  {Colors.hsp} hsp1
@@ -264,6 +346,25 @@ class Blend {
     let a3: number = hsp1.getA() + (hsp2.getA() - hsp1.getA()) * amount
 
     return new Colors.hsp(h3, s3, p3, a3)
+  }
+
+  /**
+   * Blend the perceived brightness of one HSP color with another
+   *
+   * @param  {Colors.hsp} hsp1
+   * @param  {Colors.hsp} hsp2
+   * @param  {number}     amount amount to blend (0-1)
+   * @return {Colors.hsp}
+   */
+  static perceivedBrightnessBlend(
+    hsp1: Colors.hsp,
+    hsp2: Colors.hsp,
+    amount: number = 0.5
+  ): Colors.hsp {
+    amount = Math.min(Math.max(amount, 0), 1)
+    let p3: number = hsp1.getP() + (hsp2.getP() - hsp1.getP()) * amount
+
+    return new Colors.hsp(hsp1.getH(), hsp1.getS(), p3, hsp1.getA())
   }
 
   /**

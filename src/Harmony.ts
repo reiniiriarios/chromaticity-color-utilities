@@ -558,6 +558,12 @@ class Harmony {
       'addition',
       'subtraction',
       'difference',
+      'hue',
+      'value',
+      'lightness',
+      'intensity',
+      'perceivedbrightness',
+      'perceived',
     ].includes(type)
 
     let inBetweenColors = reachesColor2 ? colors - 2 : colors - 1
@@ -604,10 +610,28 @@ class Harmony {
               ).to(color1.getType(), { round: round })
             )
             break
+          case 'hue':
+            gradient.push(
+              Blend.hueBlend(
+                color1.to('hsv', { round: false }),
+                color2.to('hsv', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
           case 'hsv':
           case 'hsva':
             gradient.push(
               Blend.hsvBlend(
+                color1.to('hsv', { round: false }),
+                color2.to('hsv', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'value':
+            gradient.push(
+              Blend.valueBlend(
                 color1.to('hsv', { round: false }),
                 color2.to('hsv', { round: false }),
                 amount
@@ -624,6 +648,15 @@ class Harmony {
               ).to(color1.getType(), { round: round })
             )
             break
+          case 'lightness':
+            gradient.push(
+              Blend.lightnessBlend(
+                color1.to('hsl', { round: false }),
+                color2.to('hsl', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
           case 'hsi':
           case 'hsia':
             gradient.push(
@@ -634,10 +667,29 @@ class Harmony {
               ).to(color1.getType(), { round: round })
             )
             break
+          case 'intensity':
+            gradient.push(
+              Blend.intensityBlend(
+                color1.to('hsi', { round: false }),
+                color2.to('hsi', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
           case 'hsp':
           case 'hspa':
             gradient.push(
               Blend.hspBlend(
+                color1.to('hsp', { round: false }),
+                color2.to('hsp', { round: false }),
+                amount
+              ).to(color1.getType(), { round: round })
+            )
+            break
+          case 'perceivedbrightness':
+          case 'perceived':
+            gradient.push(
+              Blend.perceivedBrightnessBlend(
                 color1.to('hsp', { round: false }),
                 color2.to('hsp', { round: false }),
                 amount

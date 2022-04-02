@@ -309,11 +309,21 @@ export abstract class colorType {
               tmpColor2 = args.with.torgb({ round: false })
               modified = Blend.rgbBlend(tmpColor1, tmpColor2, args.amount)
               break
+            case 'hue':
+              tmpColor1 = this.tohsv({ round: false })
+              tmpColor2 = args.with.tohsv({ round: false })
+              modified = Blend.hueBlend(tmpColor1, tmpColor2, args.amount)
+              break
             case 'hsv':
             case 'hsva':
               tmpColor1 = this.tohsv({ round: false })
               tmpColor2 = args.with.tohsv({ round: false })
               modified = Blend.hsvBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'value':
+              tmpColor1 = this.tohsv({ round: false })
+              tmpColor2 = args.with.tohsv({ round: false })
+              modified = Blend.valueBlend(tmpColor1, tmpColor2, args.amount)
               break
             case 'hsl':
             case 'hsla':
@@ -321,17 +331,33 @@ export abstract class colorType {
               tmpColor2 = args.with.tohsl({ round: false })
               modified = Blend.hslBlend(tmpColor1, tmpColor2, args.amount)
               break
+            case 'lightness':
+              tmpColor1 = this.tohsl({ round: false })
+              tmpColor2 = args.with.tohsl({ round: false })
+              modified = Blend.lightnessBlend(tmpColor1, tmpColor2, args.amount)
+              break
             case 'hsi':
             case 'hsia':
               tmpColor1 = this.tohsi({ round: false })
               tmpColor2 = args.with.tohsi({ round: false })
               modified = Blend.hsiBlend(tmpColor1, tmpColor2, args.amount)
               break
+            case 'intensity':
+              tmpColor1 = this.tohsi({ round: false })
+              tmpColor2 = args.with.tohsi({ round: false })
+              modified = Blend.intensityBlend(tmpColor1, tmpColor2, args.amount)
+              break
             case 'hsp':
             case 'hspa':
               tmpColor1 = this.tohsp({ round: false })
               tmpColor2 = args.with.tohsp({ round: false })
               modified = Blend.hspBlend(tmpColor1, tmpColor2, args.amount)
+              break
+            case 'perceived':
+            case 'perceivedbrightness':
+              tmpColor1 = this.tohsp({ round: false })
+              tmpColor2 = args.with.tohsp({ round: false })
+              modified = Blend.perceivedBrightnessBlend(tmpColor1, tmpColor2, args.amount)
               break
             case 'cmyk':
               tmpColor1 = this.tocmyk({ round: false })

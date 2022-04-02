@@ -36,6 +36,11 @@ function grad(method, start, end) {
       'addition',
       'subtraction',
       'difference',
+      'hue',
+      'lightness',
+      'intensity',
+      'value',
+      'perceived',
     ].includes(realMethod)
   )
     realMethod = 'rgb'
@@ -186,6 +191,81 @@ grad('hsp', '1133ff', 'eeccaa')
 grad('cmyk', '1133ff', 'eeccaa')
 grad('lab', '1133ff', 'eeccaa')
 grad('luv', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('hue', 'cc1111', '11aaaa')
+grad('hue', 'aa22bb', '55aa00')
+grad('hue', '11aaaa', 'cc1111')
+grad('hue', '55aa00', 'aa22bb')
+grad('hue', 'ee8822', '118844')
+grad('hue', 'ee2288', '114488')
+grad('hue', '118844', 'ee8822')
+grad('hue', '114488', 'ee2288')
+grad('hue', '445566', 'ff2255')
+grad('hue', 'eeccaa', '1133ff')
+grad('hue', 'ff2255', '445566')
+grad('hue', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('value', 'cc1111', '11aaaa')
+grad('value', 'aa22bb', '55aa00')
+grad('value', '11aaaa', 'cc1111')
+grad('value', '55aa00', 'aa22bb')
+grad('value', 'ee8822', '118844')
+grad('value', 'ee2288', '114488')
+grad('value', '118844', 'ee8822')
+grad('value', '114488', 'ee2288')
+grad('value', '445566', 'ff2255')
+grad('value', 'eeccaa', '1133ff')
+grad('value', 'ff2255', '445566')
+grad('value', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('lightness', 'cc1111', '11aaaa')
+grad('lightness', 'aa22bb', '55aa00')
+grad('lightness', '11aaaa', 'cc1111')
+grad('lightness', '55aa00', 'aa22bb')
+grad('lightness', 'ee8822', '118844')
+grad('lightness', 'ee2288', '114488')
+grad('lightness', '118844', 'ee8822')
+grad('lightness', '114488', 'ee2288')
+grad('lightness', '445566', 'ff2255')
+grad('lightness', 'eeccaa', '1133ff')
+grad('lightness', 'ff2255', '445566')
+grad('lightness', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('intensity', 'cc1111', '11aaaa')
+grad('intensity', 'aa22bb', '55aa00')
+grad('intensity', '11aaaa', 'cc1111')
+grad('intensity', '55aa00', 'aa22bb')
+grad('intensity', 'ee8822', '118844')
+grad('intensity', 'ee2288', '114488')
+grad('intensity', '118844', 'ee8822')
+grad('intensity', '114488', 'ee2288')
+grad('intensity', '445566', 'ff2255')
+grad('intensity', 'eeccaa', '1133ff')
+grad('intensity', 'ff2255', '445566')
+grad('intensity', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+grad('perceived', 'cc1111', '11aaaa')
+grad('perceived', 'aa22bb', '55aa00')
+grad('perceived', '11aaaa', 'cc1111')
+grad('perceived', '55aa00', 'aa22bb')
+grad('perceived', 'ee8822', '118844')
+grad('perceived', 'ee2288', '114488')
+grad('perceived', '118844', 'ee8822')
+grad('perceived', '114488', 'ee2288')
+grad('perceived', '445566', 'ff2255')
+grad('perceived', 'eeccaa', '1133ff')
+grad('perceived', 'ff2255', '445566')
+grad('perceived', '1133ff', 'eeccaa')
 content += '</div>'
 
 content += '<div class="container">'
@@ -386,6 +466,11 @@ function blend(method, start, end) {
       'addition',
       'subtraction',
       'difference',
+      'hue',
+      'lightness',
+      'intensity',
+      'value',
+      'perceived',
     ].includes(realMethod)
   )
     realMethod = 'rgb'
@@ -538,6 +623,81 @@ blend('hsp', '1133ff', 'eeccaa')
 blend('cmyk', '1133ff', 'eeccaa')
 blend('lab', '1133ff', 'eeccaa')
 blend('luv', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('hue', 'cc1111', '11aaaa')
+blend('hue', 'aa22bb', '55aa00')
+blend('hue', '11aaaa', 'cc1111')
+blend('hue', '55aa00', 'aa22bb')
+blend('hue', 'ee8822', '118844')
+blend('hue', 'ee2288', '114488')
+blend('hue', '118844', 'ee8822')
+blend('hue', '114488', 'ee2288')
+blend('hue', '445566', 'ff2255')
+blend('hue', 'eeccaa', '1133ff')
+blend('hue', 'ff2255', '445566')
+blend('hue', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('value', 'cc1111', '11aaaa')
+blend('value', 'aa22bb', '55aa00')
+blend('value', '11aaaa', 'cc1111')
+blend('value', '55aa00', 'aa22bb')
+blend('value', 'ee8822', '118844')
+blend('value', 'ee2288', '114488')
+blend('value', '118844', 'ee8822')
+blend('value', '114488', 'ee2288')
+blend('value', '445566', 'ff2255')
+blend('value', 'eeccaa', '1133ff')
+blend('value', 'ff2255', '445566')
+blend('value', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('lightness', 'cc1111', '11aaaa')
+blend('lightness', 'aa22bb', '55aa00')
+blend('lightness', '11aaaa', 'cc1111')
+blend('lightness', '55aa00', 'aa22bb')
+blend('lightness', 'ee8822', '118844')
+blend('lightness', 'ee2288', '114488')
+blend('lightness', '118844', 'ee8822')
+blend('lightness', '114488', 'ee2288')
+blend('lightness', '445566', 'ff2255')
+blend('lightness', 'eeccaa', '1133ff')
+blend('lightness', 'ff2255', '445566')
+blend('lightness', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('intensity', 'cc1111', '11aaaa')
+blend('intensity', 'aa22bb', '55aa00')
+blend('intensity', '11aaaa', 'cc1111')
+blend('intensity', '55aa00', 'aa22bb')
+blend('intensity', 'ee8822', '118844')
+blend('intensity', 'ee2288', '114488')
+blend('intensity', '118844', 'ee8822')
+blend('intensity', '114488', 'ee2288')
+blend('intensity', '445566', 'ff2255')
+blend('intensity', 'eeccaa', '1133ff')
+blend('intensity', 'ff2255', '445566')
+blend('intensity', '1133ff', 'eeccaa')
+content += '</div>'
+
+content += '<div class="container">'
+blend('perceived', 'cc1111', '11aaaa')
+blend('perceived', 'aa22bb', '55aa00')
+blend('perceived', '11aaaa', 'cc1111')
+blend('perceived', '55aa00', 'aa22bb')
+blend('perceived', 'ee8822', '118844')
+blend('perceived', 'ee2288', '114488')
+blend('perceived', '118844', 'ee8822')
+blend('perceived', '114488', 'ee2288')
+blend('perceived', '445566', 'ff2255')
+blend('perceived', 'eeccaa', '1133ff')
+blend('perceived', 'ff2255', '445566')
+blend('perceived', '1133ff', 'eeccaa')
 content += '</div>'
 
 content += '<div class="container">'
