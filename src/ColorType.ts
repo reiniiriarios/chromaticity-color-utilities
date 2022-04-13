@@ -272,7 +272,7 @@ export abstract class colorType {
             args.method = 'rgb'
           }
         }
-        args.method = args.method.toLowerCase().replace(' ','')
+        args.method = args.method.toLowerCase().replace(' ', '')
         let tmpColor1, tmpColor2
         if (
           [
@@ -357,7 +357,11 @@ export abstract class colorType {
             case 'perceivedbrightness':
               tmpColor1 = this.tohsp({ round: false })
               tmpColor2 = args.with.tohsp({ round: false })
-              modified = Blend.perceivedBrightnessBlend(tmpColor1, tmpColor2, args.amount)
+              modified = Blend.perceivedBrightnessBlend(
+                tmpColor1,
+                tmpColor2,
+                args.amount
+              )
               break
             case 'cmyk':
               tmpColor1 = this.tocmyk({ round: false })
@@ -849,10 +853,13 @@ export abstract class colorType {
       }
     } else if (typeof args.method === 'undefined') {
       args.method = 'hex'
+    } else {
+      args.method = args.method.toLowerCase().replace(/[^a-z]/, '')
     }
     let colorString: string
     switch (args.method) {
       case 'hex':
+      case 'hexidecimal':
         let hex: Colors.hex = this.to('hex')
         colorString = `#${hex.getHex()}`
         break
