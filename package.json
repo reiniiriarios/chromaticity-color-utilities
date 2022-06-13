@@ -3,6 +3,8 @@
   "version": "0.13.2-alpha",
   "description": "Color utilities for Node.js",
   "main": "dist/main.js",
+  "types": "dist/*.d.ts",
+  "exports": "./dist/main.js",
   "scripts": {
     "test": "mocha",
     "servetest": "nodemon serverTest/app.js"
