@@ -1,12 +1,12 @@
 // This file does not run as a part of `npm run test`
 // Using this file to validate typechecking
 
-import Color, { colorTypes } from '../src/main'
+import Color, { colorTypes } from '../dist/main'
 
 let a: colorTypes.rgb = Color.from('rgb', [22, 33, 44])
 let b: colorTypes.hsv = a.to('hsv')
-let c: colorTypes.hsv = b.to('hsl')
-let d: colorTypes.hsv = c.to('hsl')
+let c: colorTypes.hsl = b.to('hsl')
+// expand here to include all types
 
 const x = (rgb: colorTypes.rgb): colorTypes.hsv => {
   let hsv: colorTypes.hsv = rgb.to('hsv')

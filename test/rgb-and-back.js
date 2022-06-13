@@ -1,5 +1,5 @@
 const should = require('chai').should()
-const Color = require('../dist/main.js').default
+const Color = require('../dist/main.js')
 
 const black = '\x1b[30m'
 const red = '\x1b[31m'

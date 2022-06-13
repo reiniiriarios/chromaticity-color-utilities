@@ -10,9 +10,41 @@ Color utilities for Node.js.
 
 Conversion, modification, and color schemes of: RGB (at any bit depth), HSV, HSL, HSI, HSP, CYMK, YIQ, XYZ, xyY, L\*a\*b\*, L\*u\*v\*, Y'PbPr, Y'CbCr, and more.
 
-[**📖 Read Full Documentation**](https://reiniiriarios.github.io/chromaticity-color-utilities)
+## Install
+
+`npm i chromaticity-color-utilities`
+
+## Documentation
+
+📖 Please [**read the full Documentation**](https://reiniiriarios.github.io/chromaticity-color-utilities) for details on each method as well as numerous usage examples.
 
 ## Example Usage
+
+### TypeScript
+
+```ts
+import Color from 'chromaticity-color-utilities'
+
+const color1: Color.hsv = Color.from('rgb', [255, 128, 0]).to('hsv')
+
+const scheme1: Color.lab[] = Color.from('hex', 0x9a237f)
+  .modify('desaturate', { amount: 0.2 })
+  .to('lab', {
+    colorSpace: 'AdobeRGB',
+    referenceWhite: 'D50',
+  })
+  .scheme('gradient', {
+    with: Color.from('hsl', [300, 50, 45]),
+    colors: 5,
+  })
+
+const yourMethod = (rgb: Color.rgb): Color.hsv => {
+  // do things
+  let hsv: Color.hsv = rgb.to('hsv')
+  // do things
+  return hsv
+}
+```
 
 ### JavaScript
 
@@ -33,39 +65,15 @@ const scheme1 = Color.from('hex', 0x9a237f)
   })
 ```
 
-### TypeScript
+### TypeScript (deprecated type import method)
+
+`colorTypes` is still supported, but deprecated and will be removed in a future release.
 
 ```ts
 import Color, { colorTypes } from 'chromaticity-color-utilities'
 
 const color1: colorTypes.hsv = Color.from('rgb', [255, 128, 0]).to('hsv')
-
-const scheme1: colorTypes.lab[] = Color.from('hex', 0x9a237f)
-  .modify('desaturate', { amount: 0.2 })
-  .to('lab', {
-    colorSpace: 'AdobeRGB',
-    referenceWhite: 'D50',
-  })
-  .scheme('gradient', {
-    with: Color.from('hsl', [300, 50, 45]),
-    colors: 5,
-  })
-
-const yourMethod = (rgb: colorTypes.rgb): colorTypes.hsv => {
-  // do things
-  let hsv: colorTypes.hsv = rgb.to('hsv')
-  // do things
-  return hsv
-}
 ```
-
-## Install
-
-`npm i chromaticity-color-utilities`
-
-## Documentation
-
-Please [read the full documentation](https://reiniiriarios.github.io/chromaticity-color-utilities) for details on each method as well as numerous usage examples.
 
 ## Known Issues
 
