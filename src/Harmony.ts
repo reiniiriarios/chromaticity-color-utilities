@@ -744,4 +744,4 @@ class Harmony {
   }
 }
 
-export = Harmony
+export default Harmony

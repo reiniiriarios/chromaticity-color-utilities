@@ -454,4 +454,4 @@ class Blend {
   }
 }
 
-export = Blend
+export default Blend

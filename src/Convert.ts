@@ -2182,4 +2182,4 @@ class Convert {
   }
 }
 
-export = Convert
+export default Convert

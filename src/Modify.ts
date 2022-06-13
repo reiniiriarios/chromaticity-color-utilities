@@ -497,4 +497,4 @@ class Modify {
   }
 }
 
-export = Modify
+export default Modify
