@@ -3,13 +3,11 @@
   "version": "0.14.0-alpha",
   "description": "Color utilities for Node.js",
   "main": "dist/main.js",
-  "types": "dist/*.d.ts",
-  "exports": "./dist/main.js",
   "scripts": {
     "test": "mocha",
+    "test-types": "tsc test-types/types.ts --esModuleInterop && tsc test-types/types-new.ts --esModuleInterop",
     "servetest": "nodemon serverTest/app.js"
   },
-  "dependencies": {},
   "engines": {
     "node": ">= 10.0.0"
   },
