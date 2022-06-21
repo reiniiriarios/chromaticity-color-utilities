@@ -14,7 +14,8 @@ const x = (rgb: Color.rgb): Color.hsv => {
 }
 let y: Color.hsv = x(a)
 
-// README.md dummy check
+
+// --- README.md dummy check ---
 
 const color1: Color.hsv = Color.from('rgb', [255, 128, 0]).to('hsv')
 
