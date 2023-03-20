@@ -1007,8 +1007,8 @@ export abstract class colorType {
       throw new Error('Invalid range (lower limit must exceed upper limit)')
     }
     if (
-      (lowerLimit !== false && value < lowerLimit) ||
-      (upperLimit !== false && value > upperLimit)
+      (lowerLimit !== false && value < +lowerLimit) ||
+      (upperLimit !== false && value > +upperLimit)
     ) {
       throw new Error(
         typeof msg !== 'undefined'
