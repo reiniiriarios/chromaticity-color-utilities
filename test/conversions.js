@@ -262,13 +262,12 @@ describe('conversions', () => {
     let color = rgb.to('xyz')
     xyzIsMagenta(color)
   })
-  it('xyz to rgb', () => {})
-    it('xyz to rgb',() => {
-        let color = Color.from('xyz',[0.5928939, 0.2848479, 0.969638]).to('rgb')
-        rgbIsMagenta(color,255)
-        let color2 = Color.from('xyz',[0.5928939, 0.2848479, 0.969638]).to('rgb',{bitDepth: 10})
-        rgbIsMagenta10(color2,1023)
-    })
+  it('xyz to rgb',() => {
+    let color = Color.from('xyz',[0.5928939, 0.2848479, 0.969638]).to('rgb')
+    rgbIsMagenta(color,255)
+    let color2 = Color.from('xyz',[0.5928939, 0.2848479, 0.969638]).to('rgb',{bitDepth: 10})
+    rgbIsMagenta10(color2,1023)
+  })
   it('rgb to lab', () => {
     let color = rgb.to('lab')
     labIsMagenta(color)
