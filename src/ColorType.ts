@@ -196,6 +196,10 @@ export abstract class colorType {
       case 'hspba':
         to = this.tohsp(args)
         break
+      case 'lch':
+      case 'lcha':
+        to = this.tolch(args)
+        break
       case 'cmyk':
         to = this.tocmyk(args)
         break
@@ -954,6 +958,10 @@ export abstract class colorType {
   }
   protected toluv(args: newColorArgs): Colors.luv {
     return Convert.xyz2luv(this.toxyz(args), args.referenceWhite, args.round)
+  }
+  protected tolch(args: newColorArgs): Colors.lch {
+    let lab = Convert.xyz2lab(this.toxyz(args), args.referenceWhite, false)
+    return Convert.lab2lch(lab, args.round)
   }
   protected toypbpr(args: newColorArgs): Colors.ypbpr {
     if (typeof args.kb === 'undefined' || typeof args.kr === 'undefined') {

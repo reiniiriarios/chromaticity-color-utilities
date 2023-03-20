@@ -49,7 +49,7 @@ export class rgbNormalized extends colorType {
     a: this.a,
     gamma: this.gamma,
   })
-  
+
   public getR = (): number => {
     return this.r
   }
@@ -169,7 +169,7 @@ export class rgb extends colorType {
     a: this.a,
     bitDepth: this.bitDepth,
   })
-  
+
   public getR = (): number => {
     return this.r
   }
@@ -249,7 +249,7 @@ export class rec709rgb extends colorType {
     a: this.a,
     bitDepth: this.bitDepth,
   })
-  
+
   public getR = (): number => {
     return this.r
   }
@@ -333,7 +333,7 @@ export class rec2020rgb extends colorType {
     a: this.a,
     bitDepth: this.bitDepth,
   })
-  
+
   public getR = (): number => {
     return this.r
   }
@@ -401,7 +401,7 @@ export class hsv extends colorType {
     v: this.v,
     a: this.a,
   })
-  
+
   public getH = (): number => {
     return this.h
   }
@@ -471,7 +471,7 @@ export class hsl extends colorType {
     l: this.l,
     a: this.a,
   })
-  
+
   public getH = (): number => {
     return this.h
   }
@@ -541,7 +541,7 @@ export class hsi extends colorType {
     i: this.i,
     a: this.a,
   })
-  
+
   public getH = (): number => {
     return this.h
   }
@@ -629,7 +629,7 @@ export class hsp extends colorType {
     pb: this.pb,
     pr: this.pr,
   })
-  
+
   public getH = (): number => {
     return this.h
   }
@@ -988,6 +988,10 @@ export class lab extends colorType {
     }
     return this
   }
+
+  protected tolch(args: newColorArgs): lch {
+    return Convert.lab2lch(this, args.round)
+  }
 }
 
 export class luv extends colorType {
@@ -1052,6 +1056,58 @@ export class luv extends colorType {
       this.v = Math.round(this.v)
     }
     return this
+  }
+}
+
+export class lch extends colorType {
+  protected type: string = 'lch'
+
+  private l: number
+  private c: number
+  private h: number
+  private a: number
+
+  constructor(l: number, c: number, h: number, a: number = 100) {
+    super()
+    this.valueRangeCheck(l, 0, 100)
+    this.valueRangeCheck(c, 0, 132)
+    this.valueRangeCheck(h, 0, 360)
+    this.valueRangeCheck(a, 0, 100)
+    this.l = l
+    this.c = c
+    this.h = h
+    this.a = a
+  }
+
+  protected toStringValues = (): object => ({
+    l: this.l,
+    c: this.c,
+    h: this.h,
+    a: this.a,
+  })
+
+  public getL = (): number => {
+    return this.l
+  }
+  public getC = (): number => {
+    return this.c
+  }
+  public getH = (): number => {
+    return this.h
+  }
+  public getA = (): number => {
+    return this.a
+  }
+  public getAlpha = (): number => this.getA()
+
+  protected setAlpha(value: number): boolean {
+    this.valueRangeCheck(value, 0, 100)
+    this.a = value
+    return true
+  }
+
+  protected tolab(args: newColorArgs): lab {
+    return Convert.lch2lab(this, args.round)
   }
 }
 

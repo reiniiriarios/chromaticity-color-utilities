@@ -908,6 +908,58 @@ class Convert {
     return new Colors.rgb(r, g, b, a, bitDepth)
   }
 
+  /////////// LCH ///////////
+
+  /**
+   * Convert Lab to Lch
+   *
+   * @param  {Colors.lab} lab
+   * @param  {boolean}    [round=true]
+   * @return {Colors.lch}
+   */
+  static lab2lch(lab: Colors.lab, round: boolean = true): Colors.lch {
+    let l = lab.getL()
+    let a = lab.getA()
+    let b = lab.getB()
+
+    let c = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+    let h = (Math.atan2(b, a) * 360.0) / (Math.PI * 2)
+
+    if (round) {
+      l = Math.round(l)
+      c = Math.round(c)
+      h = Math.round(h)
+    }
+
+    return new Colors.lch(l, c, h)
+  }
+
+  /**
+   * Convert Lch to Lab
+   *
+   * @param  {Colors.lch} lch
+   * @param  {boolean}    [round=true]
+   * @return {Colors.lab}
+   */
+  static lch2lab(lch: Colors.lch, round: boolean = true): Colors.lab {
+    let l = lch.getL()
+    let c = lch.getC()
+    let h = lch.getH()
+
+    let hRad = (h * (Math.PI * 2)) / 360.0
+
+    let a = c * Math.cos(hRad)
+    let b = c * Math.sin(hRad)
+
+    if (round) {
+      l = Math.round(l)
+      a = Math.round(a)
+      b = Math.round(b)
+    }
+
+    return new Colors.lab(l, a, b)
+  }
+
   /////////// CMYK ///////////
 
   /**
@@ -1916,15 +1968,15 @@ class Convert {
     // roughly [8, 0, 8] and [16, 0, 0], or equivalently very close to black
     let factor
     if (nm.getWavelength() >= 380 && nm.getWavelength() < 400) {
-      factor = 1/71 + (1/10 * (nm.getWavelength() - 380)) / (400 - 380)
+      factor = 1 / 71 + ((1 / 10) * (nm.getWavelength() - 380)) / (400 - 380)
     } else if (nm.getWavelength() >= 400 && nm.getWavelength() < 420) {
-      factor = 1/5 + (5/7 * (nm.getWavelength() - 400)) / (420 - 400)
+      factor = 1 / 5 + ((5 / 7) * (nm.getWavelength() - 400)) / (420 - 400)
     } else if (nm.getWavelength() >= 420 && nm.getWavelength() < 701) {
       factor = 1
     } else if (nm.getWavelength() >= 701 && nm.getWavelength() < 781) {
-      factor = 1/3 + (5/7 * (780 - nm.getWavelength())) / (780 - 700)
+      factor = 1 / 3 + ((5 / 7) * (780 - nm.getWavelength())) / (780 - 700)
     } else if (nm.getWavelength() >= 781 && nm.getWavelength() <= 800) {
-      factor = 1/32 + (1/5 * (800 - nm.getWavelength())) / (800 - 781)
+      factor = 1 / 32 + ((1 / 5) * (800 - nm.getWavelength())) / (800 - 781)
     } else {
       factor = 0
     }

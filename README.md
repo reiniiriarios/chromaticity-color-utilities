@@ -92,7 +92,7 @@ tsc
 
 ## To Do List
 
-- LCHab
+- LCHab - basic support added
 - LCHuv
 - HSLuv
 - HPLuv
