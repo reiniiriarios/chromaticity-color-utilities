@@ -2232,6 +2232,54 @@ class Convert {
 
     return hexint
   }
+
+  /////////// ANSI ///////////
+
+  /**
+   * Convert RGB to ANSI 256 code
+   *
+   * @param  {Colors.rgb} rgb
+   * @return {Colors.ansi256}
+   */
+  static rgb2ansi256(rgb: Colors.rgb): Colors.ansi256 {
+    let r = rgb.getR() < 75 ? 0 : (rgb.getR() - 35) / 40
+    let g = rgb.getG() < 75 ? 0 : (rgb.getG() - 35) / 40
+    let b = rgb.getB() < 75 ? 0 : (rgb.getB() - 35) / 40
+
+    return new Colors.ansi256(r * 36 + g * 6 + b + 16)
+  }
+
+  /**
+   * Convert ANSI 256 code to RGB
+   *
+   * @param  {Colors.ansi256} ansi
+   * @return {Colors.rgb}
+   */
+  static ansi2562rgb(ansi: Colors.ansi256): Colors.rgb {
+    let c = ansi.getCode()
+    let r, g, b
+    if (c < 16) {
+      let s = c === 8 ? 7 : c
+      let m = c === 7 ? 192 : c > 8 ? 255 : 128
+
+      r = (s & 1) * m
+      g = ((s & 2) >> 1) * m
+      b = ((s & 4) >> 2) * m
+    } else if (c < 232) {
+      let rp = (c - 16) / 36
+      r = !rp ? 0 : rp * 40 + 55
+
+      let gp = ((c - 16) / 6) % 6
+      g = !gp ? 0 : gp * 40 + 55
+
+      let bp = (c - 16) & 6
+      b = !bp ? 0 : bp * 40 + 55
+    } else {
+      r = g = b = (c - 232) * 10 + 8
+    }
+
+    return new Colors.rgb(r, g, b)
+  }
 }
 
 export default Convert

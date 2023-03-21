@@ -1289,6 +1289,35 @@ export class ycbcr extends colorType {
   }
 }
 
+export class ansi256 extends colorType {
+  protected type: string = 'ansi256'
+
+  private code: number
+
+  constructor(code: number) {
+    super()
+
+    this.valueRangeCheck(code, 0, 256)
+    this.code = code
+  }
+
+  protected toStringValues = (): object => ({
+    code: this.code,
+  })
+
+  public getCode = (): number => {
+    return this.code
+  }
+
+  protected torgb(args: newColorArgs): rgb {
+    return Convert.ansi2562rgb(this)
+  }
+
+  protected toansi256(args: newColorArgs): ansi256 {
+    return this
+  }
+}
+
 export class nm extends colorType {
   protected type: string = 'nm'
 

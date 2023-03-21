@@ -224,6 +224,10 @@ export abstract class colorType {
       case 'ycbcr':
         to = this.toycbcr(args)
         break
+      case 'ansi256':
+      case 'ansi':
+        to = this.toansi256(args)
+        break
       default:
         throw new Error(
           'Unable to find conversion path from ' +
@@ -976,6 +980,10 @@ export abstract class colorType {
     }
     let rgb = this.torgb(args)
     return Convert.rgb2ycbcr(rgb, args.kb, args.kr)
+  }
+  protected toansi256(args: newColorArgs): Colors.ansi256 {
+    let rgb: Colors.rgb = this.torgb(args)
+    return Convert.rgb2ansi256(rgb)
   }
 
   protected setArgs(args?: newColorArgs): newColorArgs {
